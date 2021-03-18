@@ -76,6 +76,7 @@ GEM
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 14.0)
     ast (2.4.2)
+    batch-loader (2.0.1)
     bindex (0.8.1)
     bootsnap (1.7.2)
       msgpack (~> 1.0)
@@ -98,6 +99,7 @@ GEM
     ffi (1.15.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    graphql (1.12.6)
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
@@ -235,9 +237,11 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  batch-loader
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
+  graphql
   jbuilder (~> 2.7)
   listen (~> 3.3)
   mini_racer

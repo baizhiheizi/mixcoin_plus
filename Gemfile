@@ -19,6 +19,10 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
 # Integration of React + Webpack + Rails + rails/webpacker including server-side rendering of React, enabling a better developer experience and faster client performance.
 gem 'react_on_rails', '~> 12.0'
+# Ruby implementation of GraphQL http://graphql-ruby.org
+gem 'graphql'
+# Powerful tool for avoiding N+1 DB or HTTP queries
+gem 'batch-loader'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
