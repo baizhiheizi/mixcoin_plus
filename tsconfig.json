@@ -2,6 +2,7 @@
   "compilerOptions": {
     "declaration": false,
     "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "lib": ["es6", "dom"],
     "module": "es6",
