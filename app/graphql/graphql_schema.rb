@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MixcoinPlusSchema < GraphQL::Schema
+class GraphqlSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
 

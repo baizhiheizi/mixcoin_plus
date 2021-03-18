@@ -1,0 +1,3 @@
+mutation AdminLogin($input: AdminLoginMutationInput!) {
+  adminLogin(input: $input)
+}

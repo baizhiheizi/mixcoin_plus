@@ -7,9 +7,9 @@
     "lib": ["es6", "dom"],
     "module": "es6",
     "moduleResolution": "node",
-    "baseUrl": "app/packs/src",
+    "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "app/packs/*"]
+      "*": ["node_modules/*", "app/packs/src/*", "app/packs/src/apps/*"]
     },
     "sourceMap": true,
     "target": "es5",

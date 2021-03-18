@@ -24,9 +24,6 @@ module.exports = {
     ],
   },
   resolve: {
-    alias: {
-      '@': 'src',
-    },
     extensions: ['.css'],
   },
   plugins: [new ForkTSCheckerWebpackPlugin()],
