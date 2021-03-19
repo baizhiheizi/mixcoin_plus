@@ -25,12 +25,20 @@ gem 'graphql'
 gem 'batch-loader'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 4.0'
+# Map Redis types directly to Ruby objects
+gem 'redis-objects'
+# This gem adds a Redis::Namespace class which can be used to namespace Redis keys. http://redis.io
+gem 'redis-namespace'
 # Use Active Model has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 # I18n and L10n
 # gem 'rails-i18n', '~> 6.x'
 # A simple API wrapper for Mixin Network in Ruby
 gem 'mixin_bot'
+# Simple, efficient background processing for Ruby http://sidekiq.org
+gem 'sidekiq', '~> 6.0'
+# Scheduler / Cron for Sidekiq jobs
+gem 'sidekiq-cron'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

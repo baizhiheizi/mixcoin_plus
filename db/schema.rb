@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_19_030403) do
+ActiveRecord::Schema.define(version: 2021_03_19_034831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -22,6 +22,75 @@ ActiveRecord::Schema.define(version: 2021_03_19_030403) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_administrators_on_name", unique: true
+  end
+
+  create_table "mixin_assets", force: :cascade do |t|
+    t.uuid "asset_id"
+    t.jsonb "raw"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["asset_id"], name: "index_mixin_assets_on_asset_id", unique: true
+  end
+
+  create_table "mixin_messages", force: :cascade do |t|
+    t.string "content", comment: "decrepted data"
+    t.json "raw"
+    t.datetime "processed_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "mixin_network_snapshots", force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "trace_id"
+    t.uuid "opponent_id"
+    t.string "data"
+    t.uuid "snapshot_id"
+    t.decimal "amount"
+    t.uuid "asset_id"
+    t.datetime "transferred_at"
+    t.json "raw"
+    t.datetime "processed_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["trace_id"], name: "index_mixin_network_snapshots_on_trace_id", unique: true
+    t.index ["user_id"], name: "index_mixin_network_snapshots_on_user_id"
+  end
+
+  create_table "mixin_network_users", force: :cascade do |t|
+    t.string "owner_type"
+    t.bigint "owner_id"
+    t.uuid "uuid"
+    t.string "name"
+    t.uuid "session_id"
+    t.string "pin_token"
+    t.json "raw"
+    t.string "private_key"
+    t.string "encrypted_pin"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["owner_type", "owner_id"], name: "index_mixin_network_users_on_owner"
+    t.index ["uuid"], name: "index_mixin_network_users_on_uuid", unique: true
+  end
+
+  create_table "mixin_transfers", force: :cascade do |t|
+    t.string "source_type"
+    t.bigint "source_id"
+    t.integer "transfer_type"
+    t.decimal "amount"
+    t.uuid "trace_id"
+    t.uuid "asset_id"
+    t.uuid "user_id"
+    t.uuid "opponent_id"
+    t.string "memo"
+    t.datetime "processed_at"
+    t.json "snapshot"
+    t.integer "priority"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["source_type", "source_id"], name: "index_mixin_transfers_on_source"
+    t.index ["trace_id"], name: "index_mixin_transfers_on_trace_id", unique: true
+    t.index ["user_id"], name: "index_mixin_transfers_on_user_id"
   end
 
   create_table "user_authorizations", force: :cascade do |t|
