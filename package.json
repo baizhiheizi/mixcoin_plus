@@ -2,8 +2,8 @@
   "name": "mixcoin-plus",
   "private": true,
   "scripts": {
-    "lint": "prettier --write app/**/*.{tsx,js}",
-    "lint-check": "prettier --check app/**/*.{tsx,js}",
+    "lint": "prettier --write app/**/*.{tsx,js,gql,json}",
+    "lint-check": "prettier --check app/**/*.{tsx,js,gql,json}",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {

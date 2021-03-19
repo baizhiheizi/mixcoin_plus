@@ -1,0 +1,28 @@
+# == Schema Information
+#
+# Table name: user_authorizations
+#
+#  id                                  :bigint           not null, primary key
+#  access_token                        :string
+#  provider(third party auth provider) :integer
+#  raw(third pary user info)           :json
+#  uid(third party user id)            :string
+#  created_at                          :datetime         not null
+#  updated_at                          :datetime         not null
+#  user_id                             :bigint
+#
+# Indexes
+#
+#  index_user_authorizations_on_provider_and_uid  (provider,uid) UNIQUE
+#  index_user_authorizations_on_user_id           (user_id)
+#
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+one: {}
+# column: value
+#
+two: {}
+# column: value

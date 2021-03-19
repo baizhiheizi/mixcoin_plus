@@ -1,3 +1,8 @@
 zh-CN:
   home: 首页
   mine: 我的
+  language: 语言
+  logout: 退出登录
+  please_log_in_first: 请先登录
+  logout_confirm: 确定要退出登录吗？
+  authorize_tips: 即将授权 Mixcoin 登录

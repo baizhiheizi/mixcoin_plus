@@ -45,7 +45,9 @@ export default function App(props: {
               <ApolloProvider
                 client={apolloClient('/graphql', mixinContext.conversationId)}
               >
-                <Routes />
+                <div className='min-h-screen bg-gray-100 dark:bg-gray-900 dark:text-gray-50'>
+                  <Routes />
+                </div>
               </ApolloProvider>
             </ZarmConfigProvider>
           </CurrentUserContext.Provider>

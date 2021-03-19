@@ -32,3 +32,8 @@
 en:
   home: Home
   mine: Mine
+  language: Language
+  logout: Logout
+  please_log_in_first: Please Login First
+  logout_confirm: Are sure to logout?
+  authorize_tips: You'll authorize Mixcoin to read your profile.
