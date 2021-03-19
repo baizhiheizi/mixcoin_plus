@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 
+require 'sidekiq/web'
+require 'sidekiq/cron/web'
+Sidekiq::Web.set :session_secret, Rails.application.secrets[:secret_key_base]
+
+class AdminConstraint
+  def matches?(request)
+    return false if request.session[:current_admin_id].blank?
+
+    admin = Administrator.find_by(id: request.session[:current_admin_id])
+    admin.present?
+  end
+end
+
 Rails.application.routes.draw do
   post '/graphql', to: 'graphql#execute'
 
@@ -13,7 +26,7 @@ Rails.application.routes.draw do
     get 'logout', to: 'sessions#delete', as: :logout
 
     # sidekiq
-    # mount Sidekiq::Web, at: 'sidekiq', constraints: AdminConstraint.new
+    mount Sidekiq::Web, at: 'sidekiq', constraints: AdminConstraint.new
 
     root to: 'home#index'
     get '*path' => 'home#index'
