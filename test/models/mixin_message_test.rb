@@ -10,6 +10,11 @@
 #  raw                     :json
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  message_id              :uuid
+#
+# Indexes
+#
+#  index_mixin_messages_on_message_id  (message_id) UNIQUE
 #
 require 'test_helper'
 

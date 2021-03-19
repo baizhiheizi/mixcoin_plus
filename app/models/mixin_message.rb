@@ -10,9 +10,14 @@
 #  raw                     :json
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  message_id              :uuid
+#
+# Indexes
+#
+#  index_mixin_messages_on_message_id  (message_id) UNIQUE
 #
 class MixinMessage < ApplicationRecord
-  store :raw, accessors: %i[action category user_id conversation_id message_id]
+  store :raw, accessors: %i[action category user_id conversation_id]
 
   belongs_to :user, primary_key: :mixin_uuid, optional: true
 
@@ -34,11 +39,7 @@ class MixinMessage < ApplicationRecord
   end
 
   def process!
-    process_user_message
     touch_proccessed_at
-  end
-
-  def process_user_message
   end
 
   def touch_proccessed_at

@@ -34,10 +34,12 @@ ActiveRecord::Schema.define(version: 2021_03_19_034831) do
 
   create_table "mixin_messages", force: :cascade do |t|
     t.string "content", comment: "decrepted data"
+    t.uuid "message_id"
     t.json "raw"
     t.datetime "processed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["message_id"], name: "index_mixin_messages_on_message_id", unique: true
   end
 
   create_table "mixin_network_snapshots", force: :cascade do |t|

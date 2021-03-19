@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler/setup'
+require File.expand_path('../config/environment', __dir__)
+
+EM.run {
+  MixcoinPlusBot.api.start_blaze_connect do
+    def on_open(ws, _event)
+      p ['MixcoinPlus', Time.current, :open]
+      ws.send MixcoinPlusBot.api.list_pending_message
+    end
+
+    def on_message(ws, event)
+      raw = JSON.parse MixcoinPlusBot.api.read_ws_message(event.data)
+      return if raw&.[]('action') == 'ACKNOWLEDGE_MESSAGE_RECEIPT'
+
+      p ['MixcoinPlus', Time.current, :message, raw&.[]('action')]
+      data = raw['data']
+      return if data.blank?
+
+      # process message
+      MixinMessage.create_with(raw: raw).find_or_create_by(message_id: data['message_id'])
+
+      # ack
+      ws.send MixcoinPlusBot.api.acknowledge_message_receipt(data['message_id']) if data&.[]('message_id').present?
+    end
+  end
+
+  Thread.new {
+    MixinNetworkSnapshot.poll
+  }
+}
