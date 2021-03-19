@@ -1,9 +1,56 @@
-import React from 'react';
+import { ApolloProvider } from '@apollo/client';
+import { MixinBotContext, MixinContext } from 'apps/shared';
+import 'apps/shared/locales/i18n';
+import { mixinContext } from 'mixin-messenger-utils';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ConfigProvider as ZarmConfigProvider } from 'zarm';
+import enUS from 'zarm/lib/config-provider/locale/en_US';
+import zhCN from 'zarm/lib/config-provider/locale/zh_CN';
+import { CurrentUserContext } from './contexts/CurrentUserContext';
+import Routes from './Routes';
+import { apolloClient } from './utils';
 
-export default function App(props: { page: string }) {
+export default function App(props: {
+  currentUser?: any;
+  mixinBot: { appId: string; name: string; avatar: string };
+}) {
+  const { i18n } = useTranslation();
+  const [currentUser, setCurrentUser] = useState(props.currentUser);
+  const { mixinBot } = props;
+  const theme =
+    mixinContext.appearance ||
+    (window.matchMedia('(prefers-color-scheme: dark)')?.matches
+      ? 'dark'
+      : 'light');
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.querySelector('html').classList.add('dark');
+    } else {
+      document.querySelector('html').classList.remove('dark');
+    }
+  }, []);
+
   return (
     <>
-      <span className='font-bold text-red-500'>Hello world</span> {props.page}{' '}
+      <MixinContext.Provider value={mixinContext}>
+        <MixinBotContext.Provider value={mixinBot}>
+          <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
+            <ZarmConfigProvider
+              theme={theme}
+              locale={i18n.language.includes('en') ? enUS : zhCN}
+              primaryColor='#1890ff'
+            >
+              <ApolloProvider
+                client={apolloClient('/graphql', mixinContext.conversationId)}
+              >
+                <Routes />
+              </ApolloProvider>
+            </ZarmConfigProvider>
+          </CurrentUserContext.Provider>
+        </MixinBotContext.Provider>
+      </MixinContext.Provider>
     </>
   );
 }

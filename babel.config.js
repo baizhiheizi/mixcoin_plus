@@ -90,6 +90,14 @@ module.exports = function (api) {
           style: true,
         },
       ],
+      [
+        'import',
+        {
+          libraryName: 'zarm',
+          style: true, // or 'css'
+        },
+        'zarm',
+      ],
     ].filter(Boolean),
   };
 };

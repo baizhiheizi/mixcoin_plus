@@ -5,13 +5,14 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["es6", "dom"],
-    "module": "es6",
+    "module": "ESNext",
     "moduleResolution": "node",
     "sourceMap": true,
     "target": "es5",
     "jsx": "react",
     "noEmit": true,
     "baseUrl": ".",
+    "resolveJsonModule": true,
     "paths": {
       "*": ["node_modules/*", "app/packs/*"]
     }

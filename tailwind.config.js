@@ -1,6 +1,6 @@
 module.exports = {
-  purge: ['./app/packs/src/apps/**/*.tsx', './app/views/**/*.html.erb'],
-  darkMode: 'class', // or 'media' or 'class'
+  purge: ['./app/packs/apps/**/*.tsx', './app/views/**/*.html.erb'],
+  darkMode: 'class',
   theme: {
     extend: {},
   },

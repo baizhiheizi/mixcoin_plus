@@ -27,6 +27,8 @@ gem 'batch-loader'
 gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+# I18n and L10n
+# gem 'rails-i18n', '~> 6.x'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

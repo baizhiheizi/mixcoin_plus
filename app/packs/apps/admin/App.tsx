@@ -6,7 +6,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Menus from './Menus';
 import LoginPage from './pages/LoginPage/LoginPage';
 import Routes from './Routes';
-import { CurrentAdminContext, MixinBotContext } from './contexts';
+import { CurrentAdminContext } from './contexts';
+import { MixinBotContext } from 'apps/shared';
 
 export default function App(props: {
   currentAdmin?: { name: String };
