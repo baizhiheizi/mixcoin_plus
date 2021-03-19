@@ -1,0 +1,27 @@
+query AdminPaymentConnection($after: String) {
+  adminPaymentConnection(after: $after) {
+    nodes {
+      id
+      traceId
+      state
+      conversationId
+      amount
+      memo
+      asset {
+        assetId
+        symbol
+        name
+        iconUrl
+      }
+      opponent {
+        avatar
+        name
+        mixinUuid
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

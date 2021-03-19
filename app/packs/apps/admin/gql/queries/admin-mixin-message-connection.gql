@@ -1,0 +1,22 @@
+query AdminMixinMessageConnection($after: String) {
+  adminMixinMessageConnection(after: $after) {
+    nodes {
+      id
+      action
+      category
+      content
+      userId
+      processedAt
+      user {
+        avatar
+        name
+        mixinUuid
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

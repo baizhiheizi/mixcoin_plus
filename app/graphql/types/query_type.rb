@@ -8,5 +8,8 @@ module Types
 
     field :current_admin, resolver: Resolvers::CurrentAdminResolver
     field :admin_user_connection, resolver: Resolvers::AdminUserConnectionResolver
+    field :admin_payment_connection, resolver: Resolvers::AdminPaymentConnectionResolver
+    field :admin_mixin_message_connection, resolver: Resolvers::AdminMixinMessageConnectionResolver
+    field :admin_mixin_network_snapshot_connection, resolver: Resolvers::AdminMixinNetworkSnapshotConnectionResolver
   end
 end
