@@ -47,6 +47,27 @@ export type Query = {
   currentAdmin: Administrator;
 };
 
+export type AdminLoginMutationVariables = Exact<{
+  input: AdminLoginMutationInput;
+}>;
+
+
+export type AdminLoginMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'adminLogin'>
+);
+
+export type CurrentAdminQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentAdminQuery = (
+  { __typename?: 'Query' }
+  & { currentAdmin: (
+    { __typename?: 'Administrator' }
+    & Pick<Administrator, 'name'>
+  ) }
+);
+
 
 export const AdminLoginDocument = gql`
     mutation AdminLogin($input: AdminLoginMutationInput!) {
