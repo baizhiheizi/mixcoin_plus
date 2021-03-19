@@ -7,6 +7,7 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.string :avatar_url
       t.string :mixin_id
       t.uuid :mixin_uuid
+      t.string :locale
 
       t.timestamps
     end

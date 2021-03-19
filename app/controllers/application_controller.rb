@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  around_action :with_locale
+
   helper_method :react_base_props
   helper_method :current_user
 
@@ -8,8 +10,15 @@ class ApplicationController < ActionController::Base
 
   def react_base_props
     {
-      current_user: current_user&.as_json(only: %i[name]),
-      mixin_bot: { app_id: '', name: '', avatar: '' }
+      current_user: current_user && {
+        name: current_user.name,
+        avatar: current_user.avatar
+      },
+      mixin_bot: {
+        app_id: MixcoinPlusBot.api.client_id,
+        name: 'Mixcoin+',
+        avatar: ''
+      }
     }.deep_transform_keys! { |key| key.to_s.camelize(:lower) }
   end
 
@@ -24,5 +33,10 @@ class ApplicationController < ActionController::Base
   def user_sign_out
     session[:current_user_id] = nil
     @current_user = nil
+  end
+
+  def with_locale(&action)
+    locale = current_user&.locale || I18n.default_locale
+    I18n.with_locale(locale, &action)
   end
 end

@@ -10,9 +10,10 @@ import zhCN from 'zarm/lib/config-provider/locale/zh_CN';
 import { CurrentUserContext } from './contexts/CurrentUserContext';
 import Routes from './Routes';
 import { apolloClient } from './utils';
+import { User } from 'graphqlTypes';
 
 export default function App(props: {
-  currentUser?: any;
+  currentUser?: Partial<User>;
   mixinBot: { appId: string; name: string; avatar: string };
 }) {
   const { i18n } = useTranslation();

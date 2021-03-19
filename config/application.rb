@@ -33,5 +33,16 @@ module MixcoinPlus
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.i18n.available_locales = %i[en zh-CN]
+    config.i18n.default_locale = :en
+
+    # reference:
+    # https://stackoverflow.com/questions/49233769/is-there-a-way-to-prevent-safari-on-ios-from-clearing-the-cookies-for-a-website
+    # https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie#Example_4_Reset_the_previous_cookie
+    # https://api.rubyonrails.org/v5.2.1/classes/ActionDispatch/Session/CookieStore.html
+    config.session_store :cookie_store, expire_after: 14.days, key: '_mixcoin_plus_session'
+
+    # https://github.com/exAspArk/batch-loader#caching
+    config.middleware.use BatchLoader::Middleware
   end
 end

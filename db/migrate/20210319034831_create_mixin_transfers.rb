@@ -2,7 +2,7 @@ class CreateMixinTransfers < ActiveRecord::Migration[6.1]
   def change
     create_table :mixin_transfers do |t|
       t.belongs_to :source, polymorphic: true
-      t.integer :transfer_type
+      t.string :transfer_type
       t.decimal :amount
       t.uuid :trace_id
       t.uuid :asset_id
@@ -11,7 +11,7 @@ class CreateMixinTransfers < ActiveRecord::Migration[6.1]
       t.string :memo
       t.datetime :processed_at
       t.json :snapshot
-      t.integer :priority
+      t.string :priority
 
       t.timestamps
     end

@@ -6,7 +6,7 @@
 #
 #  id                                  :bigint           not null, primary key
 #  access_token                        :string
-#  provider(third party auth provider) :integer
+#  provider(third party auth provider) :string
 #  raw(third pary user info)           :json
 #  uid(third party user id)            :string
 #  created_at                          :datetime         not null
@@ -19,9 +19,11 @@
 #  index_user_authorizations_on_user_id           (user_id)
 #
 class UserAuthorization < ApplicationRecord
+  extend Enumerize
+
   belongs_to :user, optional: true
 
-  enum provider: { mixin: 0 }
+  enumerize :provider, in: %w[mixin]
 
   validates :provider, presence: true
   validates :raw, presence: true

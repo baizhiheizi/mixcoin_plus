@@ -7,5 +7,6 @@ module Types
     include GraphQL::Types::Relay::HasNodesField
 
     field :current_admin, resolver: Resolvers::CurrentAdminResolver
+    field :admin_user_connection, resolver: Resolvers::AdminUserConnectionResolver
   end
 end

@@ -1,0 +1,5 @@
+zh-CN:
+  notification: Notification
+  notifications:
+    user_authorized_notification:
+      message: '成功授权'

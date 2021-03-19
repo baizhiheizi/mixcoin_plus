@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_19_034831) do
+ActiveRecord::Schema.define(version: 2021_03_19_113720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 2021_03_19_034831) do
   create_table "mixin_transfers", force: :cascade do |t|
     t.string "source_type"
     t.bigint "source_id"
-    t.integer "transfer_type"
+    t.string "transfer_type"
     t.decimal "amount"
     t.uuid "trace_id"
     t.uuid "asset_id"
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 2021_03_19_034831) do
     t.string "memo"
     t.datetime "processed_at"
     t.json "snapshot"
-    t.integer "priority"
+    t.string "priority"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["source_type", "source_id"], name: "index_mixin_transfers_on_source"
@@ -95,9 +95,21 @@ ActiveRecord::Schema.define(version: 2021_03_19_034831) do
     t.index ["user_id"], name: "index_mixin_transfers_on_user_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.string "recipient_type", null: false
+    t.bigint "recipient_id", null: false
+    t.string "type", null: false
+    t.jsonb "params"
+    t.datetime "read_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["read_at"], name: "index_notifications_on_read_at"
+    t.index ["recipient_type", "recipient_id"], name: "index_notifications_on_recipient"
+  end
+
   create_table "user_authorizations", force: :cascade do |t|
     t.bigint "user_id"
-    t.integer "provider", comment: "third party auth provider"
+    t.string "provider", comment: "third party auth provider"
     t.string "uid", comment: "third party user id"
     t.string "access_token"
     t.json "raw", comment: "third pary user info"
@@ -112,6 +124,7 @@ ActiveRecord::Schema.define(version: 2021_03_19_034831) do
     t.string "avatar_url"
     t.string "mixin_id"
     t.uuid "mixin_uuid"
+    t.string "locale"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["mixin_id"], name: "index_users_on_mixin_id", unique: true

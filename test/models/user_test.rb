@@ -6,6 +6,7 @@
 #
 #  id         :bigint           not null, primary key
 #  avatar_url :string
+#  locale     :string
 #  mixin_uuid :uuid
 #  name       :string
 #  created_at :datetime         not null

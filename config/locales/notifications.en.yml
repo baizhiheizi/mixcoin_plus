@@ -1,0 +1,5 @@
+en:
+  notification: Notification
+  notifications:
+    user_authorized_notification:
+      message: 'Authorized'

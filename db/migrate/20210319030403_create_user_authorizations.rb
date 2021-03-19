@@ -2,7 +2,7 @@ class CreateUserAuthorizations < ActiveRecord::Migration[6.1]
   def change
     create_table :user_authorizations do |t|
       t.belongs_to :user
-      t.integer :provider, comment: 'third party auth provider'
+      t.string :provider, comment: 'third party auth provider'
       t.string :uid, comment: 'third party user id'
       t.string :access_token
       t.json :raw, comment: 'third pary user info'

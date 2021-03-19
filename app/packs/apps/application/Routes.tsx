@@ -1,5 +1,6 @@
 import { useMixin, useMixinBot } from 'apps/shared';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   BrowserRouter as Router,
   Route,
@@ -8,9 +9,27 @@ import {
 } from 'react-router-dom';
 import { Icon, NavBar } from 'zarm';
 import LoaderComponent from './components/LoaderComponent/LoaderComponent';
+import { useCurrentUser } from './contexts';
+import { useSwitchLocaleMutation } from 'graphqlTypes';
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
 
 export default function Routes() {
+  const { currentUser } = useCurrentUser();
+  const [switchLocale] = useSwitchLocaleMutation();
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
+    if (currentUser.locale !== i18n.language) {
+      switchLocale({ variables: { input: { locale: i18n.language } } });
+    }
+    i18n.on('languageChanged', (lng: string) => {
+      switchLocale({ variables: { input: { locale: lng } } });
+    });
+  }, []);
+
   return (
     <Router>
       <NavbarComponent />

@@ -30,6 +30,7 @@ module Authenticatable
         auth.update user: user
       end
 
+      UserAuthorizedNotification.with({}).deliver(user) if user.present?
       user
     end
   end

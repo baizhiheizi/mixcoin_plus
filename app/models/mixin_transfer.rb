@@ -7,11 +7,11 @@
 #  id            :bigint           not null, primary key
 #  amount        :decimal(, )
 #  memo          :string
-#  priority      :integer
+#  priority      :string
 #  processed_at  :datetime
 #  snapshot      :json
 #  source_type   :string
-#  transfer_type :integer
+#  transfer_type :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  asset_id      :uuid

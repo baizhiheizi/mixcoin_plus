@@ -39,6 +39,10 @@ gem 'mixin_bot'
 gem 'sidekiq', '~> 6.0'
 # Scheduler / Cron for Sidekiq jobs
 gem 'sidekiq-cron'
+# Notifications for Ruby on Rails applications
+gem 'noticed'
+# Enumerated attributes with I18n and ActiveRecord/Mongoid support
+gem 'enumerize'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

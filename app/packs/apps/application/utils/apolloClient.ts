@@ -1,6 +1,6 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-import { message } from 'antd';
+import { Loading, Toast } from 'zarm';
 
 const customizedConnectionMergeFunction = (
   keyArgs: false | string[] = false,
@@ -45,7 +45,8 @@ export const apolloClient = (uri: string, conversationId?: string) => {
     uri: uri || '/graphql',
   });
   const onErrorLink = onError(() => {
-    message.error('Something wrong happens');
+    Loading.hide();
+    Toast.show(':(');
   });
 
   return new ApolloClient({

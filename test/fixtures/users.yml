@@ -4,6 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  avatar_url :string
+#  locale     :string
 #  mixin_uuid :uuid
 #  name       :string
 #  created_at :datetime         not null
@@ -14,11 +15,6 @@
 #
 #  index_users_on_mixin_id    (mixin_id) UNIQUE
 #  index_users_on_mixin_uuid  (mixin_uuid) UNIQUE
-#
-
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
 #
 one: {}
 # column: value

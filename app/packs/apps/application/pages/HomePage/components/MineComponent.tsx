@@ -32,7 +32,7 @@ export default function MineComponent() {
     <>
       <div className='pt-8 text-center'>
         <img
-          className='object-cover mx-auto mb-2 bg-gray-500 rounded-full w-14 h-14'
+          className='object-cover mx-auto mb-2 rounded-full bg-gray-50 w-14 h-14'
           src={currentUser.avatar}
         />
         <div className='dark:text-gray-200'>{currentUser.name}</div>
