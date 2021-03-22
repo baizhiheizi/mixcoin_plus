@@ -3,6 +3,7 @@
 module Types
   class MixinNetworkSnapshotType < Types::BaseModelObject
     field :id, ID, null: false
+    field :type, String, null: true
     field :trace_id, String, null: false
     field :snapshot_id, String, null: false
     field :asset_id, String, null: false

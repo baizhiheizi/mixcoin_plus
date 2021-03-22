@@ -1,6 +1,6 @@
 class CreateMixinTransfers < ActiveRecord::Migration[6.1]
   def change
-    create_table :mixin_transfers do |t|
+    create_table :mixin_transfers, id: :uuid do |t|
       t.belongs_to :source, polymorphic: true
       t.string :transfer_type
       t.decimal :amount

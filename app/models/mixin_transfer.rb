@@ -4,7 +4,7 @@
 #
 # Table name: mixin_transfers
 #
-#  id            :bigint           not null, primary key
+#  id            :uuid             not null, primary key
 #  amount        :decimal(, )
 #  memo          :string
 #  priority      :string
@@ -32,7 +32,7 @@ class MixinTransfer < ApplicationRecord
   extend Enumerize
 
   belongs_to :source, polymorphic: true
-  belongs_to :wallet, class_name: 'MixinNetworkUser', primary_key: :uuid, inverse_of: :transfers, optional: true
+  belongs_to :wallet, class_name: 'MixinNetworkUser', primary_key: :mixin_uuid, inverse_of: :transfers, optional: true
   belongs_to :recipient, class_name: 'User', primary_key: :mixin_uuid, foreign_key: :opponent_id, inverse_of: :transfers, optional: true
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: :transfers, optional: true
 

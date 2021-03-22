@@ -1,6 +1,6 @@
 class CreateMixinMessages < ActiveRecord::Migration[6.1]
   def change
-    create_table :mixin_messages do |t|
+    create_table :mixin_messages, id: :uuid do |t|
       t.string :content, comment: 'decrepted data'
       t.uuid :message_id
       t.json :raw

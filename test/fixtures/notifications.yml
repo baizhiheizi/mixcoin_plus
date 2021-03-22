@@ -2,7 +2,7 @@
 #
 # Table name: notifications
 #
-#  id             :bigint           not null, primary key
+#  id             :uuid             not null, primary key
 #  params         :jsonb
 #  read_at        :datetime
 #  recipient_type :string           not null

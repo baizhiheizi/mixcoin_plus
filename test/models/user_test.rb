@@ -4,7 +4,7 @@
 #
 # Table name: users
 #
-#  id         :bigint           not null, primary key
+#  id         :uuid             not null, primary key
 #  avatar_url :string
 #  locale     :string
 #  mixin_uuid :uuid

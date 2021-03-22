@@ -4,7 +4,7 @@
 #
 # Table name: ocean_orders
 #
-#  id               :bigint           not null, primary key
+#  id               :uuid             not null, primary key
 #  filled_amount    :decimal(, )
 #  filled_funds     :decimal(, )
 #  maker_fee        :float            default(0.0)

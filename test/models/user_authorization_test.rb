@@ -4,7 +4,7 @@
 #
 # Table name: user_authorizations
 #
-#  id                                  :bigint           not null, primary key
+#  id                                  :uuid             not null, primary key
 #  access_token                        :string
 #  provider(third party auth provider) :string
 #  raw(third pary user info)           :json

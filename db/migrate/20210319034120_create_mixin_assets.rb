@@ -1,6 +1,6 @@
 class CreateMixinAssets < ActiveRecord::Migration[6.1]
   def change
-    create_table :mixin_assets do |t|
+    create_table :mixin_assets, id: :uuid do |t|
       t.uuid :asset_id, index: { unique: true }
       t.jsonb :raw
 

@@ -1,6 +1,6 @@
 class CreateOceanOrders < ActiveRecord::Migration[6.1]
   def change
-    create_table :ocean_orders do |t|
+    create_table :ocean_orders, id: :uuid do |t|
       t.decimal :filled_amount
       t.decimal :filled_funds
       t.string :order_type

@@ -4,14 +4,14 @@
 #
 # Table name: mixin_network_users
 #
-#  id            :bigint           not null, primary key
+#  id            :uuid             not null, primary key
 #  encrypted_pin :string
+#  mixin_uuid    :uuid
 #  name          :string
 #  owner_type    :string
 #  pin_token     :string
 #  private_key   :string
 #  raw           :json
-#  uuid          :uuid
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  owner_id      :bigint
@@ -19,15 +19,15 @@
 #
 # Indexes
 #
-#  index_mixin_network_users_on_owner  (owner_type,owner_id)
-#  index_mixin_network_users_on_uuid   (uuid) UNIQUE
+#  index_mixin_network_users_on_mixin_uuid  (mixin_uuid) UNIQUE
+#  index_mixin_network_users_on_owner       (owner_type,owner_id)
 #
 class MixinNetworkUser < ApplicationRecord
   include Encryptable
 
   belongs_to :owner, optional: true, inverse_of: false, polymorphic: true
-  has_many :snapshots, class_name: 'MixinNetworkSnapshot', foreign_key: :user_id, primary_key: :uuid, dependent: :nullify, inverse_of: :wallet
-  has_many :transfers, foreign_key: :wallet_id, primary_key: :uuid, dependent: :nullify, inverse_of: :wallet
+  has_many :snapshots, class_name: 'MixinNetworkSnapshot', foreign_key: :user_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :wallet
+  has_many :transfers, foreign_key: :wallet_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :wallet
 
   validates :name, presence: true
   validates :pin_token, presence: true

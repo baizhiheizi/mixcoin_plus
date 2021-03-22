@@ -4,7 +4,7 @@
 #
 # Table name: mixin_network_snapshots
 #
-#  id             :bigint           not null, primary key
+#  id             :uuid             not null, primary key
 #  amount         :decimal(, )
 #  data           :string
 #  processed_at   :datetime

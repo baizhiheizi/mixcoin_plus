@@ -4,7 +4,7 @@
 #
 # Table name: administrators
 #
-#  id              :bigint           not null, primary key
+#  id              :uuid             not null, primary key
 #  name            :string           not null
 #  password_digest :string           not null
 #  created_at      :datetime         not null

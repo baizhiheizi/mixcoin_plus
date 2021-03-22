@@ -4,14 +4,14 @@
 #
 # Table name: mixin_network_users
 #
-#  id            :bigint           not null, primary key
+#  id            :uuid             not null, primary key
 #  encrypted_pin :string
+#  mixin_uuid    :uuid
 #  name          :string
 #  owner_type    :string
 #  pin_token     :string
 #  private_key   :string
 #  raw           :json
-#  uuid          :uuid
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  owner_id      :bigint
@@ -19,8 +19,8 @@
 #
 # Indexes
 #
-#  index_mixin_network_users_on_owner  (owner_type,owner_id)
-#  index_mixin_network_users_on_uuid   (uuid) UNIQUE
+#  index_mixin_network_users_on_mixin_uuid  (mixin_uuid) UNIQUE
+#  index_mixin_network_users_on_owner       (owner_type,owner_id)
 #
 class OceanBroker < MixinNetworkUser
   EXCHANGE_ASSET_ID = '965e5c6e-434c-3fa9-b780-c50f43cd955c'

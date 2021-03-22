@@ -4,7 +4,7 @@
 #
 # Table name: ocean_orders
 #
-#  id               :bigint           not null, primary key
+#  id               :uuid             not null, primary key
 #  filled_amount    :decimal(, )
 #  filled_funds     :decimal(, )
 #  maker_fee        :float            default(0.0)
@@ -29,7 +29,7 @@ class OceanOrder < ApplicationRecord
   include AASM
 
   belongs_to :user, primary_key: :mixin_uuid, inverse_of: :ocean_orders
-  belongs_to :broker, class_name: 'MixinNetworkBroker', primary_key: :uuid, inverse_of: :ocean_orders
+  belongs_to :broker, class_name: 'MixinNetworkBroker', primary_key: :mixin_uuid, inverse_of: :ocean_orders
   belongs_to :base_asset, class_name: 'Currency', primary_key: :asset_id, inverse_of: false
   belongs_to :quote_asset, class_name: 'Currency', primary_key: :asset_id, inverse_of: false
   has_many :snapshots, class_name: 'MixinNetworkSnapshot', foreign_key: :order_id, dependent: :nullify, inverse_of: :ocean_order
@@ -228,10 +228,6 @@ class OceanOrder < ApplicationRecord
     OceanOrderStateChangedNotification.with(order: self).deliver(user)
   end
 
-  def ocean_trace_id
-    @ocean_trace_id = MixcoinPlusBot.api.unique_uuid trace_id, broker_id
-  end
-
   def pay_url
     format(
       'mixin://pay?recipient=%<recipient>s&asset=%<asset>&amount=%<amount>s&%memo=%<memo>s%trace=%<trace>s',
@@ -249,7 +245,7 @@ class OceanOrder < ApplicationRecord
     return unless new_record?
 
     assign_attributes(
-      trace_id: SecureRandom.uuid
+      trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, broker_id)
     )
   end
 
@@ -279,7 +275,7 @@ class OceanOrder < ApplicationRecord
   # trace id used for creating order transfer to engine
   # same as local order trace id
   def trace_id_for_creating
-    ocean_trace_id
+    trace_id
   end
 
   # trace id used for canceling order transfer to engine

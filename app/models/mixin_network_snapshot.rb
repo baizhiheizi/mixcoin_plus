@@ -4,7 +4,7 @@
 #
 # Table name: mixin_network_snapshots
 #
-#  id             :bigint           not null, primary key
+#  id             :uuid             not null, primary key
 #  amount         :decimal(, )
 #  data           :string
 #  processed_at   :datetime
@@ -33,7 +33,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   POLLING_LIMIT = 500
 
   belongs_to :source, polymorphic: true, optional: true
-  belongs_to :wallet, class_name: 'MixinNetworkUser', foreign_key: :user_id, primary_key: :uuid, inverse_of: :snapshots, optional: true
+  belongs_to :wallet, class_name: 'MixinNetworkUser', foreign_key: :user_id, primary_key: :mixin_uuid, inverse_of: :snapshots, optional: true
   belongs_to :opponent, class_name: 'User', primary_key: :mixin_uuid, inverse_of: :snapshots, optional: true
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: :orders, optional: true
 

@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "administrators", force: :cascade do |t|
+  create_table "administrators", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "password_digest", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.index ["name"], name: "index_administrators_on_name", unique: true
   end
 
-  create_table "mixin_assets", force: :cascade do |t|
+  create_table "mixin_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "asset_id"
     t.jsonb "raw"
     t.datetime "created_at", precision: 6, null: false
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.index ["asset_id"], name: "index_mixin_assets_on_asset_id", unique: true
   end
 
-  create_table "mixin_messages", force: :cascade do |t|
+  create_table "mixin_messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "content", comment: "decrepted data"
     t.uuid "message_id"
     t.json "raw"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.index ["message_id"], name: "index_mixin_messages_on_message_id", unique: true
   end
 
-  create_table "mixin_network_snapshots", force: :cascade do |t|
+  create_table "mixin_network_snapshots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "source_type"
     t.bigint "source_id"
     t.string "type"
@@ -64,10 +64,10 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.index ["user_id"], name: "index_mixin_network_snapshots_on_user_id"
   end
 
-  create_table "mixin_network_users", force: :cascade do |t|
+  create_table "mixin_network_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "owner_type"
     t.bigint "owner_id"
-    t.uuid "uuid"
+    t.uuid "mixin_uuid"
     t.string "name"
     t.uuid "session_id"
     t.string "pin_token"
@@ -76,11 +76,11 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.string "encrypted_pin"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["mixin_uuid"], name: "index_mixin_network_users_on_mixin_uuid", unique: true
     t.index ["owner_type", "owner_id"], name: "index_mixin_network_users_on_owner"
-    t.index ["uuid"], name: "index_mixin_network_users_on_uuid", unique: true
   end
 
-  create_table "mixin_transfers", force: :cascade do |t|
+  create_table "mixin_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "source_type"
     t.bigint "source_id"
     t.string "transfer_type"
@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.index ["user_id"], name: "index_mixin_transfers_on_user_id"
   end
 
-  create_table "notifications", force: :cascade do |t|
+  create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "recipient_type", null: false
     t.bigint "recipient_id", null: false
     t.string "type", null: false
@@ -112,7 +112,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.index ["recipient_type", "recipient_id"], name: "index_notifications_on_recipient"
   end
 
-  create_table "ocean_orders", force: :cascade do |t|
+  create_table "ocean_orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "filled_amount"
     t.decimal "filled_funds"
     t.string "order_type"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "user_authorizations", force: :cascade do |t|
+  create_table "user_authorizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "user_id"
     t.string "provider", comment: "third party auth provider"
     t.string "uid", comment: "third party user id"
@@ -145,7 +145,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.index ["user_id"], name: "index_user_authorizations_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "avatar_url"
     t.string "mixin_id"

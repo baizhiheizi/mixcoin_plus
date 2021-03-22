@@ -1,8 +1,8 @@
 class CreateMixinNetworkUsers < ActiveRecord::Migration[6.1]
   def change
-    create_table :mixin_network_users do |t|
+    create_table :mixin_network_users, id: :uuid do |t|
       t.belongs_to :owner, polymorphic: true
-      t.uuid :uuid
+      t.uuid :mixin_uuid
       t.string :name
       t.uuid :session_id
       t.string :pin_token
@@ -13,6 +13,6 @@ class CreateMixinNetworkUsers < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
-    add_index :mixin_network_users, :uuid, unique: true
+    add_index :mixin_network_users, :mixin_uuid, unique: true
   end
 end

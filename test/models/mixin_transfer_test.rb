@@ -4,7 +4,7 @@
 #
 # Table name: mixin_transfers
 #
-#  id            :bigint           not null, primary key
+#  id            :uuid             not null, primary key
 #  amount        :decimal(, )
 #  memo          :string
 #  priority      :string
