@@ -4,6 +4,10 @@ import { Link, Route, Switch } from 'react-router-dom';
 import OverviewPage from './pages/OverviewPage/OverivewPage';
 import OceanOrdersPage from './pages/OceanOrdersPage/OceanOrdersPage';
 import OceanOrderPage from './pages/OceanOrderPage/OceanOrderPage';
+import MixinNetworkSnapshotsPage from './pages/MixinNetworkSnapshotsPage/MixinNetworkSnapshotsPage';
+import MixinMessagesPage from './pages/MixinMessagesPage/MixinMessagesPage';
+import UsersPage from './pages/UsersPage/UsersPage';
+import UserPage from './pages/UserPage/UserPage';
 
 export default function Routes() {
   return (
@@ -16,6 +20,18 @@ export default function Routes() {
       </Route>
       <Route path='/ocean_orders/:id' exact>
         <OceanOrderPage />
+      </Route>
+      <Route path='/mixin_network_snapshots' exact>
+        <MixinNetworkSnapshotsPage />
+      </Route>
+      <Route path='/mixin_messages' exact>
+        <MixinMessagesPage />
+      </Route>
+      <Route path='/users' exact>
+        <UsersPage />
+      </Route>
+      <Route path='/users/:id' exact>
+        <UserPage />
       </Route>
       <Route>
         <Result

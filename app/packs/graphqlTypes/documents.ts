@@ -93,6 +93,7 @@ export type MixinNetworkSnapshot = {
   snapshotId: Scalars['String'];
   traceId: Scalars['String'];
   transferredAt: Scalars['ISO8601DateTime'];
+  type?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
   userId: Scalars['String'];
 };
@@ -117,6 +118,15 @@ export type MixinNetworkSnapshotEdge = {
   node?: Maybe<MixinNetworkSnapshot>;
 };
 
+export type MixinNetworkUser = {
+  __typename?: 'MixinNetworkUser';
+  createdAt: Scalars['ISO8601DateTime'];
+  id: Scalars['ID'];
+  mixinUuid: Scalars['String'];
+  name: Scalars['String'];
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   adminLogin?: Maybe<Scalars['Boolean']>;
@@ -133,6 +143,52 @@ export type MutationSwitchLocaleArgs = {
   input: SwitchLocaleMutationInput;
 };
 
+export type OceanOrder = {
+  __typename?: 'OceanOrder';
+  amount: Scalars['Float'];
+  baseAsset: MixinAsset;
+  baseAssetId: Scalars['String'];
+  broker: MixinNetworkUser;
+  conversationId?: Maybe<Scalars['String']>;
+  createdAt: Scalars['ISO8601DateTime'];
+  filledAmount: Scalars['Float'];
+  filledFunds: Scalars['Float'];
+  funds: Scalars['Float'];
+  id: Scalars['ID'];
+  orderType: Scalars['String'];
+  price: Scalars['Float'];
+  quoteAsset: MixinAsset;
+  quoteAssetId: Scalars['String'];
+  remainingAmount: Scalars['Float'];
+  remainingFunds: Scalars['Float'];
+  side: Scalars['String'];
+  snapshots?: Maybe<Array<MixinNetworkSnapshot>>;
+  state: Scalars['String'];
+  traceId: Scalars['String'];
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+  user: User;
+};
+
+/** The connection type for OceanOrder. */
+export type OceanOrderConnection = {
+  __typename?: 'OceanOrderConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<OceanOrderEdge>>>;
+  /** A list of nodes. */
+  nodes?: Maybe<Array<Maybe<OceanOrder>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type OceanOrderEdge = {
+  __typename?: 'OceanOrderEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node?: Maybe<OceanOrder>;
+};
+
 /** Information about pagination in a connection. */
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -146,48 +202,13 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['String']>;
 };
 
-export type Payment = {
-  __typename?: 'Payment';
-  amount?: Maybe<Scalars['Float']>;
-  asset: MixinAsset;
-  assetId?: Maybe<Scalars['String']>;
-  conversationId?: Maybe<Scalars['String']>;
-  createdAt: Scalars['ISO8601DateTime'];
-  id: Scalars['ID'];
-  memo?: Maybe<Scalars['String']>;
-  opponent?: Maybe<User>;
-  opponentId?: Maybe<Scalars['String']>;
-  snapshotId?: Maybe<Scalars['String']>;
-  state: Scalars['String'];
-  traceId: Scalars['String'];
-  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
-};
-
-/** The connection type for Payment. */
-export type PaymentConnection = {
-  __typename?: 'PaymentConnection';
-  /** A list of edges. */
-  edges?: Maybe<Array<Maybe<PaymentEdge>>>;
-  /** A list of nodes. */
-  nodes?: Maybe<Array<Maybe<Payment>>>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-};
-
-/** An edge in a connection. */
-export type PaymentEdge = {
-  __typename?: 'PaymentEdge';
-  /** A cursor for use in pagination. */
-  cursor: Scalars['String'];
-  /** The item at the end of the edge. */
-  node?: Maybe<Payment>;
-};
-
 export type Query = {
   __typename?: 'Query';
   adminMixinMessageConnection: MixinMessageConnection;
   adminMixinNetworkSnapshotConnection: MixinNetworkSnapshotConnection;
-  adminPaymentConnection: PaymentConnection;
+  adminOceanOrder: OceanOrder;
+  adminOceanOrderConnection: OceanOrderConnection;
+  adminUser: User;
   adminUserConnection: UserConnection;
   currentAdmin: Administrator;
 };
@@ -209,11 +230,21 @@ export type QueryAdminMixinNetworkSnapshotConnectionArgs = {
 };
 
 
-export type QueryAdminPaymentConnectionArgs = {
+export type QueryAdminOceanOrderArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdminOceanOrderConnectionArgs = {
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAdminUserArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -239,6 +270,7 @@ export type User = {
   mixinId: Scalars['String'];
   mixinUuid: Scalars['String'];
   name: Scalars['String'];
+  oceanBroker?: Maybe<MixinNetworkUser>;
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
 };
 
@@ -321,28 +353,60 @@ export type AdminMixinNetworkSnapshotConnectionQuery = (
   ) }
 );
 
-export type AdminPaymentConnectionQueryVariables = Exact<{
+export type AdminOceanOrderConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
 }>;
 
 
-export type AdminPaymentConnectionQuery = (
+export type AdminOceanOrderConnectionQuery = (
   { __typename?: 'Query' }
-  & { adminPaymentConnection: (
-    { __typename?: 'PaymentConnection' }
+  & { adminOceanOrderConnection: (
+    { __typename?: 'OceanOrderConnection' }
     & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'Payment' }
-      & Pick<Payment, 'id' | 'traceId' | 'state' | 'conversationId' | 'amount' | 'memo'>
-      & { asset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'name' | 'iconUrl'>
-      ), opponent?: Maybe<(
+      { __typename?: 'OceanOrder' }
+      & Pick<OceanOrder, 'id' | 'traceId' | 'state' | 'conversationId' | 'side' | 'orderType' | 'price' | 'amount' | 'funds' | 'remainingAmount' | 'remainingFunds' | 'filledAmount' | 'filledFunds' | 'createdAt'>
+      & { user: (
         { __typename?: 'User' }
         & Pick<User, 'avatar' | 'name' | 'mixinUuid'>
-      )> }
+      ), broker: (
+        { __typename?: 'MixinNetworkUser' }
+        & Pick<MixinNetworkUser, 'mixinUuid'>
+      ), baseAsset: (
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+      ), quoteAsset: (
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+      ) }
     )>>>, pageInfo: (
       { __typename?: 'PageInfo' }
       & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ) }
+  ) }
+);
+
+export type AdminOceanOrderQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AdminOceanOrderQuery = (
+  { __typename?: 'Query' }
+  & { adminOceanOrder: (
+    { __typename?: 'OceanOrder' }
+    & Pick<OceanOrder, 'id' | 'traceId' | 'state' | 'conversationId' | 'side' | 'orderType' | 'price' | 'amount' | 'funds' | 'remainingAmount' | 'remainingFunds' | 'filledAmount' | 'filledFunds' | 'createdAt'>
+    & { user: (
+      { __typename?: 'User' }
+      & Pick<User, 'avatar' | 'name' | 'mixinUuid'>
+    ), broker: (
+      { __typename?: 'MixinNetworkUser' }
+      & Pick<MixinNetworkUser, 'mixinUuid'>
+    ), baseAsset: (
+      { __typename?: 'MixinAsset' }
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+    ), quoteAsset: (
+      { __typename?: 'MixinAsset' }
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
     ) }
   ) }
 );
@@ -358,11 +422,28 @@ export type AdminUserConnectionQuery = (
     { __typename?: 'UserConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'name' | 'avatar' | 'mixinId' | 'mixinUuid'>
+      & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid' | 'createdAt'>
     )>>>, pageInfo: (
       { __typename?: 'PageInfo' }
       & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
     ) }
+  ) }
+);
+
+export type AdminUserQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AdminUserQuery = (
+  { __typename?: 'Query' }
+  & { adminUser: (
+    { __typename?: 'User' }
+    & Pick<User, 'name' | 'avatar' | 'mixinId' | 'mixinUuid' | 'createdAt'>
+    & { oceanBroker?: Maybe<(
+      { __typename?: 'MixinNetworkUser' }
+      & Pick<MixinNetworkUser, 'mixinUuid'>
+    )> }
   ) }
 );
 
@@ -530,27 +611,42 @@ export function useAdminMixinNetworkSnapshotConnectionLazyQuery(baseOptions?: Ap
 export type AdminMixinNetworkSnapshotConnectionQueryHookResult = ReturnType<typeof useAdminMixinNetworkSnapshotConnectionQuery>;
 export type AdminMixinNetworkSnapshotConnectionLazyQueryHookResult = ReturnType<typeof useAdminMixinNetworkSnapshotConnectionLazyQuery>;
 export type AdminMixinNetworkSnapshotConnectionQueryResult = Apollo.QueryResult<AdminMixinNetworkSnapshotConnectionQuery, AdminMixinNetworkSnapshotConnectionQueryVariables>;
-export const AdminPaymentConnectionDocument = gql`
-    query AdminPaymentConnection($after: String) {
-  adminPaymentConnection(after: $after) {
+export const AdminOceanOrderConnectionDocument = gql`
+    query AdminOceanOrderConnection($after: String) {
+  adminOceanOrderConnection(after: $after) {
     nodes {
       id
       traceId
       state
       conversationId
+      side
+      orderType
+      price
       amount
-      memo
-      asset {
-        assetId
-        symbol
-        name
-        iconUrl
-      }
-      opponent {
+      funds
+      remainingAmount
+      remainingFunds
+      filledAmount
+      filledFunds
+      user {
         avatar
         name
         mixinUuid
       }
+      broker {
+        mixinUuid
+      }
+      baseAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      quoteAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      createdAt
     }
     pageInfo {
       hasNextPage
@@ -561,40 +657,108 @@ export const AdminPaymentConnectionDocument = gql`
     `;
 
 /**
- * __useAdminPaymentConnectionQuery__
+ * __useAdminOceanOrderConnectionQuery__
  *
- * To run a query within a React component, call `useAdminPaymentConnectionQuery` and pass it any options that fit your needs.
- * When your component renders, `useAdminPaymentConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAdminOceanOrderConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminOceanOrderConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAdminPaymentConnectionQuery({
+ * const { data, loading, error } = useAdminOceanOrderConnectionQuery({
  *   variables: {
  *      after: // value for 'after'
  *   },
  * });
  */
-export function useAdminPaymentConnectionQuery(baseOptions?: Apollo.QueryHookOptions<AdminPaymentConnectionQuery, AdminPaymentConnectionQueryVariables>) {
+export function useAdminOceanOrderConnectionQuery(baseOptions?: Apollo.QueryHookOptions<AdminOceanOrderConnectionQuery, AdminOceanOrderConnectionQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<AdminPaymentConnectionQuery, AdminPaymentConnectionQueryVariables>(AdminPaymentConnectionDocument, options);
+        return Apollo.useQuery<AdminOceanOrderConnectionQuery, AdminOceanOrderConnectionQueryVariables>(AdminOceanOrderConnectionDocument, options);
       }
-export function useAdminPaymentConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminPaymentConnectionQuery, AdminPaymentConnectionQueryVariables>) {
+export function useAdminOceanOrderConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminOceanOrderConnectionQuery, AdminOceanOrderConnectionQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<AdminPaymentConnectionQuery, AdminPaymentConnectionQueryVariables>(AdminPaymentConnectionDocument, options);
+          return Apollo.useLazyQuery<AdminOceanOrderConnectionQuery, AdminOceanOrderConnectionQueryVariables>(AdminOceanOrderConnectionDocument, options);
         }
-export type AdminPaymentConnectionQueryHookResult = ReturnType<typeof useAdminPaymentConnectionQuery>;
-export type AdminPaymentConnectionLazyQueryHookResult = ReturnType<typeof useAdminPaymentConnectionLazyQuery>;
-export type AdminPaymentConnectionQueryResult = Apollo.QueryResult<AdminPaymentConnectionQuery, AdminPaymentConnectionQueryVariables>;
+export type AdminOceanOrderConnectionQueryHookResult = ReturnType<typeof useAdminOceanOrderConnectionQuery>;
+export type AdminOceanOrderConnectionLazyQueryHookResult = ReturnType<typeof useAdminOceanOrderConnectionLazyQuery>;
+export type AdminOceanOrderConnectionQueryResult = Apollo.QueryResult<AdminOceanOrderConnectionQuery, AdminOceanOrderConnectionQueryVariables>;
+export const AdminOceanOrderDocument = gql`
+    query AdminOceanOrder($id: ID!) {
+  adminOceanOrder(id: $id) {
+    id
+    traceId
+    state
+    conversationId
+    side
+    orderType
+    price
+    amount
+    funds
+    remainingAmount
+    remainingFunds
+    filledAmount
+    filledFunds
+    user {
+      avatar
+      name
+      mixinUuid
+    }
+    broker {
+      mixinUuid
+    }
+    baseAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    quoteAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useAdminOceanOrderQuery__
+ *
+ * To run a query within a React component, call `useAdminOceanOrderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminOceanOrderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminOceanOrderQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminOceanOrderQuery(baseOptions: Apollo.QueryHookOptions<AdminOceanOrderQuery, AdminOceanOrderQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminOceanOrderQuery, AdminOceanOrderQueryVariables>(AdminOceanOrderDocument, options);
+      }
+export function useAdminOceanOrderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminOceanOrderQuery, AdminOceanOrderQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminOceanOrderQuery, AdminOceanOrderQueryVariables>(AdminOceanOrderDocument, options);
+        }
+export type AdminOceanOrderQueryHookResult = ReturnType<typeof useAdminOceanOrderQuery>;
+export type AdminOceanOrderLazyQueryHookResult = ReturnType<typeof useAdminOceanOrderLazyQuery>;
+export type AdminOceanOrderQueryResult = Apollo.QueryResult<AdminOceanOrderQuery, AdminOceanOrderQueryVariables>;
 export const AdminUserConnectionDocument = gql`
     query AdminUserConnection($after: String) {
   adminUserConnection(after: $after) {
     nodes {
+      id
       name
       avatar
       mixinId
       mixinUuid
+      createdAt
     }
     pageInfo {
       hasNextPage
@@ -631,6 +795,48 @@ export function useAdminUserConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type AdminUserConnectionQueryHookResult = ReturnType<typeof useAdminUserConnectionQuery>;
 export type AdminUserConnectionLazyQueryHookResult = ReturnType<typeof useAdminUserConnectionLazyQuery>;
 export type AdminUserConnectionQueryResult = Apollo.QueryResult<AdminUserConnectionQuery, AdminUserConnectionQueryVariables>;
+export const AdminUserDocument = gql`
+    query AdminUser($id: ID!) {
+  adminUser(id: $id) {
+    name
+    avatar
+    mixinId
+    mixinUuid
+    oceanBroker {
+      mixinUuid
+    }
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useAdminUserQuery__
+ *
+ * To run a query within a React component, call `useAdminUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminUserQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminUserQuery(baseOptions: Apollo.QueryHookOptions<AdminUserQuery, AdminUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminUserQuery, AdminUserQueryVariables>(AdminUserDocument, options);
+      }
+export function useAdminUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminUserQuery, AdminUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminUserQuery, AdminUserQueryVariables>(AdminUserDocument, options);
+        }
+export type AdminUserQueryHookResult = ReturnType<typeof useAdminUserQuery>;
+export type AdminUserLazyQueryHookResult = ReturnType<typeof useAdminUserLazyQuery>;
+export type AdminUserQueryResult = Apollo.QueryResult<AdminUserQuery, AdminUserQueryVariables>;
 export const CurrentAdminDocument = gql`
     query CurrentAdmin {
   currentAdmin {

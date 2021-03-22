@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 module Types
-  class OceanOrderType < Types::BaseObject
+  class OceanOrderType < Types::BaseModelObject
     field :id, ID, null: false
     field :trace_id, String, null: false
+    field :conversation_id, String, null: true
     field :base_asset_id, String, null: false
     field :quote_asset_id, String, null: false
     field :side, String, null: false
@@ -19,8 +20,8 @@ module Types
 
     field :user, Types::UserType, null: false
     field :broker, Types::MixinNetworkUserType, null: false
-    field :base_asset, Types::CurrencyType, null: false
-    field :quote_asset, Types::CurrencyType, null: false
+    field :base_asset, Types::MixinAssetType, null: false
+    field :quote_asset, Types::MixinAssetType, null: false
     field :snapshots, [Types::MixinNetworkSnapshotType], null: true
 
     def user

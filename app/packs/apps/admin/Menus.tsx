@@ -1,4 +1,11 @@
-import { DashboardOutlined, LogoutOutlined } from '@ant-design/icons';
+import {
+  DashboardOutlined,
+  UserOutlined,
+  MessageOutlined,
+  SyncOutlined,
+  PayCircleOutlined,
+  LogoutOutlined,
+} from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -11,6 +18,30 @@ export default function Menus() {
         <Link to='/'>
           <DashboardOutlined />
           <span>Dashboard</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to='/users'>
+          <UserOutlined />
+          <span>Users</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to='/ocean_orders'>
+          <SyncOutlined />
+          <span>Ocean Orders</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to='/mixin_network_snapshots'>
+          <PayCircleOutlined />
+          <span>Snapshots</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to='/mixin_messages'>
+          <MessageOutlined />
+          <span>Messages</span>
         </Link>
       </Menu.Item>
       <Menu.Item>

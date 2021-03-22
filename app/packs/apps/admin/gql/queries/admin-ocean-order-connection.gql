@@ -1,0 +1,42 @@
+query AdminOceanOrderConnection($after: String) {
+  adminOceanOrderConnection(after: $after) {
+    nodes {
+      id
+      traceId
+      state
+      conversationId
+      side
+      orderType
+      price
+      amount
+      funds
+      remainingAmount
+      remainingFunds
+      filledAmount
+      filledFunds
+      user {
+        avatar
+        name
+        mixinUuid
+      }
+      broker {
+        mixinUuid
+      }
+      baseAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      quoteAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

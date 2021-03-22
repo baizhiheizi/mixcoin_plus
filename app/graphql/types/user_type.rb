@@ -7,5 +7,7 @@ module Types
     field :avatar, String, null: false
     field :mixin_id, String, null: false
     field :mixin_uuid, String, null: false
+
+    field :ocean_broker, MixinNetworkUserType, null: true
   end
 end

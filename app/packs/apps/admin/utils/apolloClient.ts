@@ -28,7 +28,9 @@ export const apolloClient = (uri: string) => {
   const cache = new InMemoryCache({
     typePolicies: {
       Query: {
-        fields: {},
+        fields: {
+          admin_users_connection: customizedConnectionMergeFunction(),
+        },
       },
     },
   });

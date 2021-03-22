@@ -1,0 +1,12 @@
+query AdminUser($id: ID!) {
+  adminUser(id: $id) {
+    name
+    avatar
+    mixinId
+    mixinUuid
+    oceanBroker {
+      mixinUuid
+    }
+    createdAt
+  }
+}
