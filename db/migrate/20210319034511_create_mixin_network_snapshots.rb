@@ -1,6 +1,9 @@
 class CreateMixinNetworkSnapshots < ActiveRecord::Migration[6.1]
   def change
     create_table :mixin_network_snapshots do |t|
+      t.belongs_to :source, polymorphic: true
+      t.string :type
+      t.string :snapshot_type
       t.uuid :user_id
       t.uuid :trace_id
       t.uuid :opponent_id

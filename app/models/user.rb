@@ -25,6 +25,8 @@ class User < ApplicationRecord
 
   has_one :mixin_authorization, -> { where(provider: :mixin) }, class_name: 'UserAuthorization', inverse_of: :user
   has_many :notifications, as: :recipient, dependent: :destroy
+  has_many :wallets, class_name: 'MixinNetworkUser', as: :owner, dependent: :restrict_with_exception
+  has_one :ocean_broker, class_name: 'OceanBroker', as: :owner, dependent: :restrict_with_exception
 
   before_validation :set_profile, on: :create
 

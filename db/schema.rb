@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_19_152305) do
+ActiveRecord::Schema.define(version: 2021_03_20_054003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -43,6 +43,10 @@ ActiveRecord::Schema.define(version: 2021_03_19_152305) do
   end
 
   create_table "mixin_network_snapshots", force: :cascade do |t|
+    t.string "source_type"
+    t.bigint "source_id"
+    t.string "type"
+    t.string "snapshot_type"
     t.uuid "user_id"
     t.uuid "trace_id"
     t.uuid "opponent_id"
@@ -55,6 +59,7 @@ ActiveRecord::Schema.define(version: 2021_03_19_152305) do
     t.datetime "processed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["source_type", "source_id"], name: "index_mixin_network_snapshots_on_source"
     t.index ["trace_id"], name: "index_mixin_network_snapshots_on_trace_id", unique: true
     t.index ["user_id"], name: "index_mixin_network_snapshots_on_user_id"
   end
@@ -107,20 +112,25 @@ ActiveRecord::Schema.define(version: 2021_03_19_152305) do
     t.index ["recipient_type", "recipient_id"], name: "index_notifications_on_recipient"
   end
 
-  create_table "payments", force: :cascade do |t|
-    t.uuid "opponent_id"
-    t.uuid "trace_id"
-    t.uuid "snapshot_id"
-    t.uuid "asset_id"
-    t.uuid "conversation_id"
-    t.decimal "amount"
-    t.string "memo"
+  create_table "ocean_orders", force: :cascade do |t|
+    t.decimal "filled_amount"
+    t.decimal "filled_funds"
+    t.string "order_type"
+    t.decimal "price"
+    t.decimal "remaining_amount"
+    t.decimal "remaining_funds"
+    t.string "side"
     t.string "state"
-    t.json "raw"
+    t.uuid "base_asset_id"
+    t.uuid "quote_asset_id"
+    t.uuid "user_id"
+    t.uuid "broker_id"
+    t.uuid "conversation_id"
+    t.uuid "trace_id"
+    t.float "maker_fee", default: 0.0
+    t.float "taker_fee", default: 0.0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["asset_id"], name: "index_payments_on_asset_id"
-    t.index ["trace_id"], name: "index_payments_on_trace_id", unique: true
   end
 
   create_table "user_authorizations", force: :cascade do |t|

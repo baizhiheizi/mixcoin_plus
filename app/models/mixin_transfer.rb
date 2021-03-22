@@ -29,15 +29,12 @@
 class MixinTransfer < ApplicationRecord
   MINIMUM_AMOUNT = 0.000_000_01
 
+  extend Enumerize
+
   belongs_to :source, polymorphic: true
   belongs_to :wallet, class_name: 'MixinNetworkUser', primary_key: :uuid, inverse_of: :transfers, optional: true
   belongs_to :recipient, class_name: 'User', primary_key: :mixin_uuid, foreign_key: :opponent_id, inverse_of: :transfers, optional: true
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: :transfers, optional: true
-
-  enum priority: { default: 0, critical: 1, high: 2, low: 3 }, _prefix: true
-  enum transfer_type: {
-    default: 0
-  }
 
   validates :trace_id, presence: true, uniqueness: true
   validates :asset_id, presence: true
@@ -45,6 +42,9 @@ class MixinTransfer < ApplicationRecord
   validates :amount, numericality: { greater_than_or_equal_to: MINIMUM_AMOUNT }
 
   after_commit :process_async, on: :create
+
+  enumerize :priority, in: %i[default critical high low], default: :default
+  enumerize :transfer_type, in: %i[default], default: :default
 
   scope :unprocessed, -> { where(processed_at: nil) }
   scope :processed, -> { where.not(processed_at: nil) }
@@ -63,7 +63,7 @@ class MixinTransfer < ApplicationRecord
     r =
       if wallet.blank?
         MixcoinPlusBot.api.create_transfer(
-          Rails.application.credentials.dig(:prsdigg_bot, :pin_code),
+          Rails.application.credentials.dig(:mixin, :pin_code),
           {
             asset_id: asset_id,
             opponent_id: opponent_id,

@@ -23,7 +23,7 @@ class UserAuthorization < ApplicationRecord
 
   belongs_to :user, optional: true
 
-  enumerize :provider, in: %w[mixin]
+  enumerize :provider, in: %i[mixin]
 
   validates :provider, presence: true
   validates :raw, presence: true

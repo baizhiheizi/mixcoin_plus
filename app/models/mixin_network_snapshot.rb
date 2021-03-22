@@ -9,17 +9,22 @@
 #  data           :string
 #  processed_at   :datetime
 #  raw            :json
+#  snapshot_type  :string
+#  source_type    :string
 #  transferred_at :datetime
+#  type           :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  asset_id       :uuid
 #  opponent_id    :uuid
 #  snapshot_id    :uuid
+#  source_id      :bigint
 #  trace_id       :uuid
 #  user_id        :uuid
 #
 # Indexes
 #
+#  index_mixin_network_snapshots_on_source    (source_type,source_id)
 #  index_mixin_network_snapshots_on_trace_id  (trace_id) UNIQUE
 #  index_mixin_network_snapshots_on_user_id   (user_id)
 #
@@ -27,6 +32,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   POLLING_INTERVAL = 0.1
   POLLING_LIMIT = 500
 
+  belongs_to :source, polymorphic: true, optional: true
   belongs_to :wallet, class_name: 'MixinNetworkUser', foreign_key: :user_id, primary_key: :uuid, inverse_of: :snapshots, optional: true
   belongs_to :opponent, class_name: 'User', primary_key: :mixin_uuid, inverse_of: :snapshots, optional: true
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: :orders, optional: true
@@ -74,16 +80,6 @@ class MixinNetworkSnapshot < ApplicationRecord
     @owner = wallet&.owner
   end
 
-  # TODO: decrypted msgpack
-  def decrypted_memo
-    @decrypted_memo =
-      begin
-        JSON.parse Base64.decode64(data.to_s)
-      rescue JSON::ParserError
-        {}
-      end
-  end
-
   def processed?
     processed_at?
   end
@@ -122,5 +118,7 @@ class MixinNetworkSnapshot < ApplicationRecord
       snapshot_id: raw['snapshot_id'],
       trace_id: raw['trace_id']
     )
+
+    self.type = 'OceanSnapshot' if raw['opponent_id'] == OceanBroker::OCEAN_ENGINE_USER_ID || raw['data'].match?(/^OCEAN/)
   end
 end
