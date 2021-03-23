@@ -1,7 +1,8 @@
 class CreateMixinNetworkSnapshots < ActiveRecord::Migration[6.1]
   def change
     create_table :mixin_network_snapshots, id: :uuid do |t|
-      t.belongs_to :source, polymorphic: true
+      t.uuid :source_id
+      t.string :source_type
       t.string :type
       t.string :snapshot_type
       t.uuid :user_id
@@ -18,6 +19,7 @@ class CreateMixinNetworkSnapshots < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
+    add_index :mixin_network_snapshots, [:source_id, :source_type]
     add_index :mixin_network_snapshots, :user_id
     add_index :mixin_network_snapshots, :trace_id, unique: true
   end

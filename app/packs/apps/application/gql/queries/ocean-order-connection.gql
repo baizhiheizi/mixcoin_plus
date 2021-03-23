@@ -1,0 +1,41 @@
+query OceanOrderConnection(
+  $oceanMarketId: ID!
+  $after: String
+  $filter: String
+) {
+  oceanOrderConnection(
+    oceanMarketId: $oceanMarketId
+    after: $after
+    filter: $filter
+  ) {
+    nodes {
+      id
+      traceId
+      orderType
+      side
+      amount
+      funds
+      filledAmount
+      filledFunds
+      remainingAmount
+      remainingFunds
+      price
+      state
+      oceanMarketId
+      baseAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      quoteAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

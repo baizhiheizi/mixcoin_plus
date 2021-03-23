@@ -1,0 +1,16 @@
+query OceanMarket($id: ID) {
+  oceanMarket(id: $id) {
+    id
+    baseAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    quoteAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    marketId
+  }
+}

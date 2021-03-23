@@ -16,23 +16,23 @@
 #  updated_at    :datetime         not null
 #  asset_id      :uuid
 #  opponent_id   :uuid
-#  source_id     :bigint
+#  source_id     :uuid
 #  trace_id      :uuid
 #  user_id       :uuid
 #
 # Indexes
 #
-#  index_mixin_transfers_on_source    (source_type,source_id)
-#  index_mixin_transfers_on_trace_id  (trace_id) UNIQUE
-#  index_mixin_transfers_on_user_id   (user_id)
+#  index_mixin_transfers_on_source_id_and_source_type  (source_id,source_type)
+#  index_mixin_transfers_on_trace_id                   (trace_id) UNIQUE
+#  index_mixin_transfers_on_user_id                    (user_id)
 #
 class MixinTransfer < ApplicationRecord
   MINIMUM_AMOUNT = 0.000_000_01
 
   extend Enumerize
 
-  belongs_to :source, polymorphic: true
-  belongs_to :wallet, class_name: 'MixinNetworkUser', primary_key: :mixin_uuid, inverse_of: :transfers, optional: true
+  belongs_to :source, polymorphic: true, optional: true
+  belongs_to :wallet, class_name: 'MixinNetworkUser', primary_key: :mixin_uuid, foreign_key: :user_id, inverse_of: :transfers, optional: true
   belongs_to :recipient, class_name: 'User', primary_key: :mixin_uuid, foreign_key: :opponent_id, inverse_of: :transfers, optional: true
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: :transfers, optional: true
 
@@ -43,8 +43,11 @@ class MixinTransfer < ApplicationRecord
 
   after_commit :process_async, on: :create
 
-  enumerize :priority, in: %i[default critical high low], default: :default
-  enumerize :transfer_type, in: %i[default], default: :default
+  enumerize :priority, in: %i[default critical high low], default: :default, predicates: true
+  enumerize :transfer_type,
+            in: %i[default ocean_broker_balance ocean_broker_register ocean_order_create ocean_order_cancel ocean_order_match ocean_order_refund],
+            default: :default,
+            predicates: true
 
   scope :unprocessed, -> { where(processed_at: nil) }
   scope :processed, -> { where.not(processed_at: nil) }
@@ -87,7 +90,14 @@ class MixinTransfer < ApplicationRecord
 
     return unless r['data']['trace_id'] == trace_id
 
-    # TODO: callback after transferred
+    # case transfer_type.to_sym
+    # when :ocean_broker_balance
+    #   source.balance! if source.may_balance?
+    # when :ocean_broker_register
+    #   source.ready! if source.may_ready?
+    # end
+
+    update processed_at: Time.current, snapshot: r['data']
   end
 
   def price_tag
@@ -95,10 +105,10 @@ class MixinTransfer < ApplicationRecord
   end
 
   def process_async
-    if priority_critical?
-      ProcessCriticalTransferWorker.perform_async trace_id
+    if critical?
+      MixinTransferCriticalProcessWorker.perform_async id
     else
-      ProcessTransferWorker.perform_async trace_id
+      MixinTransferProcessWorker.perform_async id
     end
   end
 end

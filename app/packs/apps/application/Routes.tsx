@@ -12,6 +12,9 @@ import LoaderComponent from './components/LoaderComponent/LoaderComponent';
 import { useCurrentUser } from './contexts';
 import { useSwitchLocaleMutation } from 'graphqlTypes';
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
+const ExchangePage = React.lazy(
+  () => import('./pages/ExchangePage/ExchangePage'),
+);
 
 export default function Routes() {
   const { currentUser } = useCurrentUser();
@@ -37,6 +40,9 @@ export default function Routes() {
         <Switch>
           <Route path='/' exact>
             <HomePage />
+          </Route>
+          <Route path='/exchange' exact>
+            <ExchangePage />
           </Route>
         </Switch>
       </Suspense>

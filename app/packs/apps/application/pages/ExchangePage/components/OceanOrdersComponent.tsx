@@ -1,0 +1,100 @@
+import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
+import PullComponent from 'apps/application/components/PullComponent/PullComponent';
+import {
+  useCancelOceanOrderMutation,
+  useOceanOrderConnectionQuery,
+} from 'graphqlTypes';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Loading, Modal, Tabs } from 'zarm';
+
+export default function OceanOrdersComponent(props: { marketId?: string }) {
+  const { t } = useTranslation();
+  const { marketId } = props;
+  const orderFilters = ['booking', 'history'];
+  const [tabIndex, setTabIndex] = useState(0);
+  const { loading, data, refetch, fetchMore } = useOceanOrderConnectionQuery({
+    variables: { oceanMarketId: marketId, filter: orderFilters[tabIndex] },
+  });
+  const [cancelOceanOrder] = useCancelOceanOrderMutation({
+    update() {
+      Loading.hide();
+    },
+  });
+
+  if (loading) {
+    return <LoaderComponent />;
+  }
+
+  const {
+    oceanOrderConnection: {
+      nodes: orders,
+      pageInfo: { hasNextPage, endCursor },
+    },
+  } = data;
+
+  const OrderList = () => (
+    <PullComponent
+      hasNextPage={hasNextPage}
+      refetch={refetch}
+      fetchMore={() => fetchMore({ variables: { after: endCursor } })}
+    >
+      {orders.map((order: any) => (
+        <div
+          key={order.traceId}
+          className='flex items-center px-4 py-2 space-x-2'
+        >
+          <div
+            className={`flex-1 ${
+              order.side === 'ask' ? 'text-red-500' : 'text-green-500'
+            }`}
+          >
+            {order.side === 'ask' ? t('sell') : t('buy')}
+          </div>
+          <div className='flex-1'>
+            {order.orderType === 'limit' ? order.price : t('market_order')}
+          </div>
+          <div className='flex-1 text-center'>
+            {order.side === 'ask'
+              ? `${order.filledAmount}/${order.amount}`
+              : `${order.filledFunds}/${order.funds}`}
+          </div>
+          <div className='flex-1 text-right'>
+            {order.state === 'booking' ? (
+              <a
+                className='block text-red-500'
+                onClick={() =>
+                  Modal.confirm({
+                    content: t('confirm_cancel_ocean_order'),
+                    onOk: () => {
+                      cancelOceanOrder({
+                        variables: { input: { id: order.id } },
+                      });
+                      Loading.show({});
+                    },
+                  })
+                }
+              >
+                {t('cancel')}
+              </a>
+            ) : (
+              t(`ocean_order.state/${order.state}`)
+            )}
+          </div>
+        </div>
+      ))}
+    </PullComponent>
+  );
+  return (
+    <>
+      <Tabs value={tabIndex} onChange={(index) => setTabIndex(index)}>
+        <Tabs.Panel title={t('open_orders')}>
+          <OrderList />
+        </Tabs.Panel>
+        <Tabs.Panel title={t('order_history')}>
+          <OrderList />
+        </Tabs.Panel>
+      </Tabs>
+    </>
+  );
+}

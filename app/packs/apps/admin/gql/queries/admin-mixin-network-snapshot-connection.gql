@@ -2,6 +2,8 @@ query AdminMixinNetworkSnapshotConnection($after: String) {
   adminMixinNetworkSnapshotConnection(after: $after) {
     nodes {
       id
+      type
+      snapshotType
       traceId
       snapshotId
       amount

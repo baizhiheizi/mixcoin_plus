@@ -1,7 +1,8 @@
 class CreateMixinTransfers < ActiveRecord::Migration[6.1]
   def change
     create_table :mixin_transfers, id: :uuid do |t|
-      t.belongs_to :source, polymorphic: true
+      t.uuid :source_id
+      t.string :source_type
       t.string :transfer_type
       t.decimal :amount
       t.uuid :trace_id
@@ -16,6 +17,7 @@ class CreateMixinTransfers < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
+    add_index :mixin_transfers, [:source_id, :source_type]
     add_index :mixin_transfers, :user_id
     add_index :mixin_transfers, :trace_id, unique: true
   end

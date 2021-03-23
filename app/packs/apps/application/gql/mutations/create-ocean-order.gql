@@ -1,0 +1,7 @@
+mutation CreateOceanOrder($input: CreateOceanOrderMutationInput!) {
+  createOceanOrder(input: $input) {
+    id
+    payUrl
+    state
+  }
+}

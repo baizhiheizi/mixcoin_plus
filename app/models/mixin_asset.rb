@@ -5,7 +5,11 @@
 # Table name: mixin_assets
 #
 #  id         :uuid             not null, primary key
-#  raw        :jsonb
+#  change_btc :float
+#  change_usd :float
+#  price_btc  :float
+#  price_usd  :float
+#  raw        :jsonb            not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  asset_id   :uuid
@@ -15,7 +19,9 @@
 #  index_mixin_assets_on_asset_id  (asset_id) UNIQUE
 #
 class MixinAsset < ApplicationRecord
-  store :raw, accessors: %i[name symbol chain_id icon_url price_btc price_usd]
+  store :raw, accessors: %i[name symbol chain_id icon_url]
+
+  after_commit :generate_ocean_markets_async, on: :create
 
   def self.find_or_create_by_asset_id(_asset_id)
     currency = find_by(asset_id: _asset_id)
@@ -28,5 +34,17 @@ class MixinAsset < ApplicationRecord
   def sync!
     r = MixcoinPlusBot.api.asset asset_id
     update! raw: r['data']
+  end
+
+  def generate_ocean_markets_async
+    MixinAssetGenerateOceanMarketsWorker.perform_async id
+  end
+
+  def generate_ocean_markets!
+    OceanMarket::AVAILABLE_QUOTES.each do |quote|
+      next if quote == asset_id
+
+      OceanMarket.find_or_create_by!(base_asset_id: asset_id, quote_asset_id: quote)
+    end
   end
 end

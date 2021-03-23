@@ -7,7 +7,7 @@ module Resolvers
     type Types::MixinNetworkSnapshotType.connection_type, null: false
 
     def resolve(*)
-      MixinNetworkSnapshot.all
+      MixinNetworkSnapshot.all.order(created_at: :desc)
     end
   end
 end

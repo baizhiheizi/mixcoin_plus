@@ -3,6 +3,7 @@
 module Types
   class OceanOrderType < Types::BaseModelObject
     field :id, ID, null: false
+    field :ocean_market_id, String, null: false
     field :trace_id, String, null: false
     field :conversation_id, String, null: true
     field :base_asset_id, String, null: false
@@ -17,6 +18,7 @@ module Types
     field :remaining_funds, Float, null: false
     field :filled_amount, Float, null: false
     field :filled_funds, Float, null: false
+    field :pay_url, String, null: false
 
     field :user, Types::UserType, null: false
     field :broker, Types::MixinNetworkUserType, null: false

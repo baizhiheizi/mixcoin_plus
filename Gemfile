@@ -47,6 +47,8 @@ gem 'sidekiq-cron'
 gem 'noticed'
 # Enumerated attributes with I18n and ActiveRecord/Mongoid support
 gem 'enumerize'
+# A ruby implementation of the RFC 7519 OAuth JSON Web Token (JWT) standard.
+gem 'jwt'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

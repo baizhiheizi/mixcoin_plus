@@ -1,0 +1,22 @@
+query OceanMarketConnection($type: String!, $after: String) {
+  oceanMarketConnection(type: $type, after: $after) {
+    nodes {
+      id
+      baseAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      quoteAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      marketId
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

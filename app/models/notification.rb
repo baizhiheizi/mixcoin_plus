@@ -11,12 +11,12 @@
 #  type           :string           not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  recipient_id   :bigint           not null
+#  recipient_id   :uuid             not null
 #
 # Indexes
 #
-#  index_notifications_on_read_at    (read_at)
-#  index_notifications_on_recipient  (recipient_type,recipient_id)
+#  index_notifications_on_read_at                          (read_at)
+#  index_notifications_on_recipient_id_and_recipient_type  (recipient_id,recipient_type)
 #
 class Notification < ApplicationRecord
   include Noticed::Model

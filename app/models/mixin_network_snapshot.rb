@@ -18,15 +18,15 @@
 #  asset_id       :uuid
 #  opponent_id    :uuid
 #  snapshot_id    :uuid
-#  source_id      :bigint
+#  source_id      :uuid
 #  trace_id       :uuid
 #  user_id        :uuid
 #
 # Indexes
 #
-#  index_mixin_network_snapshots_on_source    (source_type,source_id)
-#  index_mixin_network_snapshots_on_trace_id  (trace_id) UNIQUE
-#  index_mixin_network_snapshots_on_user_id   (user_id)
+#  index_mixin_network_snapshots_on_source_id_and_source_type  (source_id,source_type)
+#  index_mixin_network_snapshots_on_trace_id                   (trace_id) UNIQUE
+#  index_mixin_network_snapshots_on_user_id                    (user_id)
 #
 class MixinNetworkSnapshot < ApplicationRecord
   POLLING_INTERVAL = 0.1
@@ -35,7 +35,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   belongs_to :source, polymorphic: true, optional: true
   belongs_to :wallet, class_name: 'MixinNetworkUser', foreign_key: :user_id, primary_key: :mixin_uuid, inverse_of: :snapshots, optional: true
   belongs_to :opponent, class_name: 'User', primary_key: :mixin_uuid, inverse_of: :snapshots, optional: true
-  belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: :orders, optional: true
+  belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false, optional: true
 
   before_validation :setup_attributes, on: :create
 

@@ -13,5 +13,9 @@ module Types
     field :admin_mixin_network_snapshot_connection, resolver: Resolvers::AdminMixinNetworkSnapshotConnectionResolver
     field :admin_ocean_order, resolver: Resolvers::AdminOceanOrderResolver
     field :admin_ocean_order_connection, resolver: Resolvers::AdminOceanOrderConnectionResolver
+
+    field :ocean_market, resolver: Resolvers::OceanMarketResolver
+    field :ocean_market_connection, resolver: Resolvers::OceanMarketConnectionResolver
+    field :ocean_order_connection, resolver: Resolvers::OceanOrderConnectionResolver
   end
 end

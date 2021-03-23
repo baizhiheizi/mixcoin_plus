@@ -20,21 +20,27 @@
 #  base_asset_id    :uuid
 #  broker_id        :uuid
 #  conversation_id  :uuid
+#  ocean_market_id  :uuid             not null
 #  quote_asset_id   :uuid
 #  trace_id         :uuid
 #  user_id          :uuid
+#
+# Indexes
+#
+#  index_ocean_orders_on_ocean_market_id  (ocean_market_id)
 #
 class OceanOrder < ApplicationRecord
   extend Enumerize
   include AASM
 
-  belongs_to :user, primary_key: :mixin_uuid, inverse_of: :ocean_orders
-  belongs_to :broker, class_name: 'MixinNetworkBroker', primary_key: :mixin_uuid, inverse_of: :ocean_orders
-  belongs_to :base_asset, class_name: 'Currency', primary_key: :asset_id, inverse_of: false
-  belongs_to :quote_asset, class_name: 'Currency', primary_key: :asset_id, inverse_of: false
-  has_many :snapshots, class_name: 'MixinNetworkSnapshot', foreign_key: :order_id, dependent: :nullify, inverse_of: :ocean_order
+  belongs_to :ocean_market
+  belongs_to :user, inverse_of: :ocean_orders
+  belongs_to :broker, class_name: 'OceanBroker', primary_key: :mixin_uuid, inverse_of: :ocean_orders
+  belongs_to :base_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
+  belongs_to :quote_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
+  has_many :snapshots, class_name: 'OceanSnapshot', as: :source, dependent: :restrict_with_exception
 
-  enumerize :side, in: %w[ask bid], scope: true, predicates: true, i18n_scope: ['activerecord.attributes.ocean_order.sides']
+  enumerize :side, in: %w[ask bid], scope: true, predicates: true
   enumerize :order_type, in: %w[limit market], scope: true, predicates: true
 
   before_validation :set_defaults, on: :create
@@ -47,7 +53,6 @@ class OceanOrder < ApplicationRecord
   validates :base_asset_id, presence: true
   validates :quote_asset_id, presence: true
   validates :trace_id, presence: true
-  validates :payment_trace_id, presence: true
 
   aasm column: :state do
     state :drafted, initial: true
@@ -58,7 +63,7 @@ class OceanOrder < ApplicationRecord
     state :refunded
 
     # user pay for the order
-    event :pay do
+    event :pay, after: :transfer_to_ocean_for_creating do
       transitions from: :drafted, to: :paid
     end
 
@@ -73,8 +78,8 @@ class OceanOrder < ApplicationRecord
       transitions from: :booking, to: :completed
     end
 
-    # user cancel order; broker transfer cancelling memo to ocean engine
-    event :cancel do
+    # user cancel order; broker transfer canceling memo to ocean engine
+    event :cancel, after: :transfer_to_ocean_for_canceling do
       transitions from: :paid, to: :canceling
       transitions from: :booking, to: :canceling
     end
@@ -120,64 +125,69 @@ class OceanOrder < ApplicationRecord
   # transfer to engine for creating order,
   # trace_id unique.
   def transfer_to_ocean_for_creating
-    r = broker.create_transfer_to_ocean(
-      memo_for_creating,
-      trace_id: trace_id_for_creating,
+    MixinTransfer.create_with(
+      source: self,
+      user_id: broker.mixin_uuid,
+      transfer_type: :ocean_order_create,
+      opponent_id: OceanBroker::OCEAN_ENGINE_USER_ID,
       asset_id: side.ask? ? base_asset_id : quote_asset_id,
-      amount: side.ask? ? remaining_amount : remaining_funds
+      amount: side.ask? ? remaining_amount : remaining_funds,
+      memo: memo_for_creating
+    ).find_or_create_by!(
+      trace_id: trace_id_for_creating
     )
-    raise r['error'].inspect if r['error'].present?
-
-    book! if r['data']['trace_id'] == trace_id_for_creating
-
-    notify_for_created
   end
 
   # transfer to engine to cancel order,
   # trace_id unique
   def transfer_to_ocean_for_canceling
-    r = broker.create_transfer_to_ocean(
-      memo_for_canceling,
-      trace_id: trace_id_for_cancelling
+    MixinTransfer.create_with(
+      source: self,
+      user_id: broker.mixin_uuid,
+      transfer_type: :ocean_order_cancel,
+      opponent_id: OceanBroker::OCEAN_ENGINE_USER_ID,
+      asset_id: OceanBroker::EXCHANGE_ASSET_ID,
+      amount: OceanBroker::EXCHANGE_ASSET_AMOUNT,
+      memo: memo_for_canceling
+    ).find_or_create_by!(
+      trace_id: trace_id_for_canceling
     )
-    raise r['error'].inspect if r['error'].present?
-
-    cancel! if r['data']['trace_id'] == trace_id_for_cancelling
-    notify_for_cancelled
   end
 
   # transfer to user when receive refund from engine
   # trace_id unique along with snapshot trace_id
-  def transfer_to_user_for_refunding(memo, refund_asset_id, refund_amount, _trace_id)
+  def transfer_to_user_for_refunding(refund_asset_id, refund_amount, _trace_id)
     raise 'Wrong asset id!' unless refund_asset_id == (side.ask? ? base_asset_id : quote_asset_id)
 
-    r = broker.create_transfer_to_user(
-      memo,
+    MixinTransfer.create_with(
+      source: self,
+      wallet: broker,
+      transfer_type: :ocean_order_refund,
+      opponent_id: user.mixin_uuid,
       asset_id: refund_asset_id,
       amount: refund_amount,
+      memo: "CREATE|REFUND|#{trace_id}"
+    ).find_or_create_by!(
       trace_id: _trace_id
     )
-    raise r['error'].inspect if r['error'].present?
-
-    refund! if r['data']['trace_id'].present?
-    notify_for_refunded refund_asset_id, refund_amount, _trace_id
   end
 
   # transfer to user when receive matched asset from engine
   # trace_id unique along with snapshot trace_id
-  def transfer_to_user_for_matching(memo, match_asset_id, match_amount, _trace_id)
+  def transfer_to_user_for_matching(match_asset_id, match_amount, _trace_id)
     raise 'Wrong asset id!' unless match_asset_id == (side.ask? ? quote_asset_id : base_asset_id)
 
-    r = broker.create_transfer_to_user(
-      memo,
+    MixinTransfer.create_with(
+      source: self,
+      wallet: broker,
+      transfer_type: :ocean_order_match,
+      opponent_id: user.mixin_uuid,
       asset_id: match_asset_id,
       amount: match_amount,
+      memo: "CREATE|MATCH|#{trace_id}"
+    ).find_or_create_by!(
       trace_id: _trace_id
     )
-    raise r['error'].inspect if r['error'].present?
-
-    match! if r['data']['trace_id'].present?
-    notify_for_matched match_asset_id, match_amount, _trace_id
   end
 
   def market_id
@@ -225,17 +235,26 @@ class OceanOrder < ApplicationRecord
   end
 
   def notify_for_order_state
-    OceanOrderStateChangedNotification.with(order: self).deliver(user)
+    # OceanOrderStateChangedNotification.with(order: self).deliver(user)
   end
 
+  def payment_amount
+    format('%.8f', side.ask? ? amount : funds)
+  end
+
+  def payment_asset_id
+    side.ask? ? base_asset_id : quote_asset_id
+  end
+
+  # OCEAN|Action|Side|Type|AssetId|Price
   def pay_url
     format(
-      'mixin://pay?recipient=%<recipient>s&asset=%<asset>&amount=%<amount>s&%memo=%<memo>s%trace=%<trace>s',
+      'mixin://pay?recipient=%<recipient>s&asset=%<asset>s&amount=%<amount>s&memo=%<memo>s&trace=%<trace>s',
       recipient: broker_id,
-      asset: side.ask? ? quote_asset_id : base_asset_id,
-      amount: format('%.8f', side.ask? ? amount : funds),
-      memo: 'OCEAN|CREATE',
-      trace: trace_id
+      asset: payment_asset_id,
+      amount: payment_amount,
+      memo: "OCEAN|CREATE|#{side.upcase}|#{order_type.upcase}|#{side.ask? ? quote_asset_id : base_asset_id}|#{price.to_f.round(8)}",
+      trace: id
     )
   end
 
@@ -245,7 +264,12 @@ class OceanOrder < ApplicationRecord
     return unless new_record?
 
     assign_attributes(
-      trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, broker_id)
+      broker_id: user.ocean_broker.mixin_uuid,
+      trace_id: SecureRandom.uuid,
+      base_asset_id: ocean_market.base_asset_id,
+      quote_asset_id: ocean_market.quote_asset_id,
+      filled_amount: 0.0,
+      filled_funds: 0.0
     )
   end
 
@@ -280,7 +304,7 @@ class OceanOrder < ApplicationRecord
 
   # trace id used for canceling order transfer to engine
   # unique along with each broker
-  def trace_id_for_cancelling
+  def trace_id_for_canceling
     broker.mixin_api.unique_conversation_id trace_id, broker_id
   end
 end

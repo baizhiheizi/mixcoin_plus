@@ -20,9 +20,14 @@
 #  base_asset_id    :uuid
 #  broker_id        :uuid
 #  conversation_id  :uuid
+#  ocean_market_id  :uuid             not null
 #  quote_asset_id   :uuid
 #  trace_id         :uuid
 #  user_id          :uuid
+#
+# Indexes
+#
+#  index_ocean_orders_on_ocean_market_id  (ocean_market_id)
 #
 require 'test_helper'
 

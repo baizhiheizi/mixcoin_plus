@@ -1,0 +1,122 @@
+import React, { useEffect, useState } from 'react';
+import { Box as BoxIcon, Smile as SmileIcon } from 'react-feather';
+import { ActivityIndicator, Icon, Pull } from 'zarm';
+
+const REFRESH_STATE = {
+  normal: 0, // 普通
+  pull: 1, // 下拉刷新（未满足刷新条件）
+  drop: 2, // 释放立即刷新（满足刷新条件）
+  loading: 3, // 加载中
+  success: 4, // 加载成功
+  failure: 5, // 加载失败
+};
+
+const LOAD_STATE = {
+  normal: 0, // 普通
+  abort: 1, // 中止
+  loading: 2, // 加载中
+  success: 3, // 加载成功
+  failure: 4, // 加载失败
+  complete: 5, // 加载完成（无新数据）
+};
+
+export default function PullComponent(props: {
+  refetch: () => any;
+  fetchMore: () => any;
+  hasNextPage: boolean;
+  children?: React.ReactChildren | React.ReactChild | any;
+}) {
+  const { children, refetch, fetchMore, hasNextPage } = props;
+  const [refreshing, setRefeshing] = useState(REFRESH_STATE.normal);
+  const [loading, setLoading] = useState(LOAD_STATE.normal);
+
+  useEffect(() => {
+    document.body.style.overflow = 'auto';
+  }, []);
+
+  return (
+    <Pull
+      refresh={{
+        handler: () => {
+          setRefeshing(REFRESH_STATE.loading);
+          refetch().then(() => {
+            setRefeshing(REFRESH_STATE.success);
+          });
+        },
+        state: refreshing,
+        render: (refreshState, percent) => {
+          switch (refreshState) {
+            case REFRESH_STATE.pull:
+              return (
+                <div>
+                  <ActivityIndicator loading={false} percent={percent} />
+                </div>
+              );
+            case REFRESH_STATE.drop:
+              return (
+                <div>
+                  <ActivityIndicator loading={false} percent={100} />
+                </div>
+              );
+            case REFRESH_STATE.loading:
+              return (
+                <div>
+                  <ActivityIndicator type='spinner' />
+                </div>
+              );
+            case REFRESH_STATE.success:
+              return (
+                <div>
+                  <Icon type='right-round' theme='success' />
+                </div>
+              );
+            case REFRESH_STATE.failure:
+              return (
+                <div>
+                  <Icon type='wrong-round' theme='danger' />
+                </div>
+              );
+            default:
+              return null;
+          }
+        },
+      }}
+      load={{
+        state: loading,
+        distance: 200,
+        handler: () => {
+          if (hasNextPage) {
+            setLoading(LOAD_STATE.loading);
+            fetchMore().then(() => setLoading(LOAD_STATE.success));
+          } else {
+            setLoading(LOAD_STATE.complete);
+          }
+        },
+        render: (loadState) => {
+          switch (loadState) {
+            case LOAD_STATE.loading:
+              return (
+                <div>
+                  <ActivityIndicator type='spinner' />
+                </div>
+              );
+            case LOAD_STATE.complete:
+              return (
+                <div className='flex justify-center w-full py-2'>
+                  <SmileIcon className='text-gray-200' />
+                </div>
+              );
+          }
+        },
+      }}
+    >
+      {React.Children.toArray(children).length < 1 ? (
+        <div className='flex items-center justify-center w-full py-12'>
+          <BoxIcon className='w-12 h-12 text-gray-200' />
+        </div>
+      ) : (
+        children
+      )}
+    </Pull>
+  );
+}

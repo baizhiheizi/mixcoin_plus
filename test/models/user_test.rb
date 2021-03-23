@@ -4,14 +4,15 @@
 #
 # Table name: users
 #
-#  id         :uuid             not null, primary key
-#  avatar_url :string
-#  locale     :string
-#  mixin_uuid :uuid
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  mixin_id   :string
+#  id               :uuid             not null, primary key
+#  assets_synced_at :datetime
+#  avatar_url       :string
+#  locale           :string
+#  mixin_uuid       :uuid
+#  name             :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  mixin_id         :string
 #
 # Indexes
 #

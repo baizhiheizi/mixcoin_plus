@@ -17,7 +17,7 @@
 #  index_mixin_messages_on_message_id  (message_id) UNIQUE
 #
 class MixinMessage < ApplicationRecord
-  store :raw, accessors: %i[action category user_id conversation_id]
+  store :raw, accessors: %i[action data]
 
   belongs_to :user, primary_key: :mixin_uuid, optional: true
 
@@ -29,6 +29,18 @@ class MixinMessage < ApplicationRecord
   after_commit :process_async, on: :create
 
   scope :unprocessed, -> { where(processed_at: nil) }
+
+  def category
+    data['category']
+  end
+
+  def user_id
+    data['user_id']
+  end
+
+  def conversation_id
+    data['conversation_id']
+  end
 
   def plain?
     /^PLAIN_/.match? category

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_20_054003) do
+ActiveRecord::Schema.define(version: 2021_03_22_075922) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -26,7 +26,11 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
 
   create_table "mixin_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "asset_id"
-    t.jsonb "raw"
+    t.float "price_usd"
+    t.float "price_btc"
+    t.float "change_usd"
+    t.float "change_btc"
+    t.jsonb "raw", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["asset_id"], name: "index_mixin_assets_on_asset_id", unique: true
@@ -43,8 +47,8 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
   end
 
   create_table "mixin_network_snapshots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "source_id"
     t.string "source_type"
-    t.bigint "source_id"
     t.string "type"
     t.string "snapshot_type"
     t.uuid "user_id"
@@ -59,14 +63,15 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.datetime "processed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["source_type", "source_id"], name: "index_mixin_network_snapshots_on_source"
+    t.index ["source_id", "source_type"], name: "index_mixin_network_snapshots_on_source_id_and_source_type"
     t.index ["trace_id"], name: "index_mixin_network_snapshots_on_trace_id", unique: true
     t.index ["user_id"], name: "index_mixin_network_snapshots_on_user_id"
   end
 
   create_table "mixin_network_users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "owner_id"
     t.string "owner_type"
-    t.bigint "owner_id"
+    t.string "type", comment: "STI"
     t.uuid "mixin_uuid"
     t.string "name"
     t.uuid "session_id"
@@ -74,15 +79,17 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.json "raw"
     t.string "private_key"
     t.string "encrypted_pin"
+    t.string "state"
+    t.string "ocean_private_key"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["mixin_uuid"], name: "index_mixin_network_users_on_mixin_uuid", unique: true
-    t.index ["owner_type", "owner_id"], name: "index_mixin_network_users_on_owner"
+    t.index ["owner_id", "owner_type"], name: "index_mixin_network_users_on_owner_id_and_owner_type"
   end
 
   create_table "mixin_transfers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "source_id"
     t.string "source_type"
-    t.bigint "source_id"
     t.string "transfer_type"
     t.decimal "amount"
     t.uuid "trace_id"
@@ -95,21 +102,34 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.string "priority"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["source_type", "source_id"], name: "index_mixin_transfers_on_source"
+    t.index ["source_id", "source_type"], name: "index_mixin_transfers_on_source_id_and_source_type"
     t.index ["trace_id"], name: "index_mixin_transfers_on_trace_id", unique: true
     t.index ["user_id"], name: "index_mixin_transfers_on_user_id"
   end
 
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "recipient_id", null: false
     t.string "recipient_type", null: false
-    t.bigint "recipient_id", null: false
     t.string "type", null: false
     t.jsonb "params"
     t.datetime "read_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["read_at"], name: "index_notifications_on_read_at"
-    t.index ["recipient_type", "recipient_id"], name: "index_notifications_on_recipient"
+    t.index ["recipient_id", "recipient_type"], name: "index_notifications_on_recipient_id_and_recipient_type"
+  end
+
+  create_table "ocean_markets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "base_asset_id"
+    t.uuid "quote_asset_id"
+    t.string "base_asset_symbol"
+    t.string "quote_asset_symbol"
+    t.decimal "maker_turnover", default: "0.0"
+    t.decimal "taker_turnover", default: "0.0"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["base_asset_id"], name: "index_ocean_markets_on_base_asset_id"
+    t.index ["quote_asset_id"], name: "index_ocean_markets_on_quote_asset_id"
   end
 
   create_table "ocean_orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -131,10 +151,24 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.float "taker_fee", default: 0.0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "ocean_market_id", null: false
+    t.index ["ocean_market_id"], name: "index_ocean_orders_on_ocean_market_id"
+  end
+
+  create_table "user_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "asset_id", null: false
+    t.uuid "user_id", null: false
+    t.decimal "balance", default: "0.0"
+    t.decimal "balance_usd", default: "0.0"
+    t.json "raw", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["asset_id"], name: "index_user_assets_on_asset_id"
+    t.index ["user_id"], name: "index_user_assets_on_user_id"
   end
 
   create_table "user_authorizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.bigint "user_id"
+    t.uuid "user_id"
     t.string "provider", comment: "third party auth provider"
     t.string "uid", comment: "third party user id"
     t.string "access_token"
@@ -153,6 +187,7 @@ ActiveRecord::Schema.define(version: 2021_03_20_054003) do
     t.string "locale"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "assets_synced_at"
     t.index ["mixin_id"], name: "index_users_on_mixin_id", unique: true
     t.index ["mixin_uuid"], name: "index_users_on_mixin_uuid", unique: true
   end

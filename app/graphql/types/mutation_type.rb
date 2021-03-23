@@ -7,5 +7,7 @@ module Types
 
     # application
     field :switch_locale, mutation: Mutations::SwitchLocaleMutation
+    field :create_ocean_order, mutation: Mutations::CreateOceanOrderMutation
+    field :cancel_ocean_order, mutation: Mutations::CancelOceanOrderMutation
   end
 end

@@ -30,6 +30,30 @@ export default function MixinNetworkSnapshotsPage() {
       title: 'ID',
     },
     {
+      dataIndex: 'amount',
+      key: 'amount',
+      render: (_, snapshot) => `${snapshot.amount} ${snapshot.asset.symbol}`,
+      title: 'Amount',
+    },
+    {
+      dataIndex: 'snapshotType',
+      key: 'snapshotType',
+      title: 'Snapshot Type',
+      render: (_, snapshot) =>
+        `${snapshot.type || '-'}/${snapshot.snapshotType || '-'}`,
+    },
+    {
+      dataIndex: 'data',
+      key: 'data',
+      render: (text) => <span className='max-w-sm line-clamp-2'>{text}</span>,
+      title: 'memo',
+    },
+    {
+      dataIndex: 'processedAt',
+      key: 'processedAt',
+      title: 'processedAt',
+    },
+    {
       dataIndex: 'createdAt',
       key: 'createdAt',
       title: 'createdAt',

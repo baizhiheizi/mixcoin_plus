@@ -1,0 +1,6 @@
+mutation CancelOceanOrder($input: CancelOceanOrderMutationInput!) {
+  cancelOceanOrder(input: $input) {
+    id
+    state
+  }
+}

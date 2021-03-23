@@ -18,20 +18,21 @@
 #  asset_id       :uuid
 #  opponent_id    :uuid
 #  snapshot_id    :uuid
-#  source_id      :bigint
+#  source_id      :uuid
 #  trace_id       :uuid
 #  user_id        :uuid
 #
 # Indexes
 #
-#  index_mixin_network_snapshots_on_source    (source_type,source_id)
-#  index_mixin_network_snapshots_on_trace_id  (trace_id) UNIQUE
-#  index_mixin_network_snapshots_on_user_id   (user_id)
+#  index_mixin_network_snapshots_on_source_id_and_source_type  (source_id,source_type)
+#  index_mixin_network_snapshots_on_trace_id                   (trace_id) UNIQUE
+#  index_mixin_network_snapshots_on_user_id                    (user_id)
 #
 class OceanSnapshot < MixinNetworkSnapshot
   extend Enumerize
 
-  enumerize :snapshot_type, in: %i[default register_to_engine create_order_from_user create_order_to_engin refund_to_user match_from_engine match_to_user]
+  enumerize :snapshot_type,
+            in: %i[default ocean_broker_balance ocean_broker_register create_order_from_user create_order_to_engine refund_from_engine refund_to_user match_from_engine match_to_user]
 
   alias ocean_order source
 
@@ -41,8 +42,8 @@ class OceanSnapshot < MixinNetworkSnapshot
         data
       else
         begin
-          JSON.parse Base64.decode64(data.to_s)
-        rescue JSON::ParserError
+          MessagePack.unpack(Base64.decode64(data.gsub('-', '+').gsub('_', '/')))
+        rescue StandardError
           {}
         end
       end
@@ -51,52 +52,64 @@ class OceanSnapshot < MixinNetworkSnapshot
   def process!
     return if processed?
 
-    update(
+    update!(
       source: decrypted_ocean_order,
       snapshot_type: decrypted_snapshot_type
     )
 
-    case decrypted_snapshot_type
-    when 'create_order_from_user'
-      create_ocean_order!
-    when 'refund_from_engine'
-      decrypted_ocean_order&.transfer_to_user_for_refunding data, asset_id, amount, trace_id_of_forward_from_engine_to_user
-    when 'match_from_engine'
-      decrypted_ocean_order&.transfer_to_user_for_matching data, asset_id, amount, trace_id_of_forward_from_engine_to_user
+    case decrypted_snapshot_type.to_sym
+    when :ocean_broker_balance
+      wallet.balance! if wallet.may_balance?
+    when :ocean_broker_register
+      wallet.ready! if wallet.may_ready?
+    when :create_order_from_user
+      raise 'Invalid Payment' unless (amount.to_f - ocean_order.payment_amount.to_f).zero? && asset_id == ocean_order.payment_asset_id
+
+      ocean_order.pay!
+    when :create_order_to_engine
+      ocean_order.book! if ocean_order.may_book?
+    when :match_from_engine
+      MixinTransfer.create_with(
+        source: ocean_order,
+        user_id: ocean_order.broker.mixin_uuid,
+        transfer_type: :ocean_order_match,
+        opponent_id: ocean_order.user.mixin_uuid,
+        asset_id: asset_id,
+        amount: amount,
+        memo: "OCEAN|MATCH|#{ocean_order.trace_id}"
+      ).find_or_create_by!(
+        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, ocean_order.trace_id)
+      )
+    when :match_to_user
+      ocean_order.match!
+    when :refund_from_engine
+      MixinTransfer.create_with(
+        source: ocean_order,
+        user_id: ocean_order.broker.mixin_uuid,
+        transfer_type: :ocean_order_refund,
+        opponent_id: ocean_order.user.mixin_uuid,
+        asset_id: asset_id,
+        amount: amount,
+        memo: "OCEAN|REFUND|#{ocean_order.trace_id}"
+      ).find_or_create_by!(
+        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, ocean_order.trace_id)
+      )
+    when :refund_to_user
+      ocean_order.refund! if ocean_order.may_refund?
+    else
+      raise 'Not valid memo!'
     end
-  end
 
-  def create_ocean_order!
-    order = OceanOrder.create!(
-      user: user,
-      broker: wallet,
-      base_asset_id: decrypted_memo['S'] == 'A' ? asset_id : opponent_asset_id,
-      quote_asset_id: decrypted_memo['S'] == 'A' ? opponent_asset_id : asset_id,
-      price: decrypted_memo['P'].to_f,
-      remaining_amount: if decrypted_memo['S'] == 'A'
-                          amount.round(8)
-                        else
-                          (decrypted_memo['T'] == 'L' ? amount / decrypted_memo['P'].to_f : 0.0).round(8)
-                        end,
-      remaining_funds: (decrypted_memo['S'] == 'A' ? amount * decrypted_memo['P'].to_f : amount).round(8),
-      side: decrypted_memo['S'] == 'A' ? 'ask' : 'bid',
-      order_type: decrypted_memo['T'] == 'L' ? 'limit' : 'market',
-      trace_id: OhmyBot.api.unique_conversation_id(trace_id, user_id)
-    )
-    update! ocean_order: order
-  rescue ActiveRecord::RecordInvalid => e
-    Rails.logger.error e.record.errors
-    refund_for_invalid_order
+    update processed_at: Time.current
   end
-
-  def refund_for_invalid_order
-  end
-
-  private
 
   # associate to ocean_order
   def decrypted_ocean_order
     return if raw['user_id'] == MixcoinPlusBot.api.client_id
+
+    # from user to broker
+    _ocean_order = OceanOrder.find_by(id: raw['trace_id'])
+    return _ocean_order if _ocean_order.present?
 
     # from broker to engine, for create order
     # trace_id same as ocean_order's
@@ -123,12 +136,10 @@ class OceanSnapshot < MixinNetworkSnapshot
   end
 
   def decrypted_snapshot_type
-    return 'default' if raw['user_id'] == MixcoinPlusBot.api.client_id
-
-    if raw['opponent_id'] == MixinNetworkBroker::OCEAN_ENGINE_USER_ID
+    if raw['opponent_id'] == OceanBroker::OCEAN_ENGINE_USER_ID
       if raw['amount'].to_f.negative?
         # to engine
-        return 'register_to_engine' if decrypted_memo['U'].present?
+        return 'ocean_broker_register' if decrypted_memo['U'].present?
         return 'cancel_order_to_engine' if decrypted_memo['O'].present?
         return 'create_order_to_engine' if decrypted_memo['A'].present?
       else
@@ -148,9 +159,13 @@ class OceanSnapshot < MixinNetworkSnapshot
         'match_to_user'
       when 'CREATE'
         'create_order_from_user'
+      when 'BALANCE'
+        'ocean_broker_balance'
       end
     end
   end
+
+  private
 
   def raw_to_uuid(raw)
     return if raw.nil?

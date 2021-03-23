@@ -25,9 +25,54 @@ export default function OceanOrdersPage() {
 
   const columns: Array<ColumnProps<any>> = [
     {
-      dataIndex: 'id',
-      key: 'id',
-      title: 'ID',
+      dataIndex: 'traceId',
+      key: 'traceId',
+      title: 'traceId',
+    },
+    {
+      dataIndex: 'market',
+      key: 'market',
+      render: (_, order) =>
+        `${order.baseAsset.symbol}/${order.quoteAsset.symbol}`,
+      title: 'Market',
+    },
+    {
+      dataIndex: 'user',
+      key: 'user',
+      render: (_, order) => (
+        <div className='flex items-center'>
+          <img className='w-6 h-6 mr-1 rounded-full' src={order.user.avatar} />
+          {order.user.name}({order.user.mixinId})
+        </div>
+      ),
+      title: 'user',
+    },
+    {
+      dataIndex: 'orderType',
+      key: 'orderType',
+      title: 'orderType',
+    },
+    {
+      dataIndex: 'side',
+      key: 'side',
+      title: 'side',
+    },
+    {
+      dataIndex: 'state',
+      key: 'state',
+      title: 'state',
+    },
+    {
+      dataIndex: 'amount',
+      key: 'amount',
+      render: (_, order) => `${order.filledAmount}/${order.amount}`,
+      title: 'Amount',
+    },
+    {
+      dataIndex: 'funds',
+      key: 'funds',
+      render: (_, order) => `${order.filledFunds}/${order.funds}`,
+      title: 'Funds',
     },
     {
       dataIndex: 'createdAt',

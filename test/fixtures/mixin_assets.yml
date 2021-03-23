@@ -3,7 +3,11 @@
 # Table name: mixin_assets
 #
 #  id         :uuid             not null, primary key
-#  raw        :jsonb
+#  change_btc :float
+#  change_usd :float
+#  price_btc  :float
+#  price_usd  :float
+#  raw        :jsonb            not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  asset_id   :uuid

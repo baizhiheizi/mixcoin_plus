@@ -24,14 +24,21 @@ const customizedConnectionMergeFunction = (
   };
 };
 
-export const apolloClient = (uri: string, conversationId?: string) => {
-  const cache = new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {},
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        oceanMarketConnection: customizedConnectionMergeFunction(['type']),
+        oceanOrderConnection: customizedConnectionMergeFunction([
+          'oceanMarketId',
+          'filter',
+        ]),
       },
     },
-  });
+  },
+});
+
+export const apolloClient = (uri: string, conversationId?: string) => {
   const csrfToken: any =
     document.querySelector("meta[name='csrf-token']") || {};
 

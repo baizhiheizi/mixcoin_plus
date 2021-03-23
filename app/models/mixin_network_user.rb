@@ -4,35 +4,38 @@
 #
 # Table name: mixin_network_users
 #
-#  id            :uuid             not null, primary key
-#  encrypted_pin :string
-#  mixin_uuid    :uuid
-#  name          :string
-#  owner_type    :string
-#  pin_token     :string
-#  private_key   :string
-#  raw           :json
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  owner_id      :bigint
-#  session_id    :uuid
+#  id                  :uuid             not null, primary key
+#  encrypted_pin       :string
+#  mixin_uuid          :uuid
+#  name                :string
+#  ocean_private_key   :string
+#  owner_type          :string
+#  pin_token           :string
+#  private_key         :string
+#  raw                 :json
+#  state               :string
+#  type(STI)           :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  owner_id            :uuid
+#  session_id          :uuid
 #
 # Indexes
 #
-#  index_mixin_network_users_on_mixin_uuid  (mixin_uuid) UNIQUE
-#  index_mixin_network_users_on_owner       (owner_type,owner_id)
+#  index_mixin_network_users_on_mixin_uuid               (mixin_uuid) UNIQUE
+#  index_mixin_network_users_on_owner_id_and_owner_type  (owner_id,owner_type)
 #
 class MixinNetworkUser < ApplicationRecord
   include Encryptable
 
   belongs_to :owner, optional: true, inverse_of: false, polymorphic: true
   has_many :snapshots, class_name: 'MixinNetworkSnapshot', foreign_key: :user_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :wallet
-  has_many :transfers, foreign_key: :wallet_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :wallet
+  has_many :transfers, class_name: 'MixinTransfer', foreign_key: :user_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :wallet
 
   validates :name, presence: true
   validates :pin_token, presence: true
   validates :private_key, presence: true
-  validates :uuid, presence: true
+  validates :mixin_uuid, presence: true
   validates :session_id, presence: true
 
   before_validation :setup_attributes, on: :create
@@ -43,7 +46,7 @@ class MixinNetworkUser < ApplicationRecord
 
   def mixin_api
     @mixin_api ||= MixinBot::API.new(
-      client_id: uuid,
+      client_id: mixin_uuid,
       client_secret: nil,
       session_id: session_id,
       pin_token: pin_token,
@@ -83,11 +86,12 @@ class MixinNetworkUser < ApplicationRecord
     self.raw = r['data']
 
     assign_attributes(
-      uuid: raw['user_id'],
+      mixin_uuid: raw['user_id'],
       name: raw['full_name'],
       pin_token: raw['pin_token'],
       session_id: raw['session_id'],
-      private_key: r[:ed25519_key]&.[](:private_key)
+      private_key: r[:ed25519_key]&.[](:private_key),
+      ocean_private_key: OpenSSL::PKey::EC.generate('prime256v1').to_pem
     )
   end
 end

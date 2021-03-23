@@ -4,23 +4,26 @@
 #
 # Table name: mixin_network_users
 #
-#  id            :uuid             not null, primary key
-#  encrypted_pin :string
-#  mixin_uuid    :uuid
-#  name          :string
-#  owner_type    :string
-#  pin_token     :string
-#  private_key   :string
-#  raw           :json
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  owner_id      :bigint
-#  session_id    :uuid
+#  id                  :uuid             not null, primary key
+#  encrypted_pin       :string
+#  mixin_uuid          :uuid
+#  name                :string
+#  ocean_private_key   :string
+#  owner_type          :string
+#  pin_token           :string
+#  private_key         :string
+#  raw                 :json
+#  state               :string
+#  type(STI)           :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  owner_id            :uuid
+#  session_id          :uuid
 #
 # Indexes
 #
-#  index_mixin_network_users_on_mixin_uuid  (mixin_uuid) UNIQUE
-#  index_mixin_network_users_on_owner       (owner_type,owner_id)
+#  index_mixin_network_users_on_mixin_uuid               (mixin_uuid) UNIQUE
+#  index_mixin_network_users_on_owner_id_and_owner_type  (owner_id,owner_type)
 #
 class OceanBroker < MixinNetworkUser
   EXCHANGE_ASSET_ID = '965e5c6e-434c-3fa9-b780-c50f43cd955c'
@@ -31,7 +34,9 @@ class OceanBroker < MixinNetworkUser
   include AASM
 
   belongs_to :user, optional: true, inverse_of: :broker
-  has_many :ocean_orders, foreign_key: :broker_id, primary_key: :uuid, dependent: :nullify, inverse_of: :broker
+  has_many :ocean_orders, foreign_key: :broker_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :broker
+
+  validates :ocean_private_key, presence: true
 
   after_commit :initialize_broker_account_async, on: :create
 
@@ -40,39 +45,44 @@ class OceanBroker < MixinNetworkUser
     state :balanced
     state :ready
 
-    event :balance do
+    event :balance, after_commit: :register_ocean_broker do
       transitions from: :created, to: :balanced
     end
 
-    event :ready do
+    event :ready, guard: :ensure_can_fetch_orders do
       transitions from: :balanced, to: :ready
     end
   end
 
-  def initialize_exchange_asset_balance
-    r = TransferMixinAssetService.new.call(
+  def balance_ocean_broker
+    MixinTransfer.create_with(
+      source: self,
+      transfer_type: :ocean_broker_balance,
       asset_id: EXCHANGE_ASSET_ID,
-      opponent_id: uuid,
+      user_id: MixcoinPlusBot.api.client_id,
+      opponent_id: mixin_uuid,
       amount: EXCHANGE_ASSET_BALANCE,
-      trace_id: MixcoinPlusBot.api.unique_conversation_id(uuid, EXCHANGE_ASSET_ID),
-      memo: 'Initial asset for broker'
+      memo: 'OCEAN|BALANCE'
+    ).find_or_create_by!(
+      trace_id: MixcoinPlusBot.api.unique_conversation_id(mixin_uuid, EXCHANGE_ASSET_ID)
     )
-
-    raise r.inspect if r['error'].present?
-
-    balance! if r['data'].present? && created?
   end
 
-  def register_ocean
+  def register_ocean_broker
     setup_ocean_private_key if ocean_private_key.blank?
     update_pin! if pin.blank?
 
-    create_transfer_to_ocean(
-      memo_for_registering,
-      trace_id: mixin_api.unique_conversation_id(uuid, OCEAN_ENGINE_USER_ID)
+    MixinTransfer.create_with(
+      source: self,
+      wallet: self,
+      transfer_type: :ocean_broker_register,
+      asset_id: EXCHANGE_ASSET_ID,
+      opponent_id: OCEAN_ENGINE_USER_ID,
+      amount: EXCHANGE_ASSET_AMOUNT,
+      memo: memo_for_registering
+    ).find_or_create_by!(
+      trace_id: mixin_api.unique_conversation_id(mixin_uuid, OCEAN_ENGINE_USER_ID)
     )
-
-    ready! if engine_orders.is_a?(Array) && balanced?
   end
 
   # market: base + quote
@@ -83,48 +93,20 @@ class OceanBroker < MixinNetworkUser
     r['data']
   end
 
-  def create_transfer_to_ocean(memo, trace_id: nil, asset_id: nil, amount: nil)
-    mixin_api.create_transfer(
-      reload.pin,
-      {
-        asset_id: asset_id || EXCHANGE_ASSET_ID,
-        opponent_id: OCEAN_ENGINE_USER_ID,
-        amount: amount || EXCHANGE_ASSET_AMOUNT,
-        trace_id: trace_id || SecureRandom.uuid,
-        memo: memo
-      }
-    )
-  end
-
-  def create_transfer_to_user(memo, asset_id:, amount:, trace_id: nil)
-    mixin_api.create_transfer(
-      pin,
-      {
-        asset_id: asset_id,
-        opponent_id: user.mixin_uuid,
-        amount: amount,
-        trace_id: trace_id || SecureRandom.uuid,
-        memo: memo
-      }
-    )
-  end
-
   def initialize_broker_account
     return if ready?
 
-    initialize_exchange_asset_balance if created?
-    register_ocean if balanced?
-
-    raise 'Not ready yet!' unless reload.ready?
+    balance_ocean_broker if created?
+    register_ocean_broker if balanced?
   end
 
   def initialize_broker_account_async
-    InitializeMixinNetworkBrokerWorker.perform_async id
+    OceanBrokerInitializeWorker.perform_async id
   end
 
   def ocean_access_token
     JWT.encode(
-      { uid: uuid },
+      { uid: mixin_uuid },
       OpenSSL::PKey::EC.new(ocean_private_key),
       'ES256'
     )
@@ -142,6 +124,10 @@ class OceanBroker < MixinNetworkUser
         U: Base64.decode64(ocean_public_key)
       }.to_msgpack
     )
+  end
+
+  def ensure_can_fetch_orders
+    engine_orders.is_a?(Array)
   end
 
   def ocean_public_key

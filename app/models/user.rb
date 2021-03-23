@@ -4,14 +4,15 @@
 #
 # Table name: users
 #
-#  id         :uuid             not null, primary key
-#  avatar_url :string
-#  locale     :string
-#  mixin_uuid :uuid
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  mixin_id   :string
+#  id               :uuid             not null, primary key
+#  assets_synced_at :datetime
+#  avatar_url       :string
+#  locale           :string
+#  mixin_uuid       :uuid
+#  name             :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  mixin_id         :string
 #
 # Indexes
 #
@@ -27,6 +28,9 @@ class User < ApplicationRecord
   has_many :notifications, as: :recipient, dependent: :destroy
   has_many :wallets, class_name: 'MixinNetworkUser', as: :owner, dependent: :restrict_with_exception
   has_one :ocean_broker, class_name: 'OceanBroker', as: :owner, dependent: :restrict_with_exception
+  has_many :assets, class_name: 'UserAsset', dependent: :restrict_with_exception
+  has_many :ocean_markets, through: :assets, inverse_of: false
+  has_many :ocean_orders, dependent: :restrict_with_exception
 
   before_validation :set_profile, on: :create
 
@@ -34,6 +38,31 @@ class User < ApplicationRecord
   validates :mixin_uuid, presence: true, uniqueness: true
 
   enumerize :locale, in: I18n.available_locales, default: I18n.default_locale
+
+  after_commit :sync_assets_async, :create_ocean_broker, on: :create
+
+  delegate :access_token, to: :mixin_authorization
+
+  def mixin_assets
+    @mixin_assets ||= MixcoinPlusBot.api.assets(access_token: access_token)&.[]('data') || []
+  end
+
+  def sync_assets
+    return if assets_synced_at? && Time.current - assets_synced_at < 1.minute
+
+    mixin_assets.each do |_asset|
+      asset = assets.find_by(asset_id: _asset['asset_id'])
+      if asset.present?
+        asset.update raw: _asset
+      else
+        assets.create_with(raw: _asset).find_or_create_by(asset_id: _asset['asset_id'])
+      end
+    end
+  end
+
+  def sync_assets_async
+    UserSyncAssetsWorker.perform_async id
+  end
 
   def avatar
     avatar_url || generated_avatar_url

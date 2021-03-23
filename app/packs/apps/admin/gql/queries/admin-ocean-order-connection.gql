@@ -17,7 +17,7 @@ query AdminOceanOrderConnection($after: String) {
       user {
         avatar
         name
-        mixinUuid
+        mixinId
       }
       broker {
         mixinUuid

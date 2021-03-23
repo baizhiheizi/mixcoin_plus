@@ -30,6 +30,26 @@ export default function MixinMessagesPage() {
       title: 'ID',
     },
     {
+      dataIndex: 'category',
+      key: 'category',
+      title: 'category',
+    },
+    {
+      dataIndex: 'conversationId',
+      key: 'conversationId',
+      title: 'conversationId',
+    },
+    {
+      dataIndex: 'userId',
+      key: 'userId',
+      title: 'userId',
+    },
+    {
+      dataIndex: 'content',
+      key: 'content',
+      title: 'content',
+    },
+    {
       dataIndex: 'createdAt',
       key: 'createdAt',
       title: 'createdAt',
@@ -39,7 +59,7 @@ export default function MixinMessagesPage() {
   return (
     <>
       <PageHeader
-        title='Users Manage'
+        title='Message Manage'
         extra={[
           <Button key='refresh' type='primary' onClick={() => refetch()}>
             Refresh
