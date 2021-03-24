@@ -1,0 +1,27 @@
+query AdminOceanMarketConnection($after: String) {
+  adminOceanMarketConnection(after: $after) {
+    nodes {
+      id
+      marketId
+      turnover
+      oceanOrdersCount
+      makerTurnover
+      takerTurnover
+      baseAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      quoteAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

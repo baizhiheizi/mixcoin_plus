@@ -16,7 +16,7 @@ query AdminOceanOrder($id: ID!) {
     user {
       avatar
       name
-      mixinUuid
+      mixinId
     }
     broker {
       mixinUuid

@@ -22,7 +22,7 @@ export default function ExchangePage() {
     'marketId',
   );
   const { t } = useTranslation();
-  const { mixinBot } = useMixinBot();
+  const { appId, appName } = useMixinBot();
   const [marketId, setMarketId] = useState(
     marketIdParam || localStorage.getItem('_cachedMarketId') || '',
   );
@@ -72,8 +72,8 @@ export default function ExchangePage() {
             shareMixinAppCard({
               data: {
                 action: location.href,
-                app_id: mixinBot.clientId,
-                description: mixinBot.name,
+                app_id: appId,
+                description: appName,
                 icon_url: market.baseAsset.iconUrl,
                 title: `${market.baseAsset.symbol}/${market.quoteAsset.symbol}`,
               },

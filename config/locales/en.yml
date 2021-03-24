@@ -37,3 +37,23 @@ en:
   please_log_in_first: Please Login First
   logout_confirm: Are sure to logout?
   authorize_tips: You'll authorize Mixcoin to read your profile.
+  buy: Buy
+  sell: Sell
+  volume: Volume
+  limit_order: Limit
+  market_order: Market
+  market_price: Market Price
+  open_orders: Open Orders
+  order_history: Order History
+  market_order_warning: Market Price
+  confirm_cancel_ocean_order: Sure to cancel this order?
+  order_will_be_handled: Order will be open when the payment received and you will be notified.
+  from_ohmy_exchange: OhMy Ex
+  price_too_high: Price too high
+  order_too_small: Order too small
+  order_too_big: Order too big
+  no_ask_order: No Asks Yet
+  no_bid_order: No Bids Yet
+  confirm_place_ask_order: Are you sure to sell
+  confirm_place_bid_order: Are you sure to buy
+  important_warning: '[IMPORTANT WARNING: Your price is far from Market Price. Are you sure to continue?]'

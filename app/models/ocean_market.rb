@@ -7,8 +7,10 @@
 #  id                 :uuid             not null, primary key
 #  base_asset_symbol  :string
 #  maker_turnover     :decimal(, )      default(0.0)
+#  ocean_orders_count :integer          default(0)
 #  quote_asset_symbol :string
 #  taker_turnover     :decimal(, )      default(0.0)
+#  turnover           :decimal(, )      default(0.0)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  base_asset_id      :uuid
@@ -45,6 +47,10 @@ class OceanMarket < ApplicationRecord
 
   def market_id
     format('%<base>s-%<quote>s', base: base_asset_id, quote: quote_asset_id)
+  end
+
+  def update_turnover
+    update turnover: ocean_orders.sum(:filled_amount)
   end
 
   private

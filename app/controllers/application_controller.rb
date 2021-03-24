@@ -16,8 +16,8 @@ class ApplicationController < ActionController::Base
       },
       mixin_bot: {
         app_id: MixcoinPlusBot.api.client_id,
-        name: 'Mixcoin+',
-        avatar: ''
+        app_name: 'Mixcoin Plus',
+        app_icon_url: ''
       }
     }.deep_transform_keys! { |key| key.to_s.camelize(:lower) }
   end

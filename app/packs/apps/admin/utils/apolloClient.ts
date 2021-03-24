@@ -29,7 +29,13 @@ export const apolloClient = (uri: string) => {
     typePolicies: {
       Query: {
         fields: {
-          admin_users_connection: customizedConnectionMergeFunction(),
+          adminUserConnection: customizedConnectionMergeFunction(),
+          adminOceanMarketConnection: customizedConnectionMergeFunction(),
+          adminOceanOrderConnection: customizedConnectionMergeFunction(),
+          adminMixinMessageConnection: customizedConnectionMergeFunction(),
+          adminMixinNetworkSnapshotConnection: customizedConnectionMergeFunction(
+            ['oceanOrderId'],
+          ),
         },
       },
     },

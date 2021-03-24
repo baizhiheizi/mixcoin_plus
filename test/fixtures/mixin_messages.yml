@@ -3,12 +3,15 @@
 # Table name: mixin_messages
 #
 #  id                      :uuid             not null, primary key
-#  content(decrepted data) :string
+#  category                :string
+#  content(decrypted data) :string
 #  processed_at            :datetime
 #  raw                     :json
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  conversation_id         :uuid
 #  message_id              :uuid
+#  user_id                 :uuid
 #
 # Indexes
 #

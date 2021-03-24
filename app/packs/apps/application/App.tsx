@@ -14,7 +14,7 @@ import { User } from 'graphqlTypes';
 
 export default function App(props: {
   currentUser?: Partial<User>;
-  mixinBot: { appId: string; name: string; avatar: string };
+  mixinBot: { appId: string; appName: string; appIconUrl: string };
 }) {
   const { i18n } = useTranslation();
   const [currentUser, setCurrentUser] = useState(props.currentUser);

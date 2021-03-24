@@ -6,3 +6,23 @@ zh-CN:
   please_log_in_first: 请先登录
   logout_confirm: 确定要退出登录吗？
   authorize_tips: 即将授权 Mixcoin 登录
+  buy: 买入
+  sell: 卖出
+  volume: 数量
+  limit_order: 限价单
+  market_order: 市价单
+  market_price: 市场价
+  open_orders: 当前委托
+  order_history: 历史委托
+  market_order_warning: 以市场成交价为准
+  confirm_cancel_ocean_order: 确定要取消当前委托吗？
+  order_will_be_handled: 订单在收到转账后会立即处理，请留意机器人的消息提醒
+  from_ohmy_exchange: 我信交易
+  price_too_high: 价格过高
+  order_too_small: 订单太小了
+  order_too_big: 订单太大了
+  no_ask_order: 暂时没有卖单
+  no_bid_order: 暂时没有买单
+  confirm_place_ask_order: 确定要卖出
+  confirm_place_bid_order: 确定要买入
+  important_warning: （重要提醒：你的价格偏离市场价过多，确定要下单吗？）

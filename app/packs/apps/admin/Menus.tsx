@@ -1,10 +1,12 @@
 import {
+  BarsOutlined,
   DashboardOutlined,
-  UserOutlined,
-  MessageOutlined,
-  SyncOutlined,
-  PayCircleOutlined,
+  DollarOutlined,
   LogoutOutlined,
+  MessageOutlined,
+  PayCircleOutlined,
+  SyncOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
@@ -27,6 +29,12 @@ export default function Menus() {
         </Link>
       </Menu.Item>
       <Menu.Item>
+        <Link to='/ocean_markets'>
+          <BarsOutlined />
+          <span>Markets</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
         <Link to='/ocean_orders'>
           <SyncOutlined />
           <span>Ocean Orders</span>
@@ -42,6 +50,12 @@ export default function Menus() {
         <Link to='/mixin_messages'>
           <MessageOutlined />
           <span>Messages</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to='/balance'>
+          <DollarOutlined />
+          <span>Balance</span>
         </Link>
       </Menu.Item>
       <Menu.Item>

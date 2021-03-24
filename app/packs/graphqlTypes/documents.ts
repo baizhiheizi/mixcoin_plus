@@ -182,9 +182,11 @@ export type OceanMarket = {
   id: Scalars['ID'];
   makerTurnover: Scalars['Float'];
   marketId: Scalars['String'];
+  oceanOrdersCount: Scalars['Int'];
   quoteAsset: MixinAsset;
   quoteAssetId: Scalars['String'];
   takerTurnover: Scalars['Float'];
+  turnover: Scalars['Float'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
 };
 
@@ -273,10 +275,12 @@ export type Query = {
   __typename?: 'Query';
   adminMixinMessageConnection: MixinMessageConnection;
   adminMixinNetworkSnapshotConnection: MixinNetworkSnapshotConnection;
+  adminOceanMarketConnection: OceanMarketConnection;
   adminOceanOrder: OceanOrder;
   adminOceanOrderConnection: OceanOrderConnection;
   adminUser: User;
   adminUserConnection: UserConnection;
+  adminWalletBalance: Array<UserAsset>;
   currentAdmin: Administrator;
   oceanMarket: OceanMarket;
   oceanMarketConnection: OceanMarketConnection;
@@ -293,6 +297,15 @@ export type QueryAdminMixinMessageConnectionArgs = {
 
 
 export type QueryAdminMixinNetworkSnapshotConnectionArgs = {
+  oceanOrderId?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAdminOceanMarketConnectionArgs = {
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
@@ -323,6 +336,11 @@ export type QueryAdminUserConnectionArgs = {
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAdminWalletBalanceArgs = {
+  userId?: Maybe<Scalars['String']>;
 };
 
 
@@ -365,6 +383,21 @@ export type User = {
   mixinUuid: Scalars['String'];
   name: Scalars['String'];
   oceanBroker?: Maybe<MixinNetworkUser>;
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
+export type UserAsset = {
+  __typename?: 'UserAsset';
+  assetId: Scalars['String'];
+  balance: Scalars['Float'];
+  chainId?: Maybe<Scalars['String']>;
+  createdAt: Scalars['ISO8601DateTime'];
+  iconUrl?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  priceBtc?: Maybe<Scalars['Float']>;
+  priceUsd?: Maybe<Scalars['Float']>;
+  symbol: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
 };
 
@@ -423,6 +456,7 @@ export type AdminMixinMessageConnectionQuery = (
 
 export type AdminMixinNetworkSnapshotConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
+  oceanOrderId?: Maybe<Scalars['ID']>;
 }>;
 
 
@@ -432,13 +466,39 @@ export type AdminMixinNetworkSnapshotConnectionQuery = (
     { __typename?: 'MixinNetworkSnapshotConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'MixinNetworkSnapshot' }
-      & Pick<MixinNetworkSnapshot, 'id' | 'type' | 'snapshotType' | 'traceId' | 'snapshotId' | 'amount' | 'data' | 'processedAt' | 'transferredAt' | 'createdAt'>
+      & Pick<MixinNetworkSnapshot, 'id' | 'type' | 'snapshotType' | 'traceId' | 'snapshotId' | 'amount' | 'data' | 'opponentId' | 'processedAt' | 'transferredAt' | 'createdAt'>
       & { opponent?: Maybe<(
         { __typename?: 'User' }
-        & Pick<User, 'avatar' | 'name' | 'mixinUuid'>
+        & Pick<User, 'avatar' | 'name' | 'mixinId'>
       )>, asset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'name' | 'iconUrl'>
+      ) }
+    )>>>, pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ) }
+  ) }
+);
+
+export type AdminOceanMarketConnectionQueryVariables = Exact<{
+  after?: Maybe<Scalars['String']>;
+}>;
+
+
+export type AdminOceanMarketConnectionQuery = (
+  { __typename?: 'Query' }
+  & { adminOceanMarketConnection: (
+    { __typename?: 'OceanMarketConnection' }
+    & { nodes?: Maybe<Array<Maybe<(
+      { __typename?: 'OceanMarket' }
+      & Pick<OceanMarket, 'id' | 'marketId' | 'turnover' | 'oceanOrdersCount' | 'makerTurnover' | 'takerTurnover' | 'createdAt'>
+      & { baseAsset: (
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+      ), quoteAsset: (
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
       ) }
     )>>>, pageInfo: (
       { __typename?: 'PageInfo' }
@@ -491,7 +551,7 @@ export type AdminOceanOrderQuery = (
     & Pick<OceanOrder, 'id' | 'traceId' | 'state' | 'conversationId' | 'side' | 'orderType' | 'price' | 'amount' | 'funds' | 'remainingAmount' | 'remainingFunds' | 'filledAmount' | 'filledFunds' | 'createdAt'>
     & { user: (
       { __typename?: 'User' }
-      & Pick<User, 'avatar' | 'name' | 'mixinUuid'>
+      & Pick<User, 'avatar' | 'name' | 'mixinId'>
     ), broker: (
       { __typename?: 'MixinNetworkUser' }
       & Pick<MixinNetworkUser, 'mixinUuid'>
@@ -550,6 +610,19 @@ export type CurrentAdminQuery = (
     { __typename?: 'Administrator' }
     & Pick<Administrator, 'name'>
   ) }
+);
+
+export type AdminWalletBalanceQueryVariables = Exact<{
+  userId?: Maybe<Scalars['String']>;
+}>;
+
+
+export type AdminWalletBalanceQuery = (
+  { __typename?: 'Query' }
+  & { adminWalletBalance: Array<(
+    { __typename?: 'UserAsset' }
+    & Pick<UserAsset, 'assetId' | 'name' | 'symbol' | 'iconUrl' | 'balance' | 'priceUsd' | 'priceBtc'>
+  )> }
 );
 
 export type CancelOceanOrderMutationVariables = Exact<{
@@ -748,8 +821,8 @@ export type AdminMixinMessageConnectionQueryHookResult = ReturnType<typeof useAd
 export type AdminMixinMessageConnectionLazyQueryHookResult = ReturnType<typeof useAdminMixinMessageConnectionLazyQuery>;
 export type AdminMixinMessageConnectionQueryResult = Apollo.QueryResult<AdminMixinMessageConnectionQuery, AdminMixinMessageConnectionQueryVariables>;
 export const AdminMixinNetworkSnapshotConnectionDocument = gql`
-    query AdminMixinNetworkSnapshotConnection($after: String) {
-  adminMixinNetworkSnapshotConnection(after: $after) {
+    query AdminMixinNetworkSnapshotConnection($after: String, $oceanOrderId: ID) {
+  adminMixinNetworkSnapshotConnection(after: $after, oceanOrderId: $oceanOrderId) {
     nodes {
       id
       type
@@ -758,10 +831,11 @@ export const AdminMixinNetworkSnapshotConnectionDocument = gql`
       snapshotId
       amount
       data
+      opponentId
       opponent {
         avatar
         name
-        mixinUuid
+        mixinId
       }
       asset {
         assetId
@@ -794,6 +868,7 @@ export const AdminMixinNetworkSnapshotConnectionDocument = gql`
  * const { data, loading, error } = useAdminMixinNetworkSnapshotConnectionQuery({
  *   variables: {
  *      after: // value for 'after'
+ *      oceanOrderId: // value for 'oceanOrderId'
  *   },
  * });
  */
@@ -808,6 +883,63 @@ export function useAdminMixinNetworkSnapshotConnectionLazyQuery(baseOptions?: Ap
 export type AdminMixinNetworkSnapshotConnectionQueryHookResult = ReturnType<typeof useAdminMixinNetworkSnapshotConnectionQuery>;
 export type AdminMixinNetworkSnapshotConnectionLazyQueryHookResult = ReturnType<typeof useAdminMixinNetworkSnapshotConnectionLazyQuery>;
 export type AdminMixinNetworkSnapshotConnectionQueryResult = Apollo.QueryResult<AdminMixinNetworkSnapshotConnectionQuery, AdminMixinNetworkSnapshotConnectionQueryVariables>;
+export const AdminOceanMarketConnectionDocument = gql`
+    query AdminOceanMarketConnection($after: String) {
+  adminOceanMarketConnection(after: $after) {
+    nodes {
+      id
+      marketId
+      turnover
+      oceanOrdersCount
+      makerTurnover
+      takerTurnover
+      baseAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      quoteAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminOceanMarketConnectionQuery__
+ *
+ * To run a query within a React component, call `useAdminOceanMarketConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminOceanMarketConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminOceanMarketConnectionQuery({
+ *   variables: {
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useAdminOceanMarketConnectionQuery(baseOptions?: Apollo.QueryHookOptions<AdminOceanMarketConnectionQuery, AdminOceanMarketConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminOceanMarketConnectionQuery, AdminOceanMarketConnectionQueryVariables>(AdminOceanMarketConnectionDocument, options);
+      }
+export function useAdminOceanMarketConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminOceanMarketConnectionQuery, AdminOceanMarketConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminOceanMarketConnectionQuery, AdminOceanMarketConnectionQueryVariables>(AdminOceanMarketConnectionDocument, options);
+        }
+export type AdminOceanMarketConnectionQueryHookResult = ReturnType<typeof useAdminOceanMarketConnectionQuery>;
+export type AdminOceanMarketConnectionLazyQueryHookResult = ReturnType<typeof useAdminOceanMarketConnectionLazyQuery>;
+export type AdminOceanMarketConnectionQueryResult = Apollo.QueryResult<AdminOceanMarketConnectionQuery, AdminOceanMarketConnectionQueryVariables>;
 export const AdminOceanOrderConnectionDocument = gql`
     query AdminOceanOrderConnection($after: String) {
   adminOceanOrderConnection(after: $after) {
@@ -899,7 +1031,7 @@ export const AdminOceanOrderDocument = gql`
     user {
       avatar
       name
-      mixinUuid
+      mixinId
     }
     broker {
       mixinUuid
@@ -1068,6 +1200,47 @@ export function useCurrentAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type CurrentAdminQueryHookResult = ReturnType<typeof useCurrentAdminQuery>;
 export type CurrentAdminLazyQueryHookResult = ReturnType<typeof useCurrentAdminLazyQuery>;
 export type CurrentAdminQueryResult = Apollo.QueryResult<CurrentAdminQuery, CurrentAdminQueryVariables>;
+export const AdminWalletBalanceDocument = gql`
+    query AdminWalletBalance($userId: String) {
+  adminWalletBalance(userId: $userId) {
+    assetId
+    name
+    symbol
+    iconUrl
+    balance
+    priceUsd
+    priceBtc
+  }
+}
+    `;
+
+/**
+ * __useAdminWalletBalanceQuery__
+ *
+ * To run a query within a React component, call `useAdminWalletBalanceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminWalletBalanceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminWalletBalanceQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useAdminWalletBalanceQuery(baseOptions?: Apollo.QueryHookOptions<AdminWalletBalanceQuery, AdminWalletBalanceQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminWalletBalanceQuery, AdminWalletBalanceQueryVariables>(AdminWalletBalanceDocument, options);
+      }
+export function useAdminWalletBalanceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminWalletBalanceQuery, AdminWalletBalanceQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminWalletBalanceQuery, AdminWalletBalanceQueryVariables>(AdminWalletBalanceDocument, options);
+        }
+export type AdminWalletBalanceQueryHookResult = ReturnType<typeof useAdminWalletBalanceQuery>;
+export type AdminWalletBalanceLazyQueryHookResult = ReturnType<typeof useAdminWalletBalanceLazyQuery>;
+export type AdminWalletBalanceQueryResult = Apollo.QueryResult<AdminWalletBalanceQuery, AdminWalletBalanceQueryVariables>;
 export const CancelOceanOrderDocument = gql`
     mutation CancelOceanOrder($input: CancelOceanOrderMutationInput!) {
   cancelOceanOrder(input: $input) {

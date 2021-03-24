@@ -37,8 +37,11 @@ ActiveRecord::Schema.define(version: 2021_03_22_075922) do
   end
 
   create_table "mixin_messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "content", comment: "decrepted data"
+    t.string "content", comment: "decrypted data"
     t.uuid "message_id"
+    t.string "category"
+    t.uuid "user_id"
+    t.uuid "conversation_id"
     t.json "raw"
     t.datetime "processed_at"
     t.datetime "created_at", precision: 6, null: false
@@ -124,8 +127,10 @@ ActiveRecord::Schema.define(version: 2021_03_22_075922) do
     t.uuid "quote_asset_id"
     t.string "base_asset_symbol"
     t.string "quote_asset_symbol"
+    t.decimal "turnover", default: "0.0"
     t.decimal "maker_turnover", default: "0.0"
     t.decimal "taker_turnover", default: "0.0"
+    t.integer "ocean_orders_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["base_asset_id"], name: "index_ocean_markets_on_base_asset_id"

@@ -8,6 +8,8 @@ module Types
     field :maker_turnover, Float, null: false
     field :taker_turnover, Float, null: false
     field :market_id, String, null: false
+    field :ocean_orders_count, Int, null: false
+    field :turnover, Float, null: false
 
     field :base_asset, Types::MixinAssetType, null: false
     field :quote_asset, Types::MixinAssetType, null: false

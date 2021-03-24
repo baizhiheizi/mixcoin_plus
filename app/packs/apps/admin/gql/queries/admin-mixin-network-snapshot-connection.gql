@@ -1,5 +1,8 @@
-query AdminMixinNetworkSnapshotConnection($after: String) {
-  adminMixinNetworkSnapshotConnection(after: $after) {
+query AdminMixinNetworkSnapshotConnection($after: String, $oceanOrderId: ID) {
+  adminMixinNetworkSnapshotConnection(
+    after: $after
+    oceanOrderId: $oceanOrderId
+  ) {
     nodes {
       id
       type
@@ -8,10 +11,11 @@ query AdminMixinNetworkSnapshotConnection($after: String) {
       snapshotId
       amount
       data
+      opponentId
       opponent {
         avatar
         name
-        mixinUuid
+        mixinId
       }
       asset {
         assetId

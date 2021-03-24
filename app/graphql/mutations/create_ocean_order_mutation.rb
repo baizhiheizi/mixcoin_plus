@@ -13,17 +13,19 @@ module Mutations
     def resolve(params)
       return if current_user.blank?
 
+      price = params[:price].to_f
+      funds = params[:funds].to_f
       current_user.ocean_orders.create!(
         ocean_market_id: params[:ocean_market_id],
         side: params[:side],
         order_type: params[:order_type],
-        price: params[:price].to_f,
+        price: price,
         remaining_amount: if params[:side] == 'ask'
-                            params[:funds].to_f.round(8)
+                            funds.round(8)
                           else
-                            params[:order_type] == 'limit' ? (params[:funds].to_f / params[:price]).round(8) : 0.0
+                            params[:order_type] == 'limit' ? (funds / price).round(8) : 0.0
                           end,
-        remaining_funds: (params[:side] == 'ask' ? params[:funds].to_f * params[:price].to_f : params[:funds].to_f).round(8)
+        remaining_funds: (params[:side] == 'ask' ? funds * price : funds).round(8)
       )
     end
   end

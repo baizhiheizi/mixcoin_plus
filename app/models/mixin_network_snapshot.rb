@@ -88,7 +88,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   def process!
     return if processed?
 
-    touch_proccessed_at
+    raise 'No Processor Implemented!'
   end
 
   def touch_proccessed_at
@@ -96,11 +96,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   end
 
   def process_async
-    if amount.negative?
-      touch_proccessed_at
-    else
-      ProcessMixinNetworkSnapshotWorker.perform_async id
-    end
+    MixinNetworkSnapshotProcessWorker.perform_async id
   end
 
   private

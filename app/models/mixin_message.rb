@@ -5,12 +5,15 @@
 # Table name: mixin_messages
 #
 #  id                      :uuid             not null, primary key
-#  content(decrepted data) :string
+#  category                :string
+#  content(decrypted data) :string
 #  processed_at            :datetime
 #  raw                     :json
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  conversation_id         :uuid
 #  message_id              :uuid
+#  user_id                 :uuid
 #
 # Indexes
 #
@@ -29,18 +32,6 @@ class MixinMessage < ApplicationRecord
   after_commit :process_async, on: :create
 
   scope :unprocessed, -> { where(processed_at: nil) }
-
-  def category
-    data['category']
-  end
-
-  def user_id
-    data['user_id']
-  end
-
-  def conversation_id
-    data['conversation_id']
-  end
 
   def plain?
     /^PLAIN_/.match? category
@@ -71,6 +62,11 @@ class MixinMessage < ApplicationRecord
   def setup_attributes
     return unless new_record?
 
-    self.content = Base64.decode64 raw['data']['data'].to_s
+    assign_attributes(
+      content: Base64.decode64(raw['data']['data'].to_s),
+      category: raw['data']['category'],
+      user_id: raw['data']['user_id'],
+      conversation_id: raw['data']['conversation_id']
+    )
   end
 end

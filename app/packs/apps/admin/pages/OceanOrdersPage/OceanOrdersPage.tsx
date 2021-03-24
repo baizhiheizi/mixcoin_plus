@@ -3,6 +3,7 @@ import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import { useAdminOceanOrderConnectionQuery } from 'graphqlTypes';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function OceanOrdersPage() {
   const {
@@ -79,12 +80,22 @@ export default function OceanOrdersPage() {
       key: 'createdAt',
       title: 'createdAt',
     },
+    {
+      dataIndex: 'actions',
+      key: 'actions',
+      render: (_, order) => (
+        <>
+          <Link to={`/ocean_orders/${order.id}`}>Detail</Link>
+        </>
+      ),
+      title: 'actions',
+    },
   ];
 
   return (
     <>
       <PageHeader
-        title='Users Manage'
+        title='Ocean Orders Manage'
         extra={[
           <Button key='refresh' type='primary' onClick={() => refetch()}>
             Refresh

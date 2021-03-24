@@ -33,7 +33,7 @@ class OceanOrder < ApplicationRecord
   extend Enumerize
   include AASM
 
-  belongs_to :ocean_market
+  belongs_to :ocean_market, counter_cache: true
   belongs_to :user, inverse_of: :ocean_orders
   belongs_to :broker, class_name: 'OceanBroker', primary_key: :mixin_uuid, inverse_of: :ocean_orders
   belongs_to :base_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
