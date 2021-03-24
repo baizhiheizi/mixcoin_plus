@@ -51,13 +51,14 @@ class User < ApplicationRecord
     return if assets_synced_at? && Time.current - assets_synced_at < 1.minute
 
     mixin_assets.each do |_asset|
-      asset = assets.find_by(asset_id: _asset['asset_id'])
+      asset = assets.includes(:asset).find_by(asset_id: _asset['asset_id'])
       if asset.present?
         asset.update raw: _asset
       else
         assets.create_with(raw: _asset).find_or_create_by(asset_id: _asset['asset_id'])
       end
     end
+    update assets_synced_at: Time.current
   end
 
   def sync_assets_async

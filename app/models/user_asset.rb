@@ -19,7 +19,7 @@
 #  index_user_assets_on_user_id   (user_id)
 #
 class UserAsset < ApplicationRecord
-  store :raw, accessors: %i[name symbol chain_id icon_url price_btc price_usd]
+  store :raw, accessors: %i[name symbol chain_id icon_url price_btc price_usd change_usd change_btc]
 
   belongs_to :user
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, optional: true

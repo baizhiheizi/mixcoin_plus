@@ -22,7 +22,7 @@ const LOAD_STATE = {
 
 export default function PullComponent(props: {
   refetch: () => any;
-  fetchMore: () => any;
+  fetchMore?: () => any;
   hasNextPage: boolean;
   children?: React.ReactChildren | React.ReactChild | any;
 }) {
@@ -87,7 +87,9 @@ export default function PullComponent(props: {
         handler: () => {
           if (hasNextPage) {
             setLoading(LOAD_STATE.loading);
-            fetchMore().then(() => setLoading(LOAD_STATE.success));
+            if (fetchMore) {
+              fetchMore().then(() => setLoading(LOAD_STATE.success));
+            }
           } else {
             setLoading(LOAD_STATE.complete);
           }

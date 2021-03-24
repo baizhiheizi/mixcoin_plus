@@ -7,6 +7,9 @@ module Types
     field :name, String, null: false
     field :symbol, String, null: false
     field :balance, Float, null: false
+    field :balance_usd, Float, null: false
+    field :change_usd, Float, null: true
+    field :change_btc, Float, null: true
     field :icon_url, String, null: true
     field :chain_id, String, null: true
     field :price_btc, Float, null: true

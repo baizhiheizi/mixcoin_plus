@@ -285,6 +285,7 @@ export type Query = {
   oceanMarket: OceanMarket;
   oceanMarketConnection: OceanMarketConnection;
   oceanOrderConnection: OceanOrderConnection;
+  userAssets: Array<UserAsset>;
 };
 
 
@@ -390,7 +391,10 @@ export type UserAsset = {
   __typename?: 'UserAsset';
   assetId: Scalars['String'];
   balance: Scalars['Float'];
+  balanceUsd: Scalars['Float'];
   chainId?: Maybe<Scalars['String']>;
+  changeBtc?: Maybe<Scalars['Float']>;
+  changeUsd?: Maybe<Scalars['Float']>;
   createdAt: Scalars['ISO8601DateTime'];
   iconUrl?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -734,6 +738,17 @@ export type OceanOrderConnectionQuery = (
       & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
     ) }
   ) }
+);
+
+export type UserAssetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserAssetsQuery = (
+  { __typename?: 'Query' }
+  & { userAssets: Array<(
+    { __typename?: 'UserAsset' }
+    & Pick<UserAsset, 'assetId' | 'name' | 'symbol' | 'iconUrl' | 'chainId' | 'balance' | 'balanceUsd' | 'priceUsd' | 'changeUsd' | 'changeBtc'>
+  )> }
 );
 
 
@@ -1509,3 +1524,46 @@ export function useOceanOrderConnectionLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type OceanOrderConnectionQueryHookResult = ReturnType<typeof useOceanOrderConnectionQuery>;
 export type OceanOrderConnectionLazyQueryHookResult = ReturnType<typeof useOceanOrderConnectionLazyQuery>;
 export type OceanOrderConnectionQueryResult = Apollo.QueryResult<OceanOrderConnectionQuery, OceanOrderConnectionQueryVariables>;
+export const UserAssetsDocument = gql`
+    query UserAssets {
+  userAssets {
+    assetId
+    name
+    symbol
+    iconUrl
+    chainId
+    balance
+    balanceUsd
+    priceUsd
+    changeUsd
+    changeBtc
+  }
+}
+    `;
+
+/**
+ * __useUserAssetsQuery__
+ *
+ * To run a query within a React component, call `useUserAssetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserAssetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserAssetsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserAssetsQuery(baseOptions?: Apollo.QueryHookOptions<UserAssetsQuery, UserAssetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserAssetsQuery, UserAssetsQueryVariables>(UserAssetsDocument, options);
+      }
+export function useUserAssetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserAssetsQuery, UserAssetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserAssetsQuery, UserAssetsQueryVariables>(UserAssetsDocument, options);
+        }
+export type UserAssetsQueryHookResult = ReturnType<typeof useUserAssetsQuery>;
+export type UserAssetsLazyQueryHookResult = ReturnType<typeof useUserAssetsLazyQuery>;
+export type UserAssetsQueryResult = Apollo.QueryResult<UserAssetsQuery, UserAssetsQueryVariables>;

@@ -1,3 +1,4 @@
+import { useCurrentUser } from 'apps/application/contexts';
 import { ToastError } from 'apps/application/utils';
 import { PUSD_ASSET_ID, USDT_ASSET_ID } from 'apps/shared';
 import BigNumber from 'bignumber.js';
@@ -31,6 +32,7 @@ export default function ActionComponent(props: {
     setOrderAmount,
   } = props;
   const { t } = useTranslation();
+  const { currentUser } = useCurrentUser();
   const [actionSheetVisible, setActionSheetVisible] = useState(false);
   const [orderSide, setOrderSide] = useState<'ask' | 'bid'>('bid');
   const [orderType, setOrderType] = useState<'limit' | 'market'>('limit');
@@ -49,7 +51,10 @@ export default function ActionComponent(props: {
   });
 
   function confirmBeforePlaceOrder() {
-    if (
+    if (!currentUser) {
+      location.replace('/login');
+      return;
+    } else if (
       orderType === 'limit' &&
       !Boolean(orderAmount) &&
       !Boolean(orderPrice)
@@ -211,19 +216,6 @@ export default function ActionComponent(props: {
     }
 
     return true;
-  }
-
-  function parseNumber(str: any) {
-    if (str === undefined || str === '') {
-      return new BigNumber(0);
-    }
-    const value: any = new BigNumber(str);
-
-    if (isNaN(value)) {
-      return new BigNumber(0);
-    }
-
-    return value;
   }
 
   return (
@@ -458,9 +450,11 @@ export default function ActionComponent(props: {
             }`}
             onClick={confirmBeforePlaceOrder}
           >
-            {orderSide === 'bid'
-              ? `${t('buy')} ${market.baseAsset.symbol}`
-              : `${t('sell')} ${market.baseAsset.symbol}`}
+            {currentUser
+              ? orderSide === 'bid'
+                ? `${t('buy')} ${market.baseAsset.symbol}`
+                : `${t('sell')} ${market.baseAsset.symbol}`
+              : t('connect_wallet')}
           </div>
         )}
       </div>

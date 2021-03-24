@@ -1,5 +1,7 @@
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
+import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
+import { useCurrentUser } from 'apps/application/contexts';
 import { useMixinBot } from 'apps/shared';
 import {
   OceanMarket,
@@ -22,6 +24,7 @@ export default function ExchangePage() {
     'marketId',
   );
   const { t } = useTranslation();
+  const { currentUser } = useCurrentUser();
   const { appId, appName } = useMixinBot();
   const [marketId, setMarketId] = useState(
     marketIdParam || localStorage.getItem('_cachedMarketId') || '',
@@ -115,9 +118,12 @@ export default function ExchangePage() {
           />
         </div>
       </div>
-      <div className='bg-white dark:bg-gray-800'>
-        <OceanOrdersComponent marketId={market.id} />
-      </div>
+      {currentUser && (
+        <div className='bg-white dark:bg-gray-800'>
+          <OceanOrdersComponent marketId={market.id} />
+        </div>
+      )}
+      <TabbarComponent activeTabKey='exchange' />
     </>
   );
 }
@@ -159,8 +165,8 @@ function MarketsComponent(props: {
           key={market.marketId}
           className='flex items-center justify-center py-2 space-x-1'
           onClick={() => {
-            setMarketId(market.marketId);
-            localStorage.setItem('_cachedMarketId', market.marketId);
+            setMarketId(market.id);
+            localStorage.setItem('_cachedMarketId', market.id);
             setSidebarVisible(false);
           }}
         >
@@ -174,21 +180,20 @@ function MarketsComponent(props: {
   );
 
   return (
-    <div className='w-64 h-screen bg-white'>
-      <Tabs value={tabIndex} onChange={(index) => setTabIndex(index)}>
-        <Tabs.Panel title='pUSD'>
-          <MarketsList />
-        </Tabs.Panel>
-        <Tabs.Panel title='BTC'>
-          <MarketsList />
-        </Tabs.Panel>
-        <Tabs.Panel title='XIN'>
-          <MarketsList />
-        </Tabs.Panel>
-        <Tabs.Panel title='USDT'>
-          <MarketsList />
-        </Tabs.Panel>
-      </Tabs>
-    </div>
+    <>
+      <div className='w-64 h-screen pt-12 overflow-auto bg-white'>
+        <Tabs
+          className='fixed top-0 z-10 w-full bg-white'
+          value={tabIndex}
+          onChange={(index) => setTabIndex(index)}
+        >
+          <Tabs.Panel title='pUSD'></Tabs.Panel>
+          <Tabs.Panel title='BTC'></Tabs.Panel>
+          <Tabs.Panel title='XIN'></Tabs.Panel>
+          <Tabs.Panel title='USDT'></Tabs.Panel>
+        </Tabs>
+        <MarketsList />
+      </div>
+    </>
   );
 }

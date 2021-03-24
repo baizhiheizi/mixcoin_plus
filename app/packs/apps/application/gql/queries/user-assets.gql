@@ -1,0 +1,14 @@
+query UserAssets {
+  userAssets {
+    assetId
+    name
+    symbol
+    iconUrl
+    chainId
+    balance
+    balanceUsd
+    priceUsd
+    changeUsd
+    changeBtc
+  }
+}

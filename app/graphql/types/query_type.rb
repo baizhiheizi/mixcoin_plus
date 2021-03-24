@@ -19,5 +19,6 @@ module Types
     field :ocean_market, resolver: Resolvers::OceanMarketResolver
     field :ocean_market_connection, resolver: Resolvers::OceanMarketConnectionResolver
     field :ocean_order_connection, resolver: Resolvers::OceanOrderConnectionResolver
+    field :user_assets, resolver: Resolvers::UserAssetsResolver
   end
 end

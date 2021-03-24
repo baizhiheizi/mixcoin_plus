@@ -1,4 +1,5 @@
 import { useMixin, useMixinBot } from 'apps/shared';
+import { useSwitchLocaleMutation } from 'graphqlTypes';
 import React, { Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -10,11 +11,11 @@ import {
 import { Icon, NavBar } from 'zarm';
 import LoaderComponent from './components/LoaderComponent/LoaderComponent';
 import { useCurrentUser } from './contexts';
-import { useSwitchLocaleMutation } from 'graphqlTypes';
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
 const ExchangePage = React.lazy(
   () => import('./pages/ExchangePage/ExchangePage'),
 );
+const WalletPage = React.lazy(() => import('./pages/WalletPage/WalletPage'));
 
 export default function Routes() {
   const { currentUser } = useCurrentUser();
@@ -44,6 +45,9 @@ export default function Routes() {
           <Route path='/exchange' exact>
             <ExchangePage />
           </Route>
+          <Route path='/wallet' exact>
+            <WalletPage />
+          </Route>
         </Switch>
       </Suspense>
     </Router>
@@ -51,16 +55,14 @@ export default function Routes() {
 }
 
 function NavbarComponent() {
-  const history = useHistory();
   const mixinBot = useMixinBot();
   const { immersive } = useMixin();
 
   if (immersive) {
     return (
       <NavBar
-        className='bg-white dark:bg-gray-900 dark:text-gray-50'
+        className='z-10 bg-white dark:bg-gray-900 dark:text-gray-50'
         title={mixinBot.name}
-        left={<Icon type='arrow-left' onClick={() => history.goBack()} />}
       />
     );
   } else {

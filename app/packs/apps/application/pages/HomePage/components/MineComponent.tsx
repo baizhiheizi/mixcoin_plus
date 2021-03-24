@@ -11,9 +11,9 @@ export default function MineComponent() {
 
   if (!currentUser) {
     return (
-      <div className='px-4 pt-32'>
+      <div className='flex w-64 h-screen bg-white'>
         <Button
-          block
+          className='m-auto'
           onClick={() =>
             Modal.confirm({
               content: t('authorize_tips'),
@@ -22,17 +22,17 @@ export default function MineComponent() {
           }
           theme='primary'
         >
-          {t('please_log_in_first')}
+          {t('connect_wallet')}
         </Button>
       </div>
     );
   }
 
   return (
-    <>
+    <div className='w-64 h-screen bg-white'>
       <div className='pt-8 text-center'>
         <img
-          className='object-cover mx-auto mb-2 rounded-full bg-gray-50 w-14 h-14'
+          className='object-cover w-10 h-10 mx-auto mb-2 rounded-full bg-gray-50'
           src={currentUser.avatar}
         />
         <div className='dark:text-gray-200'>{currentUser.name}</div>
@@ -65,6 +65,6 @@ export default function MineComponent() {
           }
         ></Cell>
       </Panel>
-    </>
+    </div>
   );
 }
