@@ -4,17 +4,18 @@ import {
   useCancelOceanOrderMutation,
   useOceanOrderConnectionQuery,
 } from 'graphqlTypes';
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loading, Modal, Tabs } from 'zarm';
+import { Loading, Modal } from 'zarm';
 
-export default function OceanOrdersComponent(props: { marketId?: string }) {
+export default function OceanOrdersComponent(props: {
+  marketId?: string;
+  filter: 'booking' | 'history';
+}) {
   const { t } = useTranslation();
-  const { marketId } = props;
-  const orderFilters = ['booking', 'history'];
-  const [tabIndex, setTabIndex] = useState(0);
+  const { marketId, filter } = props;
   const { loading, data, refetch, fetchMore } = useOceanOrderConnectionQuery({
-    variables: { oceanMarketId: marketId, filter: orderFilters[tabIndex] },
+    variables: { oceanMarketId: marketId, filter },
   });
   const [cancelOceanOrder] = useCancelOceanOrderMutation({
     update() {
@@ -33,7 +34,7 @@ export default function OceanOrdersComponent(props: { marketId?: string }) {
     },
   } = data;
 
-  const OrderList = () => (
+  return (
     <PullComponent
       hasNextPage={hasNextPage}
       refetch={refetch}
@@ -84,17 +85,5 @@ export default function OceanOrdersComponent(props: { marketId?: string }) {
         </div>
       ))}
     </PullComponent>
-  );
-  return (
-    <>
-      <Tabs value={tabIndex} onChange={(index) => setTabIndex(index)}>
-        <Tabs.Panel title={t('open_orders')}>
-          <OrderList />
-        </Tabs.Panel>
-        <Tabs.Panel title={t('order_history')}>
-          <OrderList />
-        </Tabs.Panel>
-      </Tabs>
-    </>
   );
 }

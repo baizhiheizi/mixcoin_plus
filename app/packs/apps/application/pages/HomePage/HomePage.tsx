@@ -107,7 +107,7 @@ function MarketComponent(props: { type: string }) {
       >
         {markets.map((market) => (
           <div
-            onClick={() => history.push(`/exchange?marketId=${market.id}`)}
+            onClick={() => history.push(`/markets/${market.id}`)}
             key={market.marketId}
             className='flex items-center px-4 py-2'
           >

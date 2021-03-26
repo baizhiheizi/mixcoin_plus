@@ -6,6 +6,7 @@ import { OceanMarket, useCreateOceanOrderMutation } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { ChevronDown as ChevronDownIcon } from 'react-feather';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 import { ActionSheet, Button, Input, Modal, Toast } from 'zarm';
 
 BigNumber.config({
@@ -33,8 +34,12 @@ export default function ActionComponent(props: {
   } = props;
   const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
+  const history = useHistory();
+  const side = new URLSearchParams(history.location.search).get('side');
   const [actionSheetVisible, setActionSheetVisible] = useState(false);
-  const [orderSide, setOrderSide] = useState<'ask' | 'bid'>('bid');
+  const [orderSide, setOrderSide] = useState<'ask' | 'bid'>(
+    side === 'ask' ? 'ask' : 'bid',
+  );
   const [orderType, setOrderType] = useState<'limit' | 'market'>('limit');
   const [paying, setPaying] = useState<boolean>(false);
   const [createOceanOrder] = useCreateOceanOrderMutation({

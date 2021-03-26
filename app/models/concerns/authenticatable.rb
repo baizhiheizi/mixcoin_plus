@@ -9,18 +9,19 @@ module Authenticatable
       res = MixcoinPlusBot.api.read_me access_token: access_token
       raise res.inspect if res['error'].present?
 
-      auth = UserAuthorization.create_with(
-        raw: res['data'],
-        access_token: access_token
-      ).find_or_create_by!(
+      auth = UserAuthorization.find_by(
         uid: res['data'].fetch('user_id'),
         provider: :mixin
       )
-      raw = (auth.raw.presence || {}).merge(res['data'])
-      auth.raw = raw
-      if auth.raw_changed?
-        auth.update! raw: raw
-        auth.user.update_profile raw
+      if auth.present?
+        auth.update! access_token: access_token, raw: res['data']
+      else
+        auth = UserAuthorization.create!(
+          access_token: access_token,
+          raw: res['data'],
+          uid: res['data'].fetch('user_id'),
+          provider: :mixin
+        )
       end
 
       if auth.user.present?

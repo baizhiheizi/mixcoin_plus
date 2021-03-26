@@ -1,14 +1,25 @@
 import { useInterval } from 'ahooks';
-import { fetchTiker, ITick, ITrade, WS_ENDPOINT } from 'apps/application/utils';
-import BigNumber from 'bignumber.js';
-import { OceanMarket } from 'graphqlTypes';
-import pako from 'pako';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import useWebSocket from 'react-use-websocket';
 import { v4 as uuid } from 'uuid';
-import { ActivityIndicator } from 'zarm';
-
+import pako from 'pako';
+import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
+import {
+  fetchTrades,
+  ITick,
+  ITrade,
+  WS_ENDPOINT,
+} from 'apps/application/utils';
+import { OceanMarket, useOceanMarketQuery } from 'graphqlTypes';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useHistory, useParams } from 'react-router';
+import { Tabs } from 'zarm';
+import PriceChartComponent from './components/PriceChartComponent';
+import HeaderComponent from './components/HeaderComponent';
+import HistoryTradesComponent from './components/HistoryTradesComponent';
+import BigNumber from 'bignumber.js';
+import DepthChartComponent from './components/DepthChartComponent';
+import BookComponent from './components/BookComponent';
 BigNumber.config({
   FORMAT: {
     decimalSeparator: '.',
@@ -18,24 +29,30 @@ BigNumber.config({
   },
 });
 
-export default function BookComponent(props: {
-  market: Partial<OceanMarket>;
-  setOrderPrice: (params: any) => any;
-  setOrderAmount: (params: any) => any;
-}) {
+export default function MarketPage() {
+  const history = useHistory();
   const { t } = useTranslation();
-  const { market, setOrderPrice, setOrderAmount } = props;
-  const [connected, setConnected] = useState(false);
+  const { marketId } = useParams<{ marketId: string }>();
+  const { loading, data } = useOceanMarketQuery({
+    variables: { id: marketId },
+  });
+  const [bookConnected, setBookConnected] = useState(false);
+  const [tradesFetched, setTradesFetched] = useState(false);
+  const [trades, setTrades] = useState<ITrade[]>([]);
   const [book, setBook] = useState<{
     asks: ITick[];
     bids: ITick[];
   }>({ asks: [], bids: [] });
-  const [ticker, setTicker] = useState<ITrade>();
 
-  async function refreshTicker() {
-    const res = await fetchTiker(market.marketId);
-    if (res.data && res.data.data) {
-      setTicker(res.data.data);
+  async function refreshTrades() {
+    if (data?.oceanMarket) {
+      const res = await fetchTrades(data?.oceanMarket?.marketId);
+      if (res?.data?.data) {
+        setTrades(res.data.data);
+        if (!tradesFetched) {
+          setTradesFetched(true);
+        }
+      }
     }
   }
 
@@ -121,7 +138,7 @@ export default function BookComponent(props: {
       case 'BOOK-T0':
         const { asks, bids } = msg.data.data;
         setBook({ asks: asks.slice(0, 1000), bids: bids.slice(0, 1000) });
-        setConnected(true);
+        setBookConnected(true);
         break;
       case 'HEARTBEAT':
         return;
@@ -162,105 +179,75 @@ export default function BookComponent(props: {
     shouldReconnect: () => true,
   });
 
-  const parseNumber = (str: string) => {
-    const number = new BigNumber(str);
-    if (number.isLessThan(1)) {
-      return number.toFixed(8);
-    } else if (number.isLessThan(10)) {
-      return number.toFixed(6);
-    } else if (number.isLessThan(100)) {
-      return number.toFixed(4);
-    } else if (number.isLessThan(10000)) {
-      return number.toFixed(2);
-    } else {
-      return number.toFixed(0);
-    }
-  };
-
   useEffect(() => {
-    refreshTicker();
-  }, [market]);
+    refreshTrades();
+  }, [marketId]);
 
   useInterval(() => {
-    refreshTicker();
+    refreshTrades();
   }, 5000);
 
+  if (loading) {
+    return <LoaderComponent />;
+  }
+
+  const { oceanMarket: market } = data;
+
+  if (!Boolean(market)) {
+    return <div className='pt-32 text-center'>:(</div>;
+  }
+
   return (
-    <>
-      <div className='h-48 text-xs'>
-        <div className='flex items-center justify-between mb-2'>
-          <div>
-            {t('price')}({market.quoteAsset.symbol})
-          </div>
-          <div>
-            {t('volume')}({market.baseAsset.symbol})
-          </div>
-        </div>
-        {book.asks.length > 0 ? (
-          book.asks
-            .slice(0, 10)
-            .reverse()
-            .map((ask, index) => (
-              <div
-                key={index}
-                className='flex items-center justify-between'
-                onClick={() => {
-                  setOrderPrice(new BigNumber(ask.price).toFixed(8));
-                  setOrderAmount(new BigNumber(ask.amount).toFixed(8));
-                }}
-              >
-                <div className='text-green-500'>{parseNumber(ask.price)}</div>
-                <div className='text-gray-700'>{parseNumber(ask.amount)}</div>
-              </div>
-            ))
-        ) : connected ? (
-          <div className='text-center text-green-500'>{t('no_ask_order')}</div>
-        ) : (
-          <div className='flex p-4'>
-            <ActivityIndicator type='spinner' className='m-auto' />
-          </div>
-        )}
+    <div className='pb-20'>
+      <HeaderComponent market={market} />
+      <PriceChartComponent
+        market={market}
+        trades={trades}
+        fetched={tradesFetched}
+      />
+      <div className='mb-1'>
+        <Tabs className='bg-white' defaultValue={0}>
+          <Tabs.Panel title={t('open_orders')}>
+            <BookComponent
+              market={market}
+              book={book}
+              connected={bookConnected}
+            />
+          </Tabs.Panel>
+          <Tabs.Panel title={t('depth_chart')}>
+            <DepthChartComponent
+              asks={book.asks}
+              bids={book.bids}
+              connected={bookConnected}
+            />
+          </Tabs.Panel>
+          <Tabs.Panel title={t('history_trades')}>
+            <HistoryTradesComponent
+              fetched={tradesFetched}
+              market={market as OceanMarket}
+              trades={trades.slice(0, 20)}
+            />
+          </Tabs.Panel>
+        </Tabs>
       </div>
-      <div className='h-48 text-xs'>
-        <div className='flex items-center justify-between p-1 mb-2 bg-gray-200'>
-          <div
-            className={`${
-              ticker?.side === 'ASK' ? 'text-green-500' : 'text-red-500'
-            } font-bold`}
-          >
-            {ticker?.price || '-'}
-          </div>
-          {ticker && (
-            <div className='px-2 text-gray-500'>
-              ≈{' $'}
-              {(
-                market.quoteAsset.priceUsd * parseFloat(ticker.price) || 0
-              ).toFixed(4)}
-            </div>
-          )}
-        </div>
-        {book.bids.length > 0 ? (
-          book.bids.slice(0, 10).map((bid, index) => (
-            <div
-              key={index}
-              className='flex items-center justify-between'
-              onClick={() => {
-                setOrderPrice(new BigNumber(bid.price).toFixed(8));
-                setOrderAmount(new BigNumber(bid.amount).toFixed(8));
-              }}
-            >
-              <div className='text-red-500'>{parseNumber(bid.price)}</div>
-              <div className='text-gray-700'>{parseNumber(bid.amount)}</div>
-            </div>
-          ))
-        ) : connected ? (
-          <div className='text-center text-red-500'>{t('no_bid_order')}</div>
-        ) : (
-          <div className='flex p-4'>
-            <ActivityIndicator type='spinner' className='m-auto' />
-          </div>
-        )}
+      <div className='fixed bottom-0 z-50 flex w-full py-4 bg-white shadow-inner'>
+        <a
+          className='flex-1 py-2 mx-2 text-center text-white bg-green-500 rounded'
+          onClick={() => {
+            history.push(`/exchange?marketId=${marketId}&side=bid`);
+          }}
+        >
+          {t('buy')}
+        </a>
+        <a
+          className='flex-1 py-2 mx-2 text-center text-white bg-red-500 rounded'
+          onClick={() => {
+            history.push(`/exchange?marketId=${marketId}&side=ask`);
+          }}
+        >
+          {t('sell')}
+        </a>
       </div>
-    </>
+    </div>
   );
 }

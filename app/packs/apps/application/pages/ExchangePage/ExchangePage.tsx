@@ -1,21 +1,14 @@
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
-import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
-import { useMixinBot } from 'apps/shared';
-import {
-  OceanMarket,
-  useOceanMarketConnectionQuery,
-  useOceanMarketQuery,
-} from 'graphqlTypes';
-import { shareMixinAppCard } from 'mixin-messenger-utils';
+import { OceanMarket, useOceanMarketQuery } from 'graphqlTypes';
 import React, { useEffect, useState } from 'react';
-import { Menu as MenuIcon, Share2 as Share2Icon } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { ActivityIndicator, Popup, Tabs } from 'zarm';
+import { Tabs } from 'zarm';
 import ActionComponent from './components/ActionComponent';
 import BookComponent from './components/BookComponent';
+import HeaderComponent from './components/HeaderComponent';
 import OceanOrdersComponent from './components/OceanOrdersComponent';
 
 export default function ExchangePage() {
@@ -25,11 +18,9 @@ export default function ExchangePage() {
   );
   const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
-  const { appId, appName } = useMixinBot();
   const [marketId, setMarketId] = useState(
     marketIdParam || localStorage.getItem('_cachedMarketId') || '',
   );
-  const [sidebarVisible, setSidebarVisible] = useState(false);
   const [orderPrice, setOrderPrice] = useState<string>('');
   const [orderAmount, setOrderAmount] = useState<string>('');
   const { loading, data } = useOceanMarketQuery({
@@ -60,46 +51,8 @@ export default function ExchangePage() {
   }
 
   return (
-    <>
-      <div className='flex items-center px-4 py-2 mb-1 bg-white dark:bg-gray-800 dark:text-white'>
-        <MenuIcon
-          className='mr-2 w-7 h-7'
-          onClick={() => setSidebarVisible(!sidebarVisible)}
-        />
-        <div className='mr-2 text-lg font-semibold'>
-          {market.baseAsset.symbol}/{market.quoteAsset.symbol}
-        </div>
-        <Share2Icon
-          className='h-5 text-blue-500'
-          onClick={() =>
-            shareMixinAppCard({
-              data: {
-                action: location.href,
-                app_id: appId,
-                description: appName,
-                icon_url: market.baseAsset.iconUrl,
-                title: `${market.baseAsset.symbol}/${market.quoteAsset.symbol}`,
-              },
-            })
-          }
-        />
-      </div>
-      <Popup
-        direction='left'
-        onMaskClick={() => setSidebarVisible(false)}
-        visible={sidebarVisible}
-      >
-        <MarketsComponent
-          setMarketId={(id) => {
-            setMarketId(id);
-            history.replace({
-              ...history.location,
-              search: `?marketId=${id}`,
-            });
-          }}
-          setSidebarVisible={setSidebarVisible}
-        />
-      </Popup>
+    <div className='pb-14'>
+      <HeaderComponent market={market} setMarketId={setMarketId} />
       <div className='flex items-center p-4 mb-1 bg-white dark:bg-gray-800'>
         <div className='w-3/5 pr-2 h-96'>
           <ActionComponent
@@ -118,82 +71,19 @@ export default function ExchangePage() {
           />
         </div>
       </div>
-      {currentUser && (
-        <div className='bg-white dark:bg-gray-800'>
-          <OceanOrdersComponent marketId={market.id} />
-        </div>
-      )}
+      <div className='mb-1 overflow-y-scroll bg-white min-h-72 overscroll-y-contain'>
+        {currentUser && (
+          <Tabs defaultValue={0}>
+            <Tabs.Panel title={t('my_open_orders')}>
+              <OceanOrdersComponent marketId={market.id} filter='booking' />
+            </Tabs.Panel>
+            <Tabs.Panel title={t('my_order_history')}>
+              <OceanOrdersComponent marketId={market.id} filter='booking' />
+            </Tabs.Panel>
+          </Tabs>
+        )}
+      </div>
       <TabbarComponent activeTabKey='exchange' />
-    </>
-  );
-}
-
-function MarketsComponent(props: {
-  setMarketId: (id: string) => any;
-  setSidebarVisible: (params: any) => any;
-}) {
-  const { setMarketId, setSidebarVisible } = props;
-  const quotes = ['pUSD', 'BTC', 'XIN', 'USDT'];
-  const [tabIndex, setTabIndex] = useState(0);
-  const { loading, data, refetch, fetchMore } = useOceanMarketConnectionQuery({
-    variables: { type: quotes[tabIndex] },
-  });
-
-  if (loading) {
-    return (
-      <div className='flex items-center justify-center w-64 h-screen bg-white'>
-        <ActivityIndicator type='spinner' size='lg' />
-      </div>
-    );
-  }
-
-  const {
-    oceanMarketConnection: {
-      nodes: markets,
-      pageInfo: { hasNextPage, endCursor },
-    },
-  } = data;
-
-  const MarketsList = () => (
-    <PullComponent
-      hasNextPage={hasNextPage}
-      refetch={refetch}
-      fetchMore={() => fetchMore({ variables: { after: endCursor } })}
-    >
-      {markets.map((market: any) => (
-        <div
-          key={market.marketId}
-          className='flex items-center justify-center py-2 space-x-1'
-          onClick={() => {
-            setMarketId(market.id);
-            localStorage.setItem('_cachedMarketId', market.id);
-            setSidebarVisible(false);
-          }}
-        >
-          <div className='text-xl font-medium'>{market.baseAsset.symbol}</div>
-          <div className='text-sm text-gray-500 leading-7'>
-            /{market.quoteAsset.symbol}
-          </div>
-        </div>
-      ))}
-    </PullComponent>
-  );
-
-  return (
-    <>
-      <div className='w-64 h-screen pt-12 overflow-auto bg-white'>
-        <Tabs
-          className='fixed top-0 z-10 w-full bg-white'
-          value={tabIndex}
-          onChange={(index) => setTabIndex(index)}
-        >
-          <Tabs.Panel title='pUSD'></Tabs.Panel>
-          <Tabs.Panel title='BTC'></Tabs.Panel>
-          <Tabs.Panel title='XIN'></Tabs.Panel>
-          <Tabs.Panel title='USDT'></Tabs.Panel>
-        </Tabs>
-        <MarketsList />
-      </div>
-    </>
+    </div>
   );
 }

@@ -2,20 +2,14 @@ import { useMixin, useMixinBot } from 'apps/shared';
 import { useSwitchLocaleMutation } from 'graphqlTypes';
 import React, { Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  useHistory,
-} from 'react-router-dom';
-import { Icon, NavBar } from 'zarm';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { NavBar } from 'zarm';
 import LoaderComponent from './components/LoaderComponent/LoaderComponent';
 import { useCurrentUser } from './contexts';
-const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
-const ExchangePage = React.lazy(
-  () => import('./pages/ExchangePage/ExchangePage'),
-);
-const WalletPage = React.lazy(() => import('./pages/WalletPage/WalletPage'));
+import ExchangePage from './pages/ExchangePage/ExchangePage';
+import HomePage from './pages/HomePage/HomePage';
+import WalletPage from './pages/WalletPage/WalletPage';
+const MarketPage = React.lazy(() => import('./pages/MarketPage/MarketPage'));
 
 export default function Routes() {
   const { currentUser } = useCurrentUser();
@@ -47,6 +41,9 @@ export default function Routes() {
           </Route>
           <Route path='/wallet' exact>
             <WalletPage />
+          </Route>
+          <Route path='/markets/:marketId' exact>
+            <MarketPage />
           </Route>
         </Switch>
       </Suspense>

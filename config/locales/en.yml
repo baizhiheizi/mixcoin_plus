@@ -45,11 +45,19 @@ en:
   sell: Sell
   volume: Volume
   price: Price
+  buy_price: Buy Price
+  sell_price: Sell Price
+  buy_volume: Buy Amoun
+  sell_volume: Sell Amoun
+  depth_chart: Depth Chart
+  time: Time
   limit_order: Limit
   market_order: Market
   market_price: Market Price
+  my_open_orders: Open Orders
+  my_order_history: Order History
   open_orders: Open Orders
-  order_history: Order History
+  history_trades: History Trades
   market_order_warning: Market Price
   confirm_cancel_ocean_order: Sure to cancel this order?
   order_will_be_handled: Order will be open when the payment received and you will be notified.
@@ -59,6 +67,8 @@ en:
   order_too_big: Order too big
   no_ask_order: No Asks Yet
   no_bid_order: No Bids Yet
+  no_depth_yet: No Depth Yet
+  no_trades_yet: No Trades Yet
   confirm_place_ask_order: Are you sure to sell
   confirm_place_bid_order: Are you sure to buy
   important_warning: '[IMPORTANT WARNING: Your price is far from Market Price. Are you sure to continue?]'
