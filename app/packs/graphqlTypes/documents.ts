@@ -54,6 +54,7 @@ export type MixinAsset = {
   __typename?: 'MixinAsset';
   assetId: Scalars['String'];
   chainId?: Maybe<Scalars['String']>;
+  changeUsd?: Maybe<Scalars['Float']>;
   createdAt: Scalars['ISO8601DateTime'];
   iconUrl?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -353,6 +354,7 @@ export type QueryOceanMarketArgs = {
 export type QueryOceanMarketConnectionArgs = {
   type: Scalars['String'];
   after?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
@@ -668,6 +670,7 @@ export type SwitchLocaleMutation = (
 export type OceanMarketConnectionQueryVariables = Exact<{
   type: Scalars['String'];
   after?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -680,7 +683,7 @@ export type OceanMarketConnectionQuery = (
       & Pick<OceanMarket, 'id' | 'marketId'>
       & { baseAsset: (
         { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'changeUsd' | 'priceUsd'>
       ), quoteAsset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
@@ -704,10 +707,10 @@ export type OceanMarketQuery = (
     & Pick<OceanMarket, 'id' | 'marketId'>
     & { baseAsset: (
       { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd' | 'changeUsd'>
     ), quoteAsset: (
       { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd'>
     ) }
   ) }
 );
@@ -1357,14 +1360,16 @@ export type SwitchLocaleMutationHookResult = ReturnType<typeof useSwitchLocaleMu
 export type SwitchLocaleMutationResult = Apollo.MutationResult<SwitchLocaleMutation>;
 export type SwitchLocaleMutationOptions = Apollo.BaseMutationOptions<SwitchLocaleMutation, SwitchLocaleMutationVariables>;
 export const OceanMarketConnectionDocument = gql`
-    query OceanMarketConnection($type: String!, $after: String) {
-  oceanMarketConnection(type: $type, after: $after) {
+    query OceanMarketConnection($type: String!, $after: String, $query: String) {
+  oceanMarketConnection(type: $type, after: $after, query: $query) {
     nodes {
       id
       baseAsset {
         assetId
         symbol
         iconUrl
+        changeUsd
+        priceUsd
       }
       quoteAsset {
         assetId
@@ -1395,6 +1400,7 @@ export const OceanMarketConnectionDocument = gql`
  *   variables: {
  *      type: // value for 'type'
  *      after: // value for 'after'
+ *      query: // value for 'query'
  *   },
  * });
  */
@@ -1417,11 +1423,14 @@ export const OceanMarketDocument = gql`
       assetId
       symbol
       iconUrl
+      priceUsd
+      changeUsd
     }
     quoteAsset {
       assetId
       symbol
       iconUrl
+      priceUsd
     }
     marketId
   }

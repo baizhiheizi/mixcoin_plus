@@ -19,7 +19,7 @@
 #  index_mixin_assets_on_asset_id  (asset_id) UNIQUE
 #
 class MixinAsset < ApplicationRecord
-  store :raw, accessors: %i[name symbol chain_id icon_url]
+  store :raw, accessors: %i[name symbol chain_id icon_url change_usd change_btc price_usd price_btc]
 
   after_commit :generate_ocean_markets_async, on: :create
 

@@ -28,7 +28,7 @@ const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        oceanMarketConnection: customizedConnectionMergeFunction(['type']),
+        oceanMarketConnection: customizedConnectionMergeFunction(['type', 'query']),
         oceanOrderConnection: customizedConnectionMergeFunction([
           'oceanMarketId',
           'filter',

@@ -49,6 +49,10 @@ gem 'noticed'
 gem 'enumerize'
 # A ruby implementation of the RFC 7519 OAuth JSON Web Token (JWT) standard.
 gem 'jwt'
+# Object-based searching. http://ransack-demo.herokuapp.com
+gem 'ransack'
+# Store different kinds of actions (Like, Follow, Star, Block, etc.) in a single table via ActiveRecord Polymorphic Associations.
+gem 'action-store'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

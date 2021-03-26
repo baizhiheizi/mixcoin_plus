@@ -10,5 +10,6 @@ module Types
     field :chain_id, String, null: true
     field :price_btc, Float, null: true
     field :price_usd, Float, null: true
+    field :change_usd, Float, null: true
   end
 end

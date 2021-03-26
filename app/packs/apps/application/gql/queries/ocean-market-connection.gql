@@ -1,11 +1,13 @@
-query OceanMarketConnection($type: String!, $after: String) {
-  oceanMarketConnection(type: $type, after: $after) {
+query OceanMarketConnection($type: String!, $after: String, $query: String) {
+  oceanMarketConnection(type: $type, after: $after, query: $query) {
     nodes {
       id
       baseAsset {
         assetId
         symbol
         iconUrl
+        changeUsd
+        priceUsd
       }
       quoteAsset {
         assetId

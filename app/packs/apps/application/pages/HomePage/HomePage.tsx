@@ -1,12 +1,9 @@
-import PullComponent from 'apps/application/components/PullComponent/PullComponent';
-import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
-import { useOceanMarketConnectionQuery } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { User as UserIcon } from 'react-feather';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
-import { ActivityIndicator, Message, Popup, Tabs } from 'zarm';
+import { Popup, Tabs } from 'zarm';
+import { MarketsComponent } from './components/MarketsComponent';
 import MineComponent from './components/MineComponent';
 
 export default function HomePage() {
@@ -51,8 +48,8 @@ export default function HomePage() {
           <Tabs.Panel title='USDT'></Tabs.Panel>
         </Tabs>
       </div>
-      <div className='pt-12 pb-16'>
-        <MarketComponent type={tabs[tabIndex]} />
+      <div className='pt-12 pb-16 bg-white'>
+        <MarketsComponent type={tabs[tabIndex]} />
       </div>
       <Popup
         direction='left'
@@ -61,70 +58,6 @@ export default function HomePage() {
       >
         <MineComponent />
       </Popup>
-    </>
-  );
-}
-
-function MarketComponent(props: { type: string }) {
-  const history = useHistory();
-  const { t } = useTranslation();
-  const { currentUser } = useCurrentUser();
-  const { loading, data, refetch, fetchMore } = useOceanMarketConnectionQuery({
-    variables: { type: props.type },
-  });
-
-  if (loading) {
-    return (
-      <div className='flex items-center justify-center h-screen'>
-        <ActivityIndicator size='lg' />
-      </div>
-    );
-  }
-
-  const {
-    oceanMarketConnection: {
-      nodes: markets,
-      pageInfo: { hasNextPage, endCursor },
-    },
-  } = data;
-  return (
-    <>
-      {!currentUser && (
-        <Message size='lg' theme='warning'>
-          {t('connect_wallet_to_exhange')}
-          <a
-            className='mx-1 font-semibold'
-            onClick={() => location.replace('/login')}
-          >
-            {t('connect_wallet')}
-          </a>
-        </Message>
-      )}
-      <PullComponent
-        refetch={refetch}
-        fetchMore={() => fetchMore({ variables: { after: endCursor } })}
-        hasNextPage={hasNextPage}
-      >
-        {markets.map((market) => (
-          <div
-            onClick={() => history.push(`/markets/${market.id}`)}
-            key={market.marketId}
-            className='flex items-center px-4 py-2'
-          >
-            <img
-              className='w-8 h-8 mr-2 rounded-full'
-              src={market.baseAsset.iconUrl.replace(/s128$/, 's32')}
-            />
-            <div className='flex items-center'>
-              <div className='mr-1 text-base font-semibold'>
-                {market.baseAsset.symbol}
-              </div>
-              <div className='text-xs'>/{market.quoteAsset.symbol}</div>
-            </div>
-          </div>
-        ))}
-      </PullComponent>
-      <TabbarComponent activeTabKey='home' />
     </>
   );
 }

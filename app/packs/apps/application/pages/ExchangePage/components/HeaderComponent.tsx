@@ -40,6 +40,24 @@ export default function HeaderComponent(props: {
             })
           }
         />
+        <div className='ml-auto text-right'>
+          {market.baseAsset.changeUsd && (
+            <div
+              className={`${
+                market.baseAsset.changeUsd > 0
+                  ? 'text-green-500'
+                  : 'text-red-500'
+              }`}
+            >
+              {(market.baseAsset.changeUsd * 100)?.toFixed(2)}%
+            </div>
+          )}
+          {market.baseAsset.priceUsd && (
+            <div className='text-xs text-gray-300'>
+              ≈ ${market.baseAsset.priceUsd?.toFixed(2)}
+            </div>
+          )}
+        </div>
       </div>
       <Popup
         direction='left'

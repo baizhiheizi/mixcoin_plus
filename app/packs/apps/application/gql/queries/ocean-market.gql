@@ -5,11 +5,14 @@ query OceanMarket($id: ID) {
       assetId
       symbol
       iconUrl
+      priceUsd
+      changeUsd
     }
     quoteAsset {
       assetId
       symbol
       iconUrl
+      priceUsd
     }
     marketId
   }
