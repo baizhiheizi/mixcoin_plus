@@ -16,8 +16,8 @@ en:
   price: Price
   buy_price: Buy Price
   sell_price: Sell Price
-  buy_volume: Buy Amoun
-  sell_volume: Sell Amoun
+  buy_volume: Buy Amount
+  sell_volume: Sell Amount
   depth_chart: Depth Chart
   time: Time
   limit_order: Limit
@@ -30,7 +30,6 @@ en:
   market_order_warning: Market Price
   confirm_cancel_ocean_order: Sure to cancel this order?
   order_will_be_handled: Order will be open when the payment received and you will be notified.
-  from_ohmy_exchange: OhMy Ex
   price_too_high: Price too high
   order_too_small: Order too small
   order_too_big: Order too big
@@ -42,3 +41,4 @@ en:
   confirm_place_bid_order: Are you sure to buy
   confirm_unfavorite_market: Are you sure to unfavorite this market?
   important_warning: '[IMPORTANT WARNING: Your price is far from Market Price. Are you sure to continue?]'
+  already_paid: Already Paid

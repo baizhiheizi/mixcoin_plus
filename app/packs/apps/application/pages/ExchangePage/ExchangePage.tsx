@@ -5,7 +5,7 @@ import { OceanMarket, useOceanMarketQuery } from 'graphqlTypes';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { Tabs } from 'zarm';
+import { Button, Modal, Tabs } from 'zarm';
 import ActionComponent from './components/ActionComponent';
 import BookComponent from './components/BookComponent';
 import HeaderComponent from './components/HeaderComponent';
@@ -53,7 +53,7 @@ export default function ExchangePage() {
   return (
     <div className='pb-14'>
       <HeaderComponent market={market} setMarketId={setMarketId} />
-      <div className='flex items-center p-4 mb-1 bg-white dark:bg-gray-800'>
+      <div className='flex items-center p-4 mb-1 bg-white dark:bg-dark'>
         <div className='w-3/5 pr-2 h-96'>
           <ActionComponent
             market={market as OceanMarket}
@@ -71,7 +71,7 @@ export default function ExchangePage() {
           />
         </div>
       </div>
-      <div className='mb-1 overflow-y-scroll bg-white min-h-72 overscroll-y-contain'>
+      <div className='mb-1 overflow-y-scroll bg-white min-h-72 overscroll-y-contain dark:bg-dark'>
         {currentUser && (
           <Tabs defaultValue={0}>
             <Tabs.Panel title={t('my_open_orders')}>
@@ -83,6 +83,20 @@ export default function ExchangePage() {
           </Tabs>
         )}
       </div>
+      <Modal
+        visible={!currentUser}
+        maskClosable
+        onCancel={() => history.replace('/')}
+        footer={
+          <Button
+            block
+            theme='primary'
+            onClick={() => location.replace('/login')}
+          >
+            {t('connect_wallet')}
+          </Button>
+        }
+      ></Modal>
       <TabbarComponent activeTabKey='exchange' />
     </div>
   );

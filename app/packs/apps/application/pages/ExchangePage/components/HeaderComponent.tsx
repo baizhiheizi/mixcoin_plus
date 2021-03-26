@@ -18,7 +18,7 @@ export default function HeaderComponent(props: {
 
   return (
     <>
-      <div className='flex items-center px-4 py-2 mb-1 bg-white dark:bg-gray-800 dark:text-white'>
+      <div className='flex items-center px-4 py-2 mb-1 bg-white dark:bg-dark dark:text-white'>
         <MenuIcon
           className='mr-2 w-7 h-7'
           onClick={() => setSidebarVisible(!sidebarVisible)}
@@ -92,7 +92,7 @@ function MarketsComponent(props: {
 
   if (loading) {
     return (
-      <div className='flex items-center justify-center w-64 h-screen bg-white'>
+      <div className='flex items-center justify-center w-64 h-screen bg-white dark:bg-dark'>
         <ActivityIndicator type='spinner' size='lg' />
       </div>
     );
@@ -121,7 +121,9 @@ function MarketsComponent(props: {
             setSidebarVisible(false);
           }}
         >
-          <div className='text-xl font-medium'>{market.baseAsset.symbol}</div>
+          <div className='text-xl font-medium dark:text-white'>
+            {market.baseAsset.symbol}
+          </div>
           <div className='text-sm text-gray-500 leading-7'>
             /{market.quoteAsset.symbol}
           </div>
@@ -132,9 +134,9 @@ function MarketsComponent(props: {
 
   return (
     <>
-      <div className='w-64 h-screen pt-12 overflow-auto bg-white'>
+      <div className='w-64 h-screen pt-12 overflow-auto bg-white dark:bg-dark'>
         <Tabs
-          className='fixed top-0 z-10 w-full bg-white'
+          className='fixed top-0 z-10 w-full bg-white dark:bg-dark'
           value={tabIndex}
           onChange={(index) => setTabIndex(index)}
         >

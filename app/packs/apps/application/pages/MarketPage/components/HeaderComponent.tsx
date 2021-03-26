@@ -29,7 +29,7 @@ export default function HeaderComponent(props: {
 
   return (
     <>
-      <div className='flex items-center px-4 py-2 mb-1 bg-white dark:bg-gray-800 dark:text-white'>
+      <div className='flex items-center px-4 py-2 mb-1 bg-white dark:bg-dark dark:text-white'>
         <div className='mr-4 text-lg font-semibold'>
           {market.baseAsset.symbol}/{market.quoteAsset.symbol}
         </div>

@@ -20,11 +20,11 @@ export default function HomePage() {
 
   return (
     <>
-      <div className='fixed z-10 flex items-center w-full bg-white'>
+      <div className='fixed z-10 flex items-center w-full bg-white dark:bg-dark'>
         {currentUser ? (
           <img
             className='w-6 h-6 mx-2 rounded-full'
-            src={currentUser.avatar.replace(/s128$/, 's32')}
+            src={currentUser.avatar.replace(/s128$/, 's64')}
             onClick={() => setSidebarVisible(!sidebarVisible)}
           />
         ) : (
@@ -48,7 +48,7 @@ export default function HomePage() {
           <Tabs.Panel title='USDT'></Tabs.Panel>
         </Tabs>
       </div>
-      <div className='pt-12 pb-16 bg-white'>
+      <div className='h-full pt-12 pb-16 bg-white dark:bg-dark'>
         <MarketsComponent type={tabs[tabIndex]} />
       </div>
       <Popup

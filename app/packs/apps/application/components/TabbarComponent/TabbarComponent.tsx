@@ -46,7 +46,7 @@ export default function TabbarComponent(props: { activeTabKey: ITabKey }) {
           />
         </TabBar>
         <div
-          className='fixed bottom-0 w-full bg-white'
+          className='fixed bottom-0 w-full bg-white dark:bg-dark'
           style={{ height: 'env(safe-area-inset-bottom)' }}
         />
       </div>

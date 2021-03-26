@@ -231,11 +231,10 @@ export default function BookComponent(props: {
             {ticker?.price || '-'}
           </div>
           {ticker && (
-            <div className='px-2 text-gray-500'>
-              ≈{' $'}
-              {(
+            <div className='px-2 text-gray-500 line-clamp-1'>
+              {`≈ $${(
                 market.quoteAsset.priceUsd * parseFloat(ticker.price) || 0
-              ).toFixed(4)}
+              ).toFixed(2)}`}
             </div>
           )}
         </div>

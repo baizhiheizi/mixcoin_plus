@@ -307,7 +307,7 @@ export default function ActionComponent(props: {
                 value={orderPrice}
                 onChange={(value: string) => setOrderPrice(value)}
                 placeholder={`${t('price')}(${market.quoteAsset.symbol})`}
-                className='w-full h-10 p-2 text-base text-center border rounded'
+                className='w-full h-10 p-2 text-base text-center border rounded dark:border-gray-500'
               />
               <Button
                 disabled={paying}
@@ -355,7 +355,7 @@ export default function ActionComponent(props: {
                 value={orderAmount}
                 onChange={(value: string) => setOrderAmount(value)}
                 placeholder={`${t('volume')}(${market.baseAsset.symbol})`}
-                className='w-full h-10 p-2 text-base text-center border rounded'
+                className='w-full h-10 p-2 text-base text-center border rounded dark:border-gray-500'
               />
               <Button
                 disabled={paying}

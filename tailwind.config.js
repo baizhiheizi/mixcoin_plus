@@ -13,7 +13,12 @@ module.exports = {
       72: '18rem',
       80: '20rem',
       96: '24rem',
+      screen: '100vh',
     },
+    backgroundColor: (theme) => ({
+      ...theme('colors'),
+      dark: '#1b1c1e',
+    }),
     extend: {},
   },
   variants: {

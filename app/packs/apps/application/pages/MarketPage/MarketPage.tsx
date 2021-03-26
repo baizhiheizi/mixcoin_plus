@@ -206,7 +206,7 @@ export default function MarketPage() {
         fetched={tradesFetched}
       />
       <div className='mb-1'>
-        <Tabs className='bg-white' defaultValue={0}>
+        <Tabs className='bg-white dark:bg-dark' defaultValue={0}>
           <Tabs.Panel title={t('open_orders')}>
             <BookComponent
               market={market}
@@ -231,7 +231,7 @@ export default function MarketPage() {
         </Tabs>
       </div>
       <div
-        className='fixed bottom-0 z-50 flex w-full py-4 bg-white shadow-inner'
+        className='fixed bottom-0 z-50 flex w-full py-4 bg-white shadow-inner dark:bg-dark'
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         <a

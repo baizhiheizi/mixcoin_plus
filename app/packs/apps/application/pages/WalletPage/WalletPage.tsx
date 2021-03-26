@@ -45,14 +45,14 @@ function UserAssets() {
     .reduce((prev, cur) => prev + cur, 0);
   return (
     <>
-      <div className='py-4 mb-1 text-2xl text-center text-gray-700 bg-white'>
+      <div className='py-4 mb-1 text-2xl text-center text-gray-700 bg-white text-gray-50 dark:bg-dark dark:text-white'>
         ≈ ${total.toFixed(2)}
       </div>
       <PullComponent refetch={refetch} hasNextPage={false}>
         {userAssets.map((asset) => (
           <div
             key={asset.assetId}
-            className='flex items-center px-4 py-2 bg-white'
+            className='flex items-center px-4 py-2 bg-white dark:bg-dark'
           >
             <img
               className='w-10 h-10 mr-2 rounded-full'

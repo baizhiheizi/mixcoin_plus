@@ -6,7 +6,7 @@ zh-CN:
   favorite: 自选
   language: 语言
   logout: 退出登录
-  connect_wallet: 连接钱包
+  connect_wallet: 链接钱包
   connect_wallet_to_exhange: 交易您 Mixin 钱包里的任意加密货币
   logout_confirm: 确定要退出登录吗？
   authorize_tips: 即将授权 Mixcoin 登录
@@ -30,6 +30,7 @@ zh-CN:
   market_order_warning: 以市场成交价为准
   confirm_cancel_ocean_order: 确定要取消当前委托吗？
   order_will_be_handled: 订单在收到转账后会立即处理，请留意机器人的消息提醒
+  from_ohmy_exchange: 我信交易
   price_too_high: 价格过高
   order_too_small: 订单太小了
   order_too_big: 订单太大了

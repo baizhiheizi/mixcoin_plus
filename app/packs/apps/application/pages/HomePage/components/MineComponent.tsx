@@ -29,7 +29,7 @@ export default function MineComponent() {
   }
 
   return (
-    <div className='w-64 h-screen bg-white'>
+    <div className='w-64 h-screen bg-white dark:bg-dark'>
       <div className='pt-8 text-center'>
         <img
           className='object-cover w-10 h-10 mx-auto mb-2 rounded-full bg-gray-50'
