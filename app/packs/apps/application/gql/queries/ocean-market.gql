@@ -1,6 +1,7 @@
 query OceanMarket($id: ID) {
   oceanMarket(id: $id) {
     id
+    favorited
     baseAsset {
       assetId
       symbol

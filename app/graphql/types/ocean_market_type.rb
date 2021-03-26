@@ -10,9 +10,16 @@ module Types
     field :market_id, String, null: false
     field :ocean_orders_count, Int, null: false
     field :turnover, Float, null: false
+    field :favorited, Boolean, null: true
 
     field :base_asset, Types::MixinAssetType, null: false
     field :quote_asset, Types::MixinAssetType, null: false
+
+    def favorited
+      return if context[:current_user].blank?
+
+      context[:current_user].find_action(:favorite, target: object)
+    end
 
     def base_asset
       BatchLoader::GraphQL.for(object.base_asset_id).batch do |asset_ids, loader|

@@ -230,7 +230,10 @@ export default function MarketPage() {
           </Tabs.Panel>
         </Tabs>
       </div>
-      <div className='fixed bottom-0 z-50 flex w-full py-4 bg-white shadow-inner'>
+      <div
+        className='fixed bottom-0 z-50 flex w-full py-4 bg-white shadow-inner'
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
         <a
           className='flex-1 py-2 mx-2 text-center text-white bg-green-500 rounded'
           onClick={() => {

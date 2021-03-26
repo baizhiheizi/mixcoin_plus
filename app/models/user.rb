@@ -43,6 +43,8 @@ class User < ApplicationRecord
 
   delegate :access_token, to: :mixin_authorization
 
+  action_store :favorite, :ocean_market
+
   def mixin_assets
     @mixin_assets ||= MixcoinPlusBot.api.assets(access_token: access_token)&.[]('data') || []
   end

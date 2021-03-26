@@ -3,7 +3,7 @@ zh-CN:
   exchange: 交易
   wallet: 钱包
   mine: 我的
-  favourite: 自选
+  favorite: 自选
   language: 语言
   logout: 退出登录
   connect_wallet: 链接钱包
@@ -40,4 +40,5 @@ zh-CN:
   no_trades_yet: 暂时没有成交
   confirm_place_ask_order: 确定要卖出
   confirm_place_bid_order: 确定要买入
+  confirm_unfavorite_market: 确定要取消收藏交易对吗？
   important_warning: （重要提醒：你的价格偏离市场价过多，确定要下单吗？）

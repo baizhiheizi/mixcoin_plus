@@ -302,6 +302,7 @@ export default function ActionComponent(props: {
                 <div>-</div>
               </Button>
               <Input
+                disabled={paying}
                 type='price'
                 value={orderPrice}
                 onChange={(value: string) => setOrderPrice(value)}

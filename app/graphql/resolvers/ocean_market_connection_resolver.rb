@@ -10,10 +10,10 @@ module Resolvers
 
     def resolve(params)
       markets =
-        if current_user.present?
-          current_user.ocean_markets.where(quote_asset_symbol: params[:type])
+        if current_user.present? && params[:type] == 'favorite'
+          current_user.favorite_ocean_markets
         else
-          OceanMarket.where(quote_asset_symbol: params[:type])
+          (current_user&.ocean_markets || OceanMarket.all).where(quote_asset_symbol: params[:type])
         end
       
       query = params[:query].to_s.strip

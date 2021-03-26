@@ -17,8 +17,9 @@ export default function TabbarComponent(props: { activeTabKey: ITabKey }) {
 
   return (
     <>
-      <div className='fixed z-50 shadow-inner'>
+      <div className='fixed z-50 bg-white shadow-inner'>
         <TabBar
+          style={{ bottom: 'env(safe-area-inset-bottom)' }}
           activeKey={activeTabKey}
           onChange={(value: ITabKey) => {
             if (value === 'home') {
@@ -44,6 +45,10 @@ export default function TabbarComponent(props: { activeTabKey: ITabKey }) {
             icon={<DollarSignIcon />}
           />
         </TabBar>
+        <div
+          className='fixed bottom-0 w-full bg-white'
+          style={{ height: 'env(safe-area-inset-bottom)' }}
+        />
       </div>
     </>
   );

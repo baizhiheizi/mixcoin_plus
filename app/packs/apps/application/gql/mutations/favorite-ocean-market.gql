@@ -1,0 +1,6 @@
+mutation FavoriteOceanMarket($input: FavoriteOceanMarketMutationInput!) {
+  favoriteOceanMarket(input: $input) {
+    id
+    favorited
+  }
+}
