@@ -1,20 +1,37 @@
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
+import { useCurrentUser } from 'apps/application/contexts';
 import { useMixinBot } from 'apps/shared';
-import { OceanMarket, useOceanMarketConnectionQuery } from 'graphqlTypes';
+import {
+  OceanMarket,
+  useFavoriteOceanMarketMutation,
+  useOceanMarketConnectionQuery,
+  useUnfavoriteOceanMarketMutation,
+} from 'graphqlTypes';
 import { shareMixinAppCard } from 'mixin-messenger-utils';
 import React, { useState } from 'react';
-import { Menu as MenuIcon, Share2 as Share2Icon } from 'react-feather';
+import {
+  Menu as MenuIcon,
+  Share2 as Share2Icon,
+  Star as StarIcon,
+} from 'react-feather';
 import { useHistory } from 'react-router';
-import { ActivityIndicator, Popup, Tabs } from 'zarm';
+import { ActivityIndicator, Modal, Popup, Tabs } from 'zarm';
 
 export default function HeaderComponent(props: {
   market: Partial<OceanMarket> & any;
   setMarketId: (id: string) => any;
 }) {
   const history = useHistory();
+  const { currentUser } = useCurrentUser();
   const { market, setMarketId } = props;
   const { appId, appName } = useMixinBot();
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [favorite] = useFavoriteOceanMarketMutation({
+    variables: { input: { oceanMarketId: market.id } },
+  });
+  const [unfavorite] = useUnfavoriteOceanMarketMutation({
+    variables: { input: { oceanMarketId: market.id } },
+  });
 
   return (
     <>
@@ -26,6 +43,26 @@ export default function HeaderComponent(props: {
         <div className='mr-2 text-lg font-semibold'>
           {market.baseAsset.symbol}/{market.quoteAsset.symbol}
         </div>
+        <StarIcon
+          className={`h-5 mr-4 ${
+            market.favorited ? 'text-yellow-500' : 'text-gray-500'
+          }`}
+          onClick={() => {
+            if (!currentUser) {
+              Modal.confirm({
+                content: t('connect_wallet'),
+                onOk: () => location.replace('/'),
+              });
+            } else if (market.favorited) {
+              Modal.confirm({
+                content: t('confirm_unfavorite_market'),
+                onOk: () => unfavorite(),
+              });
+            } else {
+              favorite();
+            }
+          }}
+        />
         <Share2Icon
           className='h-5 text-blue-500'
           onClick={() =>

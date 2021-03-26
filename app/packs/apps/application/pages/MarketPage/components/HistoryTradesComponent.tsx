@@ -14,7 +14,7 @@ export default function HistoryTradesComponent(props: {
   const { t } = useTranslation();
 
   return (
-    <div className='px-4 py-2 text-sm bg-white min-h-72'>
+    <div className='px-4 py-2 text-sm bg-white min-h-72 dark:bg-dark'>
       <div className='mb-2 grid grid-cols-3'>
         <div className='text-left'>
           {t('volume')}({market.baseAsset.symbol})

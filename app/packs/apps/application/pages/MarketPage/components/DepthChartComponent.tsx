@@ -21,7 +21,7 @@ export default function DepthChartComponent(props: {
 
   return (
     <>
-      <div className='px-4 pb-2 mb-1 bg-white'>
+      <div className='px-4 pb-2 mb-1 bg-white dark:bg-dark'>
         {asks.length > 0 && bids.length > 0 ? (
           <HighchartsReact
             containerProps={{ className: 'h-80' }}
