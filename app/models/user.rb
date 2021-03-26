@@ -31,6 +31,7 @@ class User < ApplicationRecord
   has_many :assets, class_name: 'UserAsset', dependent: :restrict_with_exception
   has_many :ocean_markets, through: :assets, inverse_of: false
   has_many :ocean_orders, dependent: :restrict_with_exception
+  has_many :transfers, class_name: 'MixinTransfer', dependent: :restrict_with_exception, inverse_of: :recipient
 
   before_validation :set_profile, on: :create
 

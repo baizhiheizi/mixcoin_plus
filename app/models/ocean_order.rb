@@ -41,6 +41,7 @@ class OceanOrder < ApplicationRecord
   has_many :snapshots, class_name: 'OceanSnapshot', as: :source, dependent: :restrict_with_exception
 
   enumerize :side, in: %w[ask bid], scope: true, predicates: true
+  enumerize :side, in: %w[ask bid], scope: true, predicates: true, i18n_scope: ['activerecord.attributes.ocean_order.sides']
   enumerize :order_type, in: %w[limit market], scope: true, predicates: true
 
   before_validation :set_defaults, on: :create
@@ -63,29 +64,29 @@ class OceanOrder < ApplicationRecord
     state :refunded
 
     # user pay for the order
-    event :pay, after: :transfer_to_ocean_for_creating do
+    event :pay, after: %i[transfer_to_ocean_for_creating notify_for_order_state] do
       transitions from: :drafted, to: :paid
     end
 
     # broker transfer booking memo to ocean engine
-    event :book do
+    event :book, after: :notify_for_order_state do
       transitions from: :paid, to: :booking
     end
 
     # ocean engine complete the order
     # exchanged asset transfered to user
-    event :complete, guards: :all_filled? do
+    event :complete, guards: :all_filled?, after: :notify_for_order_state do
       transitions from: :booking, to: :completed
     end
 
     # user cancel order; broker transfer canceling memo to ocean engine
-    event :cancel, after: :transfer_to_ocean_for_canceling do
+    event :cancel, after: %i[transfer_to_ocean_for_canceling notify_for_order_state] do
       transitions from: :paid, to: :canceling
       transitions from: :booking, to: :canceling
     end
 
     # ocean engine refund to broker & broker refund to user
-    event :refund do
+    event :refund, after: :notify_for_order_state do
       transitions from: :canceling, to: :refunded
       transitions from: :booking, to: :refunded
     end
@@ -107,7 +108,11 @@ class OceanOrder < ApplicationRecord
   def match!
     sync_with_engine
 
-    complete! if booking? && all_filled?
+    if booking? && all_filled?
+      complete!
+    else
+      notify_for_order_state
+    end
   end
 
   def sync_with_engine
@@ -198,52 +203,22 @@ class OceanOrder < ApplicationRecord
     aasm.human_state
   end
 
-  def notify_for_created
-    notify_for_order_state
-  end
-
-  def notify_for_cancelled
-    notify_for_order_state
-  end
-
-  def notify_for_refunded(_asset_id, _amount, _trace_id)
-    currency = Currency.find_by(asset_id: _asset_id)
-    NotificationService
-      .new
-      .app_card(
-        user.mixin_uuid,
-        icon_url: currency.icon_url,
-        title: _amount,
-        description: currency.symbol,
-        action: "mixin://snapshots?trace=#{_trace_id}"
-      )
-    notify_for_order_state
-  end
-
-  def notify_for_matched(_asset_id, _amount, _trace_id)
-    currency = Currency.find_by(asset_id: _asset_id)
-    NotificationService
-      .new
-      .app_card(
-        user.mixin_uuid,
-        icon_url: currency.icon_url,
-        title: _amount,
-        description: currency.symbol,
-        action: "mixin://snapshots?trace=#{_trace_id}"
-      )
-    notify_for_order_state
-  end
-
   def notify_for_order_state
-    # OceanOrderStateChangedNotification.with(order: self).deliver(user)
+    return if drafted?
+
+    OceanOrderStateNotification.with(ocean_order: self).deliver(user)
   end
 
   def payment_amount
-    format('%.8f', side.ask? ? amount : funds)
+    @payment_amount = format('%.8f', side.ask? ? amount : funds)
   end
 
   def payment_asset_id
-    side.ask? ? base_asset_id : quote_asset_id
+    @payment_asset_id = side.ask? ? base_asset_id : quote_asset_id
+  end
+
+  def payment_asset
+    @payment_asset = MixinAsset.find_by asset_id: payment_asset_id
   end
 
   # OCEAN|Action|Side|Type|AssetId|Price

@@ -43,7 +43,7 @@ export default function OceanOrdersComponent(props: {
       {orders.map((order: any) => (
         <div
           key={order.traceId}
-          className='flex items-center px-4 py-2 space-x-2'
+          className='flex items-center px-4 py-1 space-x-2'
         >
           <div
             className={`flex-1 ${
@@ -79,7 +79,7 @@ export default function OceanOrdersComponent(props: {
                 {t('cancel')}
               </a>
             ) : (
-              t(`ocean_order.state/${order.state}`)
+              t(`activerecord.attributes.ocean_order.state/${order.state}`)
             )}
           </div>
         </div>

@@ -1,0 +1,15 @@
+en:
+  activerecord:
+    models:
+      ocean_order: Order
+    attributes:
+      ocean_order:
+        sides:
+          ask: Ask
+          bid: Bid
+        state: State
+        state/paid: Paid
+        state/booking: Open
+        state/completed: Completed
+        state/canceling: Cancelling
+        state/refunded: Refunded

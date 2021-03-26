@@ -78,7 +78,7 @@ export default function ExchangePage() {
               <OceanOrdersComponent marketId={market.id} filter='booking' />
             </Tabs.Panel>
             <Tabs.Panel title={t('my_order_history')}>
-              <OceanOrdersComponent marketId={market.id} filter='booking' />
+              <OceanOrdersComponent marketId={market.id} filter='history' />
             </Tabs.Panel>
           </Tabs>
         )}

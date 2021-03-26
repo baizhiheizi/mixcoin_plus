@@ -3,3 +3,15 @@ en:
   notifications:
     user_authorized_notification:
       message: 'Authorized'
+    transfer_processed_notification:
+      received: 'Received'
+    ocean_order_state_notification:
+      market_price: 'Market Price'
+      tpl: |
+        ID: %<trace_id>s
+        Ticker: %<base_asset_symbol>s/%<quote_asset_symbol>s
+        Side: %<side>s
+        State: %<state>s
+        Price: %<price>s %<quote_asset_symbol>s
+        Filled: %<filled>s %<filled_symbol>s
+        Remaining: %<remaining>s %<remaining_symbol>s

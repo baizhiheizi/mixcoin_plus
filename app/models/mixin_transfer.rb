@@ -34,7 +34,7 @@ class MixinTransfer < ApplicationRecord
   belongs_to :source, polymorphic: true, optional: true
   belongs_to :wallet, class_name: 'MixinNetworkUser', primary_key: :mixin_uuid, foreign_key: :user_id, inverse_of: :transfers, optional: true
   belongs_to :recipient, class_name: 'User', primary_key: :mixin_uuid, foreign_key: :opponent_id, inverse_of: :transfers, optional: true
-  belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: :transfers, optional: true
+  belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false, optional: true
 
   validates :trace_id, presence: true, uniqueness: true
   validates :asset_id, presence: true
@@ -90,14 +90,8 @@ class MixinTransfer < ApplicationRecord
 
     return unless r['data']['trace_id'] == trace_id
 
-    # case transfer_type.to_sym
-    # when :ocean_broker_balance
-    #   source.balance! if source.may_balance?
-    # when :ocean_broker_register
-    #   source.ready! if source.may_ready?
-    # end
-
     update processed_at: Time.current, snapshot: r['data']
+    TransferProcessedNotification.with(transfer: self).deliver(recipient) if recipient.present?
   end
 
   def price_tag

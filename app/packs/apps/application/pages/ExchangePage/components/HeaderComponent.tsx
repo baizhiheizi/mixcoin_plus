@@ -14,6 +14,7 @@ import {
   Share2 as Share2Icon,
   Star as StarIcon,
 } from 'react-feather';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { ActivityIndicator, Modal, Popup, Tabs } from 'zarm';
 
@@ -22,6 +23,7 @@ export default function HeaderComponent(props: {
   setMarketId: (id: string) => any;
 }) {
   const history = useHistory();
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const { market, setMarketId } = props;
   const { appId, appName } = useMixinBot();

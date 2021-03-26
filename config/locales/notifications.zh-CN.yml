@@ -3,3 +3,15 @@ zh-CN:
   notifications:
     user_authorized_notification:
       message: '成功授权'
+    transfer_processed_notification:
+      received: '收到'
+    ocean_order_state_notification:
+      market_price: '市场价'
+      tpl: |
+        订单号: %<trace_id>s
+        交易对: %<base_asset_symbol>s/%<quote_asset_symbol>s
+        订单种类: %<side>s
+        订单状态: %<state>s
+        价格: %<price>s %<quote_asset_symbol>s
+        已成交: %<filled>s %<filled_symbol>s
+        待成交: %<remaining>s %<remaining_symbol>s

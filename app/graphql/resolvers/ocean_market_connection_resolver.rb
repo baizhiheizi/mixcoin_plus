@@ -15,7 +15,7 @@ module Resolvers
         else
           (current_user&.ocean_markets || OceanMarket.all).where(quote_asset_symbol: params[:type])
         end
-      
+
       query = params[:query].to_s.strip
       q_ransack = { base_asset_symbol_i_cont_any: query }
       markets.ransack(q_ransack.merge(m: 'or')).result

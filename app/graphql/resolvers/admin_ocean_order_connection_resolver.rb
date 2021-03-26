@@ -7,7 +7,7 @@ module Resolvers
     type Types::OceanOrderType.connection_type, null: false
 
     def resolve(*)
-      OceanOrder.all
+      OceanOrder.all.order(created_at: :desc)
     end
   end
 end
