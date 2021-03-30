@@ -29,7 +29,7 @@ export default function Menus() {
         </Link>
       </Menu.Item>
       <Menu.Item>
-        <Link to='/ocean_markets'>
+        <Link to='/markets'>
           <BarsOutlined />
           <span>Markets</span>
         </Link>

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module Resolvers
-  class OceanMarketResolver < Resolvers::BaseResolver
+  class MarketResolver < Resolvers::BaseResolver
     argument :id, ID, required: false
 
-    type Types::OceanMarketType, null: false
+    type Types::MarketType, null: false
 
     def resolve(id:)
-      markets = current_user&.ocean_markets || OceanMarket.all
+      markets = current_user&.markets || Market.all
       markets.find_by(id: id) || markets.first
     end
   end

@@ -2,7 +2,7 @@ import { useDebounce } from 'ahooks';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
-import { useOceanMarketConnectionQuery } from 'graphqlTypes';
+import { useMarketConnectionQuery } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -14,7 +14,7 @@ export function MarketsComponent(props: { type: string }) {
   const { currentUser } = useCurrentUser();
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, { wait: 500 });
-  const { loading, data, refetch, fetchMore } = useOceanMarketConnectionQuery({
+  const { loading, data, refetch, fetchMore } = useMarketConnectionQuery({
     variables: { type: props.type, query: debouncedQuery },
   });
 
@@ -27,7 +27,7 @@ export function MarketsComponent(props: { type: string }) {
   }
 
   const {
-    oceanMarketConnection: {
+    marketConnection: {
       nodes: markets,
       pageInfo: { hasNextPage, endCursor },
     },
@@ -59,7 +59,7 @@ export function MarketsComponent(props: { type: string }) {
         {markets.map((market) => (
           <div
             onClick={() => history.push(`/markets/${market.id}`)}
-            key={market.marketId}
+            key={market.id}
             className='flex items-center px-4 py-2'
           >
             <img

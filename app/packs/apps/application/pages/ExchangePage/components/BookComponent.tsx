@@ -1,7 +1,7 @@
 import { useInterval } from 'ahooks';
 import { fetchTiker, ITick, ITrade, WS_ENDPOINT } from 'apps/application/utils';
 import BigNumber from 'bignumber.js';
-import { OceanMarket } from 'graphqlTypes';
+import { Market } from 'graphqlTypes';
 import pako from 'pako';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ BigNumber.config({
 });
 
 export default function BookComponent(props: {
-  market: Partial<OceanMarket>;
+  market: Partial<Market>;
   setOrderPrice: (params: any) => any;
   setOrderAmount: (params: any) => any;
 }) {
@@ -33,7 +33,7 @@ export default function BookComponent(props: {
   const [ticker, setTicker] = useState<ITrade>();
 
   async function refreshTicker() {
-    const res = await fetchTiker(market.marketId);
+    const res = await fetchTiker(market.oceanMarketId);
     if (res.data && res.data.data) {
       setTicker(res.data.data);
     }
@@ -152,7 +152,7 @@ export default function BookComponent(props: {
       const msg = {
         action: 'SUBSCRIBE_BOOK',
         id: uuid().toLowerCase(),
-        params: { market: market.marketId },
+        params: { market: market.oceanMarketId },
       };
       sendMessage(pako.gzip(JSON.stringify(msg)));
     },

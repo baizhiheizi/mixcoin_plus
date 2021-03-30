@@ -23,7 +23,7 @@ class UserAsset < ApplicationRecord
 
   belongs_to :user
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, optional: true
-  has_many :ocean_markets, primary_key: :asset_id, foreign_key: :base_asset_id, dependent: :restrict_with_exception, inverse_of: false
+  has_many :markets, primary_key: :asset_id, foreign_key: :base_asset_id, dependent: :restrict_with_exception, inverse_of: false
 
   before_validation :set_defaults, on: :create
 

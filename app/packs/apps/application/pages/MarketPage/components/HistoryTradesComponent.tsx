@@ -1,5 +1,5 @@
 import { ITrade } from 'apps/application/utils';
-import { OceanMarket } from 'graphqlTypes';
+import { Market } from 'graphqlTypes';
 import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import { ActivityIndicator } from 'zarm';
 
 export default function HistoryTradesComponent(props: {
   fetched: boolean;
-  market: Partial<OceanMarket>;
+  market: Partial<Market>;
   trades: ITrade[];
 }) {
   const { market, trades, fetched } = props;

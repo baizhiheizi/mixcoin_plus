@@ -2,7 +2,7 @@ import { useCurrentUser } from 'apps/application/contexts';
 import { ToastError } from 'apps/application/utils';
 import { PUSD_ASSET_ID, USDT_ASSET_ID } from 'apps/shared';
 import BigNumber from 'bignumber.js';
-import { OceanMarket, useCreateOceanOrderMutation } from 'graphqlTypes';
+import { Market, useCreateOceanOrderMutation } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { ChevronDown as ChevronDownIcon } from 'react-feather';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ BigNumber.config({
 });
 
 export default function ActionComponent(props: {
-  market: Partial<OceanMarket>;
+  market: Partial<Market>;
   orderPrice: string;
   setOrderPrice: (params: any) => any;
   orderAmount: string;

@@ -1,5 +1,5 @@
-query OceanMarket($id: ID) {
-  oceanMarket(id: $id) {
+query Market($id: ID) {
+  market(id: $id) {
     id
     favorited
     baseAsset {
@@ -15,6 +15,6 @@ query OceanMarket($id: ID) {
       iconUrl
       priceUsd
     }
-    marketId
+    oceanMarketId
   }
 }

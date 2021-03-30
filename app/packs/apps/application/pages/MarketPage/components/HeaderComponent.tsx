@@ -1,9 +1,9 @@
 import { useCurrentUser } from 'apps/application/contexts';
 import { useMixinBot } from 'apps/shared';
 import {
-  OceanMarket,
-  useFavoriteOceanMarketMutation,
-  useUnfavoriteOceanMarketMutation,
+  Market,
+  useFavoriteMarketMutation,
+  useUnfavoriteMarketMutation,
 } from 'graphqlTypes';
 import { shareMixinAppCard } from 'mixin-messenger-utils';
 import React from 'react';
@@ -13,18 +13,18 @@ import { useHistory } from 'react-router';
 import { Modal } from 'zarm';
 
 export default function HeaderComponent(props: {
-  market: Partial<OceanMarket> | any;
+  market: Partial<Market> | any;
 }) {
   const history = useHistory();
   const { market } = props;
   const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const { appId, appName } = useMixinBot();
-  const [favorite] = useFavoriteOceanMarketMutation({
-    variables: { input: { oceanMarketId: market.id } },
+  const [favorite] = useFavoriteMarketMutation({
+    variables: { input: { marketId: market.id } },
   });
-  const [unfavorite] = useUnfavoriteOceanMarketMutation({
-    variables: { input: { oceanMarketId: market.id } },
+  const [unfavorite] = useUnfavoriteMarketMutation({
+    variables: { input: { marketId: market.id } },
   });
 
   return (

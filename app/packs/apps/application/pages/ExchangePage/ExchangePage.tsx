@@ -1,7 +1,7 @@
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
-import { OceanMarket, useOceanMarketQuery } from 'graphqlTypes';
+import { Market, useMarketQuery } from 'graphqlTypes';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -23,7 +23,7 @@ export default function ExchangePage() {
   );
   const [orderPrice, setOrderPrice] = useState<string>('');
   const [orderAmount, setOrderAmount] = useState<string>('');
-  const { loading, data } = useOceanMarketQuery({
+  const { loading, data } = useMarketQuery({
     variables: { id: marketId },
   });
 
@@ -40,7 +40,7 @@ export default function ExchangePage() {
     return <LoaderComponent />;
   }
 
-  const { oceanMarket: market } = data;
+  const { market } = data;
 
   if (!Boolean(market)) {
     return <div className='pt-32 text-center'>:(</div>;
@@ -56,7 +56,7 @@ export default function ExchangePage() {
       <div className='flex items-center p-4 mb-1 bg-white dark:bg-dark'>
         <div className='w-3/5 pr-2 h-96'>
           <ActionComponent
-            market={market as OceanMarket}
+            market={market as Market}
             orderPrice={orderPrice}
             setOrderPrice={setOrderPrice}
             orderAmount={orderAmount}
@@ -65,7 +65,7 @@ export default function ExchangePage() {
         </div>
         <div className='w-2/5'>
           <BookComponent
-            market={market as OceanMarket}
+            market={market as Market}
             setOrderPrice={setOrderPrice}
             setOrderAmount={setOrderAmount}
           />

@@ -9,6 +9,6 @@ if Rails.env.development?
   Administrator.create(name: 'admin', password: 'admin')
 end
 
-OceanMarket::AVAILABLE_QUOTES.each do |asset_id|
+Market::AVAILABLE_QUOTES.each do |asset_id|
   MixinAsset.find_or_create_by_asset_id asset_id
 end

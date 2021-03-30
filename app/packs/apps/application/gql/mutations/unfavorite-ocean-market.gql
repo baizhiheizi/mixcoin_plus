@@ -1,6 +1,0 @@
-mutation UnfavoriteOceanMarket($input: UnfavoriteOceanMarketMutationInput!) {
-  unfavoriteOceanMarket(input: $input) {
-    id
-    favorited
-  }
-}

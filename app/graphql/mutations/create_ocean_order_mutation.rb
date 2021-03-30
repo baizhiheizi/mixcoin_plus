@@ -2,7 +2,7 @@
 
 module Mutations
   class CreateOceanOrderMutation < Mutations::AuthorizedMutation
-    argument :ocean_market_id, ID, required: true
+    argument :market_id, ID, required: true
     argument :side, String, required: true
     argument :order_type, String, required: true
     argument :price, String, required: true
@@ -16,7 +16,7 @@ module Mutations
       price = params[:price].to_f
       funds = params[:funds].to_f
       current_user.ocean_orders.create!(
-        ocean_market_id: params[:ocean_market_id],
+        market_id: params[:market_id],
         side: params[:side],
         order_type: params[:order_type],
         price: price,

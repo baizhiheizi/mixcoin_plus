@@ -1,0 +1,6 @@
+mutation FavoriteMarket($input: FavoriteMarketMutationInput!) {
+  favoriteMarket(input: $input) {
+    id
+    favorited
+  }
+}

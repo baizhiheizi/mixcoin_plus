@@ -4,7 +4,7 @@ import { Link, Route, Switch } from 'react-router-dom';
 import BalancePage from './pages/BalancePage/BalancePage';
 import MixinMessagesPage from './pages/MixinMessagesPage/MixinMessagesPage';
 import MixinNetworkSnapshotsPage from './pages/MixinNetworkSnapshotsPage/MixinNetworkSnapshotsPage';
-import OceanMarketsPage from './pages/OceanMarketsPage/OceanMarketsPage';
+import MarketsPage from './pages/MarketsPage/MarketsPage';
 import OceanOrderPage from './pages/OceanOrderPage/OceanOrderPage';
 import OceanOrdersPage from './pages/OceanOrdersPage/OceanOrdersPage';
 import OverviewPage from './pages/OverviewPage/OverivewPage';
@@ -17,8 +17,8 @@ export default function Routes() {
       <Route path='/' exact>
         <OverviewPage />
       </Route>
-      <Route path='/ocean_markets' exact>
-        <OceanMarketsPage />
+      <Route path='/markets' exact>
+        <MarketsPage />
       </Route>
       <Route path='/ocean_orders' exact>
         <OceanOrdersPage />

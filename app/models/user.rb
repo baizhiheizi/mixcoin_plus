@@ -29,7 +29,7 @@ class User < ApplicationRecord
   has_many :wallets, class_name: 'MixinNetworkUser', as: :owner, dependent: :restrict_with_exception
   has_one :ocean_broker, class_name: 'OceanBroker', as: :owner, dependent: :restrict_with_exception
   has_many :assets, class_name: 'UserAsset', dependent: :restrict_with_exception
-  has_many :ocean_markets, through: :assets, inverse_of: false
+  has_many :markets, through: :assets, inverse_of: false
   has_many :ocean_orders, dependent: :restrict_with_exception
   has_many :transfers, class_name: 'MixinTransfer', dependent: :restrict_with_exception, inverse_of: :recipient
 
@@ -44,7 +44,7 @@ class User < ApplicationRecord
 
   delegate :access_token, to: :mixin_authorization
 
-  action_store :favorite, :ocean_market
+  action_store :favorite, :market
 
   def mixin_assets
     @mixin_assets ||= MixcoinPlusBot.api.assets(access_token: access_token)&.[]('data') || []

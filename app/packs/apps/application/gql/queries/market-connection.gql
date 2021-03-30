@@ -1,5 +1,5 @@
-query OceanMarketConnection($type: String!, $after: String, $query: String) {
-  oceanMarketConnection(type: $type, after: $after, query: $query) {
+query MarketConnection($type: String!, $after: String, $query: String) {
+  marketConnection(type: $type, after: $after, query: $query) {
     nodes {
       id
       baseAsset {
@@ -14,7 +14,7 @@ query OceanMarketConnection($type: String!, $after: String, $query: String) {
         symbol
         iconUrl
       }
-      marketId
+      oceanMarketId
     }
     pageInfo {
       hasNextPage

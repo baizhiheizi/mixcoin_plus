@@ -2,10 +2,10 @@ import PullComponent from 'apps/application/components/PullComponent/PullCompone
 import { useCurrentUser } from 'apps/application/contexts';
 import { useMixinBot } from 'apps/shared';
 import {
-  OceanMarket,
-  useFavoriteOceanMarketMutation,
-  useOceanMarketConnectionQuery,
-  useUnfavoriteOceanMarketMutation,
+  Market,
+  useFavoriteMarketMutation,
+  useMarketConnectionQuery,
+  useUnfavoriteMarketMutation,
 } from 'graphqlTypes';
 import { shareMixinAppCard } from 'mixin-messenger-utils';
 import React, { useState } from 'react';
@@ -19,7 +19,7 @@ import { useHistory } from 'react-router';
 import { ActivityIndicator, Modal, Popup, Tabs } from 'zarm';
 
 export default function HeaderComponent(props: {
-  market: Partial<OceanMarket> & any;
+  market: Partial<Market> & any;
   setMarketId: (id: string) => any;
 }) {
   const history = useHistory();
@@ -28,11 +28,11 @@ export default function HeaderComponent(props: {
   const { market, setMarketId } = props;
   const { appId, appName } = useMixinBot();
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [favorite] = useFavoriteOceanMarketMutation({
-    variables: { input: { oceanMarketId: market.id } },
+  const [favorite] = useFavoriteMarketMutation({
+    variables: { input: { marketId: market.id } },
   });
-  const [unfavorite] = useUnfavoriteOceanMarketMutation({
-    variables: { input: { oceanMarketId: market.id } },
+  const [unfavorite] = useUnfavoriteMarketMutation({
+    variables: { input: { marketId: market.id } },
   });
 
   return (
@@ -125,7 +125,7 @@ function MarketsComponent(props: {
   const { setMarketId, setSidebarVisible } = props;
   const quotes = ['pUSD', 'BTC', 'XIN', 'USDT'];
   const [tabIndex, setTabIndex] = useState(0);
-  const { loading, data, refetch, fetchMore } = useOceanMarketConnectionQuery({
+  const { loading, data, refetch, fetchMore } = useMarketConnectionQuery({
     variables: { type: quotes[tabIndex] },
   });
 
@@ -138,7 +138,7 @@ function MarketsComponent(props: {
   }
 
   const {
-    oceanMarketConnection: {
+    marketConnection: {
       nodes: markets,
       pageInfo: { hasNextPage, endCursor },
     },

@@ -20,20 +20,20 @@
 #  base_asset_id    :uuid
 #  broker_id        :uuid
 #  conversation_id  :uuid
-#  ocean_market_id  :uuid             not null
+#  market_id        :uuid             not null
 #  quote_asset_id   :uuid
 #  trace_id         :uuid
 #  user_id          :uuid
 #
 # Indexes
 #
-#  index_ocean_orders_on_ocean_market_id  (ocean_market_id)
+#  index_ocean_orders_on_market_id  (market_id)
 #
 class OceanOrder < ApplicationRecord
   extend Enumerize
   include AASM
 
-  belongs_to :ocean_market, counter_cache: true
+  belongs_to :market, counter_cache: true
   belongs_to :user, inverse_of: :ocean_orders
   belongs_to :broker, class_name: 'OceanBroker', primary_key: :mixin_uuid, inverse_of: :ocean_orders
   belongs_to :base_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
@@ -241,8 +241,8 @@ class OceanOrder < ApplicationRecord
     assign_attributes(
       broker_id: user.ocean_broker.mixin_uuid,
       trace_id: SecureRandom.uuid,
-      base_asset_id: ocean_market.base_asset_id,
-      quote_asset_id: ocean_market.quote_asset_id,
+      base_asset_id: market.base_asset_id,
+      quote_asset_id: market.quote_asset_id,
       filled_amount: 0.0,
       filled_funds: 0.0
     )

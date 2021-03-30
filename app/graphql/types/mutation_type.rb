@@ -9,7 +9,7 @@ module Types
     field :switch_locale, mutation: Mutations::SwitchLocaleMutation
     field :create_ocean_order, mutation: Mutations::CreateOceanOrderMutation
     field :cancel_ocean_order, mutation: Mutations::CancelOceanOrderMutation
-    field :favorite_ocean_market, mutation: Mutations::FavoriteOceanMarketMutation
-    field :unfavorite_ocean_market, mutation: Mutations::UnfavoriteOceanMarketMutation
+    field :favorite_market, mutation: Mutations::FavoriteMarketMutation
+    field :unfavorite_market, mutation: Mutations::UnfavoriteMarketMutation
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_26_015706) do
+ActiveRecord::Schema.define(version: 2021_03_30_031039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -36,6 +36,16 @@ ActiveRecord::Schema.define(version: 2021_03_26_015706) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_administrators_on_name", unique: true
+  end
+
+  create_table "markets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "base_asset_id"
+    t.uuid "quote_asset_id"
+    t.integer "ocean_orders_count", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["base_asset_id"], name: "index_markets_on_base_asset_id"
+    t.index ["quote_asset_id"], name: "index_markets_on_quote_asset_id"
   end
 
   create_table "mixin_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -136,21 +146,6 @@ ActiveRecord::Schema.define(version: 2021_03_26_015706) do
     t.index ["recipient_id", "recipient_type"], name: "index_notifications_on_recipient_id_and_recipient_type"
   end
 
-  create_table "ocean_markets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "base_asset_id"
-    t.uuid "quote_asset_id"
-    t.string "base_asset_symbol"
-    t.string "quote_asset_symbol"
-    t.decimal "turnover", default: "0.0"
-    t.decimal "maker_turnover", default: "0.0"
-    t.decimal "taker_turnover", default: "0.0"
-    t.integer "ocean_orders_count", default: 0
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["base_asset_id"], name: "index_ocean_markets_on_base_asset_id"
-    t.index ["quote_asset_id"], name: "index_ocean_markets_on_quote_asset_id"
-  end
-
   create_table "ocean_orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.decimal "filled_amount"
     t.decimal "filled_funds"
@@ -170,8 +165,8 @@ ActiveRecord::Schema.define(version: 2021_03_26_015706) do
     t.float "taker_fee", default: 0.0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.uuid "ocean_market_id", null: false
-    t.index ["ocean_market_id"], name: "index_ocean_orders_on_ocean_market_id"
+    t.uuid "market_id", null: false
+    t.index ["market_id"], name: "index_ocean_orders_on_market_id"
   end
 
   create_table "user_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

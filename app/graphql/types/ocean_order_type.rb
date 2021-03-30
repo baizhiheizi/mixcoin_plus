@@ -3,7 +3,7 @@
 module Types
   class OceanOrderType < Types::BaseModelObject
     field :id, ID, null: false
-    field :ocean_market_id, String, null: false
+    field :market_id, String, null: false
     field :trace_id, String, null: false
     field :conversation_id, String, null: true
     field :base_asset_id, String, null: false

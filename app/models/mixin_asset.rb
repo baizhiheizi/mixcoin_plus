@@ -21,7 +21,7 @@
 class MixinAsset < ApplicationRecord
   store :raw, accessors: %i[name symbol chain_id icon_url change_usd change_btc price_usd price_btc]
 
-  after_commit :generate_ocean_markets_async, on: :create
+  after_commit :generate_markets_async, on: :create
 
   def self.find_or_create_by_asset_id(_asset_id)
     currency = find_by(asset_id: _asset_id)
@@ -36,15 +36,15 @@ class MixinAsset < ApplicationRecord
     update! raw: r['data']
   end
 
-  def generate_ocean_markets_async
-    MixinAssetGenerateOceanMarketsWorker.perform_async id
+  def generate_markets_async
+    MixinAssetGenerateMarketsWorker.perform_async id
   end
 
-  def generate_ocean_markets!
-    OceanMarket::AVAILABLE_QUOTES.each do |quote|
+  def generate_markets!
+    Market::AVAILABLE_QUOTES.each do |quote|
       next if quote == asset_id
 
-      OceanMarket.find_or_create_by!(base_asset_id: asset_id, quote_asset_id: quote)
+      Market.find_or_create_by!(base_asset_id: asset_id, quote_asset_id: quote)
     end
   end
 end

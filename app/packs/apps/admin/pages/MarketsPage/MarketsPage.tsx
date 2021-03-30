@@ -1,23 +1,18 @@
 import { Button, PageHeader, Table } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
-import { useAdminOceanMarketConnectionQuery } from 'graphqlTypes';
+import { useAdminMarketConnectionQuery } from 'graphqlTypes';
 import React from 'react';
 
-export default function OceanMarketsPage() {
-  const {
-    loading,
-    data,
-    refetch,
-    fetchMore,
-  } = useAdminOceanMarketConnectionQuery();
+export default function MarketsPage() {
+  const { loading, data, refetch, fetchMore } = useAdminMarketConnectionQuery();
 
   if (loading) {
     return <LoadingComponent />;
   }
 
   const {
-    adminOceanMarketConnection: {
+    adminMarketConnection: {
       nodes: markets,
       pageInfo: { hasNextPage, endCursor },
     },
@@ -40,21 +35,6 @@ export default function OceanMarketsPage() {
       dataIndex: 'oceanOrdersCount',
       key: 'oceanOrdersCount',
       title: 'oceanOrdersCount',
-    },
-    {
-      dataIndex: 'turnover',
-      key: 'turnover',
-      title: 'Turnover',
-    },
-    {
-      dataIndex: 'makerTurnover',
-      key: 'makerTurnover',
-      title: 'makerTurnover',
-    },
-    {
-      dataIndex: 'takerTurnover',
-      key: 'takerTurnover',
-      title: 'takerTurnover',
     },
     {
       dataIndex: 'createdAt',

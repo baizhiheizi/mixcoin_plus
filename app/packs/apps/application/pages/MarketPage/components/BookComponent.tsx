@@ -1,6 +1,6 @@
 import { ITick } from 'apps/application/utils';
 import BigNumber from 'bignumber.js';
-import { OceanMarket } from 'graphqlTypes';
+import { Market } from 'graphqlTypes';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator } from 'zarm';
@@ -15,7 +15,7 @@ BigNumber.config({
 });
 
 export default function BookComponent(props: {
-  market: Partial<OceanMarket> & any;
+  market: Partial<Market> & any;
   connected: boolean;
   book: {
     asks: ITick[];

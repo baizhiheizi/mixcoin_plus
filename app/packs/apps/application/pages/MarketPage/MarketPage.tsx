@@ -1,7 +1,4 @@
 import { useInterval } from 'ahooks';
-import useWebSocket from 'react-use-websocket';
-import { v4 as uuid } from 'uuid';
-import pako from 'pako';
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
 import {
   fetchTrades,
@@ -9,17 +6,20 @@ import {
   ITrade,
   WS_ENDPOINT,
 } from 'apps/application/utils';
-import { OceanMarket, useOceanMarketQuery } from 'graphqlTypes';
+import BigNumber from 'bignumber.js';
+import { Market, useMarketQuery } from 'graphqlTypes';
+import pako from 'pako';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router';
+import useWebSocket from 'react-use-websocket';
+import { v4 as uuid } from 'uuid';
 import { Tabs } from 'zarm';
-import PriceChartComponent from './components/PriceChartComponent';
+import BookComponent from './components/BookComponent';
+import DepthChartComponent from './components/DepthChartComponent';
 import HeaderComponent from './components/HeaderComponent';
 import HistoryTradesComponent from './components/HistoryTradesComponent';
-import BigNumber from 'bignumber.js';
-import DepthChartComponent from './components/DepthChartComponent';
-import BookComponent from './components/BookComponent';
+import PriceChartComponent from './components/PriceChartComponent';
 BigNumber.config({
   FORMAT: {
     decimalSeparator: '.',
@@ -33,7 +33,7 @@ export default function MarketPage() {
   const history = useHistory();
   const { t } = useTranslation();
   const { marketId } = useParams<{ marketId: string }>();
-  const { loading, data } = useOceanMarketQuery({
+  const { loading, data } = useMarketQuery({
     variables: { id: marketId },
   });
   const [bookConnected, setBookConnected] = useState(false);
@@ -45,8 +45,8 @@ export default function MarketPage() {
   }>({ asks: [], bids: [] });
 
   async function refreshTrades() {
-    if (data?.oceanMarket) {
-      const res = await fetchTrades(data?.oceanMarket?.marketId);
+    if (data?.market) {
+      const res = await fetchTrades(data?.market?.oceanMarketId);
       if (res?.data?.data) {
         setTrades(res.data.data);
         if (!tradesFetched) {
@@ -169,7 +169,7 @@ export default function MarketPage() {
       const msg = {
         action: 'SUBSCRIBE_BOOK',
         id: uuid().toLowerCase(),
-        params: { market: market.marketId },
+        params: { market: market.oceanMarketId },
       };
       sendMessage(pako.gzip(JSON.stringify(msg)));
     },
@@ -191,7 +191,7 @@ export default function MarketPage() {
     return <LoaderComponent />;
   }
 
-  const { oceanMarket: market } = data;
+  const { market } = data;
 
   if (!Boolean(market)) {
     return <div className='pt-32 text-center'>:(</div>;
@@ -224,7 +224,7 @@ export default function MarketPage() {
           <Tabs.Panel title={t('history_trades')}>
             <HistoryTradesComponent
               fetched={tradesFetched}
-              market={market as OceanMarket}
+              market={market as Market}
               trades={trades.slice(0, 20)}
             />
           </Tabs.Panel>

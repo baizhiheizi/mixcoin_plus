@@ -1,12 +1,9 @@
-query AdminOceanMarketConnection($after: String) {
-  adminOceanMarketConnection(after: $after) {
+query AdminMarketConnection($after: String) {
+  adminMarketConnection(after: $after) {
     nodes {
       id
-      marketId
-      turnover
+      oceanMarketId
       oceanOrdersCount
-      makerTurnover
-      takerTurnover
       baseAsset {
         assetId
         symbol

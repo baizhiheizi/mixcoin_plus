@@ -1,5 +1,5 @@
 import { ITrade, priceChartOptions } from 'apps/application/utils';
-import { OceanMarket } from 'graphqlTypes';
+import { Market } from 'graphqlTypes';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock';
 import Ema from 'highcharts/indicators/ema.js';
@@ -13,7 +13,7 @@ Ema(Highcharts);
 
 export default function PriceChartComponent(props: {
   fetched: boolean;
-  market: Partial<OceanMarket> & any;
+  market: Partial<Market> & any;
   trades: ITrade[];
 }) {
   const { trades, fetched } = props;
