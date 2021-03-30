@@ -5,9 +5,11 @@
 #  id         :uuid             not null, primary key
 #  change_btc :float
 #  change_usd :float
+#  name       :string
 #  price_btc  :float
 #  price_usd  :float
 #  raw        :jsonb            not null
+#  symbol     :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  asset_id   :uuid

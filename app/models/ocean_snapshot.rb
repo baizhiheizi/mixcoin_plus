@@ -36,19 +36,6 @@ class OceanSnapshot < MixinNetworkSnapshot
 
   alias ocean_order source
 
-  def decrypted_memo
-    @decrypted_memo =
-      if data.to_s.match?(/^OCEAN/)
-        data
-      else
-        begin
-          MessagePack.unpack(Base64.decode64(data.gsub('-', '+').gsub('_', '/')))
-        rescue StandardError
-          {}
-        end
-      end
-  end
-
   def process!
     return if processed?
 
@@ -75,7 +62,7 @@ class OceanSnapshot < MixinNetworkSnapshot
         opponent_id: _ocean_order.user.mixin_uuid,
         asset_id: asset_id,
         amount: amount,
-        memo: "OCEAN|MATCH|#{_ocean_order.trace_id}"
+        memo: Base64.strict_encode64("OCEAN|MATCH|#{_ocean_order.trace_id}")
       ).find_or_create_by!(
         trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.trace_id)
       )
@@ -91,7 +78,7 @@ class OceanSnapshot < MixinNetworkSnapshot
         opponent_id: _ocean_order.user.mixin_uuid,
         asset_id: asset_id,
         amount: amount,
-        memo: "OCEAN|REFUND|#{_ocean_order.trace_id}"
+        memo: Base64.strict_encode64("OCEAN|REFUND|#{_ocean_order.trace_id}")
       ).find_or_create_by!(
         trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.trace_id)
       )
@@ -120,7 +107,7 @@ class OceanSnapshot < MixinNetworkSnapshot
     _ocean_order ||= OceanOrder.find_by(trace_id: raw['trace_id'])
 
     # from broker to user
-    _ocean_order ||= OceanOrder.find_by(trace_id: data.split('|')[2]) if data.match?(/^OCEAN/)
+    _ocean_order ||= OceanOrder.find_by(trace_id: base64_decoded_memo.split('|')[2]) if base64_decoded_memo.match?(/^OCEAN/)
 
     # from engine to broker
     # 'O' in memo
@@ -156,8 +143,8 @@ class OceanSnapshot < MixinNetworkSnapshot
           'match_from_engine'
         end
       end
-    elsif data.match?(/^OCEAN/)
-      case data.split('|')[1]
+    elsif base64_decoded_memo.match?(/^OCEAN/)
+      case base64_decoded_memo.split('|')[1]
       when 'REFUND', 'CANCEL'
         'refund_to_user'
       when 'MATCH'

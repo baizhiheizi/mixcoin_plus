@@ -143,7 +143,7 @@ export default function ActionComponent(props: {
     createOceanOrder({
       variables: {
         input: {
-          oceanMarketId: market.id,
+          marketId: market.id,
           side: orderSide,
           orderType,
           price: orderPrice,

@@ -59,7 +59,7 @@ class MixinNetworkSnapshot < ApplicationRecord
       offset = MixinNetworkSnapshot.order(transferred_at: :desc).first&.transferred_at&.utc&.rfc3339 || Time.current.utc.rfc3339 if offset.blank?
 
       r = MixcoinPlusBot.api.read_network_snapshots(offset: offset, limit: POLLING_LIMIT, order: 'ASC')
-      p "polled #{r['data'].length} mixin network snapshots"
+      p "polled #{r['data'].length} mixin network snapshots, #{offset}"
 
       r['data'].each do |snapshot|
         next if snapshot['user_id'].blank?
@@ -99,6 +99,19 @@ class MixinNetworkSnapshot < ApplicationRecord
     MixinNetworkSnapshotProcessWorker.perform_async id
   end
 
+  def base64_decoded_memo
+    @base64_decoded_memo = Base64.decode64(data.gsub('-', '+').gsub('_', '/'))
+  end
+
+  def decrypted_memo
+    @decrypted_memo =
+      begin
+        MessagePack.unpack base64_decoded_memo
+      rescue StandardError
+        {}
+      end
+  end
+
   private
 
   def setup_attributes
@@ -115,6 +128,6 @@ class MixinNetworkSnapshot < ApplicationRecord
       trace_id: raw['trace_id']
     )
 
-    self.type = 'OceanSnapshot' if raw['opponent_id'] == OceanBroker::OCEAN_ENGINE_USER_ID || raw['data'].match?(/^OCEAN/)
+    self.type = 'OceanSnapshot' if raw['opponent_id'] == OceanBroker::OCEAN_ENGINE_USER_ID || base64_decoded_memo.match?(/^OCEAN/)
   end
 end

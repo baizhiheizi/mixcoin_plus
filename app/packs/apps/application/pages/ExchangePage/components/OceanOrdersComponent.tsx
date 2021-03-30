@@ -15,7 +15,7 @@ export default function OceanOrdersComponent(props: {
   const { t } = useTranslation();
   const { marketId, filter } = props;
   const { loading, data, refetch, fetchMore } = useOceanOrderConnectionQuery({
-    variables: { oceanMarketId: marketId, filter },
+    variables: { marketId, filter },
   });
   const [cancelOceanOrder] = useCancelOceanOrderMutation({
     update() {

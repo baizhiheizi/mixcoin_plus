@@ -159,43 +159,7 @@ class OceanOrder < ApplicationRecord
     )
   end
 
-  # transfer to user when receive refund from engine
-  # trace_id unique along with snapshot trace_id
-  def transfer_to_user_for_refunding(refund_asset_id, refund_amount, _trace_id)
-    raise 'Wrong asset id!' unless refund_asset_id == (side.ask? ? base_asset_id : quote_asset_id)
-
-    MixinTransfer.create_with(
-      source: self,
-      wallet: broker,
-      transfer_type: :ocean_order_refund,
-      opponent_id: user.mixin_uuid,
-      asset_id: refund_asset_id,
-      amount: refund_amount,
-      memo: "CREATE|REFUND|#{trace_id}"
-    ).find_or_create_by!(
-      trace_id: _trace_id
-    )
-  end
-
-  # transfer to user when receive matched asset from engine
-  # trace_id unique along with snapshot trace_id
-  def transfer_to_user_for_matching(match_asset_id, match_amount, _trace_id)
-    raise 'Wrong asset id!' unless match_asset_id == (side.ask? ? quote_asset_id : base_asset_id)
-
-    MixinTransfer.create_with(
-      source: self,
-      wallet: broker,
-      transfer_type: :ocean_order_match,
-      opponent_id: user.mixin_uuid,
-      asset_id: match_asset_id,
-      amount: match_amount,
-      memo: "CREATE|MATCH|#{trace_id}"
-    ).find_or_create_by!(
-      trace_id: _trace_id
-    )
-  end
-
-  def market_id
+  def ocean_market_id
     format('%<base>s-%<quote>s', base: base_asset_id, quote: quote_asset_id)
   end
 
@@ -228,7 +192,7 @@ class OceanOrder < ApplicationRecord
       recipient: broker_id,
       asset: payment_asset_id,
       amount: payment_amount,
-      memo: "OCEAN|CREATE|#{side.upcase}|#{order_type.upcase}|#{side.ask? ? quote_asset_id : base_asset_id}|#{price.to_f.round(8)}",
+      memo: Base64.strict_encode64("OCEAN|CREATE|#{side.upcase}|#{order_type.upcase}|#{side.ask? ? quote_asset_id : base_asset_id}|#{price.to_f.round(8)}"),
       trace: id
     )
   end

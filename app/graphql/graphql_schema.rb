@@ -32,7 +32,6 @@ class GraphqlSchema < GraphQL::Schema
   end
 
   # Add built-in connections for pagination
-  use GraphQL::Pagination::Connections
   default_max_page_size 20
 
   # use batch loader to fix N+1

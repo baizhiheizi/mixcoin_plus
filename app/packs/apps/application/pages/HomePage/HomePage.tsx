@@ -48,7 +48,7 @@ export default function HomePage() {
           <Tabs.Panel title='USDT'></Tabs.Panel>
         </Tabs>
       </div>
-      <div className='h-full pt-12 pb-16 bg-white dark:bg-dark'>
+      <div className='min-h-screen pt-12 pb-16 bg-white dark:bg-dark'>
         <MarketsComponent type={tabs[tabIndex]} />
       </div>
       <Popup

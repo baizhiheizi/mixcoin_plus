@@ -184,7 +184,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "oceanMarketId",
+            "name": "marketId",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -1791,7 +1791,7 @@
             "deprecationReason": null
           },
           {
-            "name": "oceanMarketId",
+            "name": "marketId",
             "description": null,
             "args": [],
             "type": {
@@ -2773,7 +2773,7 @@
             "description": null,
             "args": [
               {
-                "name": "oceanMarketId",
+                "name": "marketId",
                 "description": null,
                 "type": {
                   "kind": "NON_NULL",

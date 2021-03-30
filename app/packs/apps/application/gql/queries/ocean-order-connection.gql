@@ -1,13 +1,5 @@
-query OceanOrderConnection(
-  $oceanMarketId: ID!
-  $after: String
-  $filter: String
-) {
-  oceanOrderConnection(
-    oceanMarketId: $oceanMarketId
-    after: $after
-    filter: $filter
-  ) {
+query OceanOrderConnection($marketId: ID!, $after: String, $filter: String) {
+  oceanOrderConnection(marketId: $marketId, after: $after, filter: $filter) {
     nodes {
       id
       traceId
@@ -21,7 +13,7 @@ query OceanOrderConnection(
       remainingFunds
       price
       state
-      oceanMarketId
+      marketId
       baseAsset {
         assetId
         symbol

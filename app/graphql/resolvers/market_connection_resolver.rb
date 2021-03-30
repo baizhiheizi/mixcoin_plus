@@ -13,11 +13,11 @@ module Resolvers
         if current_user.present? && params[:type] == 'favorite'
           current_user.favorite_markets
         else
-          (current_user&.markets || Market.all).where(quote_asset_symbol: params[:type])
+          (current_user&.markets || Market.all).includes(:quote_asset).where(quote_asset: { symbol: params[:type] })
         end
 
       query = params[:query].to_s.strip
-      q_ransack = { base_asset_symbol_i_cont_any: query }
+      q_ransack = { base_asset_symbol_i_cont: query }
       markets.ransack(q_ransack.merge(m: 'or')).result
     end
   end

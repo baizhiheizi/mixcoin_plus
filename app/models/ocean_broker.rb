@@ -62,7 +62,7 @@ class OceanBroker < MixinNetworkUser
       user_id: MixcoinPlusBot.api.client_id,
       opponent_id: mixin_uuid,
       amount: EXCHANGE_ASSET_BALANCE,
-      memo: 'OCEAN|BALANCE'
+      memo: Base64.strict_encode64('OCEAN|BALANCE')
     ).find_or_create_by!(
       trace_id: MixcoinPlusBot.api.unique_conversation_id(mixin_uuid, EXCHANGE_ASSET_ID)
     )

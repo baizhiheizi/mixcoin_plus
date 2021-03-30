@@ -7,7 +7,7 @@ en:
   language: Language
   logout: Logout
   connect_wallet: Connect Wallet
-  connect_wallet_to_exhange: Exchange any asset in you Mixin Wallet
+  connect_wallet_to_exhange: 'Exchange any asset in you Mixin Wallet:'
   logout_confirm: Are sure to logout?
   authorize_tips: You'll authorize Mixcoin to read your profile.
   buy: Buy
