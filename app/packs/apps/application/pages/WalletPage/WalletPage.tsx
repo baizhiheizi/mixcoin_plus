@@ -56,7 +56,7 @@ function UserAssets() {
           >
             <img
               className='w-10 h-10 mr-2 rounded-full'
-              src={asset.iconUrl.replace(/s128$/, 's32')}
+              src={asset.iconUrl.replace(/s128$/, 's64')}
             />
             <div className=''>
               <div className='flex items-baseline'>

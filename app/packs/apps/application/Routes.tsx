@@ -9,6 +9,7 @@ import { useCurrentUser } from './contexts';
 import ExchangePage from './pages/ExchangePage/ExchangePage';
 import HomePage from './pages/HomePage/HomePage';
 import WalletPage from './pages/WalletPage/WalletPage';
+import OrdersPage from './pages/OrdersPage/OrdersPage';
 const MarketPage = React.lazy(() => import('./pages/MarketPage/MarketPage'));
 
 export default function Routes() {
@@ -44,6 +45,9 @@ export default function Routes() {
           </Route>
           <Route path='/markets/:marketId' exact>
             <MarketPage />
+          </Route>
+          <Route path='/orders' exact>
+            <OrdersPage />
           </Route>
         </Switch>
       </Suspense>

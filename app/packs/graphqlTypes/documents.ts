@@ -379,7 +379,7 @@ export type QueryMarketConnectionArgs = {
 
 
 export type QueryOceanOrderConnectionArgs = {
-  marketId: Scalars['ID'];
+  marketId?: Maybe<Scalars['ID']>;
   filter?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
@@ -766,7 +766,7 @@ export type MarketQuery = (
 );
 
 export type OceanOrderConnectionQueryVariables = Exact<{
-  marketId: Scalars['ID'];
+  marketId?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['String']>;
   filter?: Maybe<Scalars['String']>;
 }>;
@@ -1581,7 +1581,7 @@ export type MarketQueryHookResult = ReturnType<typeof useMarketQuery>;
 export type MarketLazyQueryHookResult = ReturnType<typeof useMarketLazyQuery>;
 export type MarketQueryResult = Apollo.QueryResult<MarketQuery, MarketQueryVariables>;
 export const OceanOrderConnectionDocument = gql`
-    query OceanOrderConnection($marketId: ID!, $after: String, $filter: String) {
+    query OceanOrderConnection($marketId: ID, $after: String, $filter: String) {
   oceanOrderConnection(marketId: $marketId, after: $after, filter: $filter) {
     nodes {
       id
@@ -1634,7 +1634,7 @@ export const OceanOrderConnectionDocument = gql`
  *   },
  * });
  */
-export function useOceanOrderConnectionQuery(baseOptions: Apollo.QueryHookOptions<OceanOrderConnectionQuery, OceanOrderConnectionQueryVariables>) {
+export function useOceanOrderConnectionQuery(baseOptions?: Apollo.QueryHookOptions<OceanOrderConnectionQuery, OceanOrderConnectionQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<OceanOrderConnectionQuery, OceanOrderConnectionQueryVariables>(OceanOrderConnectionDocument, options);
       }

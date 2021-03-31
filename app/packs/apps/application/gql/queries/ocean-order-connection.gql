@@ -1,4 +1,4 @@
-query OceanOrderConnection($marketId: ID!, $after: String, $filter: String) {
+query OceanOrderConnection($marketId: ID, $after: String, $filter: String) {
   oceanOrderConnection(marketId: $marketId, after: $after, filter: $filter) {
     nodes {
       id

@@ -39,6 +39,11 @@ export default function MineComponent() {
       </div>
       <Panel>
         <Cell
+          title={t('orders')}
+          hasArrow
+          onClick={() => history.push('/orders')}
+        />
+        <Cell
           title={t('language')}
           description={
             <Radio.Group
@@ -52,8 +57,6 @@ export default function MineComponent() {
             </Radio.Group>
           }
         />
-      </Panel>
-      <Panel>
         <Cell
           hasArrow
           title={t('logout')}
