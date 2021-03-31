@@ -9,7 +9,7 @@ module Resolvers
     type Types::OceanOrderType.connection_type, null: false
 
     def resolve(params)
-      orders = 
+      orders =
         if (params[:market_id]).present?
           current_user.ocean_orders.where(market_id: params[:market_id])
         else

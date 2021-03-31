@@ -33,6 +33,20 @@ const cache = new InMemoryCache({
           'oceanMarketId',
           'filter',
         ]),
+        userSnapshots: {
+          keyArgs: ['asset'],
+          merge(existing: any, incoming: any, { args }) {
+            if (
+              existing?.length > 0 &&
+              args.offset &&
+              args.offset === existing[existing.length - 1].createdAt
+            ) {
+              return [...existing, ...incoming];
+            } else {
+              return incoming;
+            }
+          },
+        },
       },
     },
   },

@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     redirect_to format(
       'https://mixin-www.zeromesh.net/oauth/authorize?client_id=%<client_id>s&scope=%<scope>s&return_to=%<return_to>s',
       client_id: MixcoinPlusBot.api.client_id,
-      scope: 'PROFILE:READ+ASSETS:READ',
+      scope: 'PROFILE:READ+ASSETS:READ+SNAPSHOTS:READ',
       return_to: params[:return_to] || root_url
     )
   end

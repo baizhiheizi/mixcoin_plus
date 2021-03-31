@@ -5,6 +5,7 @@ import { useCurrentUser } from 'apps/application/contexts';
 import { useUserAssetsQuery } from 'graphqlTypes';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router';
 import { Button } from 'zarm';
 
 export default function WalletPage() {
@@ -33,6 +34,7 @@ export default function WalletPage() {
 function UserAssets() {
   const { currentUser } = useCurrentUser();
   const { t } = useTranslation();
+  const history = useHistory();
   const { loading, data, refetch } = useUserAssetsQuery({ skip: !currentUser });
 
   if (loading) {
@@ -53,6 +55,7 @@ function UserAssets() {
           <div
             key={asset.assetId}
             className='flex items-center px-4 py-2 bg-white dark:bg-dark'
+            onClick={() => history.push(`/snapshots/${asset.assetId}`)}
           >
             <img
               className='w-10 h-10 mr-2 rounded-full'

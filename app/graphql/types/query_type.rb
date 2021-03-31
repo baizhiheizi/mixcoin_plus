@@ -20,5 +20,6 @@ module Types
     field :market_connection, resolver: Resolvers::MarketConnectionResolver
     field :ocean_order_connection, resolver: Resolvers::OceanOrderConnectionResolver
     field :user_assets, resolver: Resolvers::UserAssetsResolver
+    field :user_snapshots, resolver: Resolvers::UserSnapshotsResolver
   end
 end

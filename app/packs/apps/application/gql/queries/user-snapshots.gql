@@ -1,0 +1,14 @@
+query UserSnapshots($offset: String, $asset: String, $opponent: String) {
+  userSnapshots(offset: $offset, asset: $asset, opponent: $opponent) {
+    amount
+    traceId
+    opponentId
+    data
+    asset {
+      name
+      symbol
+      iconUrl
+    }
+    createdAt
+  }
+}

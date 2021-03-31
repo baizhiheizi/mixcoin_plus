@@ -25,7 +25,7 @@ module Types
     end
 
     def asset
-      BatchLoader::GraphQL.for(object.asset_id).batch do |asset_ids, loader|
+      BatchLoader::GraphQL.for(object&.[]('asset_id') || object&.asset_id).batch do |asset_ids, loader|
         MixinAsset.where(asset_id: asset_ids).each { |asset| loader.call(asset.asset_id, asset) }
       end
     end
