@@ -37,7 +37,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   belongs_to :opponent, class_name: 'User', primary_key: :mixin_uuid, inverse_of: :snapshots, optional: true
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false, optional: true
 
-  before_validation :setup_attributes, on: :create
+  after_initialize :setup_attributes, if: :new_record?
 
   validates :amount, presence: true
   validates :asset_id, presence: true
@@ -100,7 +100,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   end
 
   def base64_decoded_memo
-    @base64_decoded_memo = Base64.decode64(data.gsub('-', '+').gsub('_', '/'))
+    @base64_decoded_memo = Base64.decode64(data.to_s.gsub('-', '+').gsub('_', '/'))
   end
 
   def decrypted_memo
@@ -112,15 +112,38 @@ class MixinNetworkSnapshot < ApplicationRecord
       end
   end
 
+  def raw_to_uuid(raw)
+    return if raw.nil?
+
+    case raw
+    when String
+      raw = raw.bytes.pack('c*')
+    when Array
+      raw = raw.pack('c*')
+    end
+
+    raw = raw.unpack1('H*').to_s
+    format(
+      '%<first>s-%<second>s-%<third>s-%<forth>s-%<fifth>s',
+      first: raw[0..7],
+      second: raw[8..11],
+      third: raw[12..15],
+      forth: raw[16..19],
+      fifth: raw[20..]
+    )
+  rescue StandardError
+    nil
+  end
+
   private
 
   def setup_attributes
     return unless new_record?
 
     assign_attributes(
-      asset_id: raw['asset']['asset_id'],
+      asset_id: raw['asset']&.[]('asset_id') || raw['asset_id'],
       amount: raw['amount'],
-      data: raw['data'],
+      data: raw['data'] || raw['memo'],
       transferred_at: raw['created_at'],
       user_id: raw['user_id'],
       opponent_id: raw['opponent_id'],

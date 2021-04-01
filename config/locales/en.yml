@@ -44,3 +44,5 @@ en:
   already_paid: Already Paid
   cancel: Cancel
   orders: Orders
+  deprecated_orders: Deprecated Orders
+  deprecated_version_notice: The old version of MixCoin has been DEPRECATED. If you have some old open orders, you can cancel them here. Enjoy the new version of MixCoin!

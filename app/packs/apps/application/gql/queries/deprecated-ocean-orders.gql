@@ -1,0 +1,19 @@
+query DeprecatedOceanOrders {
+  deprecatedOceanOrders {
+    traceId
+    orderType
+    side
+    price
+    baseAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    quoteAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    createdAt
+  }
+}

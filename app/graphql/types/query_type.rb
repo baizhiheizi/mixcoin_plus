@@ -21,5 +21,7 @@ module Types
     field :ocean_order_connection, resolver: Resolvers::OceanOrderConnectionResolver
     field :user_assets, resolver: Resolvers::UserAssetsResolver
     field :user_snapshots, resolver: Resolvers::UserSnapshotsResolver
+
+    field :deprecated_ocean_orders, resolver: Resolvers::DeprecatedOceanOrdersResolver
   end
 end

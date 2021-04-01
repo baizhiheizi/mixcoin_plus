@@ -1,0 +1,5 @@
+mutation GenerateCancelDeprecatedOceanOrderPayUrl(
+  $input: GenerateCancelDeprecatedOceanOrderPayUrlMutationInput!
+) {
+  generateCancelDeprecatedOceanOrderPayUrl(input: $input)
+}

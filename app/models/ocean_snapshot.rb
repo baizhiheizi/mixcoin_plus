@@ -156,29 +156,4 @@ class OceanSnapshot < MixinNetworkSnapshot
       end
     end
   end
-
-  private
-
-  def raw_to_uuid(raw)
-    return if raw.nil?
-
-    case raw
-    when String
-      raw = raw.bytes.pack('c*')
-    when Array
-      raw = raw.pack('c*')
-    end
-
-    raw = raw.unpack1('H*').to_s
-    format(
-      '%<first>s-%<second>s-%<third>s-%<forth>s-%<fifth>s',
-      first: raw[0..7],
-      second: raw[8..11],
-      third: raw[12..15],
-      forth: raw[16..19],
-      fifth: raw[20..]
-    )
-  rescue StandardError
-    nil
-  end
 end

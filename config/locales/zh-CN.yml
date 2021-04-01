@@ -44,3 +44,5 @@ zh-CN:
   already_paid: 已经支付
   cancel: 取消
   orders: 订单
+  deprecated_orders: 旧版订单
+  deprecated_version_notice: 旧版的 MixCoin 已经废弃，如果你还有进行中的订单，请在这里取消。欢迎使用全新的 MixCoin！

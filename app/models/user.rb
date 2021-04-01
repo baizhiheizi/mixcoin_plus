@@ -76,6 +76,19 @@ class User < ApplicationRecord
     format('https://api.multiavatar.com/%<mixin_uuid>s.svg', mixin_uuid: mixin_uuid)
   end
 
+  def snapshots_with_ocean_engine(_snapshots = [], offset = nil)
+    r = MixcoinPlusBot.api.snapshots(access_token: access_token, opponent: OceanBroker::OCEAN_ENGINE_USER_ID, limit: 500, offset: offset)
+    if r['data'].count == 500
+      snapshots_with_ocean_engine(_snapshots + r['data'], r['data'].last['created_at'])
+    else
+      r['data']
+    end
+  end
+
+  def deprecated_ocean_orders
+    DecryptedDeprecatedOrdersService.new.call snapshots_with_ocean_engine
+  end
+
   private
 
   def set_profile

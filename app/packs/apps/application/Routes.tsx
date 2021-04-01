@@ -9,9 +9,14 @@ import { useCurrentUser } from './contexts';
 import ExchangePage from './pages/ExchangePage/ExchangePage';
 import HomePage from './pages/HomePage/HomePage';
 import WalletPage from './pages/WalletPage/WalletPage';
-import OrdersPage from './pages/OrdersPage/OrdersPage';
-import SnapshotsPage from './pages/SnapshotsPage/SnapshotsPage';
 const MarketPage = React.lazy(() => import('./pages/MarketPage/MarketPage'));
+const SnapshotsPage = React.lazy(
+  () => import('./pages/SnapshotsPage/SnapshotsPage'),
+);
+const OrdersPage = React.lazy(() => import('./pages/OrdersPage/OrdersPage'));
+const DeprecatedOrdersPage = React.lazy(
+  () => import('./pages/DeprecatedOrdersPage/DeprecatedOrdersPage'),
+);
 
 export default function Routes() {
   const { currentUser } = useCurrentUser();
@@ -52,6 +57,9 @@ export default function Routes() {
           </Route>
           <Route path='/snapshots/:assetId' exact>
             <SnapshotsPage />
+          </Route>
+          <Route path='/deprecated_orders' exact>
+            <DeprecatedOrdersPage />
           </Route>
         </Switch>
       </Suspense>
