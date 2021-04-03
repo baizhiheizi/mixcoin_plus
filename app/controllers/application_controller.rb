@@ -12,7 +12,14 @@ class ApplicationController < ActionController::Base
     {
       current_user: current_user && {
         name: current_user.name,
-        avatar: current_user.avatar
+        avatar: current_user.avatar,
+        invite_code: current_user.invite_code,
+        may_invited: current_user.may_invited?,
+        invitor: current_user.invitor && {
+          mixin_id: current_user.invitor.mixin_id,
+          mixin_uuid: current_user.invitor.mixin_uuid,
+          name: current_user.invitor.name
+        }
       },
       mixin_bot: {
         app_id: MixcoinPlusBot.api.client_id,

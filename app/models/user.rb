@@ -7,6 +7,7 @@
 #  id               :uuid             not null, primary key
 #  assets_synced_at :datetime
 #  avatar_url       :string
+#  invite_code      :string
 #  locale           :string
 #  mixin_uuid       :uuid
 #  name             :string
@@ -16,8 +17,9 @@
 #
 # Indexes
 #
-#  index_users_on_mixin_id    (mixin_id) UNIQUE
-#  index_users_on_mixin_uuid  (mixin_uuid) UNIQUE
+#  index_users_on_invite_code  (invite_code) UNIQUE
+#  index_users_on_mixin_id     (mixin_id) UNIQUE
+#  index_users_on_mixin_uuid   (mixin_uuid) UNIQUE
 #
 class User < ApplicationRecord
   extend Enumerize
@@ -25,15 +27,21 @@ class User < ApplicationRecord
   include Authenticatable
 
   has_one :mixin_authorization, -> { where(provider: :mixin) }, class_name: 'UserAuthorization', inverse_of: :user
+
   has_many :notifications, as: :recipient, dependent: :destroy
+
   has_many :wallets, class_name: 'MixinNetworkUser', as: :owner, dependent: :restrict_with_exception
   has_one :ocean_broker, class_name: 'OceanBroker', as: :owner, dependent: :restrict_with_exception
+  has_many :ocean_orders, dependent: :restrict_with_exception
   has_many :assets, class_name: 'UserAsset', dependent: :restrict_with_exception
   has_many :markets, through: :assets, inverse_of: false
-  has_many :ocean_orders, dependent: :restrict_with_exception
   has_many :transfers, class_name: 'MixinTransfer', dependent: :restrict_with_exception, inverse_of: :recipient
 
-  before_validation :set_profile, on: :create
+  has_one :invitation, foreign_key: :invitee_id, dependent: :restrict_with_exception, inverse_of: :invitee
+  has_many :invitations, foreign_key: :invitor_id, dependent: :restrict_with_exception, inverse_of: :invitor
+  has_many :invitees, through: :invitations, source: :invitee
+
+  before_validation :set_defaults, on: :create
 
   validates :mixin_id, presence: true, uniqueness: true
   validates :mixin_uuid, presence: true, uniqueness: true
@@ -43,6 +51,7 @@ class User < ApplicationRecord
   after_commit :sync_assets_async, :create_ocean_broker, on: :create
 
   delegate :access_token, to: :mixin_authorization
+  delegate :invitor, to: :invitation
 
   action_store :favorite, :market
 
@@ -89,14 +98,25 @@ class User < ApplicationRecord
     DecryptedDeprecatedOrdersService.new.call snapshots_with_ocean_engine
   end
 
+  def generate_invite_code
+    SecureRandom.alphanumeric(10).upcase
+  end
+
+  def may_invited?
+    ocean_orders.without_drafted.count.zero?
+  end
+
   private
 
-  def set_profile
+  def set_defaults
+    return unless new_record?
+
     assign_attributes(
       name: mixin_authorization.raw['full_name'],
       avatar_url: mixin_authorization.raw['avatar_url'],
       mixin_id: mixin_authorization.raw['identity_number'],
-      mixin_uuid: mixin_authorization.uid
+      mixin_uuid: mixin_authorization.uid,
+      invite_code: generate_invite_code
     )
   end
 end

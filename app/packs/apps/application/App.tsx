@@ -25,6 +25,14 @@ export default function App(props: {
       ? 'dark'
       : 'light');
 
+  const inviteCode = new URLSearchParams(window.location.search).get(
+    'invite_code',
+  );
+
+  if ((!currentUser || currentUser.mayInvited) && inviteCode) {
+    localStorage.setItem('_mixcoinInviteCode', inviteCode || '');
+  }
+
   useEffect(() => {
     if (theme === 'dark') {
       document.querySelector('html').classList.add('dark');

@@ -45,6 +45,7 @@ export type CreateOceanOrderMutationInput = {
   orderType: Scalars['String'];
   price: Scalars['String'];
   funds: Scalars['String'];
+  inviteCode?: Maybe<Scalars['String']>;
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: Maybe<Scalars['String']>;
 };
@@ -428,6 +429,9 @@ export type User = {
   avatar: Scalars['String'];
   createdAt: Scalars['ISO8601DateTime'];
   id: Scalars['ID'];
+  inviteCode: Scalars['String'];
+  invitor?: Maybe<User>;
+  mayInvited: Scalars['Boolean'];
   mixinId: Scalars['String'];
   mixinUuid: Scalars['String'];
   name: Scalars['String'];

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_30_031039) do
+ActiveRecord::Schema.define(version: 2021_04_03_220352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -36,6 +36,15 @@ ActiveRecord::Schema.define(version: 2021_03_30_031039) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_administrators_on_name", unique: true
+  end
+
+  create_table "invitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "invitor_id"
+    t.uuid "invitee_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["invitee_id"], name: "index_invitations_on_invitee_id", unique: true
+    t.index ["invitor_id"], name: "index_invitations_on_invitor_id"
   end
 
   create_table "markets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -204,6 +213,8 @@ ActiveRecord::Schema.define(version: 2021_03_30_031039) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "assets_synced_at"
+    t.string "invite_code"
+    t.index ["invite_code"], name: "index_users_on_invite_code", unique: true
     t.index ["mixin_id"], name: "index_users_on_mixin_id", unique: true
     t.index ["mixin_uuid"], name: "index_users_on_mixin_uuid", unique: true
   end

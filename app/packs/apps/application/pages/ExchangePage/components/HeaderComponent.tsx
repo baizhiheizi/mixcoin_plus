@@ -70,7 +70,7 @@ export default function HeaderComponent(props: {
           onClick={() =>
             shareMixinAppCard({
               data: {
-                action: location.href,
+                action: `${location.origin}/exchange?market=${market.id}&invite_code=${currentUser?.inviteCode}`,
                 app_id: appId,
                 description: appName,
                 icon_url: market.baseAsset.iconUrl,

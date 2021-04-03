@@ -14,7 +14,7 @@ import OceanOrdersComponent from './components/OceanOrdersComponent';
 export default function ExchangePage() {
   const history = useHistory();
   const marketIdParam = new URLSearchParams(history.location.search).get(
-    'marketId',
+    'market',
   );
   const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
@@ -31,7 +31,7 @@ export default function ExchangePage() {
     if (!marketIdParam) {
       history.replace({
         ...history.location,
-        search: `?marketId=${marketId}`,
+        search: `?market=${marketId}`,
       });
     }
   }, [marketId]);

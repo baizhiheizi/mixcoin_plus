@@ -92,6 +92,8 @@ class OceanOrder < ApplicationRecord
     end
   end
 
+  scope :without_drafted, -> { where.not(state: :drafted) }
+
   def amount
     remaining_amount.to_f + filled_amount.to_f
   end
