@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :react_base_props
   helper_method :current_user
+  helper_method :current_conversation_id
 
   private
 
@@ -40,6 +41,10 @@ class ApplicationController < ActionController::Base
   def user_sign_out
     session[:current_user_id] = nil
     @current_user = nil
+  end
+
+  def current_conversation_id
+    request.env['HTTP_X_CONVERSATION_ID']
   end
 
   def with_locale(&action)

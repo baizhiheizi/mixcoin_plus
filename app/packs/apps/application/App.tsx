@@ -10,7 +10,7 @@ import zhCN from 'zarm/lib/config-provider/locale/zh_CN';
 import { CurrentUserContext } from './contexts/CurrentUserContext';
 import Routes from './Routes';
 import { apolloClient } from './utils';
-import { User } from 'graphqlTypes';
+import { useCreateInvitationMutation, User } from 'graphqlTypes';
 
 export default function App(props: {
   currentUser?: Partial<User>;
@@ -19,19 +19,31 @@ export default function App(props: {
   const { i18n } = useTranslation();
   const [currentUser, setCurrentUser] = useState(props.currentUser);
   const { mixinBot } = props;
+  const [createInvitation] = useCreateInvitationMutation({
+    update: () => {
+      localStorage.setItem('_mixcoinInviteCode', '');
+    },
+  });
   const theme =
     mixinContext.appearance ||
     (window.matchMedia('(prefers-color-scheme: dark)')?.matches
       ? 'dark'
       : 'light');
 
-  const inviteCode = new URLSearchParams(window.location.search).get(
+  const inviteCodeParam = new URLSearchParams(window.location.search).get(
     'invite_code',
   );
 
-  if ((!currentUser || currentUser.mayInvited) && inviteCode) {
-    localStorage.setItem('_mixcoinInviteCode', inviteCode || '');
+  if (!currentUser && inviteCodeParam) {
+    localStorage.setItem('_mixcoinInviteCode', inviteCodeParam || '');
   }
+
+  useEffect(() => {
+    const inviteCode = localStorage.getItem('_mixcoinInviteCode');
+    if (currentUser?.mayInvited && inviteCode) {
+      createInvitation({ variables: { input: { inviteCode } } });
+    }
+  }, []);
 
   useEffect(() => {
     if (theme === 'dark') {

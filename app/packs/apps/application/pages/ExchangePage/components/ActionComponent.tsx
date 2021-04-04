@@ -148,7 +148,6 @@ export default function ActionComponent(props: {
           orderType,
           price: orderPrice,
           funds,
-          inviteCode: localStorage.getItem('_mixcoinInviteCode') || ''
         },
       },
     });

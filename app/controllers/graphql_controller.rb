@@ -13,7 +13,8 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       session: session,
-      current_user: current_user
+      current_user: current_user,
+      current_conversation_id: current_conversation_id
     }
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result

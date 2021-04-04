@@ -12,5 +12,6 @@ module Types
     field :favorite_market, mutation: Mutations::FavoriteMarketMutation
     field :unfavorite_market, mutation: Mutations::UnfavoriteMarketMutation
     field :generate_cancel_deprecated_ocean_order_pay_url, mutation: Mutations::GenerateCancelDeprecatedOceanOrderPayUrlMutation
+    field :create_invitation, mutation: Mutations::CreateInvitationMutation
   end
 end

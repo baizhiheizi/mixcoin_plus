@@ -8,6 +8,7 @@ module Types
     field :mixin_id, String, null: false
     field :mixin_uuid, String, null: false
     field :invite_code, String, null: false
+    field :invitations_count, Int, null: false
     field :may_invited, Boolean, null: false
 
     field :invitor, Types::UserType, null: true

@@ -213,6 +213,7 @@ ActiveRecord::Schema.define(version: 2021_04_03_220352) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "assets_synced_at"
+    t.integer "invitations_count", default: 0
     t.string "invite_code"
     t.index ["invite_code"], name: "index_users_on_invite_code", unique: true
     t.index ["mixin_id"], name: "index_users_on_mixin_id", unique: true
