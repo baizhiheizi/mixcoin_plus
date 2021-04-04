@@ -1,6 +1,7 @@
 import { ApolloProvider } from '@apollo/client';
 import { MixinBotContext, MixinContext } from 'apps/shared';
 import 'apps/shared/locales/i18n';
+import { User } from 'graphqlTypes';
 import { mixinContext } from 'mixin-messenger-utils';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +11,6 @@ import zhCN from 'zarm/lib/config-provider/locale/zh_CN';
 import { CurrentUserContext } from './contexts/CurrentUserContext';
 import Routes from './Routes';
 import { apolloClient } from './utils';
-import { useCreateInvitationMutation, User } from 'graphqlTypes';
 
 export default function App(props: {
   currentUser?: Partial<User>;
@@ -19,11 +19,6 @@ export default function App(props: {
   const { i18n } = useTranslation();
   const [currentUser, setCurrentUser] = useState(props.currentUser);
   const { mixinBot } = props;
-  const [createInvitation] = useCreateInvitationMutation({
-    update: () => {
-      localStorage.setItem('_mixcoinInviteCode', '');
-    },
-  });
   const theme =
     mixinContext.appearance ||
     (window.matchMedia('(prefers-color-scheme: dark)')?.matches
@@ -37,13 +32,6 @@ export default function App(props: {
   if (!currentUser && inviteCodeParam) {
     localStorage.setItem('_mixcoinInviteCode', inviteCodeParam || '');
   }
-
-  useEffect(() => {
-    const inviteCode = localStorage.getItem('_mixcoinInviteCode');
-    if (currentUser?.mayInvited && inviteCode) {
-      createInvitation({ variables: { input: { inviteCode } } });
-    }
-  }, []);
 
   useEffect(() => {
     if (theme === 'dark') {

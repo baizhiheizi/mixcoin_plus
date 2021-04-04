@@ -26,7 +26,7 @@ export default function HeaderComponent(props: {
   const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const { market, setMarketId } = props;
-  const { appId, appName } = useMixinBot();
+  const { appId, appName, appIconUrl } = useMixinBot();
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [favorite] = useFavoriteMarketMutation({
     variables: { input: { marketId: market.id } },
@@ -73,7 +73,7 @@ export default function HeaderComponent(props: {
                 action: `${location.origin}/exchange?market=${market.id}&invite_code=${currentUser?.inviteCode}`,
                 app_id: appId,
                 description: appName,
-                icon_url: market.baseAsset.iconUrl,
+                icon_url: appIconUrl,
                 title: `${market.baseAsset.symbol}/${market.quoteAsset.symbol}`,
               },
             })

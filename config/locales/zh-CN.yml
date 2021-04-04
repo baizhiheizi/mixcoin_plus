@@ -46,3 +46,14 @@ zh-CN:
   orders: 订单
   deprecated_orders: 旧版订单
   deprecated_version_notice: 旧版的 MixCoin 已经废弃，如果你还有进行中的订单，请在这里取消。欢迎使用全新的 MixCoin！
+  invite: 去邀请
+  commission_plan: 佣金计划
+  commission_plan_rules: |
+    1. 您可以通过两个途径与 Mixcoin 分享佣金，分别是“邀请奖励”和“群主奖励”；
+    2. 新用户点击您的邀请链接登录 Mixcoin 并成功下单后，即视为邀请成功；
+    3. 邀请链接仅在一对一会话中生效，请不要在任何群中分享邀请链接；
+    4. 邀请成功后，每当被邀请人独立完成一笔 MAKER 订单，其手续费的 50% 将作为邀请奖励，即时发放；
+    5. 您也可以将 Mixcoin 机器人拉进您的加密小群，群成员在群内会话打开 Mixcoin 完成的所有 MAKER 订单，手续费 50% 将作为群主奖励，即时发放；
+    6. 邀请奖励和群主奖励不能重叠，群主奖励优先；
+    7. 活动最终解释权归 Mixcoin 团队所有。 
+  exchange_any_asset: 交易任意加密货币

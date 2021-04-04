@@ -36,7 +36,7 @@ yarn-debug.log*
 .yarn-integrity
 
 # generated locales
-translations.json
-default.json
+# translations.json
+# default.json
 
 /config/credentials/development.key

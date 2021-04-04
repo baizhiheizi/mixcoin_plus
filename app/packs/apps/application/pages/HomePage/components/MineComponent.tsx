@@ -1,4 +1,6 @@
 import { useCurrentUser } from 'apps/application/contexts';
+import { useMixinBot } from 'apps/shared';
+import { shareMixinAppCard } from 'mixin-messenger-utils';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -7,6 +9,7 @@ import { Button, Cell, Modal, Panel, Radio } from 'zarm';
 export default function MineComponent() {
   const history = useHistory();
   const { currentUser } = useCurrentUser();
+  const { appId, appName, appIconUrl } = useMixinBot();
   const { t, i18n } = useTranslation();
 
   if (!currentUser) {
@@ -47,6 +50,31 @@ export default function MineComponent() {
           title={t('deprecated_orders')}
           hasArrow
           onClick={() => history.push('/deprecated_orders')}
+        />
+        <Cell
+          title={t('commission_plan')}
+          hasArrow
+          onClick={() =>
+            Modal.confirm({
+              title: t('commission_plan'),
+              content: (
+                <div className='text-left whitespace-pre-line'>
+                  {t('commission_plan_rules')}
+                </div>
+              ),
+              okText: t('invite'),
+              onOk: () =>
+                shareMixinAppCard({
+                  data: {
+                    action: `${location.origin}/?invite_code=${currentUser.inviteCode}`,
+                    app_id: appId,
+                    description: t('exchange_any_asset'),
+                    icon_url: appIconUrl,
+                    title: appName,
+                  },
+                }),
+            })
+          }
         />
         <Cell
           title={t('language')}

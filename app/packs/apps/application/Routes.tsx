@@ -1,5 +1,8 @@
 import { useMixin, useMixinBot } from 'apps/shared';
-import { useSwitchLocaleMutation } from 'graphqlTypes';
+import {
+  useCreateInvitationMutation,
+  useSwitchLocaleMutation,
+} from 'graphqlTypes';
 import React, { Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -22,6 +25,11 @@ export default function Routes() {
   const { currentUser } = useCurrentUser();
   const [switchLocale] = useSwitchLocaleMutation();
   const { i18n } = useTranslation();
+  const [createInvitation] = useCreateInvitationMutation({
+    update: () => {
+      localStorage.setItem('_mixcoinInviteCode', '');
+    },
+  });
 
   useEffect(() => {
     if (!currentUser) {
@@ -33,6 +41,13 @@ export default function Routes() {
     i18n.on('languageChanged', (lng: string) => {
       switchLocale({ variables: { input: { locale: lng } } });
     });
+  }, []);
+
+  useEffect(() => {
+    const inviteCode = localStorage.getItem('_mixcoinInviteCode');
+    if (currentUser?.mayInvited && inviteCode) {
+      createInvitation({ variables: { input: { inviteCode } } });
+    }
   }, []);
 
   return (

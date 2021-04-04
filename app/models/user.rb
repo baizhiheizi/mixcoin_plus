@@ -39,6 +39,7 @@ class User < ApplicationRecord
   has_many :transfers, class_name: 'MixinTransfer', dependent: :restrict_with_exception, inverse_of: :recipient
 
   has_one :invitation, foreign_key: :invitee_id, dependent: :restrict_with_exception, inverse_of: :invitee
+  has_one :invitor, through: :invitation, source: :invitor
   has_many :invitations, foreign_key: :invitor_id, dependent: :restrict_with_exception, inverse_of: :invitor
   has_many :invitees, through: :invitations, source: :invitee
 
@@ -52,7 +53,6 @@ class User < ApplicationRecord
   after_commit :sync_assets_async, :create_ocean_broker, on: :create
 
   delegate :access_token, to: :mixin_authorization
-  delegate :invitor, to: :invitation
 
   action_store :favorite, :market
 
