@@ -25,6 +25,7 @@ class MixinAsset < ApplicationRecord
 
   before_validation :set_defaults, on: :create
   after_commit :generate_markets_async, on: :create
+  after_find :sync!
 
   def self.find_or_create_by_asset_id(_asset_id)
     currency = find_by(asset_id: _asset_id)
@@ -35,7 +36,7 @@ class MixinAsset < ApplicationRecord
   end
 
   def sync!
-    return if updated_at > Time.current - 1.minute
+    return if updated_at > Time.current - 5.minutes
 
     r = MixcoinPlusBot.api.asset asset_id
     update! raw: r['data']
