@@ -23,6 +23,7 @@ class MixinMessage < ApplicationRecord
   store :raw, accessors: %i[action data]
 
   belongs_to :user, primary_key: :mixin_uuid, optional: true
+  belongs_to :conversation, class_name: 'MixinConversation', primary_key: :conversation_id, inverse_of: false, optional: true
 
   before_validation :setup_attributes
 
@@ -37,11 +38,23 @@ class MixinMessage < ApplicationRecord
     /^PLAIN_/.match? category
   end
 
+  def system_conversation?
+    category == 'SYSTEM_CONVERSATION'
+  end
+
   def processed?
     processed_at?
   end
 
   def process!
+    if group?
+      process_group_message
+    elsif plain?
+      process_plain_message
+    elsif system_conversation?
+      process_system_conversation_message
+    end
+
     touch_proccessed_at
   end
 
@@ -50,11 +63,17 @@ class MixinMessage < ApplicationRecord
   end
 
   def process_async
-    if plain?
-      # ProcessMixinMessageWorker.perform_async message_id
-    else
-      touch_proccessed_at
-    end
+    MixinMessageProcessWorker.perform_async id
+  end
+
+  def process_group_message
+  end
+
+  def process_plain_message
+  end
+
+  def process_system_conversation_message
+    MixinConversation.refresh_or_create_by_conversation_id conversation_id
   end
 
   private

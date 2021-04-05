@@ -16,6 +16,7 @@ module Mutations
       price = params[:price].to_f
       funds = params[:funds].to_f
       current_user.ocean_orders.create!(
+        conversation_id: context[:current_conversation_id],
         market_id: params[:market_id],
         side: params[:side],
         order_type: params[:order_type],

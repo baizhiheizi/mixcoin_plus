@@ -30,6 +30,11 @@
 #  index_ocean_orders_on_market_id  (market_id)
 #
 class OceanOrder < ApplicationRecord
+  MAKER_FEE = 0.01
+  TAKER_FEE = 0.0
+  INVITATION_COMMISSION = 0.5
+  GROUP_OWNER_COMMISSION = 0.5
+
   extend Enumerize
   include AASM
 
@@ -38,6 +43,8 @@ class OceanOrder < ApplicationRecord
   belongs_to :broker, class_name: 'OceanBroker', primary_key: :mixin_uuid, inverse_of: :ocean_orders
   belongs_to :base_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
   belongs_to :quote_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
+  belongs_to :conversation, class_name: 'MixinConversation', primary_key: :conversation_id
+
   has_many :snapshots, class_name: 'OceanSnapshot', as: :source, dependent: :restrict_with_exception
 
   enumerize :side, in: %w[ask bid], scope: true, predicates: true
@@ -199,6 +206,22 @@ class OceanOrder < ApplicationRecord
     )
   end
 
+  def invitation_commission
+    if group_owner_commission.zero? && user.invitor.present?
+      INVITATION_COMMISSION
+    else
+      0
+    end
+  end
+
+  def group_owner_commission
+    if conversation.group? && conversation.creator != user
+      GROUP_OWNER_COMMISSION
+    else
+      0
+    end
+  end
+
   private
 
   def set_defaults
@@ -210,7 +233,9 @@ class OceanOrder < ApplicationRecord
       base_asset_id: market.base_asset_id,
       quote_asset_id: market.quote_asset_id,
       filled_amount: 0.0,
-      filled_funds: 0.0
+      filled_funds: 0.0,
+      maker_fee: MAKER_FEE,
+      taker_fee: TAKER_FEE
     )
   end
 

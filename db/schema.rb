@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_03_220352) do
+ActiveRecord::Schema.define(version: 2021_04_04_124028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -69,6 +69,20 @@ ActiveRecord::Schema.define(version: 2021_04_03_220352) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["asset_id"], name: "index_mixin_assets_on_asset_id", unique: true
+  end
+
+  create_table "mixin_conversations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "category"
+    t.json "data"
+    t.string "name"
+    t.uuid "conversation_id", null: false
+    t.uuid "code_id"
+    t.uuid "creator_id"
+    t.uuid "participant_uuids", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["conversation_id"], name: "index_mixin_conversations_on_conversation_id", unique: true
+    t.index ["creator_id"], name: "index_mixin_conversations_on_creator_id"
   end
 
   create_table "mixin_messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

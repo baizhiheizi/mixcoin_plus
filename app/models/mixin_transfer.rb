@@ -45,7 +45,7 @@ class MixinTransfer < ApplicationRecord
 
   enumerize :priority, in: %i[default critical high low], default: :default, predicates: true
   enumerize :transfer_type,
-            in: %i[default ocean_broker_balance ocean_broker_register ocean_order_create ocean_order_cancel ocean_order_match ocean_order_refund],
+            in: %i[default ocean_broker_balance ocean_broker_register ocean_order_create ocean_order_cancel ocean_order_match ocean_order_refund ocean_order_group_owner_commission ocean_order_invitation_commission ocean_order_mixcoin_fee],
             default: :default,
             predicates: true
 
@@ -64,7 +64,7 @@ class MixinTransfer < ApplicationRecord
     return if processed?
 
     r =
-      if wallet.blank?
+      if user_id == MixcoinPlusBot.api.client_id
         MixcoinPlusBot.api.create_transfer(
           Rails.application.credentials.dig(:mixin, :pin_code),
           {
@@ -75,7 +75,7 @@ class MixinTransfer < ApplicationRecord
             memo: memo
           }
         )
-      else
+      elsif wallet.present?
         wallet.mixin_api.create_transfer(
           wallet.pin,
           {

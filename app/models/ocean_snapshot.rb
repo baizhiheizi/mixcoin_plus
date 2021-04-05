@@ -36,6 +36,89 @@ class OceanSnapshot < MixinNetworkSnapshot
 
   alias ocean_order source
 
+  def fee
+    return 0 unless match_from_engine?
+
+    ocean_fee = decrypted_memo['F'].to_f
+    if ocean_fee.positive?
+      (OCEAN::TAKER_FEE * amount).round(8) + ocean_fee
+    else
+      (OCEAN::MAKER_FEE * amount).round(8)
+    end
+  end
+
+  def process_match_from_engine
+    return unless match_from_engine?
+
+    _ocean_order = decrypted_ocean_order
+    raise 'Not from order broker' unless _ocean_order&.broker&.mixin_uuid == user_id
+
+    group_owner_commission_amount = (_ocean_order.group_owner_commission * fee).floor(8)
+    invitation_commission_amount = (_ocean_order.invitation_commission * fee).floor(8)
+    mixcoin_fee_amount = fee - group_owner_commission_amount - invitation_commission_amount
+    _amount = amount - group_owner_commission_amount - invitation_commission_amount - mixcoin_fee_amount
+
+    # Group Owner Commission
+    if group_owner_commission_amount.positive?
+      MixinTransfer.create_with(
+        source: _ocean_order,
+        user_id: user_id,
+        transfer_type: :ocean_order_group_owner_commission,
+        opponent_id: _ocean_order.conversation.creator.mixin_uuid,
+        asset_id: asset_id,
+        amount: group_owner_commission_amount,
+        memo: 'Group Owner Commission'
+      ).find_or_create_by!(
+        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.conversation.creator.mixin_uuid)
+      )
+    end
+
+    # Invitation Commission
+    if invitation_commission_amount.positive?
+      MixinTransfer.create_with(
+        source: _ocean_order,
+        user_id: user_id,
+        transfer_type: :ocean_order_invitation_commission,
+        opponent_id: _ocean_order.user.invitor.mixin_uuid,
+        asset_id: asset_id,
+        amount: invitation_commission_amount,
+        memo: 'Invitation Commission'
+      ).find_or_create_by!(
+        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.user.invitor.mixin_uuid)
+      )
+    end
+
+    # Mixcoin Fee
+    if mixcoin_fee_amount.positive?
+      MixinTransfer.create_with(
+        source: _ocean_order,
+        user_id: user_id,
+        transfer_type: :ocean_order_mixcoin_fee,
+        opponent_id: MixcoinPlusBot.api.client_id,
+        asset_id: asset_id,
+        amount: mixcoin_fee_amount,
+        memo: 'Mixcoin Fee'
+      ).find_or_create_by!(
+        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, MixcoinPlusBot.api.client_id)
+      )
+    end
+
+    # Match To User
+    if _amount.positive?
+      MixinTransfer.create_with(
+        source: _ocean_order,
+        user_id: user_id,
+        transfer_type: :ocean_order_match,
+        opponent_id: _ocean_order.user.mixin_uuid,
+        asset_id: asset_id,
+        amount: _amount,
+        memo: Base64.strict_encode64("OCEAN|MATCH|#{_ocean_order.trace_id}")
+      ).find_or_create_by!(
+        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, user.mixin_uuid)
+      )
+    end
+  end
+
   def process!
     return if processed?
 
@@ -55,17 +138,7 @@ class OceanSnapshot < MixinNetworkSnapshot
     when :create_order_to_engine
       _ocean_order.book! if _ocean_order.may_book?
     when :match_from_engine
-      MixinTransfer.create_with(
-        source: _ocean_order,
-        user_id: _ocean_order.broker.mixin_uuid,
-        transfer_type: :ocean_order_match,
-        opponent_id: _ocean_order.user.mixin_uuid,
-        asset_id: asset_id,
-        amount: amount,
-        memo: Base64.strict_encode64("OCEAN|MATCH|#{_ocean_order.trace_id}")
-      ).find_or_create_by!(
-        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.trace_id)
-      )
+      process_match_from_engine
     when :match_to_user
       _ocean_order.match!
     when :cancel_order_to_engine
@@ -100,60 +173,62 @@ class OceanSnapshot < MixinNetworkSnapshot
     return if raw['user_id'] == MixcoinPlusBot.api.client_id
 
     # from user to broker
-    _ocean_order ||= OceanOrder.find_by(id: raw['trace_id'])
+    @_decrypted_ocean_order ||= OceanOrder.quote_by(id: raw['trace_id'])
 
     # from broker to engine, for create order
     # trace_id same as ocean_order's
-    _ocean_order ||= OceanOrder.find_by(trace_id: raw['trace_id'])
+    @_decrypted_ocean_order ||= OceanOrder.find_by(trace_id: raw['trace_id'])
 
     # from broker to user
-    _ocean_order ||= OceanOrder.find_by(trace_id: base64_decoded_memo.split('|')[2]) if base64_decoded_memo.match?(/^OCEAN/)
+    @_decrypted_ocean_order ||= OceanOrder.find_by(trace_id: base64_decoded_memo.split('|')[2]) if base64_decoded_memo.match?(/^OCEAN/)
 
     # from engine to broker
     # 'O' in memo
     _init_order_id = raw_to_uuid(decrypted_memo['O'])
-    _ocean_order ||= OceanOrder.find_by(trace_id: _init_order_id)
+    @_decrypted_ocean_order ||= OceanOrder.find_by(trace_id: _init_order_id)
 
     # from engine to broker
     # match transfer, 'A' in memo for AskOrderId
     _ask_order_id = raw_to_uuid(decrypted_memo['A'])
-    _ocean_order ||= OceanOrder.find_by(trace_id: _ask_order_id, side: 'ask', quote_asset_id: raw['asset']['asset_id'])
+    @_decrypted_ocean_order ||= OceanOrder.find_by(trace_id: _ask_order_id, side: 'ask', quote_asset_id: raw['asset']['asset_id'])
 
     # from engine to broker
     # match transfer, 'B' for 'BidOrderId'
     _bid_order_id = raw_to_uuid(decrypted_memo['B'])
-    _ocean_order ||= OceanOrder.find_by(trace_id: _bid_order_id, side: 'bid', base_asset_id: raw['asset']['asset_id'])
+    @_decrypted_ocean_order ||= OceanOrder.find_by(trace_id: _bid_order_id, side: 'bid', base_asset_id: raw['asset']['asset_id'])
 
-    _ocean_order
+    @_decrypted_ocean_order
   end
 
   def decrypted_snapshot_type
-    if raw['opponent_id'] == OceanBroker::OCEAN_ENGINE_USER_ID
-      if raw['amount'].to_f.negative?
-        # to engine
-        return 'ocean_broker_register' if decrypted_memo['U'].present?
-        return 'cancel_order_to_engine' if decrypted_memo['O'].present?
-        return 'create_order_to_engine' if decrypted_memo['A'].present?
-      else
-        # from engine
-        case decrypted_memo['S']
-        when 'CANCEL', 'REFUND'
-          'refund_from_engine'
+    @_decrypted_snapshot_type ||=
+      if raw['opponent_id'] == OceanBroker::OCEAN_ENGINE_USER_ID
+        if raw['amount'].to_f.negative?
+          # to engine
+          return 'ocean_broker_register' if decrypted_memo['U'].present?
+          return 'cancel_order_to_engine' if decrypted_memo['O'].present?
+          return 'create_order_to_engine' if decrypted_memo['A'].present?
+        else
+          # from engine
+          case decrypted_memo['S']
+          when 'CANCEL', 'REFUND'
+            'refund_from_engine'
+          when 'MATCH'
+            'match_from_engine'
+          end
+        end
+      elsif base64_decoded_memo.match?(/^OCEAN/)
+        case base64_decoded_memo.split('|')[1]
+        when 'REFUND', 'CANCEL'
+          'refund_to_user'
         when 'MATCH'
-          'match_from_engine'
+          'match_to_user'
+        when 'CREATE'
+          'create_order_from_user'
+        when 'BALANCE'
+          'ocean_broker_balance'
         end
       end
-    elsif base64_decoded_memo.match?(/^OCEAN/)
-      case base64_decoded_memo.split('|')[1]
-      when 'REFUND', 'CANCEL'
-        'refund_to_user'
-      when 'MATCH'
-        'match_to_user'
-      when 'CREATE'
-        'create_order_from_user'
-      when 'BALANCE'
-        'ocean_broker_balance'
-      end
-    end
+    @_decrypted_snapshot_type
   end
 end
