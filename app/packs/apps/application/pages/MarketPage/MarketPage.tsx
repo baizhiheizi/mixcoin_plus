@@ -237,7 +237,7 @@ export default function MarketPage() {
         <a
           className='flex-1 py-2 mx-2 text-center text-white bg-green-500 rounded'
           onClick={() => {
-            history.push(`/exchange?marketId=${marketId}&side=bid`);
+            history.push(`/exchange?market=${marketId}&side=bid`);
           }}
         >
           {t('buy')}
@@ -245,7 +245,7 @@ export default function MarketPage() {
         <a
           className='flex-1 py-2 mx-2 text-center text-white bg-red-500 rounded'
           onClick={() => {
-            history.push(`/exchange?marketId=${marketId}&side=ask`);
+            history.push(`/exchange?market=${marketId}&side=ask`);
           }}
         >
           {t('sell')}

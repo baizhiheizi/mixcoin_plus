@@ -43,7 +43,7 @@ class OceanOrder < ApplicationRecord
   belongs_to :broker, class_name: 'OceanBroker', primary_key: :mixin_uuid, inverse_of: :ocean_orders
   belongs_to :base_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
   belongs_to :quote_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
-  belongs_to :conversation, class_name: 'MixinConversation', primary_key: :conversation_id
+  belongs_to :conversation, class_name: 'MixinConversation', primary_key: :conversation_id, optional: true
 
   has_many :snapshots, class_name: 'OceanSnapshot', as: :source, dependent: :restrict_with_exception
 
@@ -215,7 +215,7 @@ class OceanOrder < ApplicationRecord
   end
 
   def group_owner_commission
-    if conversation.group? && conversation.creator != user
+    if conversation&.group? && conversation&.creator != user
       GROUP_OWNER_COMMISSION
     else
       0

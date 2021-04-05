@@ -84,11 +84,12 @@ class MixinNetworkSnapshot < ApplicationRecord
     processed_at?
   end
 
-  # TODO: process
   def process!
     return if processed?
 
-    raise 'No Processor Implemented!'
+    raise 'No Processor Implemented!' unless data.to_s.downcase.match?(/fee|commission/)
+
+    touch_proccessed_at
   end
 
   def touch_proccessed_at

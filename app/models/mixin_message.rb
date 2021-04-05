@@ -38,6 +38,10 @@ class MixinMessage < ApplicationRecord
     /^PLAIN_/.match? category
   end
 
+  def plain_text?
+    category == 'PLAIN_TEXT'
+  end
+
   def system_conversation?
     category == 'SYSTEM_CONVERSATION'
   end
@@ -47,10 +51,10 @@ class MixinMessage < ApplicationRecord
   end
 
   def process!
-    if group?
-      process_group_message
-    elsif plain?
-      process_plain_message
+    return if processed?
+
+    if plain_text?
+      process_plain_text_message
     elsif system_conversation?
       process_system_conversation_message
     end
@@ -66,14 +70,30 @@ class MixinMessage < ApplicationRecord
     MixinMessageProcessWorker.perform_async id
   end
 
-  def process_group_message
-  end
+  def process_plain_text_message
+    base, quote = memo.gsub(/@\d{10}/, '').strip.split(%r{/|\|,|-|_| })
+    market = Market.ransack({ base_asset_symbol_i_cont: base, quote_asset_symbol_i_cont: quote.presence || 'pUSD', m: 'and' }).result.first
+    return if market.blank?
 
-  def process_plain_message
+    reply =
+      MixcoinPlusBot.api.app_card(
+        conversation_id: conversation_id,
+        data: {
+          icon_url: MixcoinPlusBot::ICON_URL,
+          title: "#{market.base_asset.symbol}/#{market.quote_asset.symbol}",
+          description: 'Mixcoin',
+          action: format('%<host>s/markets/%<market_id>s', host: Rails.application.credentials[:host], market_id: market.id)
+        }
+      )
+    SendMixinMessageWorker.perform_async reply
   end
 
   def process_system_conversation_message
     MixinConversation.refresh_or_create_by_conversation_id conversation_id
+  end
+
+  def memo
+    Base64.decode64 data&.[]('data').to_s
   end
 
   private

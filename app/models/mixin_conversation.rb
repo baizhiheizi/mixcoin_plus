@@ -25,7 +25,8 @@ class MixinConversation < ApplicationRecord
 
   has_many :ocean_orders, foreign_key: :conversation_id, primary_key: :conversation_id, inverse_of: :conversation, dependent: :restrict_with_exception
 
-  validates :category, presence: true
+  before_validation :set_defaults, on: :create
+
   validates :data, presence: true
   validates :conversation_id, presence: true, uniqueness: true
 
@@ -51,12 +52,12 @@ class MixinConversation < ApplicationRecord
   end
 
   def self.refresh_or_create_by_conversation_id(_conversation_id)
-    find_by(conversation_id: _conversation_id)&.refresh_async || create(conversation_id: _conversation_id)
+    find_by(conversation_id: _conversation_id)&.refresh_async || create!(conversation_id: _conversation_id)
   end
 
   private
 
-  def set_attributes
+  def set_defaults
     read_conversation if data.blank?
 
     assign_attributes(

@@ -35,6 +35,8 @@ class MixinAsset < ApplicationRecord
   end
 
   def sync!
+    return if updated_at > Time.current - 1.minute
+
     r = MixcoinPlusBot.api.asset asset_id
     update! raw: r['data']
   end

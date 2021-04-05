@@ -37,18 +37,18 @@ class OceanSnapshot < MixinNetworkSnapshot
   alias ocean_order source
 
   def fee
-    return 0 unless match_from_engine?
+    return 0 unless decrypted_snapshot_type == 'match_from_engine'
 
     ocean_fee = decrypted_memo['F'].to_f
     if ocean_fee.positive?
-      (OCEAN::TAKER_FEE * amount).round(8) + ocean_fee
+      (OceanOrder::TAKER_FEE * amount).round(8) + ocean_fee
     else
-      (OCEAN::MAKER_FEE * amount).round(8)
+      (OceanOrder::MAKER_FEE * amount).round(8)
     end
   end
 
   def process_match_from_engine
-    return unless match_from_engine?
+    return unless decrypted_snapshot_type == 'match_from_engine'
 
     _ocean_order = decrypted_ocean_order
     raise 'Not from order broker' unless _ocean_order&.broker&.mixin_uuid == user_id
@@ -103,20 +103,20 @@ class OceanSnapshot < MixinNetworkSnapshot
       )
     end
 
+    return unless _amount.positive?
+
     # Match To User
-    if _amount.positive?
-      MixinTransfer.create_with(
-        source: _ocean_order,
-        user_id: user_id,
-        transfer_type: :ocean_order_match,
-        opponent_id: _ocean_order.user.mixin_uuid,
-        asset_id: asset_id,
-        amount: _amount,
-        memo: Base64.strict_encode64("OCEAN|MATCH|#{_ocean_order.trace_id}")
-      ).find_or_create_by!(
-        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, user.mixin_uuid)
-      )
-    end
+    MixinTransfer.create_with(
+      source: _ocean_order,
+      user_id: user_id,
+      transfer_type: :ocean_order_match,
+      opponent_id: _ocean_order.user.mixin_uuid,
+      asset_id: asset_id,
+      amount: _amount,
+      memo: Base64.strict_encode64("OCEAN|MATCH|#{_ocean_order.trace_id}")
+    ).find_or_create_by!(
+      trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.user.mixin_uuid)
+    )
   end
 
   def process!
@@ -173,7 +173,7 @@ class OceanSnapshot < MixinNetworkSnapshot
     return if raw['user_id'] == MixcoinPlusBot.api.client_id
 
     # from user to broker
-    @_decrypted_ocean_order ||= OceanOrder.quote_by(id: raw['trace_id'])
+    @_decrypted_ocean_order ||= OceanOrder.find_by(id: raw['trace_id'])
 
     # from broker to engine, for create order
     # trace_id same as ocean_order's
