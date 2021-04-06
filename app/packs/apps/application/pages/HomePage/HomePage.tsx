@@ -8,7 +8,7 @@ import MineComponent from './components/MineComponent';
 
 export default function HomePage() {
   const { currentUser } = useCurrentUser();
-  const tabs = ['favorite', 'pUSD', 'BTC', 'XIN', 'USDT'];
+  const tabs = ['favorite', 'USDT', 'pUSD', 'BTC', 'XIN'];
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const cachedTabIndex = tabs.findIndex(
     (tab) => tab === localStorage.getItem('_cachedQuote'),
@@ -42,10 +42,10 @@ export default function HomePage() {
           }}
         >
           <Tabs.Panel title={t('favorite')}></Tabs.Panel>
+          <Tabs.Panel title='USDT'></Tabs.Panel>
           <Tabs.Panel title='pUSD'></Tabs.Panel>
           <Tabs.Panel title='BTC'></Tabs.Panel>
           <Tabs.Panel title='XIN'></Tabs.Panel>
-          <Tabs.Panel title='USDT'></Tabs.Panel>
         </Tabs>
       </div>
       <div className='min-h-screen pt-12 pb-16 bg-white dark:bg-dark'>

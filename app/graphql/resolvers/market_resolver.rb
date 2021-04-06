@@ -18,7 +18,7 @@ module Resolvers
           markets.find_by(quote_asset_id: params[:quote_asset_id], base_asset_id: params[:base_asset_id])
         end
 
-      market || markets.first
+      market || markets.sample(1)
     end
   end
 end
