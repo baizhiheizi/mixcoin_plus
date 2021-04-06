@@ -394,6 +394,8 @@ export type QueryAdminWalletBalanceArgs = {
 
 export type QueryMarketArgs = {
   id?: Maybe<Scalars['ID']>;
+  quoteAssetId?: Maybe<Scalars['String']>;
+  baseAssetId?: Maybe<Scalars['String']>;
 };
 
 
@@ -834,6 +836,8 @@ export type MarketConnectionQuery = (
 
 export type MarketQueryVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
+  quoteAssetId?: Maybe<Scalars['String']>;
+  baseAssetId?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -1777,8 +1781,8 @@ export type MarketConnectionQueryHookResult = ReturnType<typeof useMarketConnect
 export type MarketConnectionLazyQueryHookResult = ReturnType<typeof useMarketConnectionLazyQuery>;
 export type MarketConnectionQueryResult = Apollo.QueryResult<MarketConnectionQuery, MarketConnectionQueryVariables>;
 export const MarketDocument = gql`
-    query Market($id: ID) {
-  market(id: $id) {
+    query Market($id: ID, $quoteAssetId: String, $baseAssetId: String) {
+  market(id: $id, quoteAssetId: $quoteAssetId, baseAssetId: $baseAssetId) {
     id
     favorited
     baseAsset {
@@ -1818,6 +1822,8 @@ export const MarketDocument = gql`
  * const { data, loading, error } = useMarketQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      quoteAssetId: // value for 'quoteAssetId'
+ *      baseAssetId: // value for 'baseAssetId'
  *   },
  * });
  */

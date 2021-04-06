@@ -1,5 +1,5 @@
-query Market($id: ID) {
-  market(id: $id) {
+query Market($id: ID, $quoteAssetId: String, $baseAssetId: String) {
+  market(id: $id, quoteAssetId: $quoteAssetId, baseAssetId: $baseAssetId) {
     id
     favorited
     baseAsset {

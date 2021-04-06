@@ -12,6 +12,8 @@ module Resolvers
       markets =
         if current_user.present? && params[:type] == 'favorite'
           current_user.favorite_markets
+        elsif params[:type] == 'USDT'
+          (current_user&.markets || Market.all).includes(:quote_asset).where(quote_asset_id: Market::ERC20_USDT_ASSET_ID)
         else
           (current_user&.markets || Market.all).includes(:quote_asset).where(quote_asset: { symbol: params[:type] })
         end

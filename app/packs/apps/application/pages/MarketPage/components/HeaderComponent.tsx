@@ -1,16 +1,25 @@
 import { useCurrentUser } from 'apps/application/contexts';
-import { useMixinBot } from 'apps/shared';
+import {
+  ERC20_USDT_ASSET_ID,
+  OMNI_USDT_ASSET_ID,
+  useMixinBot,
+} from 'apps/shared';
 import {
   Market,
   useFavoriteMarketMutation,
+  useMarketLazyQuery,
   useUnfavoriteMarketMutation,
 } from 'graphqlTypes';
 import { shareMixinAppCard } from 'mixin-messenger-utils';
 import React from 'react';
-import { Share2 as Share2Icon, Star as StarIcon } from 'react-feather';
+import {
+  RotateCw as RotateCwIcon,
+  Share2 as Share2Icon,
+  Star as StarIcon,
+} from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { Modal } from 'zarm';
+import { Loading, Modal } from 'zarm';
 
 export default function HeaderComponent(props: {
   market: Partial<Market> | any;
@@ -26,13 +35,44 @@ export default function HeaderComponent(props: {
   const [unfavorite] = useUnfavoriteMarketMutation({
     variables: { input: { marketId: market.id } },
   });
+  const [marketQuery, { called, data }] = useMarketLazyQuery();
+
+  if (called && data?.market) {
+    location.replace(`/markets/${data.market.id}`);
+  }
 
   return (
     <>
       <div className='flex items-center px-4 py-2 mb-1 bg-white dark:bg-dark dark:text-white'>
-        <div className='mr-4 text-lg font-semibold'>
+        <div className='mr-2 text-lg font-semibold'>
           {market.baseAsset.symbol}/{market.quoteAsset.symbol}
         </div>
+        {market.quoteAsset.symbol === 'USDT' && (
+          <div
+            className='mr-4'
+            onClick={() => {
+              Loading.show();
+              marketQuery({
+                variables: {
+                  baseAssetId: market.baseAsset.assetId,
+                  quoteAssetId:
+                    market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
+                      ? OMNI_USDT_ASSET_ID
+                      : ERC20_USDT_ASSET_ID,
+                },
+              });
+            }}
+          >
+            <div className='flex items-center text-xs h-7'>
+              <div className='mr-1'>
+                {market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
+                  ? 'ERC20'
+                  : 'Omni'}
+              </div>
+              <RotateCwIcon className='w-3 h-3' />
+            </div>
+          </div>
+        )}
         <StarIcon
           className={`h-5 mr-4 ${
             market.favorited ? 'text-yellow-500' : 'text-gray-500'
