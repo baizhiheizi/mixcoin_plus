@@ -62,10 +62,21 @@ export function MarketsComponent(props: { type: string }) {
             key={market.id}
             className='flex items-center px-4 py-2'
           >
-            <img
-              className='w-10 h-10 mr-2 rounded-full'
-              src={market.baseAsset.iconUrl.replace(/s128$/, 's64')}
-            />
+            <div className='relative'>
+              <img
+                className='w-10 h-10 mr-2 rounded-full'
+                src={market.baseAsset.iconUrl.replace(/s128$/, 's64')}
+              />
+              {market.baseAsset.chainAsset && (
+                <img
+                  className='absolute bottom-0 left-0 w-4 h-4 border border-white rounded-full'
+                  src={market.baseAsset.chainAsset.iconUrl.replace(
+                    /s128/,
+                    's32',
+                  )}
+                />
+              )}
+            </div>
             <div className='flex items-baseline'>
               <div className='mr-1 text-lg font-semibold'>
                 {market.baseAsset.symbol}

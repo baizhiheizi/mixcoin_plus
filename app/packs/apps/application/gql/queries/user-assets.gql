@@ -10,5 +10,8 @@ query UserAssets {
     priceUsd
     changeUsd
     changeBtc
+    chainAsset {
+      iconUrl
+    }
   }
 }

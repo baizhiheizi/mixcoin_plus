@@ -108,6 +108,7 @@ export type MarketEdge = {
 export type MixinAsset = {
   __typename?: 'MixinAsset';
   assetId: Scalars['String'];
+  chainAsset?: Maybe<MixinAsset>;
   chainId?: Maybe<Scalars['String']>;
   changeUsd?: Maybe<Scalars['Float']>;
   createdAt: Scalars['ISO8601DateTime'];
@@ -457,6 +458,7 @@ export type UserAsset = {
   assetId: Scalars['String'];
   balance: Scalars['Float'];
   balanceUsd: Scalars['Float'];
+  chainAsset?: Maybe<MixinAsset>;
   chainId?: Maybe<Scalars['String']>;
   changeBtc?: Maybe<Scalars['Float']>;
   changeUsd?: Maybe<Scalars['Float']>;
@@ -811,9 +813,17 @@ export type MarketConnectionQuery = (
       & { baseAsset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'changeUsd' | 'priceUsd'>
+        & { chainAsset?: Maybe<(
+          { __typename?: 'MixinAsset' }
+          & Pick<MixinAsset, 'iconUrl'>
+        )> }
       ), quoteAsset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+        & { chainAsset?: Maybe<(
+          { __typename?: 'MixinAsset' }
+          & Pick<MixinAsset, 'iconUrl'>
+        )> }
       ) }
     )>>>, pageInfo: (
       { __typename?: 'PageInfo' }
@@ -835,9 +845,17 @@ export type MarketQuery = (
     & { baseAsset: (
       { __typename?: 'MixinAsset' }
       & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd' | 'changeUsd'>
+      & { chainAsset?: Maybe<(
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'iconUrl'>
+      )> }
     ), quoteAsset: (
       { __typename?: 'MixinAsset' }
       & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd'>
+      & { chainAsset?: Maybe<(
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'iconUrl'>
+      )> }
     ) }
   ) }
 );
@@ -859,9 +877,17 @@ export type OceanOrderConnectionQuery = (
       & { baseAsset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+        & { chainAsset?: Maybe<(
+          { __typename?: 'MixinAsset' }
+          & Pick<MixinAsset, 'iconUrl'>
+        )> }
       ), quoteAsset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+        & { chainAsset?: Maybe<(
+          { __typename?: 'MixinAsset' }
+          & Pick<MixinAsset, 'iconUrl'>
+        )> }
       ) }
     )>>>, pageInfo: (
       { __typename?: 'PageInfo' }
@@ -878,6 +904,10 @@ export type UserAssetsQuery = (
   & { userAssets: Array<(
     { __typename?: 'UserAsset' }
     & Pick<UserAsset, 'assetId' | 'name' | 'symbol' | 'iconUrl' | 'chainId' | 'balance' | 'balanceUsd' | 'priceUsd' | 'changeUsd' | 'changeBtc'>
+    & { chainAsset?: Maybe<(
+      { __typename?: 'MixinAsset' }
+      & Pick<MixinAsset, 'iconUrl'>
+    )> }
   )> }
 );
 
@@ -896,6 +926,10 @@ export type UserSnapshotsQuery = (
     & { asset: (
       { __typename?: 'MixinAsset' }
       & Pick<MixinAsset, 'name' | 'symbol' | 'iconUrl'>
+      & { chainAsset?: Maybe<(
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'iconUrl'>
+      )> }
     ) }
   )> }
 );
@@ -1691,11 +1725,17 @@ export const MarketConnectionDocument = gql`
         iconUrl
         changeUsd
         priceUsd
+        chainAsset {
+          iconUrl
+        }
       }
       quoteAsset {
         assetId
         symbol
         iconUrl
+        chainAsset {
+          iconUrl
+        }
       }
       oceanMarketId
     }
@@ -1747,12 +1787,18 @@ export const MarketDocument = gql`
       iconUrl
       priceUsd
       changeUsd
+      chainAsset {
+        iconUrl
+      }
     }
     quoteAsset {
       assetId
       symbol
       iconUrl
       priceUsd
+      chainAsset {
+        iconUrl
+      }
     }
     oceanMarketId
   }
@@ -1807,11 +1853,17 @@ export const OceanOrderConnectionDocument = gql`
         assetId
         symbol
         iconUrl
+        chainAsset {
+          iconUrl
+        }
       }
       quoteAsset {
         assetId
         symbol
         iconUrl
+        chainAsset {
+          iconUrl
+        }
       }
     }
     pageInfo {
@@ -1864,6 +1916,9 @@ export const UserAssetsDocument = gql`
     priceUsd
     changeUsd
     changeBtc
+    chainAsset {
+      iconUrl
+    }
   }
 }
     `;
@@ -1905,6 +1960,9 @@ export const UserSnapshotsDocument = gql`
       name
       symbol
       iconUrl
+      chainAsset {
+        iconUrl
+      }
     }
     createdAt
   }

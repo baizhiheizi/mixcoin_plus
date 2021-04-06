@@ -61,10 +61,7 @@ ActiveRecord::Schema.define(version: 2021_04_04_124028) do
     t.uuid "asset_id"
     t.string "name"
     t.string "symbol"
-    t.float "price_usd"
-    t.float "price_btc"
-    t.float "change_usd"
-    t.float "change_btc"
+    t.uuid "chain_id"
     t.jsonb "raw", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

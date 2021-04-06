@@ -57,10 +57,18 @@ function UserAssets() {
             className='flex items-center px-4 py-2 bg-white dark:bg-dark'
             onClick={() => history.push(`/snapshots/${asset.assetId}`)}
           >
-            <img
-              className='w-10 h-10 mr-2 rounded-full'
-              src={asset.iconUrl.replace(/s128$/, 's64')}
-            />
+            <div className='relative'>
+              <img
+                className='w-10 h-10 mr-2 rounded-full'
+                src={asset.iconUrl.replace(/s128$/, 's64')}
+              />
+              {asset.chainAsset && (
+                <img
+                  className='absolute bottom-0 left-0 w-4 h-4 border border-white rounded-full'
+                  src={asset.chainAsset.iconUrl.replace(/s128/, 's32')}
+                />
+              )}
+            </div>
             <div className=''>
               <div className='flex items-baseline'>
                 <div className='mr-1 text-base font-bold'>{asset.balance}</div>

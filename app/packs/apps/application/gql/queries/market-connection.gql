@@ -8,11 +8,17 @@ query MarketConnection($type: String!, $after: String, $query: String) {
         iconUrl
         changeUsd
         priceUsd
+        chainAsset {
+          iconUrl
+        }
       }
       quoteAsset {
         assetId
         symbol
         iconUrl
+        chainAsset {
+          iconUrl
+        }
       }
       oceanMarketId
     }

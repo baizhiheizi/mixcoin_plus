@@ -5,27 +5,25 @@
 # Table name: mixin_assets
 #
 #  id         :uuid             not null, primary key
-#  change_btc :float
-#  change_usd :float
 #  name       :string
-#  price_btc  :float
-#  price_usd  :float
 #  raw        :jsonb            not null
 #  symbol     :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  asset_id   :uuid
+#  chain_id   :uuid
 #
 # Indexes
 #
 #  index_mixin_assets_on_asset_id  (asset_id) UNIQUE
 #
 class MixinAsset < ApplicationRecord
-  store :raw, accessors: %i[chain_id icon_url change_usd change_btc price_usd price_btc]
+  store :raw, accessors: %i[icon_url change_usd change_btc price_usd price_btc]
 
   before_validation :set_defaults, on: :create
   after_commit :generate_markets_async, on: :create
-  after_find :sync!
+
+  belongs_to :chain_asset, class_name: 'MixinAsset', primary_key: :assets_id, foreign_key: :chain_id, inverse_of: false, optional: true
 
   def self.find_or_create_by_asset_id(_asset_id)
     currency = find_by(asset_id: _asset_id)
@@ -35,8 +33,8 @@ class MixinAsset < ApplicationRecord
     create_with(raw: r['data']).find_or_create_by(asset_id: r['data']&.[]('asset_id'))
   end
 
-  def sync!
-    return if updated_at > Time.current - 5.minutes
+  def sync
+    return if updated_at > Time.current - 10.minutes
 
     r = MixcoinPlusBot.api.asset asset_id
     update! raw: r['data']
@@ -61,7 +59,8 @@ class MixinAsset < ApplicationRecord
 
     assign_attributes(
       name: raw['name'],
-      symbol: raw['symbol']
+      symbol: raw['symbol'],
+      chain_id: raw['chain_id']
     )
   end
 end

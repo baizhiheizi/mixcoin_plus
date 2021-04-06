@@ -710,6 +710,18 @@
             "deprecationReason": null
           },
           {
+            "name": "chainAsset",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "MixinAsset",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "chainId",
             "description": null,
             "args": [],
@@ -3426,6 +3438,18 @@
                 "name": "Float",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "chainAsset",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "MixinAsset",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

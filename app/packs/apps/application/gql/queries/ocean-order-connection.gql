@@ -18,11 +18,17 @@ query OceanOrderConnection($marketId: ID, $after: String, $filter: String) {
         assetId
         symbol
         iconUrl
+        chainAsset {
+          iconUrl
+        }
       }
       quoteAsset {
         assetId
         symbol
         iconUrl
+        chainAsset {
+          iconUrl
+        }
       }
     }
     pageInfo {

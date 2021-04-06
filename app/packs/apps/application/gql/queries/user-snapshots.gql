@@ -8,6 +8,9 @@ query UserSnapshots($offset: String, $asset: String, $opponent: String) {
       name
       symbol
       iconUrl
+      chainAsset {
+        iconUrl
+      }
     }
     createdAt
   }

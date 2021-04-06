@@ -4,10 +4,7 @@ class CreateMixinAssets < ActiveRecord::Migration[6.1]
       t.uuid :asset_id, index: { unique: true }
       t.string :name
       t.string :symbol
-      t.float :price_usd
-      t.float :price_btc
-      t.float :change_usd
-      t.float :change_btc
+      t.uuid :chain_id
       t.jsonb :raw, null: false
 
       t.timestamps

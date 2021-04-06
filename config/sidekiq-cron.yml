@@ -1,0 +1,3 @@
+sync_mixin_asset_price_worker:
+  cron: '*/10 * * * *'
+  class: 'MixinAssetSyncPriceWorker'

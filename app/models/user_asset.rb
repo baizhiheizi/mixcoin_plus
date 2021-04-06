@@ -31,6 +31,8 @@ class UserAsset < ApplicationRecord
 
   default_scope -> { order(balance_usd: :desc) }
 
+  delegate :chain_asset, to: :asset
+
   private
 
   def set_defaults

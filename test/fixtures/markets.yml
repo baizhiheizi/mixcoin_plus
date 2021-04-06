@@ -14,11 +14,6 @@
 #  index_markets_on_base_asset_id   (base_asset_id)
 #  index_markets_on_quote_asset_id  (quote_asset_id)
 #
-
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
 one: {}
 # column: value
 #

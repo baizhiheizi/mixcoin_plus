@@ -1,6 +1,10 @@
 import { useCurrentUser } from 'apps/application/contexts';
 import { ToastError } from 'apps/application/utils';
-import { PUSD_ASSET_ID, USDT_ASSET_ID } from 'apps/shared';
+import {
+  ERC20_USDT_ASSET_ID,
+  OMNI_USDT_ASSET_ID,
+  PUSD_ASSET_ID,
+} from 'apps/shared';
 import BigNumber from 'bignumber.js';
 import { Market, useCreateOceanOrderMutation } from 'graphqlTypes';
 import React, { useState } from 'react';
@@ -164,7 +168,11 @@ export default function ActionComponent(props: {
     if (orderType === 'limit') {
       const price = new BigNumber(orderPrice);
       let quoteMaxPrice = maxPrice;
-      if ([USDT_ASSET_ID, PUSD_ASSET_ID].includes(market.quoteAssetId)) {
+      if (
+        [OMNI_USDT_ASSET_ID, ERC20_USDT_ASSET_ID, PUSD_ASSET_ID].includes(
+          market.quoteAssetId,
+        )
+      ) {
         quoteMaxPrice = maxPrice.times(10000);
       }
       if (price.gt(quoteMaxPrice)) {
@@ -175,7 +183,11 @@ export default function ActionComponent(props: {
 
     if (orderSide === 'bid') {
       let minFunds = '0.0001';
-      if ([USDT_ASSET_ID, PUSD_ASSET_ID].includes(market.quoteAssetId)) {
+      if (
+        [OMNI_USDT_ASSET_ID, ERC20_USDT_ASSET_ID, PUSD_ASSET_ID].includes(
+          market.quoteAssetId,
+        )
+      ) {
         minFunds = '1';
       }
       if (funds.lt(minFunds)) {
@@ -183,7 +195,11 @@ export default function ActionComponent(props: {
         return false;
       }
       let quoteMaxFunds = maxFunds;
-      if ([USDT_ASSET_ID, PUSD_ASSET_ID].includes(market.quoteAssetId)) {
+      if (
+        [OMNI_USDT_ASSET_ID, ERC20_USDT_ASSET_ID, PUSD_ASSET_ID].includes(
+          market.quoteAssetId,
+        )
+      ) {
         quoteMaxFunds = maxFunds.times(10000);
       }
       if (funds.gt(quoteMaxFunds)) {
@@ -201,7 +217,11 @@ export default function ActionComponent(props: {
     if (orderSide === 'ask') {
       const amount = new BigNumber(orderAmount);
       let minFunds = '0.0001';
-      if ([USDT_ASSET_ID, PUSD_ASSET_ID].includes(market.quoteAssetId)) {
+      if (
+        [OMNI_USDT_ASSET_ID, ERC20_USDT_ASSET_ID, PUSD_ASSET_ID].includes(
+          market.quoteAssetId,
+        )
+      ) {
         minFunds = '1';
       }
       if (orderType === 'limit' && amount.times(orderPrice).lt(minFunds)) {

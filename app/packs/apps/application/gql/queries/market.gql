@@ -8,12 +8,18 @@ query Market($id: ID) {
       iconUrl
       priceUsd
       changeUsd
+      chainAsset {
+        iconUrl
+      }
     }
     quoteAsset {
       assetId
       symbol
       iconUrl
       priceUsd
+      chainAsset {
+        iconUrl
+      }
     }
     oceanMarketId
   }
