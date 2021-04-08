@@ -14,6 +14,7 @@ query OceanOrderConnection($marketId: ID, $after: String, $filter: String) {
       price
       state
       marketId
+      createdAt
       baseAsset {
         assetId
         symbol

@@ -47,11 +47,6 @@ export default function MineComponent() {
           onClick={() => history.push('/orders')}
         />
         <Cell
-          title={t('deprecated_orders')}
-          hasArrow
-          onClick={() => history.push('/deprecated_orders')}
-        />
-        <Cell
           title={t('commission_plan')}
           hasArrow
           onClick={() => history.push('/commission')}
@@ -70,6 +65,11 @@ export default function MineComponent() {
               },
             })
           }
+        />
+        <Cell
+          title={t('deprecated_orders')}
+          hasArrow
+          onClick={() => history.push('/deprecated_orders')}
         />
         <Cell
           title={t('language')}

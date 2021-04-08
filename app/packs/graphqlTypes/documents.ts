@@ -877,7 +877,7 @@ export type OceanOrderConnectionQuery = (
     { __typename?: 'OceanOrderConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'OceanOrder' }
-      & Pick<OceanOrder, 'id' | 'traceId' | 'orderType' | 'side' | 'amount' | 'funds' | 'filledAmount' | 'filledFunds' | 'remainingAmount' | 'remainingFunds' | 'price' | 'state' | 'marketId'>
+      & Pick<OceanOrder, 'id' | 'traceId' | 'orderType' | 'side' | 'amount' | 'funds' | 'filledAmount' | 'filledFunds' | 'remainingAmount' | 'remainingFunds' | 'price' | 'state' | 'marketId' | 'createdAt'>
       & { baseAsset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
@@ -1855,6 +1855,7 @@ export const OceanOrderConnectionDocument = gql`
       price
       state
       marketId
+      createdAt
       baseAsset {
         assetId
         symbol

@@ -19,7 +19,7 @@ export default function NavbarComponent(props: {
             className='w-6 h-6 mr-2 rounded-full'
             src={imageAsset('logo.png')}
           />
-          <div className='font-bold'>{title || 'Mixcoin'}</div>
+          <div className='font-semibold'>{title || 'Mixcoin'}</div>
         </div>
       }
       left={

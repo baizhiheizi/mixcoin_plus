@@ -16,6 +16,7 @@ en:
   buy: Buy
   sell: Sell
   volume: Volume
+  filled: Filled
   price: Price
   buy_price: Buy Price
   sell_price: Sell Price
@@ -46,9 +47,10 @@ en:
   important_warning: '[IMPORTANT WARNING: Your price is far from Market Price. Are you sure to continue?]'
   already_paid: Already Paid
   cancel: Cancel
+  cancel_order: Cancel
   orders: Orders
   deprecated_orders: Deprecated Orders
-  deprecated_version_notice: The old version of MixCoin has been DEPRECATED. If you have some old open orders, you can cancel them here. Enjoy the new version of MixCoin!
+  deprecated_version_notice: The old version of Mixcoin has been DEPRECATED. If you have some old open orders, you can cancel them here. Enjoy the new version of Mixcoin!
   invite: Invite
   commission_plan: Commission Plan
   grow_along_with_mixcoin: Grow along with Mixcoin
@@ -64,3 +66,4 @@ en:
   commission_plan_notice_1: Invitation Commission and Group Owner Commission cannot be earned at the same time, Group Owner Commission counts first; 
   commission_plan_notice_2: The final event explanation rights belongs to Mixcoin Team. 
   exchange_any_asset: Exchange any asset
+  no_record: No Data

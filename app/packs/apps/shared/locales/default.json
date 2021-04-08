@@ -64,6 +64,7 @@
   "buy": { "id": "buy", "defaultMessage": "Buy" },
   "sell": { "id": "sell", "defaultMessage": "Sell" },
   "volume": { "id": "volume", "defaultMessage": "Volume" },
+  "filled": { "id": "filled", "defaultMessage": "Filled" },
   "price": { "id": "price", "defaultMessage": "Price" },
   "buyPrice": { "id": "buy_price", "defaultMessage": "Buy Price" },
   "sellPrice": { "id": "sell_price", "defaultMessage": "Sell Price" },
@@ -127,6 +128,7 @@
   },
   "alreadyPaid": { "id": "already_paid", "defaultMessage": "Already Paid" },
   "cancel": { "id": "cancel", "defaultMessage": "Cancel" },
+  "cancelOrder": { "id": "cancel_order", "defaultMessage": "Cancel" },
   "orders": { "id": "orders", "defaultMessage": "Orders" },
   "deprecatedOrders": {
     "id": "deprecated_orders",
@@ -134,7 +136,7 @@
   },
   "deprecatedVersionNotice": {
     "id": "deprecated_version_notice",
-    "defaultMessage": "The old version of MixCoin has been DEPRECATED. If you have some old open orders, you can cancel them here. Enjoy the new version of MixCoin!"
+    "defaultMessage": "The old version of Mixcoin has been DEPRECATED. If you have some old open orders, you can cancel them here. Enjoy the new version of Mixcoin!"
   },
   "invite": { "id": "invite", "defaultMessage": "Invite" },
   "commissionPlan": {
@@ -193,6 +195,7 @@
     "id": "exchange_any_asset",
     "defaultMessage": "Exchange any asset"
   },
+  "noRecord": { "id": "no_record", "defaultMessage": "No Data" },
   "notification": { "id": "notification", "defaultMessage": "Notification" },
   "notificationsUserAuthorizedNotificationMessage": {
     "id": "notifications.user_authorized_notification.message",

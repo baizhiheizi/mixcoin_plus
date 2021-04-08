@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box as BoxIcon, Smile as SmileIcon } from 'react-feather';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Icon, Pull } from 'zarm';
 
 const REFRESH_STATE = {
@@ -30,6 +30,7 @@ export default function PullComponent(props: {
   const { children, refetch, fetchMore, hasNextPage, emptyText } = props;
   const [refreshing, setRefeshing] = useState(REFRESH_STATE.normal);
   const [loading, setLoading] = useState(LOAD_STATE.normal);
+  const { t } = useTranslation();
 
   useEffect(() => {
     document.body.style.overflow = 'auto';
@@ -109,11 +110,7 @@ export default function PullComponent(props: {
     >
       {React.Children.toArray(children).length < 1 ? (
         <div className='flex items-center justify-center w-full py-12 text-gray-500'>
-          {emptyText ? (
-            emptyText
-          ) : (
-            <BoxIcon className='w-12 h-12 text-gray-500' />
-          )}
+          {emptyText || t('no_record')}
         </div>
       ) : (
         children
