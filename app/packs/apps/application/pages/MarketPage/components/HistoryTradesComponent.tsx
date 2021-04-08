@@ -26,17 +26,19 @@ export default function HistoryTradesComponent(props: {
       </div>
       {trades.length > 0 ? (
         trades.map((trade) => (
-          <div key={trade.created_at} className='mb-1 grid grid-cols-3'>
-            <div className='text-left'>{trade.amount}</div>
+          <div key={trade.created_at} className='flex items-center mb-1'>
+            <div className='flex-1 text-left'>{trade.amount}</div>
             <div
-              className={`text-center ${
+              className={`text-center flex-1 ${
                 trade.side === 'ASK' ? 'text-green-500' : 'text-red-500'
               }`}
             >
               {trade.price}
             </div>
-            <div className='text-right'>
-              {moment(trade.created_at).format('YY/MM/DD HH:mm')}
+            <div className='flex-1 text-xs text-right'>
+              {moment(trade.created_at).isAfter(moment().startOf('day'))
+                ? moment(trade.created_at).format('HH:mm:ss')
+                : moment(trade.created_at).format('YY/MM/DD HH:mm')}
             </div>
           </div>
         ))

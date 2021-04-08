@@ -1,9 +1,9 @@
-import React from 'react';
 import {
-  BarChart2 as BarChartIcon,
-  DollarSign as DollarSignIcon,
-  RefreshCw as RefreshCwIcon,
-} from 'react-feather';
+  ExchangeThree as ExchangeIcon,
+  HomeTwo as HomeIcon,
+  WalletTwo as WalletIcon,
+} from '@icon-park/react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { TabBar } from 'zarm';
@@ -32,17 +32,17 @@ export default function TabbarComponent(props: { activeTabKey: ITabKey }) {
           <TabBar.Item
             itemKey='home'
             title={t('home')}
-            icon={<BarChartIcon />}
+            icon={<HomeIcon size='1.5rem' />}
           />
           <TabBar.Item
             itemKey='exchange'
             title={t('exchange')}
-            icon={<RefreshCwIcon />}
+            icon={<ExchangeIcon size='1.5rem' />}
           />
           <TabBar.Item
             itemKey='wallet'
             title={t('wallet')}
-            icon={<DollarSignIcon />}
+            icon={<WalletIcon size='1.5rem' />}
           />
         </TabBar>
         <div

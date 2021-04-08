@@ -12,6 +12,7 @@ en:
   authorize_tips: You'll authorize Mixcoin to read your profile.
   empty_markets: No market yet
   empty_orders: No order yet
+  share: Share
   buy: Buy
   sell: Sell
   volume: Volume

@@ -1,3 +1,7 @@
+import {
+  Change as ChangeIcon,
+  MenuFoldOne as MenuIcon,
+} from '@icon-park/react';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import { useCurrentUser } from 'apps/application/contexts';
 import { ERC20_USDT_ASSET_ID, OMNI_USDT_ASSET_ID } from 'apps/shared';
@@ -7,7 +11,6 @@ import {
   useMarketLazyQuery,
 } from 'graphqlTypes';
 import React, { useState } from 'react';
-import { Menu as MenuIcon, RotateCw as RotateCwIcon } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { ActivityIndicator, Loading, Popup, Tabs } from 'zarm';
@@ -31,7 +34,8 @@ export default function HeaderComponent(props: {
     <>
       <div className='flex items-center px-4 py-2 mb-1 bg-white dark:bg-dark dark:text-white'>
         <MenuIcon
-          className='mr-2 w-7 h-7'
+          className='mr-2'
+          size='1.5rem'
           onClick={() => setSidebarVisible(!sidebarVisible)}
         />
         <div className='mr-2 text-lg font-semibold'>
@@ -59,7 +63,7 @@ export default function HeaderComponent(props: {
                   ? 'ERC20'
                   : 'Omni'}
               </div>
-              <RotateCwIcon className='w-3 h-3' />
+              <ChangeIcon size='0.75rem' />
             </div>
           </div>
         )}

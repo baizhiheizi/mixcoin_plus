@@ -52,7 +52,9 @@ export default function BookComponent(props: {
             .reverse()
             .map((ask, index) => (
               <div key={index} className='flex items-center justify-between'>
-                <div className='text-gray-700'>{parseNumber(ask.amount)}</div>
+                <div className='text-gray-500 dark:text-gray-100'>
+                  {parseNumber(ask.amount)}
+                </div>
                 <div className='text-green-500'>{parseNumber(ask.price)}</div>
               </div>
             ))
@@ -73,7 +75,9 @@ export default function BookComponent(props: {
           book.bids.slice(0, 20).map((bid, index) => (
             <div key={index} className='flex items-center justify-between'>
               <div className='text-red-500'>{parseNumber(bid.price)}</div>
-              <div className='text-gray-700'>{parseNumber(bid.amount)}</div>
+              <div className='text-gray-500 dark:text-gray-100'>
+                {parseNumber(bid.amount)}
+              </div>
             </div>
           ))
         ) : connected ? (

@@ -1,5 +1,6 @@
 import { useInterval } from 'ahooks';
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
+import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import {
   fetchTrades,
   ITick,
@@ -15,6 +16,7 @@ import { useHistory, useParams } from 'react-router';
 import useWebSocket from 'react-use-websocket';
 import { v4 as uuid } from 'uuid';
 import { Tabs } from 'zarm';
+import ActionBarComponent from './components/ActionBarComponent';
 import BookComponent from './components/BookComponent';
 import DepthChartComponent from './components/DepthChartComponent';
 import HeaderComponent from './components/HeaderComponent';
@@ -199,6 +201,7 @@ export default function MarketPage() {
 
   return (
     <div className='pb-20'>
+      <NavbarComponent back />
       <HeaderComponent market={market} />
       <PriceChartComponent
         market={market}
@@ -230,27 +233,7 @@ export default function MarketPage() {
           </Tabs.Panel>
         </Tabs>
       </div>
-      <div
-        className='fixed bottom-0 z-50 flex w-full py-4 bg-white shadow-inner dark:bg-dark'
-        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-      >
-        <a
-          className='flex-1 py-2 mx-2 text-center text-white bg-green-500 rounded'
-          onClick={() => {
-            history.push(`/exchange?market=${marketId}&side=bid`);
-          }}
-        >
-          {t('buy')}
-        </a>
-        <a
-          className='flex-1 py-2 mx-2 text-center text-white bg-red-500 rounded'
-          onClick={() => {
-            history.push(`/exchange?market=${marketId}&side=ask`);
-          }}
-        >
-          {t('sell')}
-        </a>
-      </div>
+      <ActionBarComponent market={market as Market} />
     </div>
   );
 }

@@ -53,9 +53,7 @@ export default function ExchangePage() {
 
   return (
     <>
-      <NavbarComponent
-        title={`${market.baseAsset.symbol}/${market.quoteAsset.symbol}`}
-      />
+      <NavbarComponent />
       <div className='pb-14'>
         <HeaderComponent market={market} setMarketId={setMarketId} />
         <div className='flex items-center p-4 mb-1 bg-white dark:bg-dark'>

@@ -57,6 +57,21 @@ export default function MineComponent() {
           onClick={() => history.push('/commission')}
         />
         <Cell
+          title={t('invite')}
+          hasArrow
+          onClick={() =>
+            shareMixinAppCard({
+              data: {
+                action: location.origin,
+                app_id: appId,
+                description: t('exchange_any_asset'),
+                icon_url: appIconUrl,
+                title: appName,
+              },
+            })
+          }
+        />
+        <Cell
           title={t('language')}
           description={
             <Radio.Group

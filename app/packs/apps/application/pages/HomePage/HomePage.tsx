@@ -2,7 +2,7 @@ import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarC
 import { useCurrentUser } from 'apps/application/contexts';
 import { imageAsset } from 'apps/application/utils';
 import React, { useState } from 'react';
-import { User as UserIcon } from 'react-feather';
+import { User as UserIcon } from '@icon-park/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { Popup, Tabs } from 'zarm';
@@ -48,7 +48,8 @@ export default function HomePage() {
           />
         ) : (
           <UserIcon
-            className='w-8 h-8 ml-4 mr-2'
+            size='1.5rem'
+            className='ml-4 mr-2'
             onClick={() => setSidebarVisible(!sidebarVisible)}
           />
         )}
