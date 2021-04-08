@@ -10,6 +10,8 @@ zh-CN:
   connect_wallet_to_exhange: 交易您 Mixin 钱包里的任意加密货币：
   logout_confirm: 确定要退出登录吗？
   authorize_tips: 即将授权 Mixcoin 登录
+  empty_markets: 没有交易对
+  empty_orders: 暂无委托
   buy: 买入
   sell: 卖出
   volume: 数量
@@ -48,12 +50,16 @@ zh-CN:
   deprecated_version_notice: 旧版的 MixCoin 已经废弃，如果你还有进行中的订单，请在这里取消。欢迎使用全新的 MixCoin！
   invite: 去邀请
   commission_plan: 佣金计划
-  commission_plan_rules: |
-    1. 您可以通过两个途径与 Mixcoin 分享佣金，分别是“邀请奖励”和“群主奖励”；
-    2. 新用户点击您的邀请链接登录 Mixcoin 并成功下单后，即视为邀请成功；
-    3. 邀请链接仅在一对一会话中生效，请不要在任何群中分享邀请链接；
-    4. 邀请成功后，每当被邀请人独立完成一笔 MAKER 订单，其手续费的 50% 将作为邀请奖励，即时发放；
-    5. 您也可以将 Mixcoin 机器人拉进您的加密小群，群成员在群内会话打开 Mixcoin 完成的所有 MAKER 订单，手续费 50% 将作为群主奖励，即时发放；
-    6. 邀请奖励和群主奖励不能重叠，群主奖励优先；
-    7. 活动最终解释权归 Mixcoin 团队所有。 
+  grow_along_with_mixcoin: 与 Mixcoin 一起成长
+  you_have_two_ways_to_earn_your_commission: 您可以通过两种途径赚取佣金。
+  invitation_commission: 邀请佣金
+  invitation_commission_rule_1: 新用户点击您的邀请链接登录 Mixcoin 并成功下单后，即视为邀请成功；
+  invitation_commission_rule_2: 邀请成功后，每当被邀请人独立完成一笔 MAKER 订单，其手续费的 50% 将作为邀请佣金，即时发放；
+  invitation_commission_rule_3: 邀请链接仅在一对一会话中生效，请不要在任何群中分享邀请链接；
+  group_owner_commission: 群主佣金
+  group_owner_commission_rule_1: 将 Mixcoin 机器人拉进您的加密小群；
+  group_owner_commission_rule_2: 群成员在群内会话打开 Mixcoin 完成的所有 MAKER 订单，手续费 50% 将作为群主佣金，即时发放；
+  commission_plan_notice: 重要说明
+  commission_plan_notice_1: 邀请佣金和群主佣金不能叠加，群主佣金优先；
+  commission_plan_notice_2: 活动最终解释权归 Mixcoin 团队所有。
   exchange_any_asset: 交易任意加密货币

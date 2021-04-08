@@ -98,6 +98,15 @@ module.exports = function (api) {
         },
         'zarm',
       ],
+      [
+        'import',
+        {
+          libraryName: '@icon-park/react',
+          libraryDirectory: 'es/icons',
+          camel2DashComponentName: false,
+        },
+        'icon-park',
+      ],
     ].filter(Boolean),
   };
 };

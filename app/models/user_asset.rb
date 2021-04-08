@@ -25,7 +25,8 @@ class UserAsset < ApplicationRecord
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, optional: true
   has_many :markets, primary_key: :asset_id, foreign_key: :base_asset_id, dependent: :restrict_with_exception, inverse_of: false
 
-  before_validation :set_defaults, on: :create
+  after_initialize :set_defaults, if: :new_record?
+  before_update :set_defaults
 
   after_commit :ensure_mixin_asset_created
 
@@ -37,6 +38,7 @@ class UserAsset < ApplicationRecord
 
   def set_defaults
     assign_attributes(
+      asset_id: raw['asset_id'],
       balance: raw['balance'],
       balance_usd: raw['balance'].to_f * raw['price_usd'].to_f
     )

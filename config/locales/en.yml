@@ -10,6 +10,8 @@ en:
   connect_wallet_to_exhange: 'Exchange any asset in you Mixin Wallet:'
   logout_confirm: Are sure to logout?
   authorize_tips: You'll authorize Mixcoin to read your profile.
+  empty_markets: No market yet
+  empty_orders: No order yet
   buy: Buy
   sell: Sell
   volume: Volume
@@ -48,12 +50,16 @@ en:
   deprecated_version_notice: The old version of MixCoin has been DEPRECATED. If you have some old open orders, you can cancel them here. Enjoy the new version of MixCoin!
   invite: Invite
   commission_plan: Commission Plan
-  commission_plan_rules: |
-    1. You can earn commission by two ways, Invitation Commission and Group Owner Commission;
-    2. New user login Mixcoin via your invitation link and create an order, the invitation confirms;
-    3. Invitation link only works in one to one conversation, DO NOT share it in any groups;
-    4. When invitee's MAKER orders complete, 50% of the FEE will tranfer to the invitor as Invitation Commission;
-    5. You can also add Mixcoin Bot to your group, any MAKER orders created by the group members in the group conversation, 50% of the FEE will transfer to the group owner, as Group Owner Commission;
-    6. Invitation Commission and Group Owner Commission cannot be earned at the same the same, Group Owner Commission counts first;
-    7. The final event explanation rights belongs to Mixcoin Team. 
+  grow_along_with_mixcoin: Grow along with Mixcoin
+  you_have_two_ways_to_earn_your_commission: You have two ways to earn your commission.
+  invitation_commission: Invitation Commission
+  invitation_commission_rule_1: New user login Mixcoin via your invitation link and create an order, the invitation confirms;
+  invitation_commission_rule_2: When invitee's MAKER orders complete, 50% of the FEE will tranfer to the invitor as Invitation Commission;
+  invitation_commission_rule_3: Invitation link only works in one to one conversation, DO NOT share it in any groups; 
+  group_owner_commission: Group Owner Commission
+  group_owner_commission_rule_1: Add Mixcoin Bot to your group;
+  group_owner_commission_rule_2: Any MAKER orders created by the group members in the group conversation, 50% of the FEE will transfer to the group owner, as Group Owner Commission;
+  commission_plan_notice: Important Notice
+  commission_plan_notice_1: Invitation Commission and Group Owner Commission cannot be earned at the same time, Group Owner Commission counts first; 
+  commission_plan_notice_2: The final event explanation rights belongs to Mixcoin Team. 
   exchange_any_asset: Exchange any asset

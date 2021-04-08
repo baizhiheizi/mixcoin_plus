@@ -1,11 +1,12 @@
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
+import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import { useMixin } from 'apps/shared';
 import { MixinNetworkSnapshot, useUserSnapshotsQuery } from 'graphqlTypes';
+import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
-import moment from 'moment';
 
 export default function SnapshotsPage() {
   const { t } = useTranslation();
@@ -23,6 +24,7 @@ export default function SnapshotsPage() {
 
   return (
     <>
+      <NavbarComponent back={true} />
       <PullComponent
         hasNextPage={snapshots.length % 50 === 0}
         refetch={refetch}

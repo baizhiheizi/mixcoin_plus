@@ -907,7 +907,7 @@ export type UserAssetsQuery = (
   { __typename?: 'Query' }
   & { userAssets: Array<(
     { __typename?: 'UserAsset' }
-    & Pick<UserAsset, 'assetId' | 'name' | 'symbol' | 'iconUrl' | 'chainId' | 'balance' | 'balanceUsd' | 'priceUsd' | 'changeUsd' | 'changeBtc'>
+    & Pick<UserAsset, 'assetId' | 'name' | 'symbol' | 'iconUrl' | 'chainId' | 'balance' | 'balanceUsd' | 'priceUsd' | 'priceBtc' | 'changeUsd' | 'changeBtc'>
     & { chainAsset?: Maybe<(
       { __typename?: 'MixinAsset' }
       & Pick<MixinAsset, 'iconUrl'>
@@ -1920,6 +1920,7 @@ export const UserAssetsDocument = gql`
     balance
     balanceUsd
     priceUsd
+    priceBtc
     changeUsd
     changeBtc
     chainAsset {

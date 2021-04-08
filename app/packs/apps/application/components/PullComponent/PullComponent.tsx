@@ -25,8 +25,9 @@ export default function PullComponent(props: {
   fetchMore?: () => any;
   hasNextPage: boolean;
   children?: React.ReactChildren | React.ReactChild | any;
+  emptyText?: string;
 }) {
-  const { children, refetch, fetchMore, hasNextPage } = props;
+  const { children, refetch, fetchMore, hasNextPage, emptyText } = props;
   const [refreshing, setRefeshing] = useState(REFRESH_STATE.normal);
   const [loading, setLoading] = useState(LOAD_STATE.normal);
 
@@ -102,19 +103,17 @@ export default function PullComponent(props: {
                   <ActivityIndicator type='spinner' />
                 </div>
               );
-            case LOAD_STATE.complete:
-              return (
-                <div className='flex justify-center w-full py-2'>
-                  <SmileIcon className='text-gray-200' />
-                </div>
-              );
           }
         },
       }}
     >
       {React.Children.toArray(children).length < 1 ? (
-        <div className='flex items-center justify-center w-full py-12'>
-          <BoxIcon className='w-12 h-12 text-gray-200' />
+        <div className='flex items-center justify-center w-full py-12 text-gray-500'>
+          {emptyText ? (
+            emptyText
+          ) : (
+            <BoxIcon className='w-12 h-12 text-gray-500' />
+          )}
         </div>
       ) : (
         children

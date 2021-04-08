@@ -1,4 +1,5 @@
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
+import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
@@ -45,10 +46,23 @@ function UserAssets() {
   const total = userAssets
     .map((asset) => asset.balanceUsd)
     .reduce((prev, cur) => prev + cur, 0);
+  const totalBtc = userAssets.reduce(
+    (prev, cur) => prev + cur.balance * cur.priceBtc,
+    0,
+  );
+
   return (
     <>
-      <div className='py-4 mb-1 text-2xl text-center text-gray-700 bg-white text-gray-50 dark:bg-dark dark:text-white'>
-        ≈ ${total.toFixed(2)}
+      <NavbarComponent />
+      <div className='py-6 mb-1 text-center bg-white dark:bg-dark'>
+        <div className='flex items-start justify-center'>
+          <div className='mr-1 text-gray-500 dark:text-gray-100'>$</div>
+          <div className='text-3xl'>{total.toFixed(2)}</div>
+        </div>
+        <div className='flex items-start justify-center text-xs'>
+          <div className='mr-1'>{totalBtc.toFixed(8)}</div>
+          <div className='text-gray-500 dark:text-gray-100'>BTC</div>
+        </div>
       </div>
       <PullComponent refetch={refetch} hasNextPage={false}>
         {userAssets.map((asset) => (

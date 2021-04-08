@@ -1,28 +1,16 @@
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import { useCurrentUser } from 'apps/application/contexts';
-import {
-  ERC20_USDT_ASSET_ID,
-  OMNI_USDT_ASSET_ID,
-  useMixinBot,
-} from 'apps/shared';
+import { ERC20_USDT_ASSET_ID, OMNI_USDT_ASSET_ID } from 'apps/shared';
 import {
   Market,
-  useFavoriteMarketMutation,
   useMarketConnectionQuery,
   useMarketLazyQuery,
-  useUnfavoriteMarketMutation,
 } from 'graphqlTypes';
-import { shareMixinAppCard } from 'mixin-messenger-utils';
 import React, { useState } from 'react';
-import {
-  Menu as MenuIcon,
-  RotateCw as RotateCwIcon,
-  Share2 as Share2Icon,
-  Star as StarIcon,
-} from 'react-feather';
+import { Menu as MenuIcon, RotateCw as RotateCwIcon } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { ActivityIndicator, Loading, Modal, Popup, Tabs } from 'zarm';
+import { ActivityIndicator, Loading, Popup, Tabs } from 'zarm';
 
 export default function HeaderComponent(props: {
   market: Partial<Market> & any;
@@ -32,14 +20,7 @@ export default function HeaderComponent(props: {
   const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const { market, setMarketId } = props;
-  const { appId, appName, appIconUrl } = useMixinBot();
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [favorite] = useFavoriteMarketMutation({
-    variables: { input: { marketId: market.id } },
-  });
-  const [unfavorite] = useUnfavoriteMarketMutation({
-    variables: { input: { marketId: market.id } },
-  });
   const [marketQuery, { called, data }] = useMarketLazyQuery();
 
   if (called && data?.market) {
@@ -82,40 +63,6 @@ export default function HeaderComponent(props: {
             </div>
           </div>
         )}
-        <StarIcon
-          className={`h-5 mr-4 ${
-            market.favorited ? 'text-yellow-500' : 'text-gray-500'
-          }`}
-          onClick={() => {
-            if (!currentUser) {
-              Modal.confirm({
-                content: t('connect_wallet'),
-                onOk: () => location.replace('/'),
-              });
-            } else if (market.favorited) {
-              Modal.confirm({
-                content: t('confirm_unfavorite_market'),
-                onOk: () => unfavorite(),
-              });
-            } else {
-              favorite();
-            }
-          }}
-        />
-        <Share2Icon
-          className='h-5 text-blue-500'
-          onClick={() =>
-            shareMixinAppCard({
-              data: {
-                action: `${location.origin}/exchange?market=${market.id}&invite_code=${currentUser?.inviteCode}`,
-                app_id: appId,
-                description: appName,
-                icon_url: appIconUrl,
-                title: `${market.baseAsset.symbol}/${market.quoteAsset.symbol}`,
-              },
-            })
-          }
-        />
         <div className='ml-auto text-right'>
           {market.baseAsset.changeUsd && (
             <div

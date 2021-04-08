@@ -39,6 +39,7 @@ export default function OceanOrdersComponent(props: {
       hasNextPage={hasNextPage}
       refetch={refetch}
       fetchMore={() => fetchMore({ variables: { after: endCursor } })}
+      emptyText={t('empty_orders')}
     >
       {orders.map((order: any) => (
         <div

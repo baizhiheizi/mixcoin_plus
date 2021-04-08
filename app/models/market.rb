@@ -40,6 +40,8 @@ class Market < ApplicationRecord
   has_many :ocean_orders, dependent: :restrict_with_exception
   has_many :snapshots, through: :ocean_orders, source: :snapshots
 
+  default_scope -> { where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID]) }
+
   scope :recommended, -> { where(base_asset_id: [XIN_ASSET_ID, BTC_ASSET_ID], quote_asset_id: [PUSD_ASSET_ID, ERC20_USDT_ASSET_ID, OMNI_USDT_ASSET_ID]) }
 
   def ocean_market_id

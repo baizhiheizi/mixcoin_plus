@@ -10,12 +10,17 @@ module Resolvers
 
     def resolve(params)
       markets =
-        if current_user.present? && params[:type] == 'favorite'
-          current_user.favorite_markets
-        elsif params[:type] == 'USDT'
-          (current_user&.markets || Market.all).includes(:quote_asset).where(quote_asset_id: Market::ERC20_USDT_ASSET_ID)
-        else
-          (current_user&.markets || Market.all).includes(:quote_asset).where(quote_asset: { symbol: params[:type] })
+        case params[:type]
+        when 'favorite'
+          current_user&.favorite_markets
+        when 'USDT'
+          (current_user&.markets || Market.all).where(quote_asset_id: Market::ERC20_USDT_ASSET_ID)
+        when 'pUSD'
+          (current_user&.markets || Market.all).where(quote_asset_id: Market::PUSD_ASSET_ID)
+        when 'BTC'
+          (current_user&.markets || Market.all).where(quote_asset_id: Market::BTC_ASSET_ID)
+        when 'XIN'
+          (current_user&.markets || Market.all).where(quote_asset_id: Market::XIN_ASSET_ID)
         end
 
       query = params[:query].to_s.strip

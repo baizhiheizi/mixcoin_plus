@@ -54,27 +54,7 @@ export default function MineComponent() {
         <Cell
           title={t('commission_plan')}
           hasArrow
-          onClick={() =>
-            Modal.confirm({
-              title: t('commission_plan'),
-              content: (
-                <div className='text-left whitespace-pre-line'>
-                  {t('commission_plan_rules')}
-                </div>
-              ),
-              okText: t('invite'),
-              onOk: () =>
-                shareMixinAppCard({
-                  data: {
-                    action: `${location.origin}/?invite_code=${currentUser.inviteCode}`,
-                    app_id: appId,
-                    description: t('exchange_any_asset'),
-                    icon_url: appIconUrl,
-                    title: appName,
-                  },
-                }),
-            })
-          }
+          onClick={() => history.push('/commission')}
         />
         <Cell
           title={t('language')}

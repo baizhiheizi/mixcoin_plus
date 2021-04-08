@@ -55,6 +55,7 @@ export function MarketsComponent(props: { type: string }) {
         refetch={refetch}
         fetchMore={() => fetchMore({ variables: { after: endCursor } })}
         hasNextPage={hasNextPage}
+        emptyText={t('empty_markets')}
       >
         {markets.map((market) => (
           <div
