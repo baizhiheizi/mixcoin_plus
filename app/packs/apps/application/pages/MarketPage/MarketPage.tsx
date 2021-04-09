@@ -200,7 +200,7 @@ export default function MarketPage() {
   }
 
   return (
-    <div className='pb-20'>
+    <div className='pb-28'>
       <NavbarComponent back />
       <HeaderComponent market={market} />
       <PriceChartComponent

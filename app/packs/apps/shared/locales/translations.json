@@ -56,7 +56,7 @@
     "confirm_place_ask_order": "Are you sure to sell",
     "confirm_place_bid_order": "Are you sure to buy",
     "confirm_unfavorite_market": "Are you sure to unfavorite this market?",
-    "important_warning": "[IMPORTANT WARNING: Your price is far from Market Price. Are you sure to continue?]",
+    "important_warning": "IMPORTANT WARNING: Your price is far from Market Price. Are you sure to continue?",
     "already_paid": "Already Paid",
     "cancel": "Cancel",
     "cancel_order": "Cancel",
@@ -79,6 +79,11 @@
     "commission_plan_notice_2": "The final event explanation rights belongs to Mixcoin Team.",
     "exchange_any_asset": "Exchange any asset",
     "no_record": "No Data",
+    "order_state.paid": "Paid",
+    "order_state.booking": "Open",
+    "order_state.completed": "Completed",
+    "order_state.canceling": "Cancelling",
+    "order_state.refunded": "Refunded",
     "notification": "Notification",
     "notifications.user_authorized_notification.message": "Authorized",
     "notifications.transfer_processed_notification.received": "Received",
@@ -261,7 +266,7 @@
     "confirm_place_ask_order": "确定要卖出",
     "confirm_place_bid_order": "确定要买入",
     "confirm_unfavorite_market": "确定要取消收藏交易对吗？",
-    "important_warning": "（重要提醒：你的价格偏离市场价过多，确定要下单吗？）",
+    "important_warning": "重要提醒：您的价格偏离市场价过多，确定要下单吗？",
     "already_paid": "已经支付",
     "cancel": "取消",
     "cancel_order": "撤单",
@@ -283,6 +288,11 @@
     "commission_plan_notice_1": "邀请佣金和群主佣金不能叠加，群主佣金优先；",
     "commission_plan_notice_2": "活动最终解释权归 Mixcoin 团队所有。",
     "exchange_any_asset": "交易任意加密货币",
-    "no_record": "没有记录"
+    "no_record": "没有记录",
+    "order_state.paid": "已支付",
+    "order_state.booking": "挂单中",
+    "order_state.completed": "已成交",
+    "order_state.canceling": "取消中",
+    "order_state.refunded": "已退款"
   }
 }

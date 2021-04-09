@@ -78,7 +78,7 @@ export default function ActionBarComponent(props: { market: Market }) {
         <a
           className='flex-1 py-2 mx-2 text-center text-white bg-green-500 rounded'
           onClick={() => {
-            history.push(`/exchange?marketId=${market.id}&side=bid`);
+            history.push(`/exchange?market=${market.id}&side=bid`);
           }}
         >
           {t('buy')}
@@ -86,7 +86,7 @@ export default function ActionBarComponent(props: { market: Market }) {
         <a
           className='flex-1 py-2 mx-2 text-center text-white bg-red-500 rounded'
           onClick={() => {
-            history.push(`/exchange?marketId=${market.id}&side=ask`);
+            history.push(`/exchange?market=${market.id}&side=ask`);
           }}
         >
           {t('sell')}

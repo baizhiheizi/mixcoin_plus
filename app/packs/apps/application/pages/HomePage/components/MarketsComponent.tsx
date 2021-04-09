@@ -1,6 +1,5 @@
 import { useDebounce } from 'ahooks';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
-import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
 import { useMarketConnectionQuery } from 'graphqlTypes';
 import React, { useState } from 'react';
@@ -105,7 +104,6 @@ export function MarketsComponent(props: { type: string }) {
           </div>
         ))}
       </PullComponent>
-      <TabbarComponent activeTabKey='home' />
     </>
   );
 }

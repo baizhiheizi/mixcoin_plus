@@ -126,7 +126,7 @@
   },
   "importantWarning": {
     "id": "important_warning",
-    "defaultMessage": "[IMPORTANT WARNING: Your price is far from Market Price. Are you sure to continue?]"
+    "defaultMessage": "IMPORTANT WARNING: Your price is far from Market Price. Are you sure to continue?"
   },
   "alreadyPaid": { "id": "already_paid", "defaultMessage": "Already Paid" },
   "cancel": { "id": "cancel", "defaultMessage": "Cancel" },
@@ -198,6 +198,23 @@
     "defaultMessage": "Exchange any asset"
   },
   "noRecord": { "id": "no_record", "defaultMessage": "No Data" },
+  "orderStatePaid": { "id": "order_state.paid", "defaultMessage": "Paid" },
+  "orderStateBooking": {
+    "id": "order_state.booking",
+    "defaultMessage": "Open"
+  },
+  "orderStateCompleted": {
+    "id": "order_state.completed",
+    "defaultMessage": "Completed"
+  },
+  "orderStateCanceling": {
+    "id": "order_state.canceling",
+    "defaultMessage": "Cancelling"
+  },
+  "orderStateRefunded": {
+    "id": "order_state.refunded",
+    "defaultMessage": "Refunded"
+  },
   "notification": { "id": "notification", "defaultMessage": "Notification" },
   "notificationsUserAuthorizedNotificationMessage": {
     "id": "notifications.user_authorized_notification.message",

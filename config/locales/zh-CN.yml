@@ -46,7 +46,7 @@ zh-CN:
   confirm_place_ask_order: 确定要卖出
   confirm_place_bid_order: 确定要买入
   confirm_unfavorite_market: 确定要取消收藏交易对吗？
-  important_warning: （重要提醒：你的价格偏离市场价过多，确定要下单吗？）
+  important_warning: 重要提醒：您的价格偏离市场价过多，确定要下单吗？
   already_paid: 已经支付
   cancel: 取消
   cancel_order: 撤单
@@ -69,3 +69,9 @@ zh-CN:
   commission_plan_notice_2: 活动最终解释权归 Mixcoin 团队所有。
   exchange_any_asset: 交易任意加密货币
   no_record: 没有记录
+  order_state:
+    paid: '已支付'
+    booking: '挂单中'
+    completed: '已成交'
+    canceling: '取消中'
+    refunded: '已退款'

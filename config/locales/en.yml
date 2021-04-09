@@ -46,7 +46,7 @@ en:
   confirm_place_ask_order: Are you sure to sell
   confirm_place_bid_order: Are you sure to buy
   confirm_unfavorite_market: Are you sure to unfavorite this market?
-  important_warning: '[IMPORTANT WARNING: Your price is far from Market Price. Are you sure to continue?]'
+  important_warning: 'IMPORTANT WARNING: Your price is far from Market Price. Are you sure to continue?'
   already_paid: Already Paid
   cancel: Cancel
   cancel_order: Cancel
@@ -69,3 +69,9 @@ en:
   commission_plan_notice_2: The final event explanation rights belongs to Mixcoin Team. 
   exchange_any_asset: Exchange any asset
   no_record: No Data
+  order_state:
+    paid: Paid
+    booking: Open
+    completed: Completed
+    canceling: Cancelling
+    refunded: Refunded

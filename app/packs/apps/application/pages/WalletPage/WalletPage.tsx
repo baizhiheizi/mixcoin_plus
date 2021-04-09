@@ -52,7 +52,7 @@ function UserAssets() {
   );
 
   return (
-    <>
+    <div className='pb-24'>
       <NavbarComponent />
       <div className='py-6 mb-1 text-center bg-white dark:bg-dark'>
         <div className='flex items-start justify-center'>
@@ -107,6 +107,6 @@ function UserAssets() {
           </div>
         ))}
       </PullComponent>
-    </>
+    </div>
   );
 }

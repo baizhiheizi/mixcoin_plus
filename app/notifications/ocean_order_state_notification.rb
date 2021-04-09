@@ -15,7 +15,7 @@ class OceanOrderStateNotification < ApplicationNotification
            quote_asset_symbol: ocean_order.quote_asset.symbol,
            trace_id: ocean_order.trace_id,
            side: ocean_order.side_text,
-           state: ocean_order.aasm.human_state,
+           state: t("order_state.#{ocean_order.state}"),
            price: ocean_order.order_type.limit? ? ocean_order.price.to_f : t('.market_price'),
            filled_symbol: ocean_order.side.ask? ? ocean_order.base_asset.symbol : ocean_order.quote_asset.symbol,
            filled: ocean_order.side.ask? ? ocean_order.filled_amount : ocean_order.filled_funds,

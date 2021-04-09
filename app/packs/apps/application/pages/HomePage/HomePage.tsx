@@ -8,6 +8,7 @@ import { useHistory } from 'react-router';
 import { Popup, Tabs } from 'zarm';
 import { MarketsComponent } from './components/MarketsComponent';
 import MineComponent from './components/MineComponent';
+import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 
 export default function HomePage() {
   const { currentUser } = useCurrentUser();
@@ -23,7 +24,7 @@ export default function HomePage() {
   const { t } = useTranslation();
 
   return (
-    <>
+    <div className='min-h-screen pb-24 bg-white dark:bg-dark'>
       <NavbarComponent />
       <div
         className='flex items-center w-full bg-white bg-right bg-no-repeat bg-contain h-36 dark:bg-dark'
@@ -68,9 +69,7 @@ export default function HomePage() {
           <Tabs.Panel title='XIN'></Tabs.Panel>
         </Tabs>
       </div>
-      <div className='min-h-screen pb-16 bg-white dark:bg-dark'>
-        <MarketsComponent type={tabs[tabIndex]} />
-      </div>
+      <MarketsComponent type={tabs[tabIndex]} />
       <Popup
         direction='left'
         onMaskClick={() => setSidebarVisible(false)}
@@ -78,6 +77,7 @@ export default function HomePage() {
       >
         <MineComponent />
       </Popup>
-    </>
+      <TabbarComponent activeTabKey='home' />
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 import {
   Change as ChangeIcon,
   MenuFoldOne as MenuIcon,
+  Star as StarIcon,
 } from '@icon-park/react';
 import { useDebounce } from 'ahooks';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
@@ -114,7 +115,7 @@ function MarketsComponent(props: {
   setSidebarVisible: (params: any) => any;
 }) {
   const { setMarketId, setSidebarVisible } = props;
-  const quotes = ['favorite', 'pUSD', 'BTC', 'XIN', 'USDT'];
+  const quotes = ['favorite', 'USDT', 'pUSD', 'BTC', 'XIN'];
   const [tabIndex, setTabIndex] = useState(0);
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, { wait: 500 });
@@ -172,11 +173,20 @@ function MarketsComponent(props: {
           value={tabIndex}
           onChange={(index) => setTabIndex(index)}
         >
-          <Tabs.Panel title='favorite'></Tabs.Panel>
+          <Tabs.Panel
+            title={
+              <StarIcon
+                className='flex items-center justify-center h-full'
+                size='1.25rem'
+                theme='filled'
+                fill='#F59E0B'
+              />
+            }
+          ></Tabs.Panel>
+          <Tabs.Panel title='USDT'></Tabs.Panel>
           <Tabs.Panel title='pUSD'></Tabs.Panel>
           <Tabs.Panel title='BTC'></Tabs.Panel>
           <Tabs.Panel title='XIN'></Tabs.Panel>
-          <Tabs.Panel title='USDT'></Tabs.Panel>
         </Tabs>
         <SearchBar
           value={query}

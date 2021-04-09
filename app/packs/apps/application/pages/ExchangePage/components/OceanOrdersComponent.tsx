@@ -82,9 +82,7 @@ export default function OceanOrdersComponent(props: {
                 </a>
               ) : (
                 <span className='text-gray-500'>
-                  {t(
-                    `activerecord.attributes.ocean_order.state/${order.state}`,
-                  )}
+                  {t(`order_state.${order.state}`)}
                 </span>
               )}
             </div>
