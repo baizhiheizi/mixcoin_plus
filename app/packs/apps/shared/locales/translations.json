@@ -291,7 +291,7 @@
     "no_record": "没有记录",
     "order_state.paid": "已支付",
     "order_state.booking": "挂单中",
-    "order_state.completed": "已成交",
+    "order_state.completed": "已完成",
     "order_state.canceling": "取消中",
     "order_state.refunded": "已退款"
   }

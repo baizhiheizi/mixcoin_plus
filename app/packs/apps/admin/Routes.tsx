@@ -2,9 +2,11 @@ import { Button, Result } from 'antd';
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import BalancePage from './pages/BalancePage/BalancePage';
+import MarketsPage from './pages/MarketsPage/MarketsPage';
+import MixinConversationPage from './pages/MixinConversationPage/MixinConversationPage';
+import MixinConversationsPage from './pages/MixinConversationsPage/MixinConversationsPage';
 import MixinMessagesPage from './pages/MixinMessagesPage/MixinMessagesPage';
 import MixinNetworkSnapshotsPage from './pages/MixinNetworkSnapshotsPage/MixinNetworkSnapshotsPage';
-import MarketsPage from './pages/MarketsPage/MarketsPage';
 import OceanOrderPage from './pages/OceanOrderPage/OceanOrderPage';
 import OceanOrdersPage from './pages/OceanOrdersPage/OceanOrdersPage';
 import OverviewPage from './pages/OverviewPage/OverivewPage';
@@ -28,6 +30,12 @@ export default function Routes() {
       </Route>
       <Route path='/mixin_network_snapshots' exact>
         <MixinNetworkSnapshotsPage />
+      </Route>
+      <Route path='/mixin_conversations' exact>
+        <MixinConversationsPage />
+      </Route>
+      <Route path='/mixin_conversations/:id' exact>
+        <MixinConversationPage />
       </Route>
       <Route path='/mixin_messages' exact>
         <MixinMessagesPage />

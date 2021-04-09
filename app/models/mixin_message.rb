@@ -71,13 +71,15 @@ class MixinMessage < ApplicationRecord
   end
 
   def process_plain_text_message
+    MixinConversation.find_or_create_by conversation_id: conversation_id
     base, quote = memo.gsub(/@\d{10}/, '').strip.split(%r{/|\|,|-|_| })
-    market = Market.ransack({ base_asset_symbol_i_cont: base, quote_asset_symbol_i_cont: quote.presence || 'pUSD', m: 'and' }).result.first
+    market = Market.ransack({ base_asset_symbol_eq: base, quote_asset_symbol_eq: quote.presence || 'USDT', m: 'and' }).result.first
     return if market.blank?
 
     reply =
       MixcoinPlusBot.api.app_card(
         conversation_id: conversation_id,
+        recipient_id: user_id,
         data: {
           icon_url: MixcoinPlusBot::ICON_URL,
           title: "#{market.base_asset.symbol}/#{market.quote_asset.symbol}",

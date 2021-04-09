@@ -6,6 +6,7 @@ import {
   MessageOutlined,
   PayCircleOutlined,
   SyncOutlined,
+  UsergroupAddOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
@@ -44,6 +45,12 @@ export default function Menus() {
         <Link to='/mixin_network_snapshots'>
           <PayCircleOutlined />
           <span>Snapshots</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to='/mixin_conversations'>
+          <UsergroupAddOutlined />
+          <span>Conversations</span>
         </Link>
       </Menu.Item>
       <Menu.Item>

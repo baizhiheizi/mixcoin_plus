@@ -1,24 +1,26 @@
 import { Button, PageHeader, Table } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
-import { useAdminMixinMessageConnectionQuery } from 'graphqlTypes';
+import { useAdminMixinConversationConnectionQuery } from 'graphqlTypes';
 import React from 'react';
+import { useHistory } from 'react-router';
 
-export default function MixinMessagesPage() {
+export default function MixinConversationsPage() {
   const {
     loading,
     data,
     refetch,
     fetchMore,
-  } = useAdminMixinMessageConnectionQuery();
+  } = useAdminMixinConversationConnectionQuery();
+  const history = useHistory();
 
   if (loading) {
     return <LoadingComponent />;
   }
 
   const {
-    adminMixinMessageConnection: {
-      nodes: mixinMessages,
+    adminMixinConversationConnection: {
+      nodes: mixinConversations,
       pageInfo: { hasNextPage, endCursor },
     },
   } = data;
@@ -30,48 +32,68 @@ export default function MixinMessagesPage() {
       title: 'ID',
     },
     {
-      dataIndex: 'category',
-      key: 'category',
-      title: 'category',
-    },
-    {
       dataIndex: 'conversationId',
       key: 'conversationId',
       title: 'conversationId',
     },
     {
-      dataIndex: 'user',
-      key: 'user',
-      render: (_, mixinMessage) =>
-        mixinMessage.user ? (
-          <div className='flex items-center'>
-            <img
-              src={mixinMessage.user.avatar}
-              className='w-6 h-6 mr-2 rounded-full'
-            />
-            {mixinMessage.user.name}({mixinMessage.user.mixinId})
-          </div>
-        ) : (
-          mixinMessage.userId
-        ),
-      title: 'user',
+      dataIndex: 'category',
+      key: 'category',
+      title: 'category',
     },
     {
-      dataIndex: 'content',
-      key: 'content',
-      title: 'content',
+      dataIndex: 'name',
+      key: 'name',
+      title: 'name',
+    },
+    {
+      dataIndex: 'creator',
+      key: 'creator',
+      render: (_, conversation) =>
+        conversation.creator ? (
+          <div className='flex items-center'>
+            <img
+              src={conversation.creator.avatar}
+              className='w-6 h-6 mr-2 rounded-full'
+            />
+            {conversation.creator.name}({conversation.creator.mixinId})
+          </div>
+        ) : (
+          '-'
+        ),
+      title: 'creator',
+    },
+    {
+      dataIndex: 'participantsCount',
+      key: 'participantsCount',
+      render: (_, conversation) => conversation.participantUuids.length,
+      title: 'participantsCount',
     },
     {
       dataIndex: 'createdAt',
       key: 'createdAt',
       title: 'createdAt',
     },
+    {
+      dataIndex: 'Actions',
+      key: 'actions',
+      render: (_, conversation) => (
+        <a
+          onClick={() =>
+            history.push(`/mixin_conversations/${conversation.id}`)
+          }
+        >
+          Details
+        </a>
+      ),
+      title: 'Actions',
+    },
   ];
 
   return (
     <>
       <PageHeader
-        title='Message Manage'
+        title='Conversations Manage'
         extra={[
           <Button key='refresh' type='primary' onClick={() => refetch()}>
             Refresh
@@ -81,7 +103,7 @@ export default function MixinMessagesPage() {
       <Table
         scroll={{ x: true }}
         columns={columns}
-        dataSource={mixinMessages}
+        dataSource={mixinConversations}
         rowKey='id'
         pagination={false}
       />

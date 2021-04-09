@@ -5,6 +5,7 @@ module Types
     field :id, ID, null: false
     field :action, String, null: false
     field :category, String, null: false
+    field :conversation_id, String, null: false
     field :content, String, null: false
     field :user_id, String, null: true
     field :processed_at, GraphQL::Types::ISO8601DateTime, null: true

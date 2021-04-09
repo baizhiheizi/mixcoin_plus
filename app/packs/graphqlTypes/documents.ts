@@ -121,11 +121,47 @@ export type MixinAsset = {
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
 };
 
+export type MixinConversation = {
+  __typename?: 'MixinConversation';
+  category: Scalars['String'];
+  codeId?: Maybe<Scalars['String']>;
+  conversationId: Scalars['String'];
+  createdAt: Scalars['ISO8601DateTime'];
+  creator?: Maybe<User>;
+  creatorId?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  participantUuids: Array<Scalars['String']>;
+  participants?: Maybe<Array<User>>;
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
+/** The connection type for MixinConversation. */
+export type MixinConversationConnection = {
+  __typename?: 'MixinConversationConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<MixinConversationEdge>>>;
+  /** A list of nodes. */
+  nodes?: Maybe<Array<Maybe<MixinConversation>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type MixinConversationEdge = {
+  __typename?: 'MixinConversationEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node?: Maybe<MixinConversation>;
+};
+
 export type MixinMessage = {
   __typename?: 'MixinMessage';
   action: Scalars['String'];
   category: Scalars['String'];
   content: Scalars['String'];
+  conversationId: Scalars['String'];
   createdAt: Scalars['ISO8601DateTime'];
   id: Scalars['ID'];
   processedAt?: Maybe<Scalars['ISO8601DateTime']>;
@@ -319,6 +355,8 @@ export type PageInfo = {
 export type Query = {
   __typename?: 'Query';
   adminMarketConnection: MarketConnection;
+  adminMixinConversation: MixinConversation;
+  adminMixinConversationConnection: MixinConversationConnection;
   adminMixinMessageConnection: MixinMessageConnection;
   adminMixinNetworkSnapshotConnection: MixinNetworkSnapshotConnection;
   adminOceanOrder: OceanOrder;
@@ -337,6 +375,20 @@ export type Query = {
 
 
 export type QueryAdminMarketConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAdminMixinConversationArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryAdminMixinConversationConnectionArgs = {
+  category?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
@@ -368,6 +420,9 @@ export type QueryAdminOceanOrderArgs = {
 
 export type QueryAdminOceanOrderConnectionArgs = {
   after?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
+  conversationId?: Maybe<Scalars['ID']>;
+  userId?: Maybe<Scalars['ID']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
@@ -530,6 +585,49 @@ export type AdminMarketConnectionQuery = (
   ) }
 );
 
+export type AdminMixinConversationConnectionQueryVariables = Exact<{
+  after?: Maybe<Scalars['String']>;
+}>;
+
+
+export type AdminMixinConversationConnectionQuery = (
+  { __typename?: 'Query' }
+  & { adminMixinConversationConnection: (
+    { __typename?: 'MixinConversationConnection' }
+    & { nodes?: Maybe<Array<Maybe<(
+      { __typename?: 'MixinConversation' }
+      & Pick<MixinConversation, 'id' | 'category' | 'name' | 'codeId' | 'conversationId' | 'participantUuids' | 'createdAt'>
+      & { creator?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'name' | 'mixinId' | 'avatar'>
+      )> }
+    )>>>, pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ) }
+  ) }
+);
+
+export type AdminMixinConversationQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AdminMixinConversationQuery = (
+  { __typename?: 'Query' }
+  & { adminMixinConversation: (
+    { __typename?: 'MixinConversation' }
+    & Pick<MixinConversation, 'id' | 'conversationId' | 'category' | 'name' | 'codeId' | 'creatorId' | 'participantUuids' | 'createdAt'>
+    & { creator?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'name' | 'mixinId' | 'avatar'>
+    )>, participants?: Maybe<Array<(
+      { __typename?: 'User' }
+      & Pick<User, 'name' | 'mixinId' | 'avatar'>
+    )>> }
+  ) }
+);
+
 export type AdminMixinMessageConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
 }>;
@@ -541,10 +639,10 @@ export type AdminMixinMessageConnectionQuery = (
     { __typename?: 'MixinMessageConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'MixinMessage' }
-      & Pick<MixinMessage, 'id' | 'action' | 'category' | 'content' | 'userId' | 'processedAt' | 'createdAt'>
+      & Pick<MixinMessage, 'id' | 'action' | 'category' | 'conversationId' | 'content' | 'userId' | 'processedAt' | 'createdAt'>
       & { user?: Maybe<(
         { __typename?: 'User' }
-        & Pick<User, 'avatar' | 'name' | 'mixinUuid'>
+        & Pick<User, 'avatar' | 'name' | 'mixinId' | 'mixinUuid'>
       )> }
     )>>>, pageInfo: (
       { __typename?: 'PageInfo' }
@@ -582,6 +680,9 @@ export type AdminMixinNetworkSnapshotConnectionQuery = (
 
 export type AdminOceanOrderConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
+  conversationId?: Maybe<Scalars['ID']>;
+  userId?: Maybe<Scalars['ID']>;
 }>;
 
 
@@ -1024,6 +1125,110 @@ export function useAdminMarketConnectionLazyQuery(baseOptions?: Apollo.LazyQuery
 export type AdminMarketConnectionQueryHookResult = ReturnType<typeof useAdminMarketConnectionQuery>;
 export type AdminMarketConnectionLazyQueryHookResult = ReturnType<typeof useAdminMarketConnectionLazyQuery>;
 export type AdminMarketConnectionQueryResult = Apollo.QueryResult<AdminMarketConnectionQuery, AdminMarketConnectionQueryVariables>;
+export const AdminMixinConversationConnectionDocument = gql`
+    query AdminMixinConversationConnection($after: String) {
+  adminMixinConversationConnection(after: $after) {
+    nodes {
+      id
+      category
+      name
+      codeId
+      conversationId
+      creator {
+        name
+        mixinId
+        avatar
+      }
+      participantUuids
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminMixinConversationConnectionQuery__
+ *
+ * To run a query within a React component, call `useAdminMixinConversationConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminMixinConversationConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminMixinConversationConnectionQuery({
+ *   variables: {
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useAdminMixinConversationConnectionQuery(baseOptions?: Apollo.QueryHookOptions<AdminMixinConversationConnectionQuery, AdminMixinConversationConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminMixinConversationConnectionQuery, AdminMixinConversationConnectionQueryVariables>(AdminMixinConversationConnectionDocument, options);
+      }
+export function useAdminMixinConversationConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminMixinConversationConnectionQuery, AdminMixinConversationConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminMixinConversationConnectionQuery, AdminMixinConversationConnectionQueryVariables>(AdminMixinConversationConnectionDocument, options);
+        }
+export type AdminMixinConversationConnectionQueryHookResult = ReturnType<typeof useAdminMixinConversationConnectionQuery>;
+export type AdminMixinConversationConnectionLazyQueryHookResult = ReturnType<typeof useAdminMixinConversationConnectionLazyQuery>;
+export type AdminMixinConversationConnectionQueryResult = Apollo.QueryResult<AdminMixinConversationConnectionQuery, AdminMixinConversationConnectionQueryVariables>;
+export const AdminMixinConversationDocument = gql`
+    query AdminMixinConversation($id: ID!) {
+  adminMixinConversation(id: $id) {
+    id
+    conversationId
+    category
+    name
+    codeId
+    creatorId
+    creator {
+      name
+      mixinId
+      avatar
+    }
+    participantUuids
+    participants {
+      name
+      mixinId
+      avatar
+    }
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useAdminMixinConversationQuery__
+ *
+ * To run a query within a React component, call `useAdminMixinConversationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminMixinConversationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminMixinConversationQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminMixinConversationQuery(baseOptions: Apollo.QueryHookOptions<AdminMixinConversationQuery, AdminMixinConversationQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminMixinConversationQuery, AdminMixinConversationQueryVariables>(AdminMixinConversationDocument, options);
+      }
+export function useAdminMixinConversationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminMixinConversationQuery, AdminMixinConversationQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminMixinConversationQuery, AdminMixinConversationQueryVariables>(AdminMixinConversationDocument, options);
+        }
+export type AdminMixinConversationQueryHookResult = ReturnType<typeof useAdminMixinConversationQuery>;
+export type AdminMixinConversationLazyQueryHookResult = ReturnType<typeof useAdminMixinConversationLazyQuery>;
+export type AdminMixinConversationQueryResult = Apollo.QueryResult<AdminMixinConversationQuery, AdminMixinConversationQueryVariables>;
 export const AdminMixinMessageConnectionDocument = gql`
     query AdminMixinMessageConnection($after: String) {
   adminMixinMessageConnection(after: $after) {
@@ -1031,12 +1236,14 @@ export const AdminMixinMessageConnectionDocument = gql`
       id
       action
       category
+      conversationId
       content
       userId
       processedAt
       user {
         avatar
         name
+        mixinId
         mixinUuid
       }
       createdAt
@@ -1140,8 +1347,13 @@ export type AdminMixinNetworkSnapshotConnectionQueryHookResult = ReturnType<type
 export type AdminMixinNetworkSnapshotConnectionLazyQueryHookResult = ReturnType<typeof useAdminMixinNetworkSnapshotConnectionLazyQuery>;
 export type AdminMixinNetworkSnapshotConnectionQueryResult = Apollo.QueryResult<AdminMixinNetworkSnapshotConnectionQuery, AdminMixinNetworkSnapshotConnectionQueryVariables>;
 export const AdminOceanOrderConnectionDocument = gql`
-    query AdminOceanOrderConnection($after: String) {
-  adminOceanOrderConnection(after: $after) {
+    query AdminOceanOrderConnection($after: String, $state: String, $conversationId: ID, $userId: ID) {
+  adminOceanOrderConnection(
+    after: $after
+    state: $state
+    conversationId: $conversationId
+    userId: $userId
+  ) {
     nodes {
       id
       traceId
@@ -1197,6 +1409,9 @@ export const AdminOceanOrderConnectionDocument = gql`
  * const { data, loading, error } = useAdminOceanOrderConnectionQuery({
  *   variables: {
  *      after: // value for 'after'
+ *      state: // value for 'state'
+ *      conversationId: // value for 'conversationId'
+ *      userId: // value for 'userId'
  *   },
  * });
  */

@@ -33,7 +33,7 @@ class MixinConversation < ApplicationRecord
   scope :only_group, -> { where(category: 'GROUP') }
 
   def participants
-    @participants = User.where(mixin_uid: participant_uuids)
+    @participants = User.where(mixin_uuid: participant_uuids)
   end
 
   def group?

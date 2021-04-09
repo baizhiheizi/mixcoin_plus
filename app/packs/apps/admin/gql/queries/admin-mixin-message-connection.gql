@@ -4,12 +4,14 @@ query AdminMixinMessageConnection($after: String) {
       id
       action
       category
+      conversationId
       content
       userId
       processedAt
       user {
         avatar
         name
+        mixinId
         mixinUuid
       }
       createdAt

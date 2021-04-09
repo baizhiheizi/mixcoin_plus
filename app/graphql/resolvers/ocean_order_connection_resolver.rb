@@ -15,14 +15,18 @@ module Resolvers
         else
           current_user.ocean_orders
         end
-      case params[:filter]
-      when 'booking'
-        orders.where(state: %i[booking canceling])
-      when 'history'
-        orders.where(state: %i[completed refunded])
-      else
-        orders
-      end
+
+      orders =
+        case params[:filter]
+        when 'booking'
+          orders.where(state: %i[booking canceling])
+        when 'history'
+          orders.where(state: %i[completed refunded])
+        else
+          orders.without_drafted
+        end
+
+      orders.order(created_at: :desc)
     end
   end
 end

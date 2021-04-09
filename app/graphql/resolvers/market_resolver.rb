@@ -9,7 +9,7 @@ module Resolvers
     type Types::MarketType, null: false
 
     def resolve(**params)
-      markets = current_user&.markets || Market.all
+      markets = Market.all
 
       market =
         if params[:id].present?

@@ -1,0 +1,22 @@
+query AdminMixinConversation($id: ID!) {
+  adminMixinConversation(id: $id) {
+    id
+    conversationId
+    category
+    name
+    codeId
+    creatorId
+    creator {
+      name
+      mixinId
+      avatar
+    }
+    participantUuids
+    participants {
+      name
+      mixinId
+      avatar
+    }
+    createdAt
+  }
+}

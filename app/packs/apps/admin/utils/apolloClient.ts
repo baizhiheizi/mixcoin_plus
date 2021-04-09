@@ -31,7 +31,11 @@ export const apolloClient = (uri: string) => {
         fields: {
           adminUserConnection: customizedConnectionMergeFunction(),
           adminMarketConnection: customizedConnectionMergeFunction(),
-          adminOceanOrderConnection: customizedConnectionMergeFunction(),
+          adminOceanOrderConnection: customizedConnectionMergeFunction([
+            'conversationId',
+            'state',
+            'userId',
+          ]),
           adminMixinMessageConnection: customizedConnectionMergeFunction(),
           adminMixinNetworkSnapshotConnection: customizedConnectionMergeFunction(
             ['oceanOrderId'],
