@@ -1,7 +1,9 @@
+import { useInterval } from 'ahooks';
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
 import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
+import { fetchTiker, ITrade } from 'apps/application/utils';
 import { Market, useMarketQuery } from 'graphqlTypes';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +29,16 @@ export default function ExchangePage() {
   const { loading, data } = useMarketQuery({
     variables: { id: marketId },
   });
+  const [ticker, setTicker] = useState<ITrade>();
+
+  async function refreshTicker() {
+    if (data?.market?.oceanMarketId) {
+      const res = await fetchTiker(data?.market?.oceanMarketId);
+      if (res.data && res.data.data) {
+        setTicker(res.data.data);
+      }
+    }
+  }
 
   useEffect(() => {
     if (!marketIdParam) {
@@ -36,6 +48,14 @@ export default function ExchangePage() {
       });
     }
   }, [marketId]);
+
+  useEffect(() => {
+    refreshTicker();
+  }, [data?.market]);
+
+  useInterval(() => {
+    refreshTicker();
+  }, 5000);
 
   if (loading) {
     return <LoaderComponent />;
@@ -55,7 +75,11 @@ export default function ExchangePage() {
     <>
       <NavbarComponent />
       <div className='pb-14'>
-        <HeaderComponent market={market} setMarketId={setMarketId} />
+        <HeaderComponent
+          market={market}
+          setMarketId={setMarketId}
+          ticker={ticker}
+        />
         <div className='flex items-center p-4 mb-1 bg-white dark:bg-dark'>
           <div className='w-3/5 pr-2 h-96'>
             <ActionComponent
@@ -71,6 +95,7 @@ export default function ExchangePage() {
               market={market as Market}
               setOrderPrice={setOrderPrice}
               setOrderAmount={setOrderAmount}
+              ticker={ticker}
             />
           </div>
         </div>

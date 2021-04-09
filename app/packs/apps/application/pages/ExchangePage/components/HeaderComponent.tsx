@@ -2,8 +2,10 @@ import {
   Change as ChangeIcon,
   MenuFoldOne as MenuIcon,
 } from '@icon-park/react';
+import { useDebounce } from 'ahooks';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import { useCurrentUser } from 'apps/application/contexts';
+import { ITrade } from 'apps/application/utils';
 import { ERC20_USDT_ASSET_ID, OMNI_USDT_ASSET_ID } from 'apps/shared';
 import {
   Market,
@@ -13,16 +15,17 @@ import {
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { ActivityIndicator, Loading, Popup, Tabs } from 'zarm';
+import { ActivityIndicator, Loading, Popup, SearchBar, Tabs } from 'zarm';
 
 export default function HeaderComponent(props: {
   market: Partial<Market> & any;
   setMarketId: (id: string) => any;
+  ticker?: ITrade;
 }) {
   const history = useHistory();
   const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
-  const { market, setMarketId } = props;
+  const { market, setMarketId, ticker } = props;
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [marketQuery, { called, data }] = useMarketLazyQuery();
 
@@ -32,56 +35,56 @@ export default function HeaderComponent(props: {
 
   return (
     <>
-      <div className='flex items-center px-4 py-2 mb-1 bg-white dark:bg-dark dark:text-white'>
-        <MenuIcon
-          className='mr-2'
-          size='1.5rem'
-          onClick={() => setSidebarVisible(!sidebarVisible)}
-        />
-        <div className='mr-2 text-lg font-semibold'>
-          {market.baseAsset.symbol}/{market.quoteAsset.symbol}
-        </div>
-        {market.quoteAsset.symbol === 'USDT' && (
-          <div
-            className='mr-4'
-            onClick={() => {
-              Loading.show();
-              marketQuery({
-                variables: {
-                  baseAssetId: market.baseAsset.assetId,
-                  quoteAssetId:
-                    market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
-                      ? OMNI_USDT_ASSET_ID
-                      : ERC20_USDT_ASSET_ID,
-                },
-              });
-            }}
-          >
-            <div className='flex items-center text-xs h-7'>
-              <div className='mr-1'>
-                {market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
-                  ? 'ERC20'
-                  : 'Omni'}
-              </div>
-              <ChangeIcon size='0.75rem' />
-            </div>
+      <div className='flex items-start px-4 py-2 mb-1 bg-white dark:bg-dark dark:text-white'>
+        <div className='flex items-center'>
+          <MenuIcon
+            className='mr-2'
+            size='1.5rem'
+            onClick={() => setSidebarVisible(!sidebarVisible)}
+          />
+          <div className='mr-2 text-lg font-semibold'>
+            {market.baseAsset.symbol}/{market.quoteAsset.symbol}
           </div>
-        )}
-        <div className='ml-auto text-right'>
-          {market.baseAsset.changeUsd && (
+          {market.quoteAsset.symbol === 'USDT' && (
             <div
-              className={`${
-                market.baseAsset.changeUsd > 0
-                  ? 'text-green-500'
-                  : 'text-red-500'
-              }`}
+              className='mr-4'
+              onClick={() => {
+                Loading.show();
+                marketQuery({
+                  variables: {
+                    baseAssetId: market.baseAsset.assetId,
+                    quoteAssetId:
+                      market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
+                        ? OMNI_USDT_ASSET_ID
+                        : ERC20_USDT_ASSET_ID,
+                  },
+                });
+              }}
             >
-              {(market.baseAsset.changeUsd * 100)?.toFixed(2)}%
+              <div className='flex items-center text-xs h-7'>
+                <div className='mr-1'>
+                  {market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
+                    ? 'ERC20'
+                    : 'Omni'}
+                </div>
+                <ChangeIcon size='0.75rem' />
+              </div>
             </div>
           )}
-          {market.baseAsset.priceUsd && (
-            <div className='text-xs text-gray-300'>
-              ≈ ${market.baseAsset.priceUsd?.toFixed(2)}
+        </div>
+        <div className='ml-auto text-right'>
+          <div
+            className={`${
+              ticker?.side === 'ASK' ? 'text-green-500' : 'text-red-500'
+            } font-bold text-xl`}
+          >
+            {ticker?.price || '-'}
+          </div>
+          {ticker?.price && (
+            <div className='text-xs text-gray-500'>
+              {`≈ $${(
+                market.quoteAsset.priceUsd * parseFloat(ticker.price) || 0
+              ).toFixed(2)}`}
             </div>
           )}
         </div>
@@ -111,15 +114,17 @@ function MarketsComponent(props: {
   setSidebarVisible: (params: any) => any;
 }) {
   const { setMarketId, setSidebarVisible } = props;
-  const quotes = ['pUSD', 'BTC', 'XIN', 'USDT'];
+  const quotes = ['favorite', 'pUSD', 'BTC', 'XIN', 'USDT'];
   const [tabIndex, setTabIndex] = useState(0);
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, { wait: 500 });
   const { loading, data, refetch, fetchMore } = useMarketConnectionQuery({
-    variables: { type: quotes[tabIndex] },
+    variables: { type: quotes[tabIndex], query: debouncedQuery },
   });
 
   if (loading) {
     return (
-      <div className='flex items-center justify-center w-64 h-screen bg-white dark:bg-dark'>
+      <div className='flex items-center justify-center h-screen bg-white w-72 dark:bg-dark'>
         <ActivityIndicator type='spinner' size='lg' />
       </div>
     );
@@ -161,17 +166,24 @@ function MarketsComponent(props: {
 
   return (
     <>
-      <div className='w-64 h-screen pt-12 overflow-auto bg-white dark:bg-dark'>
+      <div className='h-screen pt-12 overflow-auto bg-white w-72 dark:bg-dark'>
         <Tabs
           className='fixed top-0 z-10 w-full bg-white dark:bg-dark'
           value={tabIndex}
           onChange={(index) => setTabIndex(index)}
         >
+          <Tabs.Panel title='favorite'></Tabs.Panel>
           <Tabs.Panel title='pUSD'></Tabs.Panel>
           <Tabs.Panel title='BTC'></Tabs.Panel>
           <Tabs.Panel title='XIN'></Tabs.Panel>
           <Tabs.Panel title='USDT'></Tabs.Panel>
         </Tabs>
+        <SearchBar
+          value={query}
+          onChange={(value: string) => setQuery(value)}
+          onClear={() => setQuery('')}
+          onCancel={() => setQuery('')}
+        />
         <MarketsList />
       </div>
     </>

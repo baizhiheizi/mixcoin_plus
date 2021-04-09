@@ -13,6 +13,7 @@ en:
   empty_markets: No market yet
   empty_orders: No order yet
   share: Share
+  fee: Fee
   buy: Buy
   sell: Sell
   volume: Volume
@@ -35,6 +36,7 @@ en:
   confirm_cancel_ocean_order: Sure to cancel this order?
   order_will_be_handled: Order will be open when the payment received and you will be notified.
   price_too_high: Price too high
+  price_too_low: Price too low
   order_too_small: Order too small
   order_too_big: Order too big
   no_ask_order: No Asks Yet

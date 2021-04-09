@@ -1,3 +1,4 @@
+import { StockMarket } from '@icon-park/react';
 import { useCurrentUser } from 'apps/application/contexts';
 import { ToastError } from 'apps/application/utils';
 import {
@@ -11,7 +12,7 @@ import React, { useState } from 'react';
 import { ChevronDown as ChevronDownIcon } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { ActionSheet, Button, Input, Modal, Toast } from 'zarm';
+import { ActionSheet, Button, Input, Modal, Popper, Toast } from 'zarm';
 
 BigNumber.config({
   FORMAT: {
@@ -63,13 +64,7 @@ export default function ActionComponent(props: {
     if (!currentUser) {
       location.replace('/login');
       return;
-    } else if (
-      orderType === 'limit' &&
-      !Boolean(orderAmount) &&
-      !Boolean(orderPrice)
-    ) {
-      return;
-    } else if (orderType === 'market' && !Boolean(orderAmount)) {
+    } else if (!validateOrder()) {
       return;
     }
 
@@ -121,10 +116,7 @@ export default function ActionComponent(props: {
     });
   }
 
-  function placeOrder() {
-    if (paying) {
-      return;
-    }
+  function calculateFunds() {
     let funds: any;
 
     if (orderType === 'limit' && orderSide === 'bid') {
@@ -139,7 +131,12 @@ export default function ActionComponent(props: {
     } else if (orderType === 'market') {
       funds = new BigNumber(orderAmount);
     }
-    if (!validateOrder(funds)) {
+
+    return funds;
+  }
+
+  function placeOrder() {
+    if (paying) {
       return;
     }
 
@@ -151,13 +148,27 @@ export default function ActionComponent(props: {
           side: orderSide,
           orderType,
           price: orderPrice,
-          funds,
+          funds: calculateFunds(),
         },
       },
     });
   }
 
-  function validateOrder(funds: any) {
+  function validateOrder() {
+    if (orderType === 'limit') {
+      if (parseFloat(orderPrice) <= 0) {
+        ToastError(t('price_too_low'));
+        return;
+      } else if (parseFloat(orderAmount) <= 0) {
+        ToastError(t('order_too_small'));
+        return;
+      }
+    } else if (orderType === 'market' && parseFloat(orderAmount) <= 0) {
+      ToastError(t('order_too_small'));
+      return;
+    }
+
+    const funds = calculateFunds();
     if (!funds.isFinite() || funds.lt('0.00000001')) {
       return;
     }
@@ -451,10 +462,26 @@ export default function ActionComponent(props: {
       )}
       <div className='mt-auto'>
         {orderType === 'market' && (
-          <div className='mb-2 text-base text-gray-700'>
+          <div className='mb-2 text-base font-semibold text-gray-500'>
             {t('market_order_warning')}
           </div>
         )}
+        <div className='flex items-center justify-between mb-2'>
+          <Popper
+            className='p-2 mb-1 text-xs bg-gray-100 dark:bg-dark'
+            direction='topLeft'
+            content='Maker & Taker: 0.1%'
+          >
+            <Button size='xs'>{t('fee')}</Button>
+          </Popper>
+          <StockMarket
+            size='1.5rem'
+            strokeWidth={2}
+            theme='two-tone'
+            fill={['#333', 'green']}
+            onClick={() => history.push(`/markets/${market.id}`)}
+          />
+        </div>
         {paying ? (
           <div
             className='p-2 text-lg text-center text-gray-500 bg-gray-300 rounded'

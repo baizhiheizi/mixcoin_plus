@@ -22,22 +22,15 @@ export default function BookComponent(props: {
   market: Partial<Market>;
   setOrderPrice: (params: any) => any;
   setOrderAmount: (params: any) => any;
+  ticker?: ITrade;
 }) {
   const { t } = useTranslation();
-  const { market, setOrderPrice, setOrderAmount } = props;
+  const { market, setOrderPrice, setOrderAmount, ticker } = props;
   const [connected, setConnected] = useState(false);
   const [book, setBook] = useState<{
     asks: ITick[];
     bids: ITick[];
   }>({ asks: [], bids: [] });
-  const [ticker, setTicker] = useState<ITrade>();
-
-  async function refreshTicker() {
-    const res = await fetchTiker(market.oceanMarketId);
-    if (res.data && res.data.data) {
-      setTicker(res.data.data);
-    }
-  }
 
   function handleOrderOpenOnBook(tick: ITick) {
     const price = new BigNumber(tick.price);
@@ -177,14 +170,6 @@ export default function BookComponent(props: {
     }
   };
 
-  useEffect(() => {
-    refreshTicker();
-  }, [market]);
-
-  useInterval(() => {
-    refreshTicker();
-  }, 5000);
-
   return (
     <>
       <div className='h-48 text-xs'>
@@ -230,13 +215,6 @@ export default function BookComponent(props: {
           >
             {ticker?.price || '-'}
           </div>
-          {ticker && (
-            <div className='px-2 text-gray-500 line-clamp-1'>
-              {`≈ $${(
-                market.quoteAsset.priceUsd * parseFloat(ticker.price) || 0
-              ).toFixed(2)}`}
-            </div>
-          )}
         </div>
         {book.bids.length > 0 ? (
           book.bids.slice(0, 10).map((bid, index) => (

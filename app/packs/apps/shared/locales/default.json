@@ -61,6 +61,7 @@
   "emptyMarkets": { "id": "empty_markets", "defaultMessage": "No market yet" },
   "emptyOrders": { "id": "empty_orders", "defaultMessage": "No order yet" },
   "share": { "id": "share", "defaultMessage": "Share" },
+  "fee": { "id": "fee", "defaultMessage": "Fee" },
   "buy": { "id": "buy", "defaultMessage": "Buy" },
   "sell": { "id": "sell", "defaultMessage": "Sell" },
   "volume": { "id": "volume", "defaultMessage": "Volume" },
@@ -101,6 +102,7 @@
     "id": "price_too_high",
     "defaultMessage": "Price too high"
   },
+  "priceTooLow": { "id": "price_too_low", "defaultMessage": "Price too low" },
   "orderTooSmall": {
     "id": "order_too_small",
     "defaultMessage": "Order too small"
