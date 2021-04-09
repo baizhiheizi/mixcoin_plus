@@ -1,5 +1,6 @@
 query AdminUser($id: ID!) {
   adminUser(id: $id) {
+    id
     name
     avatar
     mixinId

@@ -850,7 +850,7 @@ export type AdminUserQuery = (
   { __typename?: 'Query' }
   & { adminUser: (
     { __typename?: 'User' }
-    & Pick<User, 'name' | 'avatar' | 'mixinId' | 'mixinUuid' | 'createdAt'>
+    & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid' | 'createdAt'>
     & { oceanBroker?: Maybe<(
       { __typename?: 'MixinNetworkUser' }
       & Pick<MixinNetworkUser, 'mixinUuid'>
@@ -1700,6 +1700,7 @@ export type AdminUserConnectionQueryResult = Apollo.QueryResult<AdminUserConnect
 export const AdminUserDocument = gql`
     query AdminUser($id: ID!) {
   adminUser(id: $id) {
+    id
     name
     avatar
     mixinId

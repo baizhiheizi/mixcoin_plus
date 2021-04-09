@@ -4,9 +4,11 @@ import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import { useAdminUserConnectionQuery, User } from 'graphqlTypes';
 import React from 'react';
+import { useHistory } from 'react-router';
 
 export default function UsersPage() {
   const { loading, data, refetch, fetchMore } = useAdminUserConnectionQuery();
+  const history = useHistory();
 
   if (loading) {
     return <LoadingComponent />;
@@ -40,6 +42,14 @@ export default function UsersPage() {
       dataIndex: 'createdAt',
       key: 'createdAt',
       title: 'createdAt',
+    },
+    {
+      dataIndex: 'actions',
+      key: 'actions',
+      render: (_, user) => (
+        <a onClick={() => history.push(`/users/${user.id}`)}>Details</a>
+      ),
+      title: 'Actions',
     },
   ];
 
