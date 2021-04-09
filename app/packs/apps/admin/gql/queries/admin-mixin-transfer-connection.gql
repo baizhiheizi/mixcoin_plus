@@ -1,23 +1,27 @@
-query AdminMixinNetworkSnapshotConnection(
+query AdminMixinTransferConnection(
   $after: String
   $oceanOrderId: ID
-  $snapshotType: String
+  $userId: ID
+  $opponentId: ID
+  $transferType: String
 ) {
-  adminMixinNetworkSnapshotConnection(
+  adminMixinTransferConnection(
     after: $after
     oceanOrderId: $oceanOrderId
-    snapshotType: $snapshotType
+    userId: $userId
+    opponentId: $opponentId
+    transferType: $transferType
   ) {
     nodes {
       id
-      type
-      snapshotType
+      transferType
       traceId
       snapshotId
       amount
-      data
+      memo
       opponentId
-      opponent {
+      userId
+      recipient {
         avatar
         name
         mixinId
@@ -29,7 +33,6 @@ query AdminMixinNetworkSnapshotConnection(
         iconUrl
       }
       processedAt
-      transferredAt
       createdAt
     }
     pageInfo {

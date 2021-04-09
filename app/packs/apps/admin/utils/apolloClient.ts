@@ -38,8 +38,14 @@ export const apolloClient = (uri: string) => {
           ]),
           adminMixinMessageConnection: customizedConnectionMergeFunction(),
           adminMixinNetworkSnapshotConnection: customizedConnectionMergeFunction(
-            ['oceanOrderId'],
+            ['oceanOrderId', 'snapshotType', 'type'],
           ),
+          adminMixinTransferConnection: customizedConnectionMergeFunction([
+            'oceanOrderId',
+            'userId',
+            'opponentId',
+            'transferType',
+          ]),
         },
       },
     },

@@ -5,6 +5,7 @@ import {
   LogoutOutlined,
   MessageOutlined,
   PayCircleOutlined,
+  MoneyCollectOutlined,
   SyncOutlined,
   UsergroupAddOutlined,
   UserOutlined,
@@ -43,8 +44,14 @@ export default function Menus() {
       </Menu.Item>
       <Menu.Item>
         <Link to='/mixin_network_snapshots'>
-          <PayCircleOutlined />
+          <MoneyCollectOutlined />
           <span>Snapshots</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to='/mixin_transfers'>
+          <PayCircleOutlined />
+          <span>Transfers</span>
         </Link>
       </Menu.Item>
       <Menu.Item>

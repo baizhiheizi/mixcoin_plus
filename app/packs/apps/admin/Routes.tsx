@@ -7,6 +7,7 @@ import MixinConversationPage from './pages/MixinConversationPage/MixinConversati
 import MixinConversationsPage from './pages/MixinConversationsPage/MixinConversationsPage';
 import MixinMessagesPage from './pages/MixinMessagesPage/MixinMessagesPage';
 import MixinNetworkSnapshotsPage from './pages/MixinNetworkSnapshotsPage/MixinNetworkSnapshotsPage';
+import MixinTransfersPage from './pages/MixinTransfersPage/MixinTransfersPage';
 import OceanOrderPage from './pages/OceanOrderPage/OceanOrderPage';
 import OceanOrdersPage from './pages/OceanOrdersPage/OceanOrdersPage';
 import OverviewPage from './pages/OverviewPage/OverivewPage';
@@ -30,6 +31,9 @@ export default function Routes() {
       </Route>
       <Route path='/mixin_network_snapshots' exact>
         <MixinNetworkSnapshotsPage />
+      </Route>
+      <Route path='/mixin_transfers' exact>
+        <MixinTransfersPage />
       </Route>
       <Route path='/mixin_conversations' exact>
         <MixinConversationsPage />

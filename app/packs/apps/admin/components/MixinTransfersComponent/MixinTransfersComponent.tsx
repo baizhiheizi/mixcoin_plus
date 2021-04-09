@@ -1,31 +1,34 @@
 import { Button, Select, Table } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
-import { OCEAN_ENGINE_USER_ID } from 'apps/shared';
-import { useAdminMixinNetworkSnapshotConnectionQuery } from 'graphqlTypes';
+import { OCEAN_ENGINE_USER_ID, useMixinBot } from 'apps/shared';
+import { useAdminMixinTransferConnectionQuery } from 'graphqlTypes';
 import React, { useState } from 'react';
 
-export default function MixinNetworkSnapshotsComponent(props: {
+export default function MixinTransfersComponent(props: {
   oceanOrderId?: string;
+  userId?: string;
+  opponentId?: string;
 }) {
-  const { oceanOrderId } = props;
-  const [snapshotType, setSnapshotType] = useState('all');
+  const { oceanOrderId, userId, opponentId } = props;
+  const [transferType, setTranferType] = useState('all');
   const {
     loading,
     data,
     refetch,
     fetchMore,
-  } = useAdminMixinNetworkSnapshotConnectionQuery({
-    variables: { oceanOrderId, snapshotType },
+  } = useAdminMixinTransferConnectionQuery({
+    variables: { oceanOrderId, userId, opponentId, transferType },
   });
+  const { appId } = useMixinBot();
 
   if (loading) {
     return <LoadingComponent />;
   }
 
   const {
-    adminMixinNetworkSnapshotConnection: {
-      nodes: snapshots,
+    adminMixinTransferConnection: {
+      nodes: transfers,
       pageInfo: { hasNextPage, endCursor },
     },
   } = data;
@@ -37,39 +40,44 @@ export default function MixinNetworkSnapshotsComponent(props: {
       title: 'ID',
     },
     {
-      dataIndex: 'opponent',
-      key: 'opponent',
-      render: (_, snapshot) => (
+      dataIndex: 'userId',
+      key: 'userId',
+      title: 'userId',
+    },
+    {
+      dataIndex: 'recipient',
+      key: 'recipient',
+      render: (_, transfer) => (
         <>
-          {snapshot.opponentId === OCEAN_ENGINE_USER_ID ? (
+          {transfer.opponentId === OCEAN_ENGINE_USER_ID ? (
             'OCEAN ENGINE'
-          ) : snapshot.opponent ? (
+          ) : transfer.opponentId === appId ? (
+            'Mixcoin'
+          ) : transfer.recipient ? (
             <div>
-              {snapshot.opponent.name}({snapshot.opponent.mixinId})
+              {transfer.recipient.name}({transfer.recipient.mixinId})
             </div>
           ) : (
-            snapshot.opponentId
+            transfer.opponentId
           )}
         </>
       ),
-      title: 'Opponent',
+      title: 'Recipient',
     },
     {
       dataIndex: 'amount',
       key: 'amount',
-      render: (_, snapshot) => `${snapshot.amount} ${snapshot.asset.symbol}`,
+      render: (_, transfer) => `${transfer.amount} ${transfer.asset.symbol}`,
       title: 'Amount',
     },
     {
-      dataIndex: 'snapshotType',
-      key: 'snapshotType',
-      title: 'Snapshot Type',
-      render: (_, snapshot) =>
-        `${snapshot.type || '-'}/${snapshot.snapshotType || '-'}`,
+      dataIndex: 'transferType',
+      key: 'transferType',
+      title: 'Transfer Type',
     },
     {
-      dataIndex: 'data',
-      key: 'data',
+      dataIndex: 'memo',
+      key: 'memo',
       render: (text) => <span className='max-w-sm line-clamp-2'>{text}</span>,
       title: 'memo',
     },
@@ -90,34 +98,30 @@ export default function MixinNetworkSnapshotsComponent(props: {
       <div className='flex justify-between mb-4'>
         <Select
           className='w-40'
-          value={snapshotType}
-          onChange={(value) => setSnapshotType(value)}
+          value={transferType}
+          onChange={(value) => setTranferType(value)}
         >
           <Select.Option value='all'>All</Select.Option>
           <Select.Option value='default'>Default</Select.Option>
+          <Select.Option value='ocean_order_mixcoin_fee'>
+            MixcoinFee
+          </Select.Option>
+          <Select.Option value='ocean_order_invitation_commission'>
+            Invitation Commission
+          </Select.Option>
+          <Select.Option value='ocean_order_group_owner_commission'>
+            Group Owner Commission
+          </Select.Option>
           <Select.Option value='ocean_broker_balance'>
             Broker Balance
           </Select.Option>
           <Select.Option value='ocean_broker_register'>
             Broker Register
           </Select.Option>
-          <Select.Option value='create_order_from_user'>
-            Create from User
-          </Select.Option>
-          <Select.Option value='create_order_to_engine'>
-            Create to Engine
-          </Select.Option>
-          <Select.Option value='cancel_order_to_engine'>
-            Cancel to Engine
-          </Select.Option>
-          <Select.Option value='refund_from_engine'>
-            Refund from Engine
-          </Select.Option>
-          <Select.Option value='refund_to_user'>Refund to User</Select.Option>
-          <Select.Option value='match_from_engine'>
-            Match from Engine
-          </Select.Option>
-          <Select.Option value='match_to_user'>Match to User</Select.Option>
+          <Select.Option value='ocean_order_create'>Order Create</Select.Option>
+          <Select.Option value='ocean_order_cancel'>Order Cancel</Select.Option>
+          <Select.Option value='ocean_order_match'>Order Match</Select.Option>
+          <Select.Option value='ocean_order_refund'>Order Refund</Select.Option>
         </Select>
         <Button type='primary' onClick={() => refetch()}>
           Refresh
@@ -126,7 +130,7 @@ export default function MixinNetworkSnapshotsComponent(props: {
       <Table
         scroll={{ x: true }}
         columns={columns}
-        dataSource={snapshots}
+        dataSource={transfers}
         rowKey='id'
         pagination={false}
       />

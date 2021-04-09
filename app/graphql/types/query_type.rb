@@ -17,6 +17,7 @@ module Types
     field :admin_wallet_balance, resolver: Resolvers::AdminWalletBalanceResolver
     field :admin_mixin_conversation_connection, resolver: Resolvers::AdminMixinConversationConnectionResolver
     field :admin_mixin_conversation, resolver: Resolvers::AdminMixinConversationResolver
+    field :admin_mixin_transfer_connection, resolver: Resolvers::AdminMixinTransferConnectionResolver
 
     field :market, resolver: Resolvers::MarketResolver
     field :market_connection, resolver: Resolvers::MarketConnectionResolver

@@ -10,7 +10,11 @@ class Admin::BaseController < ActionController::Base
   def react_base_props
     {
       current_admin: current_admin&.as_json(only: %i[name]),
-      mixin_bot: { app_id: '', name: '', avatar: '' }
+      mixin_bot: {
+        app_id: MixcoinPlusBot.api.client_id,
+        app_name: 'Mixcoin',
+        app_icon_url: MixcoinPlusBot::ICON_URL
+      }
     }.deep_transform_keys! { |key| key.to_s.camelize(:lower) }
   end
 

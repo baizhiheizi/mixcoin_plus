@@ -1,6 +1,7 @@
 import { Button, Descriptions, PageHeader, Tabs } from 'antd';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import MixinNetworkSnapshotsComponent from 'apps/admin/components/MixinNetworkSnapshotsComponent/MixinNetworkSnapshotsComponent';
+import MixinTransfersComponent from 'apps/admin/components/MixinTransfersComponent/MixinTransfersComponent';
 import WalletBalanceComponent from 'apps/admin/components/WalletBalanceComponent/WalletBalanceComponent';
 import { useAdminOceanOrderQuery } from 'graphqlTypes';
 import React from 'react';
@@ -56,6 +57,9 @@ export default function OceanOrderPage() {
         </Tabs.TabPane>
         <Tabs.TabPane tab='Broker Wallet' key='wallet'>
           <WalletBalanceComponent userId={order.broker.mixinUuid} />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab='Transfers' key='transfers'>
+          <MixinTransfersComponent oceanOrderId={order.id} />
         </Tabs.TabPane>
       </Tabs>
     </>
