@@ -6,6 +6,7 @@
 #
 #  id            :uuid             not null, primary key
 #  amount        :decimal(, )
+#  amount_usd    :decimal(, )      default(0.0)
 #  memo          :string
 #  priority      :string
 #  processed_at  :datetime
@@ -47,10 +48,12 @@ class MixinTransfer < ApplicationRecord
   enumerize :transfer_type,
             in: %i[default ocean_broker_balance ocean_broker_register ocean_order_create ocean_order_cancel ocean_order_match ocean_order_refund ocean_order_group_owner_commission ocean_order_invitation_commission ocean_order_mixcoin_fee],
             default: :default,
+            scope: true,
             predicates: true
 
   scope :unprocessed, -> { where(processed_at: nil) }
   scope :processed, -> { where.not(processed_at: nil) }
+  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
 
   def snapshot_id
     snapshot&.[]('snapshot_id')
@@ -90,7 +93,11 @@ class MixinTransfer < ApplicationRecord
 
     return unless r['data']['trace_id'] == trace_id
 
-    update processed_at: Time.current, snapshot: r['data']
+    update(
+      processed_at: Time.current,
+      snapshot: r['data'],
+      amount_usd: asset.price_usd.to_f * amount
+    )
     TransferProcessedNotification.with(transfer: self).deliver(recipient) if recipient.present?
   end
 

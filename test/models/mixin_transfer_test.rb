@@ -6,6 +6,7 @@
 #
 #  id            :uuid             not null, primary key
 #  amount        :decimal(, )
+#  amount_usd    :decimal(, )      default(0.0)
 #  memo          :string
 #  priority      :string
 #  processed_at  :datetime

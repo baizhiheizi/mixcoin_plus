@@ -6,6 +6,7 @@
 #
 #  id             :uuid             not null, primary key
 #  amount         :decimal(, )
+#  amount_usd     :decimal(, )      default(0.0)
 #  data           :string
 #  processed_at   :datetime
 #  raw            :json
@@ -32,9 +33,14 @@ class OceanSnapshot < MixinNetworkSnapshot
   extend Enumerize
 
   enumerize :snapshot_type,
-            in: %i[default ocean_broker_balance ocean_broker_register create_order_from_user create_order_to_engine cancel_order_to_engine refund_from_engine refund_to_user match_from_engine match_to_user]
+            in: %i[default ocean_broker_balance ocean_broker_register create_order_from_user create_order_to_engine cancel_order_to_engine refund_from_engine refund_to_user match_from_engine match_to_user],
+            default: :default,
+            scope: true,
+            predicates: true
 
   alias ocean_order source
+
+  scope :match_from_engine, -> { where(snapshot_type: :match_from_engine) }
 
   def fee
     return 0 unless decrypted_snapshot_type == 'match_from_engine'

@@ -62,6 +62,8 @@ class OceanOrder < ApplicationRecord
   validates :quote_asset_id, presence: true
   validates :trace_id, presence: true
 
+  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
+
   aasm column: :state do
     state :drafted, initial: true
     state :paid

@@ -11,7 +11,7 @@ module Resolvers
     type Types::MixinTransferType.connection_type, null: false
 
     def resolve(**params)
-      transfers = 
+      transfers =
         if params[:ocean_order_id].present?
           MixinTransfer.where(source_id: params[:ocean_order_id], source_type: 'OceanOrder')
         else

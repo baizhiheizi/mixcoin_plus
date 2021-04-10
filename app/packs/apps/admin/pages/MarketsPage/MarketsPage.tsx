@@ -46,7 +46,7 @@ export default function MarketsPage() {
   return (
     <>
       <PageHeader
-        title='Message Manage'
+        title='Market Manage'
         extra={[
           <Button key='refresh' type='primary' onClick={() => refetch()}>
             Refresh

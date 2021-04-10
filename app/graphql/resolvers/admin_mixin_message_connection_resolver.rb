@@ -7,7 +7,7 @@ module Resolvers
     type Types::MixinMessageType.connection_type, null: false
 
     def resolve(*)
-      MixinMessage.all
+      MixinMessage.all.order(created_at: :desc)
     end
   end
 end

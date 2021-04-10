@@ -1,0 +1,11 @@
+query AdminAppStatistic($scope: String) {
+  adminAppStatistic(scope: $scope) {
+    usersCount
+    validOrdersCount
+    marketsCount
+    matchTotalUsd
+    feeTotalUsd
+    invitationCommissionTotalUsd
+    groupOwnerCommissionTotalUsd
+  }
+}

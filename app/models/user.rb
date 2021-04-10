@@ -54,6 +54,8 @@ class User < ApplicationRecord
 
   delegate :access_token, to: :mixin_authorization
 
+  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
+
   action_store :favorite, :market
 
   def mixin_assets

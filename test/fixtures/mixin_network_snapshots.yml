@@ -4,6 +4,7 @@
 #
 #  id             :uuid             not null, primary key
 #  amount         :decimal(, )
+#  amount_usd     :decimal(, )      default(0.0)
 #  data           :string
 #  processed_at   :datetime
 #  raw            :json

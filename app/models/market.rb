@@ -43,6 +43,7 @@ class Market < ApplicationRecord
   default_scope -> { where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID]) }
 
   scope :recommended, -> { where(base_asset_id: [XIN_ASSET_ID, BTC_ASSET_ID], quote_asset_id: [PUSD_ASSET_ID, ERC20_USDT_ASSET_ID, OMNI_USDT_ASSET_ID]) }
+  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
 
   def ocean_market_id
     format('%<base>s-%<quote>s', base: base_asset_id, quote: quote_asset_id)

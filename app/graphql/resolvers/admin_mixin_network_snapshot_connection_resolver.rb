@@ -9,7 +9,7 @@ module Resolvers
     type Types::MixinNetworkSnapshotType.connection_type, null: false
 
     def resolve(**params)
-      snapshots = 
+      snapshots =
         if params[:ocean_order_id].present?
           OceanSnapshot.where(source_id: params[:ocean_order_id])
         else

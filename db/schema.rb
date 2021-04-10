@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_04_124028) do
+ActiveRecord::Schema.define(version: 2021_04_09_223733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2021_04_04_124028) do
     t.datetime "processed_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.decimal "amount_usd", default: "0.0"
     t.index ["source_id", "source_type"], name: "index_mixin_network_snapshots_on_source_id_and_source_type"
     t.index ["trace_id"], name: "index_mixin_network_snapshots_on_trace_id", unique: true
     t.index ["user_id"], name: "index_mixin_network_snapshots_on_user_id"
@@ -151,6 +152,7 @@ ActiveRecord::Schema.define(version: 2021_04_04_124028) do
     t.string "priority"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.decimal "amount_usd", default: "0.0"
     t.index ["source_id", "source_type"], name: "index_mixin_transfers_on_source_id_and_source_type"
     t.index ["trace_id"], name: "index_mixin_transfers_on_trace_id", unique: true
     t.index ["user_id"], name: "index_mixin_transfers_on_user_id"

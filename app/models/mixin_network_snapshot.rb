@@ -6,6 +6,7 @@
 #
 #  id             :uuid             not null, primary key
 #  amount         :decimal(, )
+#  amount_usd     :decimal(, )      default(0.0)
 #  data           :string
 #  processed_at   :datetime
 #  raw            :json
@@ -50,6 +51,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   scope :unprocessed, -> { where(processed_at: nil) }
   scope :only_input, -> { where(amount: 0...) }
   scope :only_output, -> { where(amount: ...0) }
+  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
 
   # polling Mixin Network
   # should be called in a event machine
@@ -93,7 +95,10 @@ class MixinNetworkSnapshot < ApplicationRecord
   end
 
   def touch_proccessed_at
-    update processed_at: Time.current
+    update(
+      processed_at: Time.current,
+      amount_usd: asset.price_usd.to_f * amount
+    )
   end
 
   def process_async

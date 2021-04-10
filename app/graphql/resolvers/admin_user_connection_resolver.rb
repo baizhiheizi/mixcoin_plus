@@ -7,7 +7,7 @@ module Resolvers
     type Types::UserType.connection_type, null: false
 
     def resolve(*)
-      User.all
+      User.all.order(created_at: :desc)
     end
   end
 end
