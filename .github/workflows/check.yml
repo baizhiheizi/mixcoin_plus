@@ -74,6 +74,6 @@ jobs:
         env:
           RAILS_ENV: test
         run: |
-          bundle exec rails db:create
-          bundle exec rails db:migrate
-          bundle exec rails test
+          bin/rails db:create
+          bin/rails db:migrate
+          bin/rails test
