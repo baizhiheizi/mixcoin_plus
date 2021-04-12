@@ -156,6 +156,13 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (1.0.1)
     method_source (1.0.0)
+    mina (1.2.3)
+      open4 (~> 1.3.4)
+      rake
+    mina-logs (1.1.0)
+      mina (>= 1.0.2)
+    mina-multistage (1.0.3)
+      mina (~> 1.0)
     mini_mime (1.0.3)
     mini_racer (0.3.1)
       libv8 (~> 8.4.255)
@@ -180,6 +187,7 @@ GEM
     noticed (1.3.2)
       http (>= 4.0.0)
       rails (>= 6.0.0)
+    open4 (1.3.4)
     parallel (1.20.1)
     parser (3.0.1.0)
       ast (~> 2.4.1)
@@ -329,6 +337,9 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   jwt
   listen (~> 3.3)
+  mina (~> 1.2.2)
+  mina-logs (~> 1.1.0)
+  mina-multistage (~> 1.0.3)
   mini_racer
   mixin_bot
   noticed
