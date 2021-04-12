@@ -3,11 +3,11 @@ name: Check
 on:
   push:
     branches-ignore:
-      - 'master'
+      - 'main'
       - 'build'
   pull_request:
     branches:
-      - 'master'
+      - 'main'
 
 jobs:
   Check:
