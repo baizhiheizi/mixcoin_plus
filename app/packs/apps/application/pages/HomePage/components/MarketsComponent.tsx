@@ -41,13 +41,15 @@ export function MarketsComponent(props: { type: string }) {
       />
       {!currentUser && (
         <Message size='lg' theme='warning'>
-          {t('connect_wallet_to_exhange')}
-          <a
-            className='mx-1 font-semibold'
-            onClick={() => location.replace('/login')}
-          >
-            {t('connect_wallet')}
-          </a>
+          <div>
+            <span>{t('connect_wallet_to_exhange')}</span>
+            <a
+              className='mx-1 font-semibold'
+              onClick={() => location.replace('/login')}
+            >
+              {t('connect_wallet')}
+            </a>
+          </div>
         </Message>
       )}
       <PullComponent
