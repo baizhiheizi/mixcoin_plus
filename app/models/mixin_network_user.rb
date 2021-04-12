@@ -80,7 +80,7 @@ class MixinNetworkUser < ApplicationRecord
 
   def update_avatar
     img = File.open DEFAULT_AVATAR_FILE
-    r = mixin_api.update_me full_name: 'Mixcoin Plus', avatar_base64: Base64.strict_encode64(img.read)
+    r = mixin_api.update_me full_name: 'Mixcoin', avatar_base64: Base64.strict_encode64(img.read)
     update raw: r['data'] if r['data'].present?
   ensure
     img.close
@@ -95,7 +95,7 @@ class MixinNetworkUser < ApplicationRecord
   def setup_attributes
     return unless new_record?
 
-    r = MixcoinPlusBot.api.create_user(name || 'Mixcoin+', key_type: 'Ed25519')
+    r = MixcoinPlusBot.api.create_user(name || 'Mixcoin', key_type: 'Ed25519')
 
     self.raw = r['data']
 
