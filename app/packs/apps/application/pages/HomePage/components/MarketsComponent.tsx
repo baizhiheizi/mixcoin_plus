@@ -8,29 +8,11 @@ import { useHistory } from 'react-router';
 import { ActivityIndicator, Message, SearchBar } from 'zarm';
 
 export function MarketsComponent(props: { type: string }) {
-  const history = useHistory();
-  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, { wait: 500 });
-  const { loading, data, refetch, fetchMore } = useMarketConnectionQuery({
-    variables: { type: props.type, query: debouncedQuery },
-  });
 
-  if (loading) {
-    return (
-      <div className='flex items-center justify-center h-screen'>
-        <ActivityIndicator size='lg' />
-      </div>
-    );
-  }
-
-  const {
-    marketConnection: {
-      nodes: markets,
-      pageInfo: { hasNextPage, endCursor },
-    },
-  } = data;
   return (
     <>
       <SearchBar
@@ -52,6 +34,35 @@ export function MarketsComponent(props: { type: string }) {
           </div>
         </Message>
       )}
+      <MarketsListComponent type={props.type} query={debouncedQuery} />
+    </>
+  );
+}
+
+function MarketsListComponent(props: { type: string; query?: string }) {
+  const history = useHistory();
+  const { t } = useTranslation();
+  const { type, query } = props;
+  const { loading, data, refetch, fetchMore } = useMarketConnectionQuery({
+    variables: { type, query },
+  });
+
+  if (loading) {
+    return (
+      <div className='flex items-center justify-center h-18'>
+        <ActivityIndicator size='lg' />
+      </div>
+    );
+  }
+
+  const {
+    marketConnection: {
+      nodes: markets,
+      pageInfo: { hasNextPage, endCursor },
+    },
+  } = data;
+  return (
+    <>
       <PullComponent
         refetch={refetch}
         fetchMore={() => fetchMore({ variables: { after: endCursor } })}
