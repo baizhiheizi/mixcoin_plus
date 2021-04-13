@@ -183,6 +183,7 @@ export default function BookComponent(props: {
         </div>
         {book.asks.length > 0 ? (
           book.asks
+            .reverse()
             .slice(0, 10)
             .reverse()
             .map((ask, index) => (
