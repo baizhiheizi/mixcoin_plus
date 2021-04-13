@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   match '/auth/mixin/callback', to: 'sessions#create', via: %i[get post]
   get 'logout', to: 'sessions#delete', as: :logout
 
+  # health check for render.com
+  get 'healthz', to: 'healthz#index', as: :healthz
+
   root to: 'home#index'
 
   namespace :admin do

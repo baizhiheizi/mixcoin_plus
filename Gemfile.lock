@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/webpacker.git
-  revision: c2ce3d5aa0149bc1e176c9a18f231b8bf367ef91
+  revision: 7ed1c08e79c17680636fa99e6bb095ec1fbc8008
   specs:
     webpacker (6.0.0.beta.6)
       activesupport (>= 5.2)
@@ -101,7 +101,7 @@ GEM
     childprocess (3.0.0)
     cli-ui (1.4.0)
     concurrent-ruby (1.1.8)
-    connection_pool (2.2.3)
+    connection_pool (2.2.4)
     crass (1.0.6)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -124,7 +124,7 @@ GEM
       raabro (~> 1.4)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    graphql (1.12.7)
+    graphql (1.12.8)
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
     http (4.4.1)
@@ -144,8 +144,8 @@ GEM
     jose (1.1.3)
       hamster
     jwt (2.2.2)
-    libv8 (8.4.255.0-x86_64-darwin-20)
-    libv8 (8.4.255.0-x86_64-linux)
+    libv8-node (15.14.0.0-x86_64-darwin-20)
+    libv8-node (15.14.0.0-x86_64-linux)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -164,8 +164,8 @@ GEM
     mina-multistage (1.0.3)
       mina (~> 1.0)
     mini_mime (1.0.3)
-    mini_racer (0.3.1)
-      libv8 (~> 8.4.255)
+    mini_racer (0.4.0)
+      libv8-node (~> 15.14.0.0)
     minitest (5.14.4)
     mixin_bot (0.3.12)
       awesome_print (~> 1.8)
