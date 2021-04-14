@@ -30,10 +30,10 @@
 #  index_ocean_orders_on_market_id  (market_id)
 #
 class OceanOrder < ApplicationRecord
-  MAKER_FEE = 0.01
-  TAKER_FEE = 0.0
-  INVITATION_COMMISSION = 0.5
-  GROUP_OWNER_COMMISSION = 0.5
+  MAKER_FEE_RATIO = 0.001
+  TAKER_FEE_RATIO = 0.0
+  INVITATION_COMMISSION_RATIO = 0.5
+  GROUP_OWNER_COMMISSION_RATIO = 0.5
 
   extend Enumerize
   include AASM
@@ -208,17 +208,17 @@ class OceanOrder < ApplicationRecord
     )
   end
 
-  def invitation_commission
-    if group_owner_commission.zero? && user.invitor.present?
-      INVITATION_COMMISSION
+  def invitation_commission_ratio
+    if group_owner_commission_ratio.zero? && user.invitor.present?
+      INVITATION_COMMISSION_RATIO
     else
       0
     end
   end
 
-  def group_owner_commission
+  def group_owner_commission_ratio
     if conversation&.group? && conversation&.creator != user
-      GROUP_OWNER_COMMISSION
+      GROUP_OWNER_COMMISSION_RATIO
     else
       0
     end
@@ -236,8 +236,8 @@ class OceanOrder < ApplicationRecord
       quote_asset_id: market.quote_asset_id,
       filled_amount: 0.0,
       filled_funds: 0.0,
-      maker_fee: MAKER_FEE,
-      taker_fee: TAKER_FEE
+      maker_fee: MAKER_FEE_RATIO,
+      taker_fee: TAKER_FEE_RATIO
     )
   end
 

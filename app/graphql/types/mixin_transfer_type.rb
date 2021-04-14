@@ -5,7 +5,7 @@ module Types
     field :id, ID, null: false
     field :transfer_type, String, null: true
     field :trace_id, String, null: false
-    field :snapshot_id, String, null: false
+    field :snapshot_id, String, null: true
     field :asset_id, String, null: false
     field :user_id, String, null: false
     field :opponent_id, String, null: true

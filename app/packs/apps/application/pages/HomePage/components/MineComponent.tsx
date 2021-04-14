@@ -57,7 +57,7 @@ export default function MineComponent() {
           onClick={() =>
             shareMixinAppCard({
               data: {
-                action: location.origin,
+                action: `${location.href}?invite_code=${currentUser.inviteCode}`,
                 app_id: appId,
                 description: t('exchange_any_asset'),
                 icon_url: appIconUrl,

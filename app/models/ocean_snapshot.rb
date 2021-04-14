@@ -42,15 +42,24 @@ class OceanSnapshot < MixinNetworkSnapshot
 
   scope :match_from_engine, -> { where(snapshot_type: :match_from_engine) }
 
-  def fee
+  def ocean_fee
     return 0 unless decrypted_snapshot_type == 'match_from_engine'
 
-    ocean_fee = decrypted_memo['F'].to_f
+    decrypted_memo['F'].to_f
+  end
+
+  def extra_fee
+    return 0 unless decrypted_snapshot_type == 'match_from_engine'
+
     if ocean_fee.positive?
-      (OceanOrder::TAKER_FEE * amount).round(8) + ocean_fee
+      (OceanOrder::TAKER_FEE_RATIO * amount).round(8)
     else
-      (OceanOrder::MAKER_FEE * amount).round(8)
+      (OceanOrder::MAKER_FEE_RATIO * amount).round(8)
     end
+  end
+
+  def fee
+    ocean_fee + extra_fee
   end
 
   def process_match_from_engine
@@ -59,9 +68,9 @@ class OceanSnapshot < MixinNetworkSnapshot
     _ocean_order = decrypted_ocean_order
     raise 'Not from order broker' unless _ocean_order&.broker&.mixin_uuid == user_id
 
-    group_owner_commission_amount = (_ocean_order.group_owner_commission * fee).floor(8)
-    invitation_commission_amount = (_ocean_order.invitation_commission * fee).floor(8)
-    mixcoin_fee_amount = fee - group_owner_commission_amount - invitation_commission_amount
+    group_owner_commission_amount = (_ocean_order.group_owner_commission_ratio * extra_fee).floor(8)
+    invitation_commission_amount = (_ocean_order.invitation_commission_ratio * extra_fee).floor(8)
+    mixcoin_fee_amount = extra_fee - group_owner_commission_amount - invitation_commission_amount
     _amount = amount - group_owner_commission_amount - invitation_commission_amount - mixcoin_fee_amount
 
     # Group Owner Commission

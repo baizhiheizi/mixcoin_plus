@@ -40,6 +40,16 @@ export default function UserPage() {
             {user.name}
           </Space>
         </Descriptions.Item>
+        <Descriptions.Item label='Invitor'>
+          {user.invitor ? (
+            <Space>
+              <Avatar src={user.invitor.avatar} />
+              {user.invitor.name} ({user.invitor.mixinId})
+            </Space>
+          ) : (
+            '-'
+          )}
+        </Descriptions.Item>
         <Descriptions.Item label='Created At'>
           {user.createdAt}
         </Descriptions.Item>

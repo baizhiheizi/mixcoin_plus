@@ -263,7 +263,7 @@ export type MixinTransfer = {
   opponentId?: Maybe<Scalars['String']>;
   processedAt?: Maybe<Scalars['ISO8601DateTime']>;
   recipient?: Maybe<User>;
-  snapshotId: Scalars['String'];
+  snapshotId?: Maybe<Scalars['String']>;
   traceId: Scalars['String'];
   transferType?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
@@ -886,6 +886,9 @@ export type AdminUserQuery = (
     & { oceanBroker?: Maybe<(
       { __typename?: 'MixinNetworkUser' }
       & Pick<MixinNetworkUser, 'mixinUuid'>
+    )>, invitor?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'name' | 'avatar' | 'mixinId'>
     )> }
   ) }
 );
@@ -1780,6 +1783,11 @@ export const AdminUserDocument = gql`
     mixinUuid
     oceanBroker {
       mixinUuid
+    }
+    invitor {
+      name
+      avatar
+      mixinId
     }
     createdAt
   }

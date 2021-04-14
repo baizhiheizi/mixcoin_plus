@@ -8,6 +8,11 @@ query AdminUser($id: ID!) {
     oceanBroker {
       mixinUuid
     }
+    invitor {
+      name
+      avatar
+      mixinId
+    }
     createdAt
   }
 }
