@@ -59,6 +59,7 @@ export default function MixinMessagesPage() {
     {
       dataIndex: 'content',
       key: 'content',
+      render: (text) => <span className='max-w-md line-clamp-3'>{text}</span>,
       title: 'content',
     },
     {

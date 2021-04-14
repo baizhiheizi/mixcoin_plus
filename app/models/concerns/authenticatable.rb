@@ -27,7 +27,7 @@ module Authenticatable
       if auth.user.present?
         user = auth.user
       else
-        user = create mixin_authorization: auth
+        user = create_with(mixin_authorization: auth).find_or_create_by(mixin_uuid: res['data'].fetch('user_id'))
         auth.update user: user
       end
 
