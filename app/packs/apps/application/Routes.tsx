@@ -11,6 +11,7 @@ import CommissionPage from './pages/CommissionPage/CommissionPage';
 import ExchangePage from './pages/ExchangePage/ExchangePage';
 import HomePage from './pages/HomePage/HomePage';
 import WalletPage from './pages/WalletPage/WalletPage';
+import LazyLoad from 'react-lazyload';
 const MarketPage = React.lazy(() => import('./pages/MarketPage/MarketPage'));
 const SnapshotsPage = React.lazy(
   () => import('./pages/SnapshotsPage/SnapshotsPage'),
@@ -54,28 +55,44 @@ export default function Routes() {
       <Suspense fallback={<LoaderComponent />}>
         <Switch>
           <Route path='/' exact>
-            <HomePage />
+            <LazyLoad>
+              <HomePage />
+            </LazyLoad>
           </Route>
           <Route path='/exchange' exact>
-            <ExchangePage />
+            <LazyLoad>
+              <ExchangePage />
+            </LazyLoad>
           </Route>
           <Route path='/wallet' exact>
-            <WalletPage />
+            <LazyLoad>
+              <WalletPage />
+            </LazyLoad>
           </Route>
           <Route path='/markets/:marketId' exact>
-            <MarketPage />
+            <LazyLoad>
+              <MarketPage />
+            </LazyLoad>
           </Route>
           <Route path='/orders' exact>
-            <OrdersPage />
+            <LazyLoad>
+              <OrdersPage />
+            </LazyLoad>
           </Route>
           <Route path='/snapshots/:assetId' exact>
-            <SnapshotsPage />
+            <LazyLoad>
+              <SnapshotsPage />
+            </LazyLoad>
           </Route>
           <Route path='/deprecated_orders' exact>
-            <DeprecatedOrdersPage />
+            <LazyLoad>
+              <DeprecatedOrdersPage />
+            </LazyLoad>
           </Route>
           <Route path='/commission' exact>
-            <CommissionPage />
+            <LazyLoad>
+              <CommissionPage />
+            </LazyLoad>
           </Route>
         </Switch>
       </Suspense>

@@ -50,6 +50,7 @@
     "react-dom": "^17.0.2",
     "react-feather": "^2.0.9",
     "react-i18next": "^11.8.13",
+    "react-lazyload": "^3.2.0",
     "react-on-rails": "12.2.0",
     "react-router-dom": "^5.2.0",
     "react-use-websocket": "^2.5.0",
