@@ -2,6 +2,7 @@ import { Button, Result } from 'antd';
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import BalancePage from './pages/BalancePage/BalancePage';
+import InvitationsPage from './pages/InvitationsPage/InvitationsPage';
 import MarketsPage from './pages/MarketsPage/MarketsPage';
 import MixinConversationPage from './pages/MixinConversationPage/MixinConversationPage';
 import MixinConversationsPage from './pages/MixinConversationsPage/MixinConversationsPage';
@@ -46,6 +47,9 @@ export default function Routes() {
       </Route>
       <Route path='/users' exact>
         <UsersPage />
+      </Route>
+      <Route path='/invitations' exact>
+        <InvitationsPage />
       </Route>
       <Route path='/users/:id' exact>
         <UserPage />

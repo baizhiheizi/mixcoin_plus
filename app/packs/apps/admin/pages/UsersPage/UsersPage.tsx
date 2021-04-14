@@ -1,14 +1,19 @@
-import { Button, PageHeader, Space, Table } from 'antd';
+import { useDebounce } from 'ahooks';
+import { Button, Input, PageHeader, Space, Table } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
 import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import { useAdminUserConnectionQuery, User } from 'graphqlTypes';
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 
 export default function UsersPage() {
-  const { loading, data, refetch, fetchMore } = useAdminUserConnectionQuery();
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, { wait: 500 });
   const history = useHistory();
+  const { loading, data, refetch, fetchMore } = useAdminUserConnectionQuery({
+    variables: { query: debouncedQuery },
+  });
 
   if (loading) {
     return <LoadingComponent />;
@@ -39,6 +44,11 @@ export default function UsersPage() {
       title: 'Name',
     },
     {
+      dataIndex: 'invitationsCount',
+      key: 'invitationsCount',
+      title: 'Invitations Count',
+    },
+    {
       dataIndex: 'createdAt',
       key: 'createdAt',
       title: 'createdAt',
@@ -55,14 +65,18 @@ export default function UsersPage() {
 
   return (
     <>
-      <PageHeader
-        title='Users Manage'
-        extra={[
-          <Button key='refresh' type='primary' onClick={() => refetch()}>
-            Refresh
-          </Button>,
-        ]}
-      />
+      <PageHeader title='Users Manage' />
+      <div className='flex justify-between mb-4'>
+        <Input
+          className='w-36'
+          placeholder='User name/mixin ID'
+          value={query}
+          onChange={(e) => setQuery(e.currentTarget.value)}
+        />
+        <Button key='refresh' type='primary' onClick={() => refetch()}>
+          Refresh
+        </Button>
+      </div>
       <Table
         scroll={{ x: true }}
         columns={columns}

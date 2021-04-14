@@ -1,4 +1,5 @@
 import { Avatar, Button, Descriptions, PageHeader, Space, Tabs } from 'antd';
+import InvitationsComponent from 'apps/admin/components/InvitationsComponent/InvitationsComponent';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import MixinTransfersComponent from 'apps/admin/components/MixinTransfersComponent/MixinTransfersComponent';
 import OceanOrdersComponent from 'apps/admin/components/OceanOrdersComponent/OceanOrdersComponent';
@@ -50,6 +51,9 @@ export default function UserPage() {
             '-'
           )}
         </Descriptions.Item>
+        <Descriptions.Item label='Invitations Count'>
+          {user.invitationsCount}
+        </Descriptions.Item>
         <Descriptions.Item label='Created At'>
           {user.createdAt}
         </Descriptions.Item>
@@ -66,6 +70,9 @@ export default function UserPage() {
         </Tabs.TabPane>
         <Tabs.TabPane tab='Broker Transfers' key='transfers'>
           <MixinTransfersComponent userId={user.oceanBroker.mixinUuid} />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab='Invitations' key='invitations'>
+          <InvitationsComponent invitorId={user.id} />
         </Tabs.TabPane>
       </Tabs>
     </>

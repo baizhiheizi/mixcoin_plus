@@ -4,8 +4,9 @@ import {
   DollarOutlined,
   LogoutOutlined,
   MessageOutlined,
-  PayCircleOutlined,
   MoneyCollectOutlined,
+  PayCircleOutlined,
+  ShareAltOutlined,
   SyncOutlined,
   UsergroupAddOutlined,
   UserOutlined,
@@ -28,6 +29,12 @@ export default function Menus() {
         <Link to='/users'>
           <UserOutlined />
           <span>Users</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to='/invitations'>
+          <ShareAltOutlined />
+          <span>Invitations</span>
         </Link>
       </Menu.Item>
       <Menu.Item>

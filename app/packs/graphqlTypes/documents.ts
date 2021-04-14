@@ -84,6 +84,37 @@ export type GenerateCancelDeprecatedOceanOrderPayUrlMutationInput = {
 };
 
 
+export type Invitation = {
+  __typename?: 'Invitation';
+  createdAt: Scalars['ISO8601DateTime'];
+  id: Scalars['ID'];
+  invitee: User;
+  inviteeId: Scalars['String'];
+  invitor: User;
+  invitorId: Scalars['String'];
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
+/** The connection type for Invitation. */
+export type InvitationConnection = {
+  __typename?: 'InvitationConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<InvitationEdge>>>;
+  /** A list of nodes. */
+  nodes?: Maybe<Array<Maybe<Invitation>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type InvitationEdge = {
+  __typename?: 'InvitationEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Invitation>;
+};
+
 export type Market = {
   __typename?: 'Market';
   baseAsset: MixinAsset;
@@ -406,6 +437,7 @@ export type PageInfo = {
 export type Query = {
   __typename?: 'Query';
   adminAppStatistic: AppStatistic;
+  adminInvitationConnection: InvitationConnection;
   adminMarketConnection: MarketConnection;
   adminMixinConversation: MixinConversation;
   adminMixinConversationConnection: MixinConversationConnection;
@@ -429,6 +461,15 @@ export type Query = {
 
 export type QueryAdminAppStatisticArgs = {
   scope?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryAdminInvitationConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  invitorId?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 
@@ -507,6 +548,7 @@ export type QueryAdminUserArgs = {
 
 export type QueryAdminUserConnectionArgs = {
   after?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
@@ -640,6 +682,33 @@ export type AdminAppStatisticQuery = (
   & { adminAppStatistic: (
     { __typename?: 'AppStatistic' }
     & Pick<AppStatistic, 'usersCount' | 'validOrdersCount' | 'marketsCount' | 'matchTotalUsd' | 'feeTotalUsd' | 'invitationCommissionTotalUsd' | 'groupOwnerCommissionTotalUsd'>
+  ) }
+);
+
+export type AdminInvitationConnectionQueryVariables = Exact<{
+  after?: Maybe<Scalars['String']>;
+  invitorId?: Maybe<Scalars['String']>;
+}>;
+
+
+export type AdminInvitationConnectionQuery = (
+  { __typename?: 'Query' }
+  & { adminInvitationConnection: (
+    { __typename?: 'InvitationConnection' }
+    & { nodes?: Maybe<Array<Maybe<(
+      { __typename?: 'Invitation' }
+      & Pick<Invitation, 'id' | 'createdAt'>
+      & { invitor: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid'>
+      ), invitee: (
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid'>
+      ) }
+    )>>>, pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ) }
   ) }
 );
 
@@ -856,6 +925,7 @@ export type AdminOceanOrderQuery = (
 
 export type AdminUserConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -865,7 +935,7 @@ export type AdminUserConnectionQuery = (
     { __typename?: 'UserConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid' | 'createdAt'>
+      & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid' | 'invitationsCount' | 'createdAt'>
     )>>>, pageInfo: (
       { __typename?: 'PageInfo' }
       & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
@@ -882,7 +952,7 @@ export type AdminUserQuery = (
   { __typename?: 'Query' }
   & { adminUser: (
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid' | 'createdAt'>
+    & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid' | 'invitationsCount' | 'createdAt'>
     & { oceanBroker?: Maybe<(
       { __typename?: 'MixinNetworkUser' }
       & Pick<MixinNetworkUser, 'mixinUuid'>
@@ -1230,6 +1300,63 @@ export function useAdminAppStatisticLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type AdminAppStatisticQueryHookResult = ReturnType<typeof useAdminAppStatisticQuery>;
 export type AdminAppStatisticLazyQueryHookResult = ReturnType<typeof useAdminAppStatisticLazyQuery>;
 export type AdminAppStatisticQueryResult = Apollo.QueryResult<AdminAppStatisticQuery, AdminAppStatisticQueryVariables>;
+export const AdminInvitationConnectionDocument = gql`
+    query AdminInvitationConnection($after: String, $invitorId: String) {
+  adminInvitationConnection(after: $after, invitorId: $invitorId) {
+    nodes {
+      id
+      invitor {
+        id
+        name
+        avatar
+        mixinId
+        mixinUuid
+      }
+      invitee {
+        id
+        name
+        avatar
+        mixinId
+        mixinUuid
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminInvitationConnectionQuery__
+ *
+ * To run a query within a React component, call `useAdminInvitationConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminInvitationConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminInvitationConnectionQuery({
+ *   variables: {
+ *      after: // value for 'after'
+ *      invitorId: // value for 'invitorId'
+ *   },
+ * });
+ */
+export function useAdminInvitationConnectionQuery(baseOptions?: Apollo.QueryHookOptions<AdminInvitationConnectionQuery, AdminInvitationConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminInvitationConnectionQuery, AdminInvitationConnectionQueryVariables>(AdminInvitationConnectionDocument, options);
+      }
+export function useAdminInvitationConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminInvitationConnectionQuery, AdminInvitationConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminInvitationConnectionQuery, AdminInvitationConnectionQueryVariables>(AdminInvitationConnectionDocument, options);
+        }
+export type AdminInvitationConnectionQueryHookResult = ReturnType<typeof useAdminInvitationConnectionQuery>;
+export type AdminInvitationConnectionLazyQueryHookResult = ReturnType<typeof useAdminInvitationConnectionLazyQuery>;
+export type AdminInvitationConnectionQueryResult = Apollo.QueryResult<AdminInvitationConnectionQuery, AdminInvitationConnectionQueryVariables>;
 export const AdminMarketConnectionDocument = gql`
     query AdminMarketConnection($after: String) {
   adminMarketConnection(after: $after) {
@@ -1728,14 +1855,15 @@ export type AdminOceanOrderQueryHookResult = ReturnType<typeof useAdminOceanOrde
 export type AdminOceanOrderLazyQueryHookResult = ReturnType<typeof useAdminOceanOrderLazyQuery>;
 export type AdminOceanOrderQueryResult = Apollo.QueryResult<AdminOceanOrderQuery, AdminOceanOrderQueryVariables>;
 export const AdminUserConnectionDocument = gql`
-    query AdminUserConnection($after: String) {
-  adminUserConnection(after: $after) {
+    query AdminUserConnection($after: String, $query: String) {
+  adminUserConnection(after: $after, query: $query) {
     nodes {
       id
       name
       avatar
       mixinId
       mixinUuid
+      invitationsCount
       createdAt
     }
     pageInfo {
@@ -1759,6 +1887,7 @@ export const AdminUserConnectionDocument = gql`
  * const { data, loading, error } = useAdminUserConnectionQuery({
  *   variables: {
  *      after: // value for 'after'
+ *      query: // value for 'query'
  *   },
  * });
  */
@@ -1781,6 +1910,7 @@ export const AdminUserDocument = gql`
     avatar
     mixinId
     mixinUuid
+    invitationsCount
     oceanBroker {
       mixinUuid
     }

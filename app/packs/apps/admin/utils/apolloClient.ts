@@ -29,7 +29,10 @@ export const apolloClient = (uri: string) => {
     typePolicies: {
       Query: {
         fields: {
-          adminUserConnection: customizedConnectionMergeFunction(),
+          adminInvitationConnection: customizedConnectionMergeFunction([
+            'invitorId',
+          ]),
+          adminUserConnection: customizedConnectionMergeFunction(['query']),
           adminMarketConnection: customizedConnectionMergeFunction(),
           adminOceanOrderConnection: customizedConnectionMergeFunction([
             'conversationId',

@@ -1,11 +1,12 @@
-query AdminUserConnection($after: String) {
-  adminUserConnection(after: $after) {
+query AdminUserConnection($after: String, $query: String) {
+  adminUserConnection(after: $after, query: $query) {
     nodes {
       id
       name
       avatar
       mixinId
       mixinUuid
+      invitationsCount
       createdAt
     }
     pageInfo {

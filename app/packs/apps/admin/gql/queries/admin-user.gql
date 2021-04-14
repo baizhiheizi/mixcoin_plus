@@ -5,6 +5,7 @@ query AdminUser($id: ID!) {
     avatar
     mixinId
     mixinUuid
+    invitationsCount
     oceanBroker {
       mixinUuid
     }

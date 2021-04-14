@@ -9,6 +9,7 @@ module Types
     field :current_admin, resolver: Resolvers::CurrentAdminResolver
     field :admin_user, resolver: Resolvers::AdminUserResolver
     field :admin_user_connection, resolver: Resolvers::AdminUserConnectionResolver
+    field :admin_invitation_connection, resolver: Resolvers::AdminInvitationConnectionResolver
     field :admin_mixin_message_connection, resolver: Resolvers::AdminMixinMessageConnectionResolver
     field :admin_mixin_network_snapshot_connection, resolver: Resolvers::AdminMixinNetworkSnapshotConnectionResolver
     field :admin_ocean_order, resolver: Resolvers::AdminOceanOrderResolver

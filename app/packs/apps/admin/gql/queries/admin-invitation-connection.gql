@@ -1,0 +1,26 @@
+query AdminInvitationConnection($after: String, $invitorId: String) {
+  adminInvitationConnection(after: $after, invitorId: $invitorId) {
+    nodes {
+      id
+      invitor {
+        id
+        name
+        avatar
+        mixinId
+        mixinUuid
+      }
+      invitee {
+        id
+        name
+        avatar
+        mixinId
+        mixinUuid
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
