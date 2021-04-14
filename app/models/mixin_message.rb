@@ -139,17 +139,17 @@ class MixinMessage < ApplicationRecord
     return if m.blank?
 
     mention_id = m[0].gsub('@', '')
-    recipient = User.find_by mixin_id: mention_id
-    recipient ||= MixcoinPlusBot.api.search_user(mention_id)['user_id']
-    return if recipient.blank?
+    recipient_id = User.find_by(mixin_id: mention_id)&.mixin_uuid
+    recipient_id ||= MixcoinPlusBot.api.search_user(mention_id)['user_id']
+    return if recipient_id.blank?
 
     msg =
       MixcoinPlusBot.api.base_message_params(
         category: category,
         data: content.gsub(/@\d+/, '').strip,
-        recipient_id: recipient.mixin_uuid,
-        conversation_id: MixcoinPlusBot.api.unique_uuid(recipient.mixin_uuid),
-        message_id: MixcoinPlusBot.api.unique_uuid(message_id, recipient.mixin_uuid)
+        recipient_id: recipient_id,
+        conversation_id: MixcoinPlusBot.api.unique_uuid(recipient_id),
+        message_id: MixcoinPlusBot.api.unique_uuid(message_id, recipient_id)
       )
 
     SendMixinMessageWorker.perform_async msg
