@@ -76,7 +76,7 @@ export default function HeaderComponent(props: {
         <div className='ml-auto text-right'>
           <div
             className={`${
-              ticker?.side === 'ASK' ? 'text-green-500' : 'text-red-500'
+              ticker?.side === 'ASK' ? 'text-red-500' : 'text-green-500'
             } font-bold text-xl`}
           >
             {ticker?.price || '-'}

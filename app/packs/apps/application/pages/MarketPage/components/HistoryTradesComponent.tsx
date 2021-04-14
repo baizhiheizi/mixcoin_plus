@@ -30,7 +30,7 @@ export default function HistoryTradesComponent(props: {
             <div className='flex-1 text-left'>{trade.amount}</div>
             <div
               className={`text-center flex-1 ${
-                trade.side === 'ASK' ? 'text-green-500' : 'text-red-500'
+                trade.side === 'ASK' ? 'text-red-500' : 'text-green-500'
               }`}
             >
               {trade.price}

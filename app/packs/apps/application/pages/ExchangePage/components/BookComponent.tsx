@@ -1,9 +1,8 @@
-import { useInterval } from 'ahooks';
-import { fetchTiker, ITick, ITrade, WS_ENDPOINT } from 'apps/application/utils';
+import { ITick, ITrade, WS_ENDPOINT } from 'apps/application/utils';
 import BigNumber from 'bignumber.js';
 import { Market } from 'graphqlTypes';
 import pako from 'pako';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useWebSocket from 'react-use-websocket';
 import { v4 as uuid } from 'uuid';
@@ -157,13 +156,13 @@ export default function BookComponent(props: {
 
   const parseNumber = (str: string) => {
     const number = new BigNumber(str);
-    if (number.isLessThan(1)) {
+    if (number.isLessThan(0.0001)) {
       return number.toFixed(8);
-    } else if (number.isLessThan(10)) {
+    } else if (number.isLessThan(0.01)) {
       return number.toFixed(6);
-    } else if (number.isLessThan(100)) {
+    } else if (number.isLessThan(1)) {
       return number.toFixed(4);
-    } else if (number.isLessThan(10000)) {
+    } else if (number.isLessThan(100)) {
       return number.toFixed(2);
     } else {
       return number.toFixed(0);
@@ -182,11 +181,8 @@ export default function BookComponent(props: {
           </div>
         </div>
         {book.asks.length > 0 ? (
-          book.asks
-            .reverse()
-            .slice(0, 10)
-            .reverse()
-            .map((ask, index) => (
+          <div className='flex flex-col-reverse'>
+            {book.asks.slice(0, 10).map((ask, index) => (
               <div
                 key={index}
                 className='flex items-center justify-between'
@@ -195,12 +191,13 @@ export default function BookComponent(props: {
                   setOrderAmount(new BigNumber(ask.amount).toFixed(8));
                 }}
               >
-                <div className='text-green-500'>{parseNumber(ask.price)}</div>
+                <div className='text-red-500'>{parseNumber(ask.price)}</div>
                 <div className='text-gray-700'>{parseNumber(ask.amount)}</div>
               </div>
-            ))
+            ))}
+          </div>
         ) : connected ? (
-          <div className='text-center text-green-500'>{t('no_ask_order')}</div>
+          <div className='text-center text-red-500'>{t('no_ask_order')}</div>
         ) : (
           <div className='flex p-4'>
             <ActivityIndicator type='spinner' className='m-auto' />
@@ -211,7 +208,7 @@ export default function BookComponent(props: {
         <div className='flex items-center justify-between p-1 mb-2 bg-gray-200'>
           <div
             className={`${
-              ticker?.side === 'ASK' ? 'text-green-500' : 'text-red-500'
+              ticker?.side === 'ASK' ? 'text-red-500' : 'text-green-500'
             } font-bold`}
           >
             {ticker?.price || '-'}
@@ -227,12 +224,12 @@ export default function BookComponent(props: {
                 setOrderAmount(new BigNumber(bid.amount).toFixed(8));
               }}
             >
-              <div className='text-red-500'>{parseNumber(bid.price)}</div>
+              <div className='text-green-500'>{parseNumber(bid.price)}</div>
               <div className='text-gray-700'>{parseNumber(bid.amount)}</div>
             </div>
           ))
         ) : connected ? (
-          <div className='text-center text-red-500'>{t('no_bid_order')}</div>
+          <div className='text-center text-green-500'>{t('no_bid_order')}</div>
         ) : (
           <div className='flex p-4'>
             <ActivityIndicator type='spinner' className='m-auto' />

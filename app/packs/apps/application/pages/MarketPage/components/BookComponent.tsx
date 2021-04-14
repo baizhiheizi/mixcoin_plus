@@ -32,7 +32,7 @@ export default function BookComponent(props: {
       return number.toFixed(6);
     } else if (number.isLessThan(100)) {
       return number.toFixed(4);
-    } else if (number.isLessThan(10000)) {
+    } else if (number.isLessThan(1000000)) {
       return number.toFixed(2);
     } else {
       return number.toFixed(0);
@@ -46,21 +46,17 @@ export default function BookComponent(props: {
           <div>{t('buy_volume')}</div>
           <div>{t('buy_price')}</div>
         </div>
-        {book.asks.length > 0 ? (
-          book.asks
-            .reverse()
-            .slice(0, 20)
-            .reverse()
-            .map((ask, index) => (
-              <div key={index} className='flex items-center justify-between'>
-                <div className='text-gray-500 dark:text-gray-100'>
-                  {parseNumber(ask.amount)}
-                </div>
-                <div className='text-green-500'>{parseNumber(ask.price)}</div>
+        {book.bids.length > 0 ? (
+          book.bids.slice(0, 20).map((bid, index) => (
+            <div key={index} className='flex items-center justify-between'>
+              <div className='text-gray-500 dark:text-gray-100'>
+                {parseNumber(bid.amount)}
               </div>
-            ))
+              <div className='text-green-500'>{parseNumber(bid.price)}</div>
+            </div>
+          ))
         ) : connected ? (
-          <div className='text-center text-green-500'>{t('no_ask_order')}</div>
+          <div className='text-center text-green-500'>{t('no_bid_order')}</div>
         ) : (
           <div className='flex p-4'>
             <ActivityIndicator type='spinner' className='m-auto' />
@@ -72,17 +68,17 @@ export default function BookComponent(props: {
           <div>{t('sell_price')}</div>
           <div>{t('sell_volume')}</div>
         </div>
-        {book.bids.length > 0 ? (
-          book.bids.slice(0, 20).map((bid, index) => (
+        {book.asks.length > 0 ? (
+          book.asks.slice(0, 20).map((ask, index) => (
             <div key={index} className='flex items-center justify-between'>
-              <div className='text-red-500'>{parseNumber(bid.price)}</div>
+              <div className='text-red-500'>{parseNumber(ask.price)}</div>
               <div className='text-gray-500 dark:text-gray-100'>
-                {parseNumber(bid.amount)}
+                {parseNumber(ask.amount)}
               </div>
             </div>
           ))
         ) : connected ? (
-          <div className='text-center text-red-500'>{t('no_bid_order')}</div>
+          <div className='text-center text-red-500'>{t('no_ask_order')}</div>
         ) : (
           <div className='flex p-4'>
             <ActivityIndicator type='spinner' className='m-auto' />

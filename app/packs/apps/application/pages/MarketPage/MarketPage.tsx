@@ -47,7 +47,7 @@ export default function MarketPage() {
   }>({ asks: [], bids: [] });
 
   async function refreshTrades() {
-    if (data?.market) {
+    if (data?.market?.oceanMarketId) {
       const res = await fetchTrades(data?.market?.oceanMarketId);
       if (res?.data?.data) {
         setTrades(res.data.data);
