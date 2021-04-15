@@ -199,17 +199,17 @@ class OceanSnapshot < MixinNetworkSnapshot
 
     # from engine to broker
     # 'O' in memo
-    _init_order_id = raw_to_uuid(decrypted_memo['O'])
+    _init_order_id = decrypted_memo['O']
     @_decrypted_ocean_order ||= OceanOrder.find_by(trace_id: _init_order_id)
 
     # from engine to broker
     # match transfer, 'A' in memo for AskOrderId
-    _ask_order_id = raw_to_uuid(decrypted_memo['A'])
+    _ask_order_id = decrypted_memo['A']
     @_decrypted_ocean_order ||= OceanOrder.find_by(trace_id: _ask_order_id, side: 'ask', quote_asset_id: raw['asset']['asset_id'])
 
     # from engine to broker
     # match transfer, 'B' for 'BidOrderId'
-    _bid_order_id = raw_to_uuid(decrypted_memo['B'])
+    _bid_order_id = decrypted_memo['B']
     @_decrypted_ocean_order ||= OceanOrder.find_by(trace_id: _bid_order_id, side: 'bid', base_asset_id: raw['asset']['asset_id'])
 
     @_decrypted_ocean_order

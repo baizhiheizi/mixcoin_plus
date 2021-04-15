@@ -12,6 +12,7 @@ module Types
     field :opponent_id, String, null: true
     field :amount, Float, null: false
     field :data, String, null: true
+    field :decrypted_memo, String, null: true
     field :processed_at, GraphQL::Types::ISO8601DateTime, null: true
     field :transferred_at, GraphQL::Types::ISO8601DateTime, null: false
 

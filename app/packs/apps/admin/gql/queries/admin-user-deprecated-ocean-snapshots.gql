@@ -1,0 +1,17 @@
+query AdminUserDeprecatedOceanSnapshots($userId: ID!) {
+  adminUserDeprecatedOceanSnapshots(userId: $userId) {
+    traceId
+    snapshotId
+    amount
+    data
+    decryptedMemo
+    opponentId
+    asset {
+      assetId
+      symbol
+      name
+      iconUrl
+    }
+    transferredAt
+  }
+}

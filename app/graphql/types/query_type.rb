@@ -20,6 +20,7 @@ module Types
     field :admin_mixin_conversation, resolver: Resolvers::AdminMixinConversationResolver
     field :admin_mixin_transfer_connection, resolver: Resolvers::AdminMixinTransferConnectionResolver
     field :admin_app_statistic, resolver: Resolvers::AdminAppStatisticResolver
+    field :admin_user_deprecated_ocean_snapshots, resolver: Resolvers::AdminUserDeprecatedOceanSnapshotsResolver
 
     field :market, resolver: Resolvers::MarketResolver
     field :market_connection, resolver: Resolvers::MarketConnectionResolver

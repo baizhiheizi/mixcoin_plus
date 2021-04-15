@@ -110,12 +110,18 @@ class MixinNetworkSnapshot < ApplicationRecord
   end
 
   def decrypted_memo
-    @decrypted_memo =
+    @decrypted_memo ||=
       begin
         MessagePack.unpack base64_decoded_memo
       rescue StandardError
         {}
       end
+
+    @decrypted_memo['A'] = raw_to_uuid(@decrypted_memo['A'])
+    @decrypted_memo['B'] = raw_to_uuid(@decrypted_memo['B'])
+    @decrypted_memo['O'] = raw_to_uuid(@decrypted_memo['O'])
+
+    @decrypted_memo
   end
 
   def raw_to_uuid(raw)
@@ -127,6 +133,9 @@ class MixinNetworkSnapshot < ApplicationRecord
     when Array
       raw = raw.pack('c*')
     end
+
+    return raw if raw == '00000000-0000-0000-0000-000000000000'
+    return raw if raw.match?(/\A[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}\z/i)
 
     raw = raw.unpack1('H*').to_s
     format(

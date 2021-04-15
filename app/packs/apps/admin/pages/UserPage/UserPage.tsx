@@ -3,6 +3,7 @@ import InvitationsComponent from 'apps/admin/components/InvitationsComponent/Inv
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import MixinTransfersComponent from 'apps/admin/components/MixinTransfersComponent/MixinTransfersComponent';
 import OceanOrdersComponent from 'apps/admin/components/OceanOrdersComponent/OceanOrdersComponent';
+import UserDeprecatedOceanSnapshotsComponent from 'apps/admin/components/UserDeprecatedOceanSnapshotsComponent/UserDeprecatedOceanSnapshotsComponent';
 import WalletBalanceComponent from 'apps/admin/components/WalletBalanceComponent/WalletBalanceComponent';
 import { useAdminUserQuery } from 'graphqlTypes';
 import React from 'react';
@@ -73,6 +74,12 @@ export default function UserPage() {
         </Tabs.TabPane>
         <Tabs.TabPane tab='Invitations' key='invitations'>
           <InvitationsComponent invitorId={user.id} />
+        </Tabs.TabPane>
+        <Tabs.TabPane
+          tab='DeprecatedOceanSnapshots'
+          key='deprecatedOceanSnapshots'
+        >
+          <UserDeprecatedOceanSnapshotsComponent userId={user.id} />
         </Tabs.TabPane>
       </Tabs>
     </>
