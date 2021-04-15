@@ -217,7 +217,18 @@ class OceanSnapshot < MixinNetworkSnapshot
 
   def decrypted_snapshot_type
     @_decrypted_snapshot_type ||=
-      if raw['opponent_id'] == OceanBroker::OCEAN_ENGINE_USER_ID
+      if base64_decoded_memo.match?(/^OCEAN/)
+        case base64_decoded_memo.split('|')[1]
+        when 'REFUND', 'CANCEL'
+          'refund_to_user'
+        when 'MATCH'
+          'match_to_user'
+        when 'CREATE'
+          'create_order_from_user'
+        when 'BALANCE'
+          'ocean_broker_balance'
+        end
+      elsif decrypted_memo.present?
         if raw['amount'].to_f.negative?
           # to engine
           return 'ocean_broker_register' if decrypted_memo['U'].present?
@@ -231,17 +242,6 @@ class OceanSnapshot < MixinNetworkSnapshot
           when 'MATCH'
             'match_from_engine'
           end
-        end
-      elsif base64_decoded_memo.match?(/^OCEAN/)
-        case base64_decoded_memo.split('|')[1]
-        when 'REFUND', 'CANCEL'
-          'refund_to_user'
-        when 'MATCH'
-          'match_to_user'
-        when 'CREATE'
-          'create_order_from_user'
-        when 'BALANCE'
-          'ocean_broker_balance'
         end
       end
     @_decrypted_snapshot_type

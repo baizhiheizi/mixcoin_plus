@@ -117,9 +117,11 @@ class MixinNetworkSnapshot < ApplicationRecord
         {}
       end
 
-    @decrypted_memo['A'] = raw_to_uuid(@decrypted_memo['A'])
-    @decrypted_memo['B'] = raw_to_uuid(@decrypted_memo['B'])
-    @decrypted_memo['O'] = raw_to_uuid(@decrypted_memo['O'])
+    if @decrypted_memo.present?
+      @decrypted_memo['A'] = raw_to_uuid(@decrypted_memo['A'])
+      @decrypted_memo['B'] = raw_to_uuid(@decrypted_memo['B'])
+      @decrypted_memo['O'] = raw_to_uuid(@decrypted_memo['O'])
+    end
 
     @decrypted_memo
   end
@@ -166,6 +168,6 @@ class MixinNetworkSnapshot < ApplicationRecord
       trace_id: raw['trace_id']
     )
 
-    self.type = 'OceanSnapshot' if raw['opponent_id'] == OceanBroker::OCEAN_ENGINE_USER_ID || base64_decoded_memo.match?(/^OCEAN/)
+    self.type = 'OceanSnapshot' if decrypted_memo.present? || base64_decoded_memo.match?(/^OCEAN/)
   end
 end
