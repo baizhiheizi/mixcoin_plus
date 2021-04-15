@@ -39,6 +39,11 @@ export default function UserDeprecatedOceanSnapshotsComponent(props: {
       title: 'decryptedMemo',
     },
     {
+      dataIndex: 'data',
+      key: 'data',
+      title: 'data',
+    },
+    {
       dataIndex: 'transferredAt',
       key: 'transferredAt',
       title: 'transferredAt',
