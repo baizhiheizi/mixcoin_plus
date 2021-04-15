@@ -30,7 +30,7 @@ const cache = new InMemoryCache({
       fields: {
         marketConnection: customizedConnectionMergeFunction(['type', 'query']),
         oceanOrderConnection: customizedConnectionMergeFunction([
-          'oceanMarketId',
+          'marketId',
           'filter',
         ]),
         userSnapshots: {
