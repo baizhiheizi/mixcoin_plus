@@ -181,10 +181,10 @@ export default function ActionComponent(props: {
       let quoteMaxPrice = maxPrice;
       if (
         [OMNI_USDT_ASSET_ID, ERC20_USDT_ASSET_ID, PUSD_ASSET_ID].includes(
-          market.quoteAssetId,
+          market.quoteAsset.assetId,
         )
       ) {
-        quoteMaxPrice = maxPrice.times(10000);
+        quoteMaxPrice = maxPrice.times(50000);
       }
       if (price.gt(quoteMaxPrice)) {
         ToastError(t('price_too_high'));
@@ -196,7 +196,7 @@ export default function ActionComponent(props: {
       let minFunds = '0.0001';
       if (
         [OMNI_USDT_ASSET_ID, ERC20_USDT_ASSET_ID, PUSD_ASSET_ID].includes(
-          market.quoteAssetId,
+          market.quoteAsset.assetId,
         )
       ) {
         minFunds = '1';
@@ -208,7 +208,7 @@ export default function ActionComponent(props: {
       let quoteMaxFunds = maxFunds;
       if (
         [OMNI_USDT_ASSET_ID, ERC20_USDT_ASSET_ID, PUSD_ASSET_ID].includes(
-          market.quoteAssetId,
+          market.quoteAsset.assetId,
         )
       ) {
         quoteMaxFunds = maxFunds.times(10000);
@@ -230,7 +230,7 @@ export default function ActionComponent(props: {
       let minFunds = '0.0001';
       if (
         [OMNI_USDT_ASSET_ID, ERC20_USDT_ASSET_ID, PUSD_ASSET_ID].includes(
-          market.quoteAssetId,
+          market.quoteAsset.assetId,
         )
       ) {
         minFunds = '1';
