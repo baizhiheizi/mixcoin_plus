@@ -47,6 +47,7 @@ export default function ExchangePage() {
         search: `?market=${marketId}`,
       });
     }
+    localStorage.setItem('_cachedMarketId', marketId);
   }, [marketId]);
 
   useEffect(() => {
