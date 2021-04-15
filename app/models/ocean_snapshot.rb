@@ -179,7 +179,8 @@ class OceanSnapshot < MixinNetworkSnapshot
     update!(
       source: decrypted_ocean_order,
       snapshot_type: decrypted_snapshot_type,
-      processed_at: Time.current
+      processed_at: Time.current,
+      amount_usd: asset.price_usd.to_f * amount
     )
   end
 
