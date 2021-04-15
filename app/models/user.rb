@@ -93,7 +93,7 @@ class User < ApplicationRecord
     if r['data'].count == 100
       snapshots_with_ocean_engine(_snapshots + r['data'], r['data'].last['created_at'])
     else
-      r['data']
+      _snapshots + r['data']
     end
   end
 
