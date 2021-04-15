@@ -137,7 +137,7 @@ class MixinNetworkSnapshot < ApplicationRecord
     end
 
     return raw if raw == '00000000-0000-0000-0000-000000000000'
-    return raw if raw.match?(/\A[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}\z/i)
+    return raw if raw.match?(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/)
 
     raw = raw.unpack1('H*').to_s
     format(
