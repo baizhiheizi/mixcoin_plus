@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_09_223733) do
+ActiveRecord::Schema.define(version: 2021_04_16_010934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2021_04_09_223733) do
     t.integer "ocean_orders_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "trades_count", default: 0
     t.index ["base_asset_id"], name: "index_markets_on_base_asset_id"
     t.index ["quote_asset_id"], name: "index_markets_on_quote_asset_id"
   end
@@ -191,6 +192,24 @@ ActiveRecord::Schema.define(version: 2021_04_09_223733) do
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "market_id", null: false
     t.index ["market_id"], name: "index_ocean_orders_on_market_id"
+  end
+
+  create_table "trades", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "market_id", null: false
+    t.uuid "trade_id", null: false
+    t.uuid "base_asset_id", null: false
+    t.uuid "quote_asset_id", null: false
+    t.decimal "amount"
+    t.decimal "price"
+    t.string "side"
+    t.json "raw", null: false
+    t.datetime "traded_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["base_asset_id"], name: "index_trades_on_base_asset_id"
+    t.index ["market_id"], name: "index_trades_on_market_id"
+    t.index ["quote_asset_id"], name: "index_trades_on_quote_asset_id"
+    t.index ["trade_id"], name: "index_trades_on_trade_id", unique: true
   end
 
   create_table "user_assets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

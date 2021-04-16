@@ -18,7 +18,10 @@ module Resolvers
           markets.find_by(quote_asset_id: params[:quote_asset_id], base_asset_id: params[:base_asset_id])
         end
 
-      market.presence || markets.recommended.sample
+      market ||= markets.recommended.sample
+      market.sync_trades_from_engine_async
+
+      market
     end
   end
 end
