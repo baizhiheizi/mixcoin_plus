@@ -12,7 +12,7 @@ module Mutations
         recipient: OceanBroker::OCEAN_ENGINE_USER_ID,
         asset: OceanBroker::EXCHANGE_ASSET_ID,
         amount: OceanBroker::EXCHANGE_ASSET_AMOUNT,
-        memo: Base64.strict_encode64(
+        memo: Base64.urlsafe_encode64(
           {
             O: trace_id.split('-').pack('H* H* H* H* H*')
           }.to_msgpack

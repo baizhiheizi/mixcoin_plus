@@ -56,6 +56,7 @@ export default function UserDeprecatedOceanSnapshotsComponent(props: {
       dataSource={snapshots}
       rowKey='traceId'
       loading={loading}
+      size='small'
       pagination={{ pageSize: 100 }}
     />
   );

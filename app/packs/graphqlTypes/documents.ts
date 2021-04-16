@@ -449,6 +449,7 @@ export type Query = {
   adminOceanOrderConnection: OceanOrderConnection;
   adminUser: User;
   adminUserConnection: UserConnection;
+  adminUserDeprecatedOceanOrders: Array<OceanOrder>;
   adminUserDeprecatedOceanSnapshots: Array<MixinNetworkSnapshot>;
   adminWalletBalance: Array<UserAsset>;
   currentAdmin: Administrator;
@@ -554,6 +555,11 @@ export type QueryAdminUserConnectionArgs = {
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAdminUserDeprecatedOceanOrdersArgs = {
+  userId: Scalars['ID'];
 };
 
 
@@ -948,6 +954,26 @@ export type AdminUserConnectionQuery = (
       & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
     ) }
   ) }
+);
+
+export type AdminUserDeprecatedOceanOrdersQueryVariables = Exact<{
+  userId: Scalars['ID'];
+}>;
+
+
+export type AdminUserDeprecatedOceanOrdersQuery = (
+  { __typename?: 'Query' }
+  & { adminUserDeprecatedOceanOrders: Array<(
+    { __typename?: 'OceanOrder' }
+    & Pick<OceanOrder, 'traceId' | 'orderType' | 'side' | 'price' | 'createdAt'>
+    & { baseAsset: (
+      { __typename?: 'MixinAsset' }
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+    ), quoteAsset: (
+      { __typename?: 'MixinAsset' }
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+    ) }
+  )> }
 );
 
 export type AdminUserDeprecatedOceanSnapshotsQueryVariables = Exact<{
@@ -1926,6 +1952,55 @@ export function useAdminUserConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type AdminUserConnectionQueryHookResult = ReturnType<typeof useAdminUserConnectionQuery>;
 export type AdminUserConnectionLazyQueryHookResult = ReturnType<typeof useAdminUserConnectionLazyQuery>;
 export type AdminUserConnectionQueryResult = Apollo.QueryResult<AdminUserConnectionQuery, AdminUserConnectionQueryVariables>;
+export const AdminUserDeprecatedOceanOrdersDocument = gql`
+    query AdminUserDeprecatedOceanOrders($userId: ID!) {
+  adminUserDeprecatedOceanOrders(userId: $userId) {
+    traceId
+    orderType
+    side
+    price
+    baseAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    quoteAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useAdminUserDeprecatedOceanOrdersQuery__
+ *
+ * To run a query within a React component, call `useAdminUserDeprecatedOceanOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminUserDeprecatedOceanOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminUserDeprecatedOceanOrdersQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useAdminUserDeprecatedOceanOrdersQuery(baseOptions: Apollo.QueryHookOptions<AdminUserDeprecatedOceanOrdersQuery, AdminUserDeprecatedOceanOrdersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminUserDeprecatedOceanOrdersQuery, AdminUserDeprecatedOceanOrdersQueryVariables>(AdminUserDeprecatedOceanOrdersDocument, options);
+      }
+export function useAdminUserDeprecatedOceanOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminUserDeprecatedOceanOrdersQuery, AdminUserDeprecatedOceanOrdersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminUserDeprecatedOceanOrdersQuery, AdminUserDeprecatedOceanOrdersQueryVariables>(AdminUserDeprecatedOceanOrdersDocument, options);
+        }
+export type AdminUserDeprecatedOceanOrdersQueryHookResult = ReturnType<typeof useAdminUserDeprecatedOceanOrdersQuery>;
+export type AdminUserDeprecatedOceanOrdersLazyQueryHookResult = ReturnType<typeof useAdminUserDeprecatedOceanOrdersLazyQuery>;
+export type AdminUserDeprecatedOceanOrdersQueryResult = Apollo.QueryResult<AdminUserDeprecatedOceanOrdersQuery, AdminUserDeprecatedOceanOrdersQueryVariables>;
 export const AdminUserDeprecatedOceanSnapshotsDocument = gql`
     query AdminUserDeprecatedOceanSnapshots($userId: ID!) {
   adminUserDeprecatedOceanSnapshots(userId: $userId) {

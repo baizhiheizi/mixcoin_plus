@@ -36,7 +36,7 @@ export default function DeprecatedOrdersPage() {
         {orders.map((order) => (
           <div key={order.traceId} className='flex items-center px-4 py-1'>
             <div className='flex-1 text-gray-800 dark:text-gray-50'>
-              {order.quoteAsset.symbol}/{order.baseAsset.symbol}
+              {order.baseAsset.symbol}/{order.quoteAsset.symbol}
             </div>
             <div
               className={`flex-1 text-center ${
