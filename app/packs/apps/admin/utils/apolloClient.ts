@@ -34,11 +34,6 @@ export const apolloClient = (uri: string) => {
           ]),
           adminUserConnection: customizedConnectionMergeFunction(['query']),
           adminMarketConnection: customizedConnectionMergeFunction(),
-          adminOceanOrderConnection: customizedConnectionMergeFunction([
-            'conversationId',
-            'state',
-            'userId',
-          ]),
           adminMixinMessageConnection: customizedConnectionMergeFunction(),
           adminMixinNetworkSnapshotConnection: customizedConnectionMergeFunction(
             ['oceanOrderId', 'snapshotType', 'type'],
@@ -49,6 +44,12 @@ export const apolloClient = (uri: string) => {
             'opponentId',
             'transferType',
           ]),
+          adminOceanOrderConnection: customizedConnectionMergeFunction([
+            'conversationId',
+            'state',
+            'userId',
+          ]),
+          adminTradeConnection: customizedConnectionMergeFunction(['marketId']),
         },
       },
     },

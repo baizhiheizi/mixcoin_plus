@@ -3,11 +3,14 @@
 module Types
   class TradeType < Types::BaseModelObject
     field :id, ID, null: false
+    field :trade_id, ID, null: false
     field :base_asset_id, String, null: false
     field :quote_asset_id, String, null: false
     field :market_id, String, null: false
+    field :side, String, null: false
     field :amount, Float, null: false
     field :price, Float, null: true
+    field :traded_at, GraphQL::Types::ISO8601DateTime, null: false
 
     field :market, Types::MarketType, null: false
     field :base_asset, Types::MixinAssetType, null: false

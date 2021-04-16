@@ -6,10 +6,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function OceanOrdersComponent(props: {
+  marketId?: string;
   conversationId?: string;
   userId?: string;
 }) {
-  const { conversationId, userId } = props;
+  const { conversationId, userId, marketId } = props;
   const [state, setState] = useState('booking');
   const {
     loading,
@@ -17,7 +18,7 @@ export default function OceanOrdersComponent(props: {
     refetch,
     fetchMore,
   } = useAdminOceanOrderConnectionQuery({
-    variables: { conversationId, state, userId },
+    variables: { conversationId, state, userId, marketId },
   });
 
   if (loading) {

@@ -4,6 +4,7 @@ query AdminMarketConnection($after: String) {
       id
       oceanMarketId
       oceanOrdersCount
+      tradesCount
       baseAsset {
         assetId
         symbol

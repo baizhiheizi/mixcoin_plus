@@ -3,6 +3,7 @@ import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import { useAdminMarketConnectionQuery } from 'graphqlTypes';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function MarketsPage() {
   const { loading, data, refetch, fetchMore } = useAdminMarketConnectionQuery();
@@ -37,9 +38,20 @@ export default function MarketsPage() {
       title: 'oceanOrdersCount',
     },
     {
+      dataIndex: 'tradesCount',
+      key: 'tradesCount',
+      title: 'tradesCount',
+    },
+    {
       dataIndex: 'createdAt',
       key: 'createdAt',
       title: 'createdAt',
+    },
+    {
+      dataIndex: 'Actions',
+      key: 'Actions',
+      render: (_, market) => <Link to={`/markets/${market.id}`}>Detail</Link>,
+      title: 'Actions',
     },
   ];
 

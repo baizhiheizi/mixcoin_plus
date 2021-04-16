@@ -7,6 +7,7 @@ module Types
     field :quote_asset_id, String, null: false
     field :ocean_market_id, String, null: false
     field :ocean_orders_count, Int, null: false
+    field :trades_count, Int, null: false
     field :favorited, Boolean, null: true
 
     field :base_asset, Types::MixinAssetType, null: false

@@ -61,7 +61,7 @@ export default function UserPage() {
         </Descriptions.Item>
       </Descriptions>
       <Tabs defaultActiveKey='orders'>
-        <Tabs.TabPane tab='Orders' key='ordrs'>
+        <Tabs.TabPane tab='Orders' key='orders'>
           <OceanOrdersComponent userId={user.id} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Received' key='received'>

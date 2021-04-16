@@ -1,0 +1,19 @@
+query AdminMarket($id: ID!) {
+  adminMarket(id: $id) {
+    id
+    oceanMarketId
+    oceanOrdersCount
+    tradesCount
+    baseAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    quoteAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    createdAt
+  }
+}

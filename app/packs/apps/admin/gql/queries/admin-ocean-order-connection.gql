@@ -2,12 +2,14 @@ query AdminOceanOrderConnection(
   $after: String
   $state: String
   $conversationId: ID
+  $marketId: ID
   $userId: ID
 ) {
   adminOceanOrderConnection(
     after: $after
     state: $state
     conversationId: $conversationId
+    marketId: $marketId
     userId: $userId
   ) {
     nodes {

@@ -1,0 +1,27 @@
+query AdminTradeConnection($after: String, $marketId: ID) {
+  adminTradeConnection(after: $after, marketId: $marketId) {
+    nodes {
+      id
+      marketId
+      side
+      amount
+      price
+      baseAsset {
+        assetId
+        iconUrl
+        symbol
+      }
+      quoteAsset {
+        assetId
+        iconUrl
+        symbol
+      }
+      tradeId
+      tradedAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

@@ -3,6 +3,7 @@ import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import BalancePage from './pages/BalancePage/BalancePage';
 import InvitationsPage from './pages/InvitationsPage/InvitationsPage';
+import MarketPage from './pages/MarketPage/MarketPage';
 import MarketsPage from './pages/MarketsPage/MarketsPage';
 import MixinConversationPage from './pages/MixinConversationPage/MixinConversationPage';
 import MixinConversationsPage from './pages/MixinConversationsPage/MixinConversationsPage';
@@ -23,6 +24,9 @@ export default function Routes() {
       </Route>
       <Route path='/markets' exact>
         <MarketsPage />
+      </Route>
+      <Route path='/markets/:id' exact>
+        <MarketPage />
       </Route>
       <Route path='/ocean_orders' exact>
         <OceanOrdersPage />

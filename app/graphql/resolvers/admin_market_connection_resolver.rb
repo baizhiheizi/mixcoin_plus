@@ -7,7 +7,7 @@ module Resolvers
     type Types::MarketType.connection_type, null: false
 
     def resolve(*)
-      Market.order(ocean_orders_count: :desc, created_at: :desc)
+      Market.order(ocean_orders_count: :desc, trades_count: :desc, created_at: :desc)
     end
   end
 end
