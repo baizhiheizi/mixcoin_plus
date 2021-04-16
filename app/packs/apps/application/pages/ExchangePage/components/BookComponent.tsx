@@ -109,11 +109,11 @@ export default function BookComponent(props: {
     } catch {
       msg = {};
     }
+    setConnected(true);
     switch (msg.data.event) {
       case 'BOOK-T0':
         const { asks, bids } = msg.data.data;
         setBook({ asks: asks.slice(0, 1000), bids: bids.slice(0, 1000) });
-        setConnected(true);
         break;
       case 'HEARTBEAT':
         return;

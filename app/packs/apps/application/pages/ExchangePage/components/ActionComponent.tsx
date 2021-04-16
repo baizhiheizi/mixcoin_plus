@@ -468,7 +468,7 @@ export default function ActionComponent(props: {
         )}
         <div className='flex items-center justify-between mb-2'>
           <Popper
-            className='p-2 mb-1 text-xs bg-gray-100 dark:bg-dark'
+            className='p-2 mb-1 text-xs bg-gray-100 dark:bg-dark dark:text-white'
             direction='topLeft'
             content='Maker & Taker: 0.1%'
           >

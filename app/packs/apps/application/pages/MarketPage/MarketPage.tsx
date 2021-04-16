@@ -136,11 +136,11 @@ export default function MarketPage() {
     } catch {
       msg = {};
     }
+    setBookConnected(true);
     switch (msg.data.event) {
       case 'BOOK-T0':
         const { asks, bids } = msg.data.data;
         setBook({ asks: asks.slice(0, 1000), bids: bids.slice(0, 1000) });
-        setBookConnected(true);
         break;
       case 'HEARTBEAT':
         return;

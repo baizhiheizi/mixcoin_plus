@@ -2,7 +2,7 @@ import { ApolloProvider } from '@apollo/client';
 import { MixinBotContext, MixinContext } from 'apps/shared';
 import 'apps/shared/locales/i18n';
 import { User } from 'graphqlTypes';
-import { mixinContext } from 'mixin-messenger-utils';
+import { mixinContext, reloadTheme } from 'mixin-messenger-utils';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ConfigProvider as ZarmConfigProvider } from 'zarm';
@@ -36,6 +36,10 @@ export default function App(props: {
   useEffect(() => {
     if (theme === 'dark') {
       document.querySelector('html').classList.add('dark');
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute('content', '#1b1c1e');
+      reloadTheme();
     } else {
       document.querySelector('html').classList.remove('dark');
     }
