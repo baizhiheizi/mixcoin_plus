@@ -79,7 +79,7 @@ class Market < ApplicationRecord
   end
 
   def sync_trades_frequency_lock!
-    Global.redis.set "sync_trades_frequency_lock_#{id}", true, ex: 86400
+    Global.redis.set "sync_trades_frequency_lock_#{id}", true, ex: 60
   end
 
   def sync_trades_frequency_unlock!
