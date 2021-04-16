@@ -106,7 +106,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   end
 
   def base64_decoded_memo
-    @base64_decoded_memo = Base64.urlsafe_decode64 data.to_s
+    @base64_decoded_memo = Base64.decode64(data.to_s.gsub('-', '+').gsub('_', '/'))
   end
 
   def decrypted_memo
