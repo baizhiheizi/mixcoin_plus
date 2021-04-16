@@ -47,7 +47,6 @@ class OceanOrder < ApplicationRecord
 
   has_many :snapshots, class_name: 'OceanSnapshot', as: :source, dependent: :restrict_with_exception
 
-  enumerize :side, in: %w[ask bid], scope: true, predicates: true
   enumerize :side, in: %w[ask bid], scope: true, predicates: true, i18n_scope: ['activerecord.attributes.ocean_order.sides']
   enumerize :order_type, in: %w[limit market], scope: true, predicates: true
 

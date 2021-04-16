@@ -6,6 +6,7 @@
 #
 #  id                 :uuid             not null, primary key
 #  ocean_orders_count :integer          default(0)
+#  trades_count       :integer          default(0)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  base_asset_id      :uuid

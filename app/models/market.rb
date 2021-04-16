@@ -6,6 +6,7 @@
 #
 #  id                 :uuid             not null, primary key
 #  ocean_orders_count :integer          default(0)
+#  trades_count       :integer          default(0)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  base_asset_id      :uuid
@@ -39,6 +40,7 @@ class Market < ApplicationRecord
   belongs_to :quote_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
   has_many :ocean_orders, dependent: :restrict_with_exception
   has_many :snapshots, through: :ocean_orders, source: :snapshots
+  has_many :trades, dependent: :restrict_with_exception
 
   default_scope -> { where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID]) }
 
@@ -51,6 +53,37 @@ class Market < ApplicationRecord
 
   def update_turnover
     update turnover: ocean_orders.sum(:filled_amount)
+  end
+
+  def sync_trades_from_engine
+    offset = trades.order(traded_at: :asc).last&.raw&.[]('created_at')
+    r = Ocean.api.trades(ocean_market_id, limit: 100, offset: offset)
+
+    r['data'].each do |trade|
+      trades.create_with(
+        raw: trade
+      ).find_or_create_by!(
+        trade_id: trade['trade_id']
+      )
+    end
+
+    sync_trades_from_engine if r['data'].count == 100
+  end
+
+  def sync_trades_from_engine_async
+    MarketSyncTradesFromEngineWorker.perform_async id
+  end
+
+  def sync_trades_frequency_locked?
+    Global.redis.get "sync_trades_frequency_lock_#{id}"
+  end
+
+  def sync_trades_frequency_lock!
+    Global.redis.set "sync_trades_frequency_lock_#{id}", true, ex: 86400
+  end
+
+  def sync_trades_frequency_unlock!
+    Global.redis.del "sync_trades_frequency_lock_#{id}"
   end
 
   private
