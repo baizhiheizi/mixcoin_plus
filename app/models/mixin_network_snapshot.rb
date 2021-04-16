@@ -89,7 +89,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   def process!
     return if processed?
 
-    raise 'No Processor Implemented!' unless data.to_s.downcase.match?(/fee|commission/)
+    raise 'No Processor Implemented!' unless data.to_s.downcase.match?(/fee|commission/) || opponent_id == MixcoinPlusBot.api.client_id
 
     touch_proccessed_at
   end

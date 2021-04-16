@@ -9,7 +9,7 @@ import { useHistory } from 'react-router';
 
 export default function UsersPage() {
   const [query, setQuery] = useState('');
-  const debouncedQuery = useDebounce(query, { wait: 500 });
+  const debouncedQuery = useDebounce(query, { wait: 1000 });
   const history = useHistory();
   const { loading, data, refetch, fetchMore } = useAdminUserConnectionQuery({
     variables: { query: debouncedQuery },

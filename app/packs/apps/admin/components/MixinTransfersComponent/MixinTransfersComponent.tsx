@@ -11,7 +11,7 @@ export default function MixinTransfersComponent(props: {
   opponentId?: string;
 }) {
   const { oceanOrderId, userId, opponentId } = props;
-  const [transferType, setTranferType] = useState('all');
+  const [transferType, setTranferType] = useState('ocean_order_mixcoin_fee');
   const {
     loading,
     data,
@@ -103,6 +103,7 @@ export default function MixinTransfersComponent(props: {
         >
           <Select.Option value='all'>All</Select.Option>
           <Select.Option value='default'>Default</Select.Option>
+          <Select.Option value='unprocessed'>Unprocessed</Select.Option>
           <Select.Option value='ocean_order_mixcoin_fee'>
             MixcoinFee
           </Select.Option>

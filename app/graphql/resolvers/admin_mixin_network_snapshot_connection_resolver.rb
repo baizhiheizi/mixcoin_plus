@@ -21,6 +21,8 @@ module Resolvers
         case snapshot_type
         when 'all'
           snapshots
+        when 'unprocessed'
+          snapshots.unprocessed
         else
           snapshots.where(snapshot_type: snapshot_type)
         end

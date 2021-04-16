@@ -26,6 +26,8 @@ module Resolvers
         case transfer_type
         when 'all'
           transfers
+        when 'unprocessed'
+          transfers.unprocessed
         else
           transfers.where(transfer_type: transfer_type)
         end

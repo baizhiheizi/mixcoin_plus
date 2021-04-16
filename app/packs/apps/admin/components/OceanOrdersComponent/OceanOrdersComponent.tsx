@@ -10,7 +10,7 @@ export default function OceanOrdersComponent(props: {
   userId?: string;
 }) {
   const { conversationId, userId } = props;
-  const [state, setState] = useState('valid');
+  const [state, setState] = useState('booking');
   const {
     loading,
     data,
@@ -69,6 +69,13 @@ export default function OceanOrdersComponent(props: {
       dataIndex: 'state',
       key: 'state',
       title: 'state',
+    },
+    {
+      dataIndex: 'price',
+      key: 'price',
+      render: (_, order) =>
+        order.orderType === 'limit' ? order.price : 'market',
+      title: 'price',
     },
     {
       dataIndex: 'amount',

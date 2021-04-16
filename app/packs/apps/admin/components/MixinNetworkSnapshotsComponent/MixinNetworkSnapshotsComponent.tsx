@@ -9,7 +9,7 @@ export default function MixinNetworkSnapshotsComponent(props: {
   oceanOrderId?: string;
 }) {
   const { oceanOrderId } = props;
-  const [snapshotType, setSnapshotType] = useState('all');
+  const [snapshotType, setSnapshotType] = useState('match_to_user');
   const {
     loading,
     data,
@@ -94,6 +94,7 @@ export default function MixinNetworkSnapshotsComponent(props: {
           onChange={(value) => setSnapshotType(value)}
         >
           <Select.Option value='all'>All</Select.Option>
+          <Select.Option value='unprocessed'>Unprocessed</Select.Option>
           <Select.Option value='default'>Default</Select.Option>
           <Select.Option value='ocean_broker_balance'>
             Broker Balance
