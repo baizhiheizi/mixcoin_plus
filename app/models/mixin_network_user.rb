@@ -42,7 +42,7 @@ class MixinNetworkUser < ApplicationRecord
 
   before_validation :setup_attributes, on: :create
 
-  after_commit :initialize_pin_async, on: :create
+  after_commit :initialize_pin_async, :update_avatar_async, on: :create
 
   attr_encrypted :pin
 
@@ -81,7 +81,7 @@ class MixinNetworkUser < ApplicationRecord
   def update_avatar
     img = File.open DEFAULT_AVATAR_FILE
     r = mixin_api.update_me full_name: 'Mixcoin', avatar_base64: Base64.strict_encode64(img.read)
-    update raw: r['data'] if r['data'].present?
+    update raw: r['data'], name: r['data']['full_name'] if r['data'].present?
   ensure
     img.close
   end

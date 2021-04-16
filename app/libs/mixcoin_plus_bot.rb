@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module MixcoinPlusBot
-  ICON_URL = 'https://mixin-images.zeromesh.net/c9gus9bjvikMKlszvmcVcMdAid1qOqhQoKKuohLsQJ6NEaA_C_XihIKorVOBbgOAdzxZq3Et821lc72gd6oyaDU=s256'
+  ICON_URL = 'https://mixin-images.zeromesh.net/QesS8-z69oJBMiY2MTmCIBBZJFlgwfZaqHdNv2ejxNo534QLKIdP8fr_anco927kERbLAsY9NbJOyvtf-EU7RTDL1QDOcmcInpK1=s256'
 
   def self.api
     @api ||= MixinBot::API.new(
