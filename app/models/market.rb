@@ -67,7 +67,7 @@ class Market < ApplicationRecord
       )
     end
 
-    sync_trades_from_engine if r['data'].count == 100
+    sync_trades_from_engine_async if r['data'].count == 100
   end
 
   def sync_trades_from_engine_async
