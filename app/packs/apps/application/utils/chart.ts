@@ -36,11 +36,42 @@ export function priceChartOptions(trades: ITrade[]): Highcharts.Options {
     ]);
   }
   return {
+    navigator: {
+      enabled: false,
+    },
+    scrollbar: {
+      enabled: false,
+    },
+    rangeSelector: {
+      enabled: false,
+    },
+    chart: {
+      panning: {
+        enabled: false,
+      },
+    },
     series: [
       {
-        type: 'line',
+        type: 'area',
         name: 'Price',
         data,
+        gapSize: 5,
+        tooltip: {
+          valueDecimals: 2,
+        },
+        fillColor: {
+          linearGradient: {
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: 1,
+          },
+          stops: [
+            [0, '#7cb5ec'],
+            [1, 'rgba(124,181,236, 0)'],
+          ],
+        },
+        threshold: null,
       },
     ],
   };

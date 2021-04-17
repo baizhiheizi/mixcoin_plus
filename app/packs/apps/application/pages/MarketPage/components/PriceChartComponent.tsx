@@ -23,13 +23,13 @@ export default function PriceChartComponent(props: {
       <div className='px-4 pb-4 mb-1 bg-white'>
         {fetched ? (
           <HighchartsReact
-            containerProps={{ className: 'h-80' }}
+            containerProps={{ className: 'h-60' }}
             highcharts={Highcharts}
             constructorType={'stockChart'}
             options={priceChartOptions(trades)}
           />
         ) : (
-          <div className='flex h-80'>
+          <div className='flex h-60'>
             <ActivityIndicator type='spinner' className='m-auto' />
           </div>
         )}
