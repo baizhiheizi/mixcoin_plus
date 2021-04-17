@@ -10,6 +10,14 @@ module Types
     field :trades_count, Int, null: false
     field :favorited, Boolean, null: true
 
+    field :price_current, Float, null: true
+    field :price_24h_ago, Float, null: true
+    field :change_24h, Float, null: true
+    field :vol_24h, Float, null: true
+
+    field :high_price_24h, Float, null: true
+    field :low_price_24h, Float, null: true
+
     field :base_asset, Types::MixinAssetType, null: false
     field :quote_asset, Types::MixinAssetType, null: false
 

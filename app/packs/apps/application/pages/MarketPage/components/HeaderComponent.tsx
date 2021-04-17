@@ -22,53 +22,82 @@ export default function HeaderComponent(props: {
 
   return (
     <>
-      <div className='flex items-center px-4 py-2 mb-1 bg-white dark:bg-dark dark:text-white'>
-        <div className='mr-2 text-lg font-semibold'>
-          {market.baseAsset.symbol}/{market.quoteAsset.symbol}
-        </div>
-        {market.quoteAsset.symbol === 'USDT' && (
-          <div
-            className='mr-4'
-            onClick={() => {
-              Loading.show();
-              marketQuery({
-                variables: {
-                  baseAssetId: market.baseAsset.assetId,
-                  quoteAssetId:
-                    market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
-                      ? OMNI_USDT_ASSET_ID
-                      : ERC20_USDT_ASSET_ID,
-                },
-              });
-            }}
-          >
-            <div className='flex items-center text-xs h-7'>
-              <div className='mr-1'>
-                {market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
-                  ? 'ERC20'
-                  : 'Omni'}
-              </div>
-              <ChangeIcon size='0.75rem' />
-            </div>
+      <div className='px-4 py-2 mb-1 bg-white dark:bg-dark dark:text-white'>
+        <div className='flex items-center'>
+          <div className='mr-2 text-base font-semibold'>
+            {market.baseAsset.symbol}/{market.quoteAsset.symbol}
           </div>
-        )}
-        <div className='ml-auto text-right'>
-          {market.baseAsset.changeUsd && (
+          {market.quoteAsset.symbol === 'USDT' && (
+            <div
+              className='mr-4'
+              onClick={() => {
+                Loading.show();
+                marketQuery({
+                  variables: {
+                    baseAssetId: market.baseAsset.assetId,
+                    quoteAssetId:
+                      market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
+                        ? OMNI_USDT_ASSET_ID
+                        : ERC20_USDT_ASSET_ID,
+                  },
+                });
+              }}
+            >
+              <div className='flex items-center text-xs h-7'>
+                <div className='mr-1'>
+                  {market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
+                    ? 'ERC20'
+                    : 'Omni'}
+                </div>
+                <ChangeIcon size='0.75rem' />
+              </div>
+            </div>
+          )}
+        </div>
+        <div className='flex items-center'>
+          <div className='flex-1'>
             <div
               className={`${
-                market.baseAsset.changeUsd > 0
-                  ? 'text-green-500'
-                  : 'text-red-500'
+                market.priceCurrent ? 'text-2xl' : 'text-base'
+              } font-bold ${
+                market.change24h > 0 ? 'text-green-500' : 'text-red-500'
               }`}
             >
-              {(market.baseAsset.changeUsd * 100)?.toFixed(2)}%
+              {market.priceCurrent || t('no_trades_yet')}
             </div>
-          )}
-          {market.baseAsset.priceUsd && (
-            <div className='text-xs text-gray-300'>
-              ≈ ${market.baseAsset.priceUsd?.toFixed(2)}
+            <div className='flex items-baseline'>
+              {market.quoteAsset.priceUsd && market.priceCurrent && (
+                <div className='mr-2 text-xs text-gray-300'>
+                  ≈ $
+                  {(market.quoteAsset.priceUsd * market.priceCurrent)?.toFixed(
+                    2,
+                  )}
+                </div>
+              )}
+              <div
+                className={`${
+                  market.change24h > 0 ? 'text-green-500' : 'text-red-500'
+                }`}
+              >
+                {market.change24h > 0 && '+'}
+                {(market.change24h * 100)?.toFixed(2)}%
+              </div>
             </div>
-          )}
+          </div>
+          <div className='flex-1 pl-16 text-xs text-gray-300'>
+            <div className='flex items-center'>
+              <div className=''>{t('24h_high')}:</div>
+              <div className='ml-auto'>{market.highPrice24h || '-'}</div>
+            </div>
+            <div className='flex items-center'>
+              <div className=''>{t('24h_low')}:</div>
+              <div className='ml-auto'>{market.lowPrice24h || '-'}</div>
+            </div>
+            <div className='flex items-center'>
+              <div className=''>{t('24h_volumne')}:</div>
+              <div className='ml-auto'>{market.vol24h || '-'}</div>
+            </div>
+          </div>
         </div>
       </div>
     </>

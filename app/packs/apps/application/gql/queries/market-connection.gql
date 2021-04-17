@@ -2,6 +2,9 @@ query MarketConnection($type: String!, $after: String, $query: String) {
   marketConnection(type: $type, after: $after, query: $query) {
     nodes {
       id
+      priceCurrent
+      change24h
+      vol24h
       baseAsset {
         assetId
         symbol
@@ -16,6 +19,7 @@ query MarketConnection($type: String!, $after: String, $query: String) {
         assetId
         symbol
         iconUrl
+        priceUsd
         chainAsset {
           iconUrl
         }

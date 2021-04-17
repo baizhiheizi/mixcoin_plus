@@ -2,6 +2,11 @@ query Market($id: ID, $quoteAssetId: String, $baseAssetId: String) {
   market(id: $id, quoteAssetId: $quoteAssetId, baseAssetId: $baseAssetId) {
     id
     favorited
+    priceCurrent
+    change24h
+    vol24h
+    highPrice24h
+    lowPrice24h
     baseAsset {
       assetId
       symbol

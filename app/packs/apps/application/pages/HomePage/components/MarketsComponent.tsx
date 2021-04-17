@@ -75,44 +75,41 @@ function MarketsListComponent(props: { type: string; query?: string }) {
             key={market.id}
             className='flex items-center px-4 py-2'
           >
-            <div className='relative'>
-              <img
-                className='w-10 h-10 mr-2 rounded-full'
-                src={market.baseAsset.iconUrl.replace(/s128$/, 's64')}
-              />
-              {market.baseAsset.chainAsset && (
-                <img
-                  className='absolute bottom-0 left-0 w-4 h-4 border border-white rounded-full'
-                  src={market.baseAsset.chainAsset.iconUrl.replace(
-                    /s128/,
-                    's32',
-                  )}
-                />
-              )}
-            </div>
-            <div className='flex items-baseline'>
-              <div className='mr-1 text-lg font-semibold'>
-                {market.baseAsset.symbol}
-              </div>
-              <div className='text-xs'>/{market.quoteAsset.symbol}</div>
-            </div>
-            <div className='ml-auto text-right'>
-              {market.baseAsset.changeUsd && (
-                <div
-                  className={`${
-                    market.baseAsset.changeUsd > 0
-                      ? 'text-green-500'
-                      : 'text-red-500'
-                  }`}
-                >
-                  {(market.baseAsset.changeUsd * 100)?.toFixed(2)}%
+            <div className='flex-1'>
+              <div className='flex items-baseline'>
+                <div className='text-base font-semibold'>
+                  {market.baseAsset.symbol}
                 </div>
-              )}
-              {market.baseAsset.priceUsd && (
                 <div className='text-xs text-gray-300'>
-                  ≈ ${market.baseAsset.priceUsd?.toFixed(2)}
+                  /{market.quoteAsset.symbol}
+                </div>
+              </div>
+              <div className='text-xs text-gray-300'>
+                24HVol {market.vol24h}
+              </div>
+            </div>
+            <div className='flex-1 text-right'>
+              <div className='text-sm text-tray-300'>
+                {market.priceCurrent || '-'}
+              </div>
+              {market.quoteAsset.priceUsd && market.priceCurrent && (
+                <div className='text-xs text-gray-300'>
+                  ≈ $
+                  {(market.quoteAsset.priceUsd * market.priceCurrent)?.toFixed(
+                    2,
+                  )}
                 </div>
               )}
+            </div>
+            <div className='flex flex-1'>
+              <div
+                className={`${
+                  market.change24h > 0 ? 'bg-green-500' : 'bg-red-500'
+                } text-white rounded ml-auto px-2 text-sm`}
+              >
+                {market.change24h > 0 && '+'}
+                {(market.change24h * 100)?.toFixed(2)}%
+              </div>
             </div>
           </div>
         ))}

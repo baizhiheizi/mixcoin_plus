@@ -119,15 +119,21 @@ export type Market = {
   __typename?: 'Market';
   baseAsset: MixinAsset;
   baseAssetId: Scalars['String'];
+  change24h?: Maybe<Scalars['Float']>;
   createdAt: Scalars['ISO8601DateTime'];
   favorited?: Maybe<Scalars['Boolean']>;
+  highPrice24h?: Maybe<Scalars['Float']>;
   id: Scalars['ID'];
+  lowPrice24h?: Maybe<Scalars['Float']>;
   oceanMarketId: Scalars['String'];
   oceanOrdersCount: Scalars['Int'];
+  price24hAgo?: Maybe<Scalars['Float']>;
+  priceCurrent?: Maybe<Scalars['Float']>;
   quoteAsset: MixinAsset;
   quoteAssetId: Scalars['String'];
   tradesCount: Scalars['Int'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+  vol24h?: Maybe<Scalars['Float']>;
 };
 
 /** The connection type for Market. */
@@ -1254,7 +1260,7 @@ export type MarketConnectionQuery = (
     { __typename?: 'MarketConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'Market' }
-      & Pick<Market, 'id' | 'oceanMarketId'>
+      & Pick<Market, 'id' | 'priceCurrent' | 'change24h' | 'vol24h' | 'oceanMarketId'>
       & { baseAsset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'changeUsd' | 'priceUsd'>
@@ -1264,7 +1270,7 @@ export type MarketConnectionQuery = (
         )> }
       ), quoteAsset: (
         { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd'>
         & { chainAsset?: Maybe<(
           { __typename?: 'MixinAsset' }
           & Pick<MixinAsset, 'iconUrl'>
@@ -1288,7 +1294,7 @@ export type MarketQuery = (
   { __typename?: 'Query' }
   & { market: (
     { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'favorited' | 'oceanMarketId'>
+    & Pick<Market, 'id' | 'favorited' | 'priceCurrent' | 'change24h' | 'vol24h' | 'highPrice24h' | 'lowPrice24h' | 'oceanMarketId'>
     & { baseAsset: (
       { __typename?: 'MixinAsset' }
       & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd' | 'changeUsd'>
@@ -2669,6 +2675,9 @@ export const MarketConnectionDocument = gql`
   marketConnection(type: $type, after: $after, query: $query) {
     nodes {
       id
+      priceCurrent
+      change24h
+      vol24h
       baseAsset {
         assetId
         symbol
@@ -2683,6 +2692,7 @@ export const MarketConnectionDocument = gql`
         assetId
         symbol
         iconUrl
+        priceUsd
         chainAsset {
           iconUrl
         }
@@ -2731,6 +2741,11 @@ export const MarketDocument = gql`
   market(id: $id, quoteAssetId: $quoteAssetId, baseAssetId: $baseAssetId) {
     id
     favorited
+    priceCurrent
+    change24h
+    vol24h
+    highPrice24h
+    lowPrice24h
     baseAsset {
       assetId
       symbol

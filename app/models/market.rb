@@ -46,13 +46,67 @@ class Market < ApplicationRecord
 
   scope :recommended, -> { where(base_asset_id: [XIN_ASSET_ID, BTC_ASSET_ID], quote_asset_id: [PUSD_ASSET_ID, ERC20_USDT_ASSET_ID, OMNI_USDT_ASSET_ID]) }
   scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
+  scope :order_by_trades_24h, lambda {
+    left_outer_joins(:trades)
+      .group(:id)
+      .where(trades: { traded_at: (Time.current - 24.hours) })
+      .select(
+        <<~SQL.squish
+          markets.*,
+          SUM(trades.amount) as vol_24h
+        SQL
+      ).order(vol_24h: :desc)
+  }
 
   def ocean_market_id
     format('%<base>s-%<quote>s', base: base_asset_id, quote: quote_asset_id)
   end
 
-  def update_turnover
-    update turnover: ocean_orders.sum(:filled_amount)
+  def price_current
+    @price_current ||= Global.redis.get "price_current_#{id}"
+
+    if @price_current.blank?
+      @price_current = trades.order(traded_at: :desc).first&.price
+      Global.redis.set "price_current_#{id}", @price_current
+    end
+
+    @price_current
+  end
+
+  def price_24h_ago
+    @price_24h_ago = trades.order(traded_at: :desc).find_by(traded_at: ...(Time.current - 24.hours))&.price
+  end
+
+  def change_24h
+    @change_24h ||= Global.redis.get "change_24h_#{id}"
+
+    if @change_24h.blank?
+      return if price_current.blank? || price_24h_ago.blank?
+
+      @change_24h = format('%.4f', ((price_current.to_f - price_24h_ago.to_f) / price_24h_ago.to_f))
+      Global.redis.set "change_24h_#{id}", @change_24h, ex: 5.minutes
+    end
+
+    @change_24h
+  end
+
+  def vol_24h
+    @vol_24h ||= Global.redis.get "vol_24h_#{id}"
+
+    if @vol_24h.blank?
+      @vol_24h = trades.where(traded_at: (Time.current - 24.hours)...).sum(:amount)
+      Global.redis.set "vol_24h_#{id}", @vol_24h, ex: 5.minutes
+    end
+
+    @vol_24h
+  end
+
+  def high_price_24h
+    trades.where(traded_at: (Time.current - 24.hours)...).maximum(:price)
+  end
+
+  def low_price_24h
+    trades.where(traded_at: (Time.current - 24.hours)...).minimum(:price)
   end
 
   def sync_trades_from_engine

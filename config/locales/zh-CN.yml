@@ -42,7 +42,7 @@ zh-CN:
   no_ask_order: 暂时没有卖单
   no_bid_order: 暂时没有买单
   no_depth_yet: 深度不足
-  no_trades_yet: 暂时没有成交
+  no_trades_yet: 暂无成交
   confirm_place_ask_order: 确定要卖出
   confirm_place_bid_order: 确定要买入
   confirm_unfavorite_market: 确定要取消收藏交易对吗？
@@ -75,3 +75,6 @@ zh-CN:
     completed: '已完成'
     canceling: '取消中'
     refunded: '已退款'
+  24h_high: 24小时最高
+  24h_low: 24小时最低 
+  24h_volumne: 24小时成交
