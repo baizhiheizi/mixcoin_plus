@@ -37,7 +37,7 @@ module Ocean
     end
 
     def trades(market, order: 'ASC', limit: 100, offset: nil)
-      offset ||= '2019-01-01T00:00:00Z'
+      offset ||= '2021-01-01T00:00:00Z'
       path = format('/markets/%<market>s/trades', market: market)
       client.get(
         path,
