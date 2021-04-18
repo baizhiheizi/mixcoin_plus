@@ -23,6 +23,7 @@ module Resolvers
           Market.where(quote_asset_id: Market::XIN_ASSET_ID)
         end
 
+      markets = markets&.order_by_default
       query = params[:query].to_s.strip
       q_ransack = { base_asset_symbol_i_cont: query }
       markets&.ransack(q_ransack.merge(m: 'or'))&.result || []

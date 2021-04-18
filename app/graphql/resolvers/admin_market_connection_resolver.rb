@@ -9,7 +9,7 @@ module Resolvers
     type Types::MarketType.connection_type, null: false
 
     def resolve(**params)
-      markets = Market.all
+      markets = Market.order_by_default
       markets = markets.where(quote_asset_id: params[:quote_asset_id]) if params[:quote_asset_id].present?
 
       query = params[:query].to_s.strip

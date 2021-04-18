@@ -47,13 +47,12 @@ class Market < ApplicationRecord
   has_many :snapshots, through: :ocean_orders, source: :snapshots
   has_many :trades, dependent: :restrict_with_exception
 
-  default_scope lambda {
+  scope :order_by_default, lambda {
     where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID])
          .rank(:rank)
          .order(trades_count: :desc, ocean_orders_count: :desc, created_at: :desc)
   }
-
-  scope :order_by_recommended, -> { order(recommended_at: :desc) }
+  scope :recommended, -> { where(base_asset_id: [XIN_ASSET_ID, BTC_ASSET_ID], quote_asset_id: [PUSD_ASSET_ID, ERC20_USDT_ASSET_ID, OMNI_USDT_ASSET_ID]) }
   scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
   scope :order_by_trades_24h, lambda {
     joins(:trades)
