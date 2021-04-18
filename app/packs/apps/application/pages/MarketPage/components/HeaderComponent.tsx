@@ -60,7 +60,7 @@ export default function HeaderComponent(props: {
               className={`${
                 market.priceCurrent ? 'text-2xl' : 'text-base'
               } font-bold ${
-                market.change24h > 0 ? 'text-green-500' : 'text-red-500'
+                market.change24h < 0 ? 'text-red-500' : 'text-green-500'
               }`}
             >
               {market.priceCurrent || t('no_trades_yet')}
@@ -76,7 +76,7 @@ export default function HeaderComponent(props: {
               )}
               <div
                 className={`${
-                  market.change24h > 0 ? 'text-green-500' : 'text-red-500'
+                  market.change24h < 0 ? 'text-red-500' : 'text-green-500'
                 }`}
               >
                 {market.change24h > 0 && '+'}

@@ -104,7 +104,7 @@ function MarketsListComponent(props: { type: string; query?: string }) {
             <div className='flex flex-1'>
               <div
                 className={`${
-                  market.change24h > 0 ? 'bg-green-500' : 'bg-red-500'
+                  market.change24h < 0 ? 'bg-red-500' : 'bg-green-500'
                 } text-white rounded ml-auto px-2 text-sm`}
               >
                 {market.change24h > 0 && '+'}
