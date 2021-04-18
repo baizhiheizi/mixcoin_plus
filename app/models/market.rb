@@ -94,7 +94,7 @@ class Market < ApplicationRecord
     @vol_24h ||= Global.redis.get "vol_24h_#{id}"
 
     if @vol_24h.blank?
-      @vol_24h = trades.where(traded_at: (Time.current - 24.hours)...).sum(:amount)
+      @vol_24h = format('%.6f', trades.where(traded_at: (Time.current - 24.hours)...).sum(:amount))
       Global.redis.set "vol_24h_#{id}", @vol_24h, ex: 5.minutes
     end
 
