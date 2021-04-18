@@ -1,6 +1,7 @@
 query AdminOceanOrderConnection(
   $after: String
   $state: String
+  $query: String
   $conversationId: ID
   $marketId: ID
   $userId: ID
@@ -8,6 +9,7 @@ query AdminOceanOrderConnection(
   adminOceanOrderConnection(
     after: $after
     state: $state
+    query: $query
     conversationId: $conversationId
     marketId: $marketId
     userId: $userId

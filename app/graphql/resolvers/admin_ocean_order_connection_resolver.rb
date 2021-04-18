@@ -3,6 +3,7 @@
 module Resolvers
   class AdminOceanOrderConnectionResolver < Resolvers::AdminBaseResolver
     argument :after, String, required: false
+    argument :query, String, required: false
     argument :state, String, required: false
     argument :conversation_id, ID, required: false
     argument :market_id, ID, required: false
@@ -37,7 +38,9 @@ module Resolvers
           orders.where(state: params[:state])
         end
 
-      orders.order(created_at: :desc)
+      query = params[:query].to_s.strip
+      q_ransack = { trace_id_eq: query }
+      orders.ransack(q_ransack.merge(m: 'or')).result.order(created_at: :desc)
     end
   end
 end

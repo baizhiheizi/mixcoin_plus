@@ -567,6 +567,7 @@ export type QueryAdminOceanOrderArgs = {
 
 export type QueryAdminOceanOrderConnectionArgs = {
   after?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
   state?: Maybe<Scalars['String']>;
   conversationId?: Maybe<Scalars['ID']>;
   marketId?: Maybe<Scalars['ID']>;
@@ -990,6 +991,7 @@ export type AdminMixinTransferConnectionQuery = (
 export type AdminOceanOrderConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
   state?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
   conversationId?: Maybe<Scalars['ID']>;
   marketId?: Maybe<Scalars['ID']>;
   userId?: Maybe<Scalars['ID']>;
@@ -1984,10 +1986,11 @@ export type AdminMixinTransferConnectionQueryHookResult = ReturnType<typeof useA
 export type AdminMixinTransferConnectionLazyQueryHookResult = ReturnType<typeof useAdminMixinTransferConnectionLazyQuery>;
 export type AdminMixinTransferConnectionQueryResult = Apollo.QueryResult<AdminMixinTransferConnectionQuery, AdminMixinTransferConnectionQueryVariables>;
 export const AdminOceanOrderConnectionDocument = gql`
-    query AdminOceanOrderConnection($after: String, $state: String, $conversationId: ID, $marketId: ID, $userId: ID) {
+    query AdminOceanOrderConnection($after: String, $state: String, $query: String, $conversationId: ID, $marketId: ID, $userId: ID) {
   adminOceanOrderConnection(
     after: $after
     state: $state
+    query: $query
     conversationId: $conversationId
     marketId: $marketId
     userId: $userId
@@ -2048,6 +2051,7 @@ export const AdminOceanOrderConnectionDocument = gql`
  *   variables: {
  *      after: // value for 'after'
  *      state: // value for 'state'
+ *      query: // value for 'query'
  *      conversationId: // value for 'conversationId'
  *      marketId: // value for 'marketId'
  *      userId: // value for 'userId'
