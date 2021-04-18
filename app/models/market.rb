@@ -76,7 +76,7 @@ class Market < ApplicationRecord
 
     if @price_current.blank?
       @price_current = trades.order(traded_at: :desc).first&.price
-      Global.redis.set "price_current_#{id}", @price_current
+      Global.redis.set "price_current_#{id}", @price_current, ex: 1.minute
     end
 
     @price_current
@@ -93,7 +93,7 @@ class Market < ApplicationRecord
       return if price_current.blank? || price_24h_ago.blank?
 
       @change_24h = format('%.4f', ((price_current.to_f - price_24h_ago.to_f) / price_24h_ago.to_f))
-      Global.redis.set "change_24h_#{id}", @change_24h, ex: 5.minutes
+      Global.redis.set "change_24h_#{id}", @change_24h, ex: 1.minute
     end
 
     @change_24h
@@ -104,10 +104,16 @@ class Market < ApplicationRecord
 
     if @vol_24h.blank?
       @vol_24h = format('%.6f', trades.where(traded_at: (Time.current - 24.hours)...).sum(:amount))
-      Global.redis.set "vol_24h_#{id}", @vol_24h, ex: 5.minutes
+      Global.redis.set "vol_24h_#{id}", @vol_24h, ex: 1.minute
     end
 
     @vol_24h
+  end
+
+  def del_price_cache
+    Global.redis.del "price_current_#{id}"
+    Global.redis.del "change_24h_#{id}"
+    Global.redis.del "vol_24h_#{id}"
   end
 
   def high_price_24h

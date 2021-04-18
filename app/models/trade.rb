@@ -44,6 +44,12 @@ class Trade < ApplicationRecord
 
   enumerize :side, in: %w[ask bid], scope: true, predicates: true
 
+  after_create :del_market_price_cache
+
+  def del_market_price_cache
+    market.del_price_cache
+  end
+
   private
 
   def set_defaults
