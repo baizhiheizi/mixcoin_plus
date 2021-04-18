@@ -14,13 +14,13 @@ module Resolvers
         when 'favorite'
           current_user&.favorite_markets
         when 'USDT'
-          (current_user&.markets || Market.all).where(quote_asset_id: Market::ERC20_USDT_ASSET_ID)
+          Market.where(quote_asset_id: Market::ERC20_USDT_ASSET_ID)
         when 'pUSD'
-          (current_user&.markets || Market.all).where(quote_asset_id: Market::PUSD_ASSET_ID)
+          Market.where(quote_asset_id: Market::PUSD_ASSET_ID)
         when 'BTC'
-          (current_user&.markets || Market.all).where(quote_asset_id: Market::BTC_ASSET_ID)
+          Market.where(quote_asset_id: Market::BTC_ASSET_ID)
         when 'XIN'
-          (current_user&.markets || Market.all).where(quote_asset_id: Market::XIN_ASSET_ID)
+          Market.where(quote_asset_id: Market::XIN_ASSET_ID)
         end
 
       query = params[:query].to_s.strip

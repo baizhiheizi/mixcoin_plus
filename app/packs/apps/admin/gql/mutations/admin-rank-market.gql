@@ -1,0 +1,3 @@
+mutation AdminRankMarket($input: AdminRankMarketMutationInput!) {
+  adminRankMarket(input: $input)
+}

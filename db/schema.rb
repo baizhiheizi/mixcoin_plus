@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_16_010934) do
+ActiveRecord::Schema.define(version: 2021_04_18_133930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2021_04_16_010934) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "trades_count", default: 0
+    t.integer "rank"
     t.index ["base_asset_id"], name: "index_markets_on_base_asset_id"
     t.index ["quote_asset_id"], name: "index_markets_on_quote_asset_id"
   end

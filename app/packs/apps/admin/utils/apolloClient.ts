@@ -33,7 +33,10 @@ export const apolloClient = (uri: string) => {
             'invitorId',
           ]),
           adminUserConnection: customizedConnectionMergeFunction(['query']),
-          adminMarketConnection: customizedConnectionMergeFunction(),
+          adminMarketConnection: customizedConnectionMergeFunction([
+            'query',
+            'quoteAssetId',
+          ]),
           adminMixinMessageConnection: customizedConnectionMergeFunction(),
           adminMixinNetworkSnapshotConnection: customizedConnectionMergeFunction(
             ['oceanOrderId', 'snapshotType', 'type'],

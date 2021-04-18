@@ -1,12 +1,31 @@
-import { Button, PageHeader, Table } from 'antd';
+import { useDebounce } from 'ahooks';
+import { Button, Input, PageHeader, Select, Space, Table } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
-import { useAdminMarketConnectionQuery } from 'graphqlTypes';
-import React from 'react';
+import {
+  BTC_ASSET_ID,
+  ERC20_USDT_ASSET_ID,
+  OMNI_USDT_ASSET_ID,
+  PUSD_ASSET_ID,
+  XIN_ASSET_ID,
+} from 'apps/shared';
+import {
+  useAdminMarketConnectionQuery,
+  useAdminRankMarketMutation,
+} from 'graphqlTypes';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function MarketsPage() {
-  const { loading, data, refetch, fetchMore } = useAdminMarketConnectionQuery();
+  const [quoteAssetId, setQuoteAssetId] = useState(ERC20_USDT_ASSET_ID);
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, { wait: 1000 });
+  const { loading, data, refetch, fetchMore } = useAdminMarketConnectionQuery({
+    variables: { query: debouncedQuery, quoteAssetId },
+  });
+  const [rankMarket] = useAdminRankMarketMutation({
+    update: () => refetch(),
+  });
 
   if (loading) {
     return <LoadingComponent />;
@@ -50,21 +69,74 @@ export default function MarketsPage() {
     {
       dataIndex: 'Actions',
       key: 'Actions',
-      render: (_, market) => <Link to={`/markets/${market.id}`}>Detail</Link>,
+      render: (_, market) => (
+        <Space>
+          <Link to={`/markets/${market.id}`}>Detail</Link>
+          <a
+            onClick={() =>
+              rankMarket({
+                variables: {
+                  input: { marketId: market.id, position: 'first' },
+                },
+              })
+            }
+          >
+            Top
+          </a>
+          <a
+            onClick={() =>
+              rankMarket({
+                variables: { input: { marketId: market.id, position: 'down' } },
+              })
+            }
+          >
+            Down
+          </a>
+          <a
+            onClick={() =>
+              rankMarket({
+                variables: { input: { marketId: market.id, position: 'last' } },
+              })
+            }
+          >
+            Last
+          </a>
+        </Space>
+      ),
       title: 'Actions',
     },
   ];
 
   return (
     <>
-      <PageHeader
-        title='Market Manage'
-        extra={[
-          <Button key='refresh' type='primary' onClick={() => refetch()}>
-            Refresh
-          </Button>,
-        ]}
-      />
+      <PageHeader title='Market Manage' />
+      <div className='flex justify-between mb-4'>
+        <div>
+          <Input
+            className='w-32 mr-2'
+            placeholder='base'
+            value={query}
+            onChange={(e) => setQuery(e.currentTarget.value)}
+          />
+          <Select
+            placeholder='quote'
+            className='w-32'
+            value={quoteAssetId}
+            onChange={(value) => setQuoteAssetId(value)}
+          >
+            <Select.Option value={BTC_ASSET_ID}>BTC</Select.Option>
+            <Select.Option value={XIN_ASSET_ID}>XIN</Select.Option>
+            <Select.Option value={PUSD_ASSET_ID}>pUSD</Select.Option>
+            <Select.Option value={ERC20_USDT_ASSET_ID}>
+              USDT@ERC20
+            </Select.Option>
+            <Select.Option value={OMNI_USDT_ASSET_ID}>USDT@Omni</Select.Option>
+          </Select>
+        </div>
+        <Button key='refresh' type='primary' onClick={() => refetch()}>
+          Refresh
+        </Button>
+      </div>
       <Table
         scroll={{ x: true }}
         columns={columns}

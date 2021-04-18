@@ -53,6 +53,8 @@ gem 'jwt'
 gem 'ransack'
 # Store different kinds of actions (Like, Follow, Star, Block, etc.) in a single table via ActiveRecord Polymorphic Associations.
 gem 'action-store'
+# ranked-model is a modern row sorting library
+gem 'ranked-model'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

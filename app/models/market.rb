@@ -6,6 +6,7 @@
 #
 #  id                 :uuid             not null, primary key
 #  ocean_orders_count :integer          default(0)
+#  rank               :integer
 #  trades_count       :integer          default(0)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
@@ -25,6 +26,10 @@ class Market < ApplicationRecord
   PUSD_ASSET_ID = '31d2ea9c-95eb-3355-b65b-ba096853bc18'
   AVAILABLE_QUOTES = [ERC20_USDT_ASSET_ID, PUSD_ASSET_ID, XIN_ASSET_ID, BTC_ASSET_ID, OMNI_USDT_ASSET_ID].freeze
 
+  include RankedModel
+
+  ranks :rank, with_same: :quote_asset_id
+
   # Ocean ONE accepts all assets in Mixin Network as base currencies,
   # and the only supported quote currencies are
   # Mixin XIN (c94ac88f-4671-3976-b60a-09064f1811e8),
@@ -42,12 +47,16 @@ class Market < ApplicationRecord
   has_many :snapshots, through: :ocean_orders, source: :snapshots
   has_many :trades, dependent: :restrict_with_exception
 
-  default_scope -> { where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID]) }
+  default_scope lambda {
+    where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID])
+         .rank(:rank)
+         .order(trades_count: :desc, ocean_orders_count: :desc, created_at: :desc)
+  }
 
-  scope :recommended, -> { where(base_asset_id: [XIN_ASSET_ID, BTC_ASSET_ID], quote_asset_id: [PUSD_ASSET_ID, ERC20_USDT_ASSET_ID, OMNI_USDT_ASSET_ID]) }
+  scope :order_by_recommended, -> { order(recommended_at: :desc) }
   scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
   scope :order_by_trades_24h, lambda {
-    left_outer_joins(:trades)
+    joins(:trades)
       .group(:id)
       .where(trades: { traded_at: (Time.current - 24.hours) })
       .select(

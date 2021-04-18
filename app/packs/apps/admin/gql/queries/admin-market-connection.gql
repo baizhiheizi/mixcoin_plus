@@ -1,5 +1,13 @@
-query AdminMarketConnection($after: String) {
-  adminMarketConnection(after: $after) {
+query AdminMarketConnection(
+  $after: String
+  $query: String
+  $quoteAssetId: String
+) {
+  adminMarketConnection(
+    after: $after
+    query: $query
+    quoteAssetId: $quoteAssetId
+  ) {
     nodes {
       id
       oceanMarketId
