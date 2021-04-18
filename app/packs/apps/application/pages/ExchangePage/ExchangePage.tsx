@@ -54,6 +54,16 @@ export default function ExchangePage() {
     refreshTicker();
   }, [data?.market]);
 
+  useEffect(() => {
+    if (data?.market) {
+      document.title = `${data.market.baseAsset.symbol}/${data.market.quoteAsset.symbol}`;
+    }
+
+    return () => {
+      document.title = 'Mixcoin';
+    };
+  }, [data?.market]);
+
   useInterval(() => {
     refreshTicker();
   }, 5000);

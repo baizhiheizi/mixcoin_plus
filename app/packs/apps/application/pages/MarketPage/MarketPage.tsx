@@ -189,6 +189,16 @@ export default function MarketPage() {
     refreshTrades();
   }, 5000);
 
+  useEffect(() => {
+    if (data?.market) {
+      document.title = `${data.market.baseAsset.symbol}/${data.market.quoteAsset.symbol}`;
+    }
+
+    return () => {
+      document.title = 'Mixcoin';
+    };
+  }, [data?.market]);
+
   if (loading) {
     return <LoaderComponent />;
   }
