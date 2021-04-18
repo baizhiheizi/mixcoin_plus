@@ -50,7 +50,7 @@ class User < ApplicationRecord
 
   enumerize :locale, in: I18n.available_locales, default: I18n.default_locale
 
-  after_commit :sync_assets_async, :create_ocean_broker, on: :create
+  after_commit :sync_assets_async, :create_ocean_broker, :create_contact_conversation, on: :create
 
   delegate :access_token, to: :mixin_authorization
 
@@ -107,6 +107,10 @@ class User < ApplicationRecord
 
   def may_invited?
     ocean_orders.without_drafted.count.zero?
+  end
+
+  def create_contact_conversation
+    MixcoinPlusBot.api.create_contact_conversation mixin_uuid
   end
 
   private
