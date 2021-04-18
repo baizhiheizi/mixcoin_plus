@@ -216,7 +216,7 @@ class OceanOrder < ApplicationRecord
   end
 
   def group_owner_commission_ratio
-    if conversation&.group? && conversation&.creator != user
+    if conversation&.group? && conversation&.creator.present? && conversation&.creator != user
       GROUP_OWNER_COMMISSION_RATIO
     else
       0
