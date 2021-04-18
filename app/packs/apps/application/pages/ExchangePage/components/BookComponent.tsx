@@ -192,7 +192,7 @@ export default function BookComponent(props: {
                 }}
               >
                 <div className='text-red-500'>{parseNumber(ask.price)}</div>
-                <div className='text-gray-700'>{parseNumber(ask.amount)}</div>
+                <div className='text-gray-500'>{parseNumber(ask.amount)}</div>
               </div>
             ))}
           </div>
@@ -205,7 +205,7 @@ export default function BookComponent(props: {
         )}
       </div>
       <div className='h-48 text-xs'>
-        <div className='flex items-center justify-between p-1 mb-2 bg-gray-200'>
+        <div className='flex items-center justify-between p-1 mb-2 bg-gray-200 dark:bg-gray-500'>
           <div
             className={`${
               ticker?.side === 'ASK' ? 'text-red-500' : 'text-green-500'
@@ -225,7 +225,7 @@ export default function BookComponent(props: {
               }}
             >
               <div className='text-green-500'>{parseNumber(bid.price)}</div>
-              <div className='text-gray-700'>{parseNumber(bid.amount)}</div>
+              <div className='text-gray-500'>{parseNumber(bid.amount)}</div>
             </div>
           ))
         ) : connected ? (

@@ -80,11 +80,11 @@ function MarketsListComponent(props: { type: string; query?: string }) {
                 <div className='text-base font-semibold'>
                   {market.baseAsset.symbol}
                 </div>
-                <div className='text-xs text-gray-300'>
+                <div className='text-xs text-gray-500'>
                   /{market.quoteAsset.symbol}
                 </div>
               </div>
-              <div className='text-xs text-gray-300'>
+              <div className='text-xs text-gray-500'>
                 24HVol {market.vol24h}
               </div>
             </div>
@@ -93,7 +93,7 @@ function MarketsListComponent(props: { type: string; query?: string }) {
                 {market.priceCurrent || '-'}
               </div>
               {market.quoteAsset.priceUsd && market.priceCurrent && (
-                <div className='text-xs text-gray-300'>
+                <div className='text-xs text-gray-500'>
                   ≈ $
                   {(market.quoteAsset.priceUsd * market.priceCurrent)?.toFixed(
                     2,
