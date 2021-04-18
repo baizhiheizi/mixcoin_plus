@@ -7,5 +7,7 @@ query AdminAppStatistic($scope: String) {
     feeTotalUsd
     invitationCommissionTotalUsd
     groupOwnerCommissionTotalUsd
+    unprocessedSnapshotsCount
+    unprocessedTransfersCount
   }
 }

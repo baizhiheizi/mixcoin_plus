@@ -9,5 +9,7 @@ module Types
     field :fee_total_usd, Float, null: false
     field :invitation_commission_total_usd, Float, null: false
     field :group_owner_commission_total_usd, Float, null: false
+    field :unprocessed_snapshots_count, Integer, null: false
+    field :unprocessed_transfers_count, Integer, null: false
   end
 end

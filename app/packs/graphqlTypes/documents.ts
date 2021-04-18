@@ -47,6 +47,8 @@ export type AppStatistic = {
   invitationCommissionTotalUsd: Scalars['Float'];
   marketsCount: Scalars['Int'];
   matchTotalUsd: Scalars['Float'];
+  unprocessedSnapshotsCount: Scalars['Int'];
+  unprocessedTransfersCount: Scalars['Int'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
   usersCount: Scalars['Int'];
   validOrdersCount: Scalars['Int'];
@@ -782,7 +784,7 @@ export type AdminAppStatisticQuery = (
   { __typename?: 'Query' }
   & { adminAppStatistic: (
     { __typename?: 'AppStatistic' }
-    & Pick<AppStatistic, 'usersCount' | 'validOrdersCount' | 'marketsCount' | 'matchTotalUsd' | 'feeTotalUsd' | 'invitationCommissionTotalUsd' | 'groupOwnerCommissionTotalUsd'>
+    & Pick<AppStatistic, 'usersCount' | 'validOrdersCount' | 'marketsCount' | 'matchTotalUsd' | 'feeTotalUsd' | 'invitationCommissionTotalUsd' | 'groupOwnerCommissionTotalUsd' | 'unprocessedSnapshotsCount' | 'unprocessedTransfersCount'>
   ) }
 );
 
@@ -1488,6 +1490,8 @@ export const AdminAppStatisticDocument = gql`
     feeTotalUsd
     invitationCommissionTotalUsd
     groupOwnerCommissionTotalUsd
+    unprocessedSnapshotsCount
+    unprocessedTransfersCount
   }
 }
     `;

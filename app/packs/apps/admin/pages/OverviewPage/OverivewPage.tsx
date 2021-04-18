@@ -56,6 +56,20 @@ function StatisticAllComponent() {
           value={appStatistic.groupOwnerCommissionTotalUsd}
           precision={2}
         />
+        <Statistic
+          title='Unprocessed Snapshots'
+          value={appStatistic.unprocessedSnapshotsCount}
+          valueStyle={{
+            color: appStatistic.unprocessedSnapshotsCount > 0 && '#cf1322',
+          }}
+        />
+        <Statistic
+          title='Unprocessed Transfers'
+          value={appStatistic.unprocessedTransfersCount}
+          valueStyle={{
+            color: appStatistic.unprocessedTransfersCount > 0 && '#cf1322',
+          }}
+        />
       </div>
     </>
   );
@@ -144,6 +158,26 @@ function Statistic24hComponent() {
           prefix={
             appStatistic.groupOwnerCommissionTotalUsd > 0 && <ArrowUpOutlined />
           }
+        />
+        <Statistic
+          title='Unprocessed Snapshots'
+          value={appStatistic.unprocessedSnapshotsCount}
+          valueStyle={{
+            color:
+              appStatistic.unprocessedSnapshotsCount > 0
+                ? '#cf1322'
+                : '#3f8600',
+          }}
+        />
+        <Statistic
+          title='Unprocessed Transfers'
+          value={appStatistic.unprocessedTransfersCount}
+          valueStyle={{
+            color:
+              appStatistic.unprocessedTransfersCount > 0
+                ? '#cf1322'
+                : '#3f8600',
+          }}
         />
       </div>
     </>

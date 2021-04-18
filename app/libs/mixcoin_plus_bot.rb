@@ -21,7 +21,9 @@ module MixcoinPlusBot
       match_total_usd: OceanSnapshot.with_snapshot_type(:match_from_engine).sum(:amount_usd),
       fee_total_usd: MixinTransfer.with_transfer_type(:ocean_order_mixcoin_fee).sum(:amount_usd),
       invitation_commission_total_usd: MixinTransfer.with_transfer_type(:ocean_order_invitation_commission).sum(:amount_usd),
-      group_owner_commission_total_usd: MixinTransfer.with_transfer_type(:ocean_order_group_owner_commission).sum(:amount_usd)
+      group_owner_commission_total_usd: MixinTransfer.with_transfer_type(:ocean_order_group_owner_commission).sum(:amount_usd),
+      unprocessed_snapshots_count: MixinNetworkSnapshot.unprocessed.count,
+      unprocessed_transfers_count: MixinTransfer.unprocessed.count
     }
   end
 
@@ -33,7 +35,9 @@ module MixcoinPlusBot
       match_total_usd: OceanSnapshot.within_24h.with_snapshot_type(:match_from_engine).sum(:amount_usd),
       fee_total_usd: MixinTransfer.within_24h.with_transfer_type(:ocean_order_mixcoin_fee).sum(:amount_usd),
       invitation_commission_total_usd: MixinTransfer.within_24h.with_transfer_type(:ocean_order_invitation_commission).sum(:amount_usd),
-      group_owner_commission_total_usd: MixinTransfer.within_24h.with_transfer_type(:ocean_order_group_owner_commission).sum(:amount_usd)
+      group_owner_commission_total_usd: MixinTransfer.within_24h.with_transfer_type(:ocean_order_group_owner_commission).sum(:amount_usd),
+      unprocessed_snapshots_count: MixinNetworkSnapshot.within_24h.unprocessed.count,
+      unprocessed_transfers_count: MixinTransfer.within_24h.unprocessed.count
     }
   end
 end
