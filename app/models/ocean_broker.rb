@@ -114,6 +114,10 @@ class OceanBroker < MixinNetworkUser
     )
   end
 
+  def ensure_can_fetch_orders
+    engine_orders.is_a?(Array)
+  end
+
   private
 
   def setup_ocean_private_key
@@ -126,10 +130,6 @@ class OceanBroker < MixinNetworkUser
         U: Base64.decode64(ocean_public_key)
       }.to_msgpack
     )
-  end
-
-  def ensure_can_fetch_orders
-    engine_orders.is_a?(Array)
   end
 
   def ocean_public_key
