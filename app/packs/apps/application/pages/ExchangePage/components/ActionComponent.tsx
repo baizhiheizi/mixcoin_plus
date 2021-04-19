@@ -354,12 +354,7 @@ export default function ActionComponent(props: {
                 <div>+</div>
               </Button>
             </div>
-            <div className='p-2 text-gray-500'>
-              ≈{' $'}
-              {(
-                market.quoteAsset.priceUsd * parseFloat(orderPrice) || 0
-              ).toFixed(4)}
-            </div>
+            <div className='p-2 text-gray-500'></div>
           </div>
           <div className='mb-2'>
             <div className='flex space-x-1'>
@@ -402,12 +397,7 @@ export default function ActionComponent(props: {
                 <div>+</div>
               </Button>
             </div>
-            <div className='p-2 text-gray-500'>
-              ≈{' $'}
-              {(
-                market.baseAsset.priceUsd * parseFloat(orderAmount) || 0
-              ).toFixed(4)}
-            </div>
+            <div className='p-2 text-gray-500'></div>
           </div>
         </>
       ) : (
