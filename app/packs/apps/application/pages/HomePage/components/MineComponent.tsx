@@ -1,5 +1,5 @@
 import { useCurrentUser } from 'apps/application/contexts';
-import { useMixinBot } from 'apps/shared';
+import { CHINESE_COMMUNITY_ID, useMixinBot } from 'apps/shared';
 import { shareMixinAppCard } from 'mixin-messenger-utils';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -66,6 +66,15 @@ export default function MineComponent() {
             })
           }
         />
+        {i18n.language.match(/zh/) && (
+          <Cell
+            title='中文社区'
+            hasArrow
+            onClick={() =>
+              location.replace(`mixin://users/${CHINESE_COMMUNITY_ID}`)
+            }
+          />
+        )}
         <Cell
           title={t('deprecated_orders')}
           hasArrow

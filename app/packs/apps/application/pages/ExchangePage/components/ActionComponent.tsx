@@ -2,6 +2,7 @@ import { StockMarket } from '@icon-park/react';
 import { useCurrentUser } from 'apps/application/contexts';
 import { ToastError } from 'apps/application/utils';
 import {
+  CHINESE_COMMUNITY_ID,
   ERC20_USDT_ASSET_ID,
   OMNI_USDT_ASSET_ID,
   PUSD_ASSET_ID,
@@ -37,7 +38,7 @@ export default function ActionComponent(props: {
     orderAmount,
     setOrderAmount,
   } = props;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currentUser } = useCurrentUser();
   const history = useHistory();
   const side = new URLSearchParams(history.location.search).get('side');
@@ -467,13 +468,26 @@ export default function ActionComponent(props: {
           </div>
         )}
         <div className='flex items-center justify-between mb-2'>
-          <Popper
-            className='p-2 mb-1 text-xs bg-gray-100 dark:bg-dark dark:text-white'
-            direction='topLeft'
-            content='Maker & Taker: 0.1%'
-          >
-            <Button size='xs'>{t('fee')}</Button>
-          </Popper>
+          <div className='flex items-center'>
+            <Popper
+              className='p-2 mb-1 text-xs bg-gray-100 dark:bg-dark dark:text-white'
+              direction='topLeft'
+              content='Maker & Taker: 0.1%'
+            >
+              <Button size='xs'>{t('fee')}</Button>
+            </Popper>
+            {i18n.language.match(/zh/) && (
+              <Button
+                className='ml-2'
+                size='xs'
+                onClick={() =>
+                  location.replace(`mixin://users/${CHINESE_COMMUNITY_ID}`)
+                }
+              >
+                社区
+              </Button>
+            )}
+          </div>
           <StockMarket
             size='1.5rem'
             strokeWidth={2}

@@ -54,7 +54,8 @@ export default function MixinNetworkUsersPage() {
     {
       dataIndex: 'owner',
       key: 'owner',
-      render: (_, user) => user.owner ? `${user.owner.name}(${user.owner.mixinId})` : '-',
+      render: (_, user) =>
+        user.owner ? `${user.owner.name}(${user.owner.mixinId})` : '-',
       title: 'Owner',
     },
     {

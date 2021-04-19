@@ -19,7 +19,7 @@ export default function ExchangePage() {
   const marketIdParam = new URLSearchParams(history.location.search).get(
     'market',
   );
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currentUser } = useCurrentUser();
   const [marketId, setMarketId] = useState(
     marketIdParam || localStorage.getItem('_cachedMarketId') || '',
