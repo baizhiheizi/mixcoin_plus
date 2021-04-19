@@ -43,8 +43,25 @@ export default function HeaderComponent(props: {
             size='1.5rem'
             onClick={() => setSidebarVisible(!sidebarVisible)}
           />
-          <div className='mr-2 text-lg font-semibold'>
-            {market.baseAsset.symbol}/{market.quoteAsset.symbol}
+          <div className='flex items-center mr-2'>
+            <div className='relative mr-2'>
+              <img
+                className='w-6 h-6 rounded-full'
+                src={market.baseAsset.iconUrl}
+              />
+              {market.baseAsset.chainAsset && (
+                <img
+                  className='absolute bottom-0 left-0 w-2 h-2 border border-white rounded-full'
+                  src={market.baseAsset.chainAsset.iconUrl.replace(
+                    /s128/,
+                    's32',
+                  )}
+                />
+              )}
+            </div>
+            <div className='text-lg font-semibold'>
+              {market.baseAsset.symbol}/{market.quoteAsset.symbol}
+            </div>
           </div>
           {market.quoteAsset.symbol === 'USDT' && (
             <div
