@@ -26,6 +26,7 @@ export default function ExchangePage() {
   );
   const [orderPrice, setOrderPrice] = useState<string>('');
   const [orderAmount, setOrderAmount] = useState<string>('');
+  const [timestamp, setTimestamp] = useState(Date.now());
   const { loading, data } = useMarketQuery({
     variables: { id: marketId },
   });
@@ -102,6 +103,8 @@ export default function ExchangePage() {
         </div>
         <div className='w-2/5'>
           <BookComponent
+            timestamp={timestamp}
+            setTimestamp={setTimestamp}
             market={market as Market}
             setOrderPrice={setOrderPrice}
             setOrderAmount={setOrderAmount}
@@ -113,7 +116,11 @@ export default function ExchangePage() {
         {currentUser && (
           <Tabs defaultValue={0}>
             <Tabs.Panel title={t('my_open_orders')}>
-              <OceanOrdersComponent marketId={market.id} filter='booking' />
+              <OceanOrdersComponent
+                marketId={market.id}
+                filter='booking'
+                timestamp={timestamp}
+              />
             </Tabs.Panel>
             <Tabs.Panel title={t('my_order_history')}>
               <OceanOrdersComponent marketId={market.id} filter='history' />

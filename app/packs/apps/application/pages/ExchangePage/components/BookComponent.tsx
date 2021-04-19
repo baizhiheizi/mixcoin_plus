@@ -22,9 +22,11 @@ export default function BookComponent(props: {
   setOrderPrice: (params: any) => any;
   setOrderAmount: (params: any) => any;
   ticker?: ITrade;
+  timestamp?: number;
+  setTimestamp: (params: number) => any;
 }) {
   const { t } = useTranslation();
-  const { market, setOrderPrice, setOrderAmount, ticker } = props;
+  const { market, setOrderPrice, setOrderAmount, ticker, setTimestamp } = props;
   const [connected, setConnected] = useState(false);
   const [book, setBook] = useState<{
     asks: ITick[];
@@ -66,6 +68,7 @@ export default function BookComponent(props: {
       bids.push(tick);
     }
     setBook(Object.assign({}, { asks, bids }));
+    setTimestamp(Date.now());
   }
 
   function handleOrderRemoveFromBook(tick: ITick) {
@@ -100,6 +103,7 @@ export default function BookComponent(props: {
     }
 
     setBook(Object.assign({}, { asks, bids }));
+    setTimestamp(Date.now());
   }
 
   function handleMessage(raw: string) {

@@ -4,17 +4,18 @@ import {
   useCancelOceanOrderMutation,
   useOceanOrderConnectionQuery,
 } from 'graphqlTypes';
-import React from 'react';
+import moment from 'moment';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Loading, Modal } from 'zarm';
-import moment from 'moment';
 
 export default function OceanOrdersComponent(props: {
   marketId?: string;
   filter: 'booking' | 'history';
+  timestamp?: number;
 }) {
   const { t } = useTranslation();
-  const { marketId, filter } = props;
+  const { marketId, filter, timestamp } = props;
   const { loading, data, refetch, fetchMore } = useOceanOrderConnectionQuery({
     variables: { marketId, filter },
   });
@@ -23,6 +24,12 @@ export default function OceanOrdersComponent(props: {
       Loading.hide();
     },
   });
+
+  useEffect(() => {
+    if (!loading) {
+      refetch();
+    }
+  }, [timestamp, marketId, filter]);
 
   if (loading) {
     return <LoaderComponent />;
