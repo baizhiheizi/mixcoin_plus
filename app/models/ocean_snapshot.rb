@@ -79,12 +79,12 @@ class OceanSnapshot < MixinNetworkSnapshot
         source: _ocean_order,
         user_id: user_id,
         transfer_type: :ocean_order_group_owner_commission,
-        opponent_id: _ocean_order.conversation.creator.mixin_uuid,
+        opponent_id: _ocean_order.conversation.creator_id,
         asset_id: asset_id,
         amount: group_owner_commission_amount,
         memo: 'Group Owner Commission'
       ).find_or_create_by!(
-        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.conversation.creator.mixin_uuid)
+        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.conversation.creator_id)
       )
     end
 
