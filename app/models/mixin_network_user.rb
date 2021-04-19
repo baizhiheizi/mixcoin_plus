@@ -42,7 +42,7 @@ class MixinNetworkUser < ApplicationRecord
 
   before_validation :setup_attributes, on: :create
 
-  after_commit :initialize_pin_async, :update_avatar_async, on: :create
+  after_commit :update_avatar_async, on: :create
 
   attr_encrypted :pin
 
@@ -56,11 +56,13 @@ class MixinNetworkUser < ApplicationRecord
     )
   end
 
-  def update_pin!
-    new_pin = SecureRandom.random_number.to_s.split('.').last.first(6)
-    mixin_api.update_pin(old_pin: pin, pin: new_pin)
+  def pin_verified?
+    return if pin.blank?
 
-    update! pin: new_pin
+    r = mixin_api.verify_pin pin
+    r['data'].present?
+  rescue MixinBot::ResponseError
+    false
   end
 
   def initialize_pin!
@@ -69,13 +71,21 @@ class MixinNetworkUser < ApplicationRecord
     update_pin!
   end
 
+  def update_pin!
+    new_pin = SecureRandom.random_number.to_s.split('.').last.first(6)
+    with_lock do
+      old_pin = pin
+      self.pin = new_pin
+      r = mixin_api.update_pin(old_pin: old_pin, pin: new_pin)
+      raise 'Update pin failed' if r['data'].blank?
+
+      save!
+    end
+  end
+
   def sync_profile!
     r = mixin_api.read_me
     update! raw: r['data']
-  end
-
-  def initialize_pin_async
-    MixinNetworkUserInitializePinWorker.perform_async id
   end
 
   def update_avatar

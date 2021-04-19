@@ -1,0 +1,31 @@
+query AdminMixinNetworkUserConnection(
+  $after: String
+  $query: String
+  $state: String
+  $type: String
+) {
+  adminMixinNetworkUserConnection(
+    after: $after
+    query: $query
+    state: $state
+    type: $type
+  ) {
+    nodes {
+      id
+      name
+      state
+      type
+      hasPin
+      mixinUuid
+      owner {
+        name
+        mixinId
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

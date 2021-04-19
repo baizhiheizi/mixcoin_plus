@@ -60,6 +60,7 @@ class OceanOrder < ApplicationRecord
   validates :base_asset_id, presence: true
   validates :quote_asset_id, presence: true
   validates :trace_id, presence: true
+  validate :ensure_broker_ready
 
   scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
 
@@ -273,5 +274,9 @@ class OceanOrder < ApplicationRecord
   # unique along with each broker
   def trace_id_for_canceling
     broker.mixin_api.unique_conversation_id trace_id, broker_id
+  end
+
+  def ensure_broker_ready
+    errors.add(:broker_id, 'not ready for exchange') unless broker.ready?
   end
 end

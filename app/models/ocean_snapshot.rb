@@ -145,7 +145,7 @@ class OceanSnapshot < MixinNetworkSnapshot
       _broker = OceanBroker.find_by(mixin_uuid: opponent_id)
       _broker.balance! if _broker.may_balance?
     when :ocean_broker_register
-      wallet.ready! if wallet.may_ready?
+      wallet.ready! if wallet.balanced?
     when :create_order_from_user
       raise 'Invalid Payment' unless (amount.to_f - _ocean_order.payment_amount.to_f).zero? && asset_id == _ocean_order.payment_asset_id
 
