@@ -295,10 +295,34 @@ export type MixinNetworkSnapshotEdge = {
 export type MixinNetworkUser = {
   __typename?: 'MixinNetworkUser';
   createdAt: Scalars['ISO8601DateTime'];
+  hasPin: Scalars['Boolean'];
   id: Scalars['ID'];
   mixinUuid: Scalars['String'];
   name: Scalars['String'];
+  owner?: Maybe<User>;
+  state: Scalars['String'];
+  type: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
+/** The connection type for MixinNetworkUser. */
+export type MixinNetworkUserConnection = {
+  __typename?: 'MixinNetworkUserConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<MixinNetworkUserEdge>>>;
+  /** A list of nodes. */
+  nodes?: Maybe<Array<Maybe<MixinNetworkUser>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type MixinNetworkUserEdge = {
+  __typename?: 'MixinNetworkUserEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node?: Maybe<MixinNetworkUser>;
 };
 
 export type MixinTransfer = {
@@ -468,6 +492,7 @@ export type Query = {
   adminMixinConversationConnection: MixinConversationConnection;
   adminMixinMessageConnection: MixinMessageConnection;
   adminMixinNetworkSnapshotConnection: MixinNetworkSnapshotConnection;
+  adminMixinNetworkUserConnection: MixinNetworkUserConnection;
   adminMixinTransferConnection: MixinTransferConnection;
   adminOceanOrder: OceanOrder;
   adminOceanOrderConnection: OceanOrderConnection;
@@ -542,6 +567,17 @@ export type QueryAdminMixinNetworkSnapshotConnectionArgs = {
   oceanOrderId?: Maybe<Scalars['ID']>;
   snapshotType?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAdminMixinNetworkUserConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
@@ -951,6 +987,32 @@ export type AdminMixinNetworkSnapshotConnectionQuery = (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'name' | 'iconUrl'>
       ) }
+    )>>>, pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ) }
+  ) }
+);
+
+export type AdminMixinNetworkUserConnectionQueryVariables = Exact<{
+  after?: Maybe<Scalars['String']>;
+  query?: Maybe<Scalars['String']>;
+  state?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+}>;
+
+
+export type AdminMixinNetworkUserConnectionQuery = (
+  { __typename?: 'Query' }
+  & { adminMixinNetworkUserConnection: (
+    { __typename?: 'MixinNetworkUserConnection' }
+    & { nodes?: Maybe<Array<Maybe<(
+      { __typename?: 'MixinNetworkUser' }
+      & Pick<MixinNetworkUser, 'id' | 'name' | 'state' | 'type' | 'hasPin' | 'mixinUuid' | 'createdAt'>
+      & { owner?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'name' | 'mixinId'>
+      )> }
     )>>>, pageInfo: (
       { __typename?: 'PageInfo' }
       & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
@@ -1914,6 +1976,65 @@ export function useAdminMixinNetworkSnapshotConnectionLazyQuery(baseOptions?: Ap
 export type AdminMixinNetworkSnapshotConnectionQueryHookResult = ReturnType<typeof useAdminMixinNetworkSnapshotConnectionQuery>;
 export type AdminMixinNetworkSnapshotConnectionLazyQueryHookResult = ReturnType<typeof useAdminMixinNetworkSnapshotConnectionLazyQuery>;
 export type AdminMixinNetworkSnapshotConnectionQueryResult = Apollo.QueryResult<AdminMixinNetworkSnapshotConnectionQuery, AdminMixinNetworkSnapshotConnectionQueryVariables>;
+export const AdminMixinNetworkUserConnectionDocument = gql`
+    query AdminMixinNetworkUserConnection($after: String, $query: String, $state: String, $type: String) {
+  adminMixinNetworkUserConnection(
+    after: $after
+    query: $query
+    state: $state
+    type: $type
+  ) {
+    nodes {
+      id
+      name
+      state
+      type
+      hasPin
+      mixinUuid
+      owner {
+        name
+        mixinId
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminMixinNetworkUserConnectionQuery__
+ *
+ * To run a query within a React component, call `useAdminMixinNetworkUserConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminMixinNetworkUserConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminMixinNetworkUserConnectionQuery({
+ *   variables: {
+ *      after: // value for 'after'
+ *      query: // value for 'query'
+ *      state: // value for 'state'
+ *      type: // value for 'type'
+ *   },
+ * });
+ */
+export function useAdminMixinNetworkUserConnectionQuery(baseOptions?: Apollo.QueryHookOptions<AdminMixinNetworkUserConnectionQuery, AdminMixinNetworkUserConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminMixinNetworkUserConnectionQuery, AdminMixinNetworkUserConnectionQueryVariables>(AdminMixinNetworkUserConnectionDocument, options);
+      }
+export function useAdminMixinNetworkUserConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminMixinNetworkUserConnectionQuery, AdminMixinNetworkUserConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminMixinNetworkUserConnectionQuery, AdminMixinNetworkUserConnectionQueryVariables>(AdminMixinNetworkUserConnectionDocument, options);
+        }
+export type AdminMixinNetworkUserConnectionQueryHookResult = ReturnType<typeof useAdminMixinNetworkUserConnectionQuery>;
+export type AdminMixinNetworkUserConnectionLazyQueryHookResult = ReturnType<typeof useAdminMixinNetworkUserConnectionLazyQuery>;
+export type AdminMixinNetworkUserConnectionQueryResult = Apollo.QueryResult<AdminMixinNetworkUserConnectionQuery, AdminMixinNetworkUserConnectionQueryVariables>;
 export const AdminMixinTransferConnectionDocument = gql`
     query AdminMixinTransferConnection($after: String, $oceanOrderId: ID, $userId: ID, $opponentId: ID, $transferType: String) {
   adminMixinTransferConnection(

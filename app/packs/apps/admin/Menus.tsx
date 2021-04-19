@@ -74,6 +74,12 @@ export default function Menus() {
         </Link>
       </Menu.Item>
       <Menu.Item>
+        <Link to='/mixin_network_users'>
+          <UserOutlined />
+          <span>MixinNetworkUser</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
         <Link to='/balance'>
           <DollarOutlined />
           <span>Balance</span>

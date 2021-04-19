@@ -45,11 +45,11 @@ class OceanBroker < MixinNetworkUser
     state :balanced
     state :ready
 
-    event :balance, after_commit: :register_ocean_broker do
+    event :balance, after_commit: :initialize_broker_account_async do
       transitions from: :created, to: :balanced
     end
 
-    event :ready, guard: :ensure_can_fetch_orders do
+    event :ready do
       transitions from: :balanced, to: :ready
     end
   end
@@ -70,7 +70,9 @@ class OceanBroker < MixinNetworkUser
 
   def register_ocean_broker
     setup_ocean_private_key if ocean_private_key.blank?
-    update_pin! if pin.blank?
+    initialize_pin! if pin.blank?
+
+    raise 'Pin incorrect!' unless pin_verified?
 
     MixinTransfer.create_with(
       source: self,
