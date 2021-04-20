@@ -17,38 +17,41 @@ export default function TabbarComponent(props: { activeTabKey: ITabKey }) {
 
   return (
     <>
-      <div className='fixed z-50 bg-white shadow-inner'>
-        <TabBar
-          style={{ bottom: 'env(safe-area-inset-bottom)' }}
-          activeKey={activeTabKey}
-          onChange={(value: ITabKey) => {
-            if (value === 'home') {
-              history.replace('/');
-            } else {
-              history.replace(`/${value}`);
-            }
-          }}
-        >
-          <TabBar.Item
-            itemKey='home'
-            title={t('home')}
-            icon={<HomeIcon size='1.5rem' />}
+      <div className='fixed bottom-0 left-0 z-50 w-full bg-gray-100 dark:bg-dark'>
+        <div className='m-auto max-w-screen-md'>
+          <TabBar
+            className='relative'
+            style={{ bottom: 'env(safe-area-inset-bottom)' }}
+            activeKey={activeTabKey}
+            onChange={(value: ITabKey) => {
+              if (value === 'home') {
+                history.replace('/');
+              } else {
+                history.replace(`/${value}`);
+              }
+            }}
+          >
+            <TabBar.Item
+              itemKey='home'
+              title={t('home')}
+              icon={<HomeIcon size='1.5rem' />}
+            />
+            <TabBar.Item
+              itemKey='exchange'
+              title={t('exchange')}
+              icon={<ExchangeIcon size='1.5rem' />}
+            />
+            <TabBar.Item
+              itemKey='wallet'
+              title={t('wallet')}
+              icon={<WalletIcon size='1.5rem' />}
+            />
+          </TabBar>
+          <div
+            className='fixed bottom-0 w-full bg-white dark:bg-dark'
+            style={{ height: 'env(safe-area-inset-bottom)' }}
           />
-          <TabBar.Item
-            itemKey='exchange'
-            title={t('exchange')}
-            icon={<ExchangeIcon size='1.5rem' />}
-          />
-          <TabBar.Item
-            itemKey='wallet'
-            title={t('wallet')}
-            icon={<WalletIcon size='1.5rem' />}
-          />
-        </TabBar>
-        <div
-          className='fixed bottom-0 w-full bg-white dark:bg-dark'
-          style={{ height: 'env(safe-area-inset-bottom)' }}
-        />
+        </div>
       </div>
     </>
   );
