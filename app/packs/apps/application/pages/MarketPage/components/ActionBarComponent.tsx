@@ -26,8 +26,8 @@ export default function ActionBarComponent(props: { market: Market }) {
   const { appId, appName } = useMixinBot();
 
   return (
-    <div className='fixed bottom-0 z-50 w-full py-4 bg-white shadow-inner dark:bg-dark'>
-      <div className='flex items-center w-full px-2'>
+    <div className='fixed bottom-0 left-0 z-50 w-full bg-gray dark:bg-dark'>
+      <div className='flex items-center px-2 py-4 mx-auto bg-white shadow-inner max-w-screen-md dark:bg-dark '>
         <div className='mx-2 text-center'>
           <StarIcon
             size='1rem'
