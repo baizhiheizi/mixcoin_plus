@@ -1,24 +1,20 @@
-# README
+# Mixcoin
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Trade any digital assets with your own wallet.
 
-Things you may want to cover:
+![snapshot](public/snapshot.png)
 
-* Ruby version
+---
 
-* System dependencies
+- built on [Mixin Network](https://mixin.one)
+- use [Ocean ONE](https://github.com/MixinNetwork/ocean.one) as exchange engine
 
-* Configuration
+## Experience
 
-* Database creation
+- Install [Mixin Messenger](https://mixin.one/messenger) and search **7000101524**
+- https://mixcoin.one
 
-* Database initialization
+## Contact
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- Mixin Group: 7000103078
+- Author Mixin ID: 1051445
