@@ -1,4 +1,4 @@
-import { useInterval } from 'ahooks';
+import { useInterval, useWebSocket } from 'ahooks';
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
 import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import {
@@ -13,7 +13,6 @@ import pako from 'pako';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router';
-import useWebSocket from 'react-use-websocket';
 import { v4 as uuid } from 'uuid';
 import { Tabs } from 'zarm';
 import ActionBarComponent from './components/ActionBarComponent';
@@ -31,6 +30,13 @@ BigNumber.config({
   },
 });
 
+enum ReadyState {
+  Connecting = 0,
+  Open = 1,
+  Closing = 2,
+  Closed = 3,
+}
+
 export default function MarketPage() {
   const history = useHistory();
   const { t } = useTranslation();
@@ -38,7 +44,6 @@ export default function MarketPage() {
   const { loading, data } = useMarketQuery({
     variables: { id: marketId },
   });
-  const [bookConnected, setBookConnected] = useState(false);
   const [tradesFetched, setTradesFetched] = useState(false);
   const [trades, setTrades] = useState<ITrade[]>([]);
   const [book, setBook] = useState<{
@@ -136,7 +141,6 @@ export default function MarketPage() {
     } catch {
       msg = {};
     }
-    setBookConnected(true);
     switch (msg.data.event) {
       case 'BOOK-T0':
         const { asks, bids } = msg.data.data;
@@ -156,7 +160,7 @@ export default function MarketPage() {
     }
   }
 
-  const { sendMessage } = useWebSocket(WS_ENDPOINT, {
+  const { sendMessage, readyState } = useWebSocket(WS_ENDPOINT, {
     onMessage: (event) => {
       const fileReader = new FileReader();
       fileReader.onload = (e: any) => {
@@ -167,19 +171,24 @@ export default function MarketPage() {
       };
       fileReader.readAsArrayBuffer(event.data);
     },
-    onOpen: () => {
+    onOpen: () => {},
+    onError: (e) => {
+      console.log(e);
+    },
+    reconnectLimit: Infinity,
+    reconnectInterval: 500,
+  });
+
+  useEffect(() => {
+    if (readyState === ReadyState.Open) {
       const msg = {
         action: 'SUBSCRIBE_BOOK',
         id: uuid().toLowerCase(),
-        params: { market: market.oceanMarketId },
+        params: { market: market?.oceanMarketId },
       };
-      sendMessage(pako.gzip(JSON.stringify(msg)));
-    },
-    reconnectAttempts: Infinity,
-    reconnectInterval: 1000,
-    retryOnError: true,
-    shouldReconnect: () => true,
-  });
+      sendMessage && sendMessage(pako.gzip(JSON.stringify(msg)));
+    }
+  }, [data?.market, readyState]);
 
   useEffect(() => {
     refreshTrades();
@@ -224,14 +233,14 @@ export default function MarketPage() {
             <BookComponent
               market={market}
               book={book}
-              connected={bookConnected}
+              connected={readyState === ReadyState.Open}
             />
           </Tabs.Panel>
           <Tabs.Panel title={t('depth_chart')}>
             <DepthChartComponent
               asks={book.asks}
               bids={book.bids}
-              connected={bookConnected}
+              connected={readyState === ReadyState.Open}
             />
           </Tabs.Panel>
           <Tabs.Panel title={t('history_trades')}>

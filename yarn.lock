@@ -8055,11 +8055,6 @@ react-router@5.2.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-use-websocket@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/react-use-websocket/-/react-use-websocket-2.5.0.tgz#20c6657802369a280c4921840a0529c2fd0cfe6f"
-  integrity sha512-xC2xE13RI584dyRtuQaTRf9tyJsdL4wD2fqq8ugZAcm3Xf+qjyvTJiB2BMsWfBOjQgnjOJstp2sOPXFB84Sb+Q==
-
 react@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
