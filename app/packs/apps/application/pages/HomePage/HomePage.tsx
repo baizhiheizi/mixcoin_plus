@@ -5,15 +5,15 @@ import React, { useState } from 'react';
 import { User as UserIcon } from '@icon-park/react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { Popup, Tabs } from 'zarm';
-import { MarketsComponent } from './components/MarketsComponent';
+import { Message, Popup, Tabs } from 'zarm';
+import MarketsComponent from 'apps/application/components/MarketsComponent/MarketsComponent';
 import MineComponent from './components/MineComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 
 export default function HomePage() {
   const { currentUser } = useCurrentUser();
   const history = useHistory();
-  const tabs = ['favorite', 'USDT', 'pUSD', 'BTC', 'XIN'];
+  const tabs = ['favorite', 'recommended', 'hot'];
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const cachedTabIndex = tabs.findIndex(
     (tab) => tab === localStorage.getItem('_cachedQuote'),
@@ -63,12 +63,23 @@ export default function HomePage() {
           }}
         >
           <Tabs.Panel title={t('favorite')}></Tabs.Panel>
-          <Tabs.Panel title='USDT'></Tabs.Panel>
-          <Tabs.Panel title='pUSD'></Tabs.Panel>
-          <Tabs.Panel title='BTC'></Tabs.Panel>
-          <Tabs.Panel title='XIN'></Tabs.Panel>
+          <Tabs.Panel title={t('recommend')}></Tabs.Panel>
+          <Tabs.Panel title={t('hot')}></Tabs.Panel>
         </Tabs>
       </div>
+      {!currentUser && (
+        <Message size='lg' theme='warning'>
+          <div>
+            <span>{t('connect_wallet_to_exhange')}</span>
+            <a
+              className='mx-1 font-semibold'
+              onClick={() => location.replace('/login')}
+            >
+              {t('connect_wallet')}
+            </a>
+          </div>
+        </Message>
+      )}
       <MarketsComponent type={tabs[tabIndex]} />
       <Popup
         direction='left'

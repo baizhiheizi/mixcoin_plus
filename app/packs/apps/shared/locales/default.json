@@ -36,10 +36,13 @@
     "defaultMessage": "Refunded"
   },
   "home": { "id": "home", "defaultMessage": "Home" },
+  "markets": { "id": "markets", "defaultMessage": "Markets" },
   "exchange": { "id": "exchange", "defaultMessage": "Exchange" },
   "wallet": { "id": "wallet", "defaultMessage": "Wallet" },
   "mine": { "id": "mine", "defaultMessage": "Mine" },
   "favorite": { "id": "favorite", "defaultMessage": "Favorite" },
+  "recommend": { "id": "recommend", "defaultMessage": "Recommend" },
+  "hot": { "id": "hot", "defaultMessage": "Hot" },
   "language": { "id": "language", "defaultMessage": "Language" },
   "logout": { "id": "logout", "defaultMessage": "Logout" },
   "connectWallet": {
@@ -196,6 +199,10 @@
   "exchangeAnyAsset": {
     "id": "exchange_any_asset",
     "defaultMessage": "Exchange any asset"
+  },
+  "searchAnyAsset": {
+    "id": "search_any_asset",
+    "defaultMessage": "Search any asset in your wallet"
   },
   "noRecord": { "id": "no_record", "defaultMessage": "No Data" },
   "orderStatePaid": { "id": "order_state.paid", "defaultMessage": "Paid" },

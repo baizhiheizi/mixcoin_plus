@@ -1,9 +1,12 @@
 en:
   home: Home
+  markets: Markets
   exchange: Exchange
   wallet: Wallet
   mine: Mine
   favorite: Favorite
+  recommend: Recommend
+  hot: Hot
   language: Language
   logout: Logout
   connect_wallet: Connect Wallet
@@ -68,6 +71,7 @@ en:
   commission_plan_notice_1: Invitation Commission and Group Owner Commission cannot be earned at the same time, Group Owner Commission counts first; 
   commission_plan_notice_2: The final event explanation rights belongs to Mixcoin Team. 
   exchange_any_asset: Exchange any asset
+  search_any_asset: Search any asset in your wallet
   no_record: No Data
   order_state:
     paid: Paid

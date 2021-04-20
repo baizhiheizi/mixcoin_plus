@@ -4,14 +4,15 @@ import {
 } from 'graphqlTypes';
 import React, { Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import LazyLoad from 'react-lazyload';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import LoaderComponent from './components/LoaderComponent/LoaderComponent';
 import { useCurrentUser } from './contexts';
 import CommissionPage from './pages/CommissionPage/CommissionPage';
 import ExchangePage from './pages/ExchangePage/ExchangePage';
 import HomePage from './pages/HomePage/HomePage';
+import MarketsPage from './pages/MarketsPage/MarketsPage';
 import WalletPage from './pages/WalletPage/WalletPage';
-import LazyLoad from 'react-lazyload';
 const MarketPage = React.lazy(() => import('./pages/MarketPage/MarketPage'));
 const SnapshotsPage = React.lazy(
   () => import('./pages/SnapshotsPage/SnapshotsPage'),
@@ -57,6 +58,11 @@ export default function Routes() {
           <Route path='/' exact>
             <LazyLoad>
               <HomePage />
+            </LazyLoad>
+          </Route>
+          <Route path='/markets' exact>
+            <LazyLoad>
+              <MarketsPage />
             </LazyLoad>
           </Route>
           <Route path='/exchange' exact>

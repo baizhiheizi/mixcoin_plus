@@ -1,45 +1,14 @@
-import { useDebounce } from 'ahooks';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
-import { useCurrentUser } from 'apps/application/contexts';
 import { useMarketConnectionQuery } from 'graphqlTypes';
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { ActivityIndicator, Message, SearchBar } from 'zarm';
+import { ActivityIndicator } from 'zarm';
 
-export function MarketsComponent(props: { type: string }) {
-  const { currentUser } = useCurrentUser();
-  const { t } = useTranslation();
-  const [query, setQuery] = useState('');
-  const debouncedQuery = useDebounce(query, { wait: 500 });
-
-  return (
-    <>
-      <SearchBar
-        value={query}
-        onChange={(value: string) => setQuery(value)}
-        onClear={() => setQuery('')}
-        onCancel={() => setQuery('')}
-      />
-      {!currentUser && (
-        <Message size='lg' theme='warning'>
-          <div>
-            <span>{t('connect_wallet_to_exhange')}</span>
-            <a
-              className='mx-1 font-semibold'
-              onClick={() => location.replace('/login')}
-            >
-              {t('connect_wallet')}
-            </a>
-          </div>
-        </Message>
-      )}
-      <MarketsListComponent type={props.type} query={debouncedQuery} />
-    </>
-  );
-}
-
-function MarketsListComponent(props: { type: string; query?: string }) {
+export default function MarketsComponent(props: {
+  type: string;
+  query?: string;
+}) {
   const history = useHistory();
   const { t } = useTranslation();
   const { type, query } = props;
@@ -105,7 +74,7 @@ function MarketsListComponent(props: { type: string; query?: string }) {
               <div
                 className={`${
                   market.change24h < 0 ? 'bg-red-500' : 'bg-green-500'
-                } text-white rounded ml-auto px-2 text-sm`}
+                } text-white rounded ml-auto py-1 text-center text-xs w-16`}
               >
                 {market.change24h > 0 && '+'}
                 {(market.change24h * 100)?.toFixed(2)}%
