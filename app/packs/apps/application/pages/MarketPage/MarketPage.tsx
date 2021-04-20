@@ -7,6 +7,7 @@ import {
   ITrade,
   WS_ENDPOINT,
 } from 'apps/application/utils';
+import { ReadyState } from 'apps/shared';
 import BigNumber from 'bignumber.js';
 import { Market, useMarketQuery } from 'graphqlTypes';
 import pako from 'pako';
@@ -29,13 +30,6 @@ BigNumber.config({
     secondaryGroupSize: 0,
   },
 });
-
-enum ReadyState {
-  Connecting = 0,
-  Open = 1,
-  Closing = 2,
-  Closed = 3,
-}
 
 export default function MarketPage() {
   const history = useHistory();
