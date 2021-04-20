@@ -7,6 +7,7 @@
 #  id                 :uuid             not null, primary key
 #  ocean_orders_count :integer          default(0)
 #  rank               :integer
+#  recommended_at     :datetime
 #  trades_count       :integer          default(0)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
@@ -49,10 +50,9 @@ class Market < ApplicationRecord
 
   scope :order_by_default, lambda {
     where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID])
-         .rank(:rank)
-         .order(trades_count: :desc, ocean_orders_count: :desc, created_at: :desc)
+         .order('recommended_at DESC NULLS LAST', rank: :asc, trades_count: :desc, ocean_orders_count: :desc, created_at: :desc)
   }
-  scope :recommended, -> { where(base_asset_id: [XIN_ASSET_ID, BTC_ASSET_ID], quote_asset_id: [PUSD_ASSET_ID, ERC20_USDT_ASSET_ID, OMNI_USDT_ASSET_ID]) }
+  scope :recommended, -> { where.not(recommended_at: nil).order(recommended_at: :desc) }
   scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
   scope :order_by_trades_24h, lambda {
     joins(:trades)
@@ -65,6 +65,18 @@ class Market < ApplicationRecord
         SQL
       ).order(vol_24h: :desc)
   }
+
+  def recommended?
+    recommended_at?
+  end
+
+  def recommend!
+    update! recommended_at: Time.current
+  end
+
+  def unrecommend!
+    update recommended_at: nil
+  end
 
   def ocean_market_id
     format('%<base>s-%<quote>s', base: base_asset_id, quote: quote_asset_id)

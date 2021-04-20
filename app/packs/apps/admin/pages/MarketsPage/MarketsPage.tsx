@@ -1,5 +1,5 @@
 import { useDebounce } from 'ahooks';
-import { Button, Input, PageHeader, Select, Space, Table } from 'antd';
+import { Button, Divider, Input, PageHeader, Select, Space, Table } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import {
@@ -12,6 +12,8 @@ import {
 import {
   useAdminMarketConnectionQuery,
   useAdminRankMarketMutation,
+  useAdminRecommendMarketMutation,
+  useAdminUnrecommendMarketMutation,
 } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -24,6 +26,12 @@ export default function MarketsPage() {
     variables: { query: debouncedQuery, quoteAssetId },
   });
   const [rankMarket] = useAdminRankMarketMutation({
+    update: () => refetch(),
+  });
+  const [recommendMarket] = useAdminRecommendMarketMutation({
+    update: () => refetch(),
+  });
+  const [unrecommendMarket] = useAdminUnrecommendMarketMutation({
     update: () => refetch(),
   });
 
@@ -72,6 +80,32 @@ export default function MarketsPage() {
       render: (_, market) => (
         <Space>
           <Link to={`/markets/${market.id}`}>Detail</Link>
+          <a
+            onClick={() =>
+              recommendMarket({
+                variables: {
+                  input: { marketId: market.id },
+                },
+              })
+            }
+          >
+            Recommend
+          </a>
+
+          {market.recommended && (
+            <a
+              onClick={() =>
+                unrecommendMarket({
+                  variables: {
+                    input: { marketId: market.id },
+                  },
+                })
+              }
+            >
+              Unrecommend
+            </a>
+          )}
+          <Divider type='vertical' />
           <a
             onClick={() =>
               rankMarket({

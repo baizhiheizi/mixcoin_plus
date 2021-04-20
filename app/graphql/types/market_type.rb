@@ -9,6 +9,7 @@ module Types
     field :ocean_orders_count, Int, null: false
     field :trades_count, Int, null: false
     field :favorited, Boolean, null: true
+    field :recommended, Boolean, null: true
 
     field :price_current, Float, null: true
     field :price_24h_ago, Float, null: true
@@ -20,6 +21,10 @@ module Types
 
     field :base_asset, Types::MixinAssetType, null: false
     field :quote_asset, Types::MixinAssetType, null: false
+
+    def recommended
+      object.recommended?
+    end
 
     def favorited
       return if context[:current_user].blank?

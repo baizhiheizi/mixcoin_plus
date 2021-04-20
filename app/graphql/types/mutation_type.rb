@@ -4,6 +4,8 @@ module Types
   class MutationType < Types::BaseObject
     # admin
     field :admin_login, mutation: Mutations::AdminLoginMutation
+    field :admin_recommend_market, mutation: Mutations::AdminRecommendMarketMutation
+    field :admin_unrecommend_market, mutation: Mutations::AdminUnrecommendMarketMutation
     field :admin_rank_market, mutation: Mutations::AdminRankMarketMutation
 
     # application
