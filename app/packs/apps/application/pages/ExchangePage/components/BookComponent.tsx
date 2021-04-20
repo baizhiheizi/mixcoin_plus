@@ -1,10 +1,10 @@
+import { useWebSocket } from 'ahooks';
 import { ITick, ITrade, WS_ENDPOINT } from 'apps/application/utils';
 import BigNumber from 'bignumber.js';
 import { Market } from 'graphqlTypes';
 import pako from 'pako';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import useWebSocket from 'react-use-websocket';
 import { v4 as uuid } from 'uuid';
 import { ActivityIndicator } from 'zarm';
 
@@ -16,6 +16,13 @@ BigNumber.config({
     secondaryGroupSize: 0,
   },
 });
+
+enum ReadyState {
+  Connecting = 0,
+  Open = 1,
+  Closing = 2,
+  Closed = 3,
+}
 
 export default function BookComponent(props: {
   market: Partial<Market>;
@@ -133,7 +140,7 @@ export default function BookComponent(props: {
     }
   }
 
-  const { sendMessage } = useWebSocket(WS_ENDPOINT, {
+  const { sendMessage, readyState } = useWebSocket(WS_ENDPOINT, {
     onMessage: (event) => {
       const fileReader = new FileReader();
       fileReader.onload = (e: any) => {
@@ -144,19 +151,24 @@ export default function BookComponent(props: {
       };
       fileReader.readAsArrayBuffer(event.data);
     },
-    onOpen: () => {
+    onOpen: () => {},
+    onError: (e) => {
+      console.log(e);
+    },
+    reconnectLimit: Infinity,
+    reconnectInterval: 500,
+  });
+
+  useEffect(() => {
+    if (readyState === ReadyState.Open) {
       const msg = {
         action: 'SUBSCRIBE_BOOK',
         id: uuid().toLowerCase(),
-        params: { market: market.oceanMarketId },
+        params: { market: market?.oceanMarketId },
       };
-      sendMessage(pako.gzip(JSON.stringify(msg)));
-    },
-    reconnectAttempts: Infinity,
-    reconnectInterval: 1000,
-    retryOnError: true,
-    shouldReconnect: () => true,
-  });
+      sendMessage && sendMessage(pako.gzip(JSON.stringify(msg)));
+    }
+  }, [market, readyState]);
 
   const parseNumber = (str: string) => {
     const number = new BigNumber(str);
