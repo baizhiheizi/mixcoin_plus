@@ -24,7 +24,15 @@ export default function NavbarComponent(props: {
       }
       left={
         back && (
-          <div onClick={() => history.goBack()}>
+          <div
+            onClick={() => {
+              if (history.length === 1) {
+                history.push('/');
+              } else {
+                history.goBack();
+              }
+            }}
+          >
             <LeftIcon size='1.5rem' />
           </div>
         )
