@@ -37,7 +37,8 @@ export default function BookComponent(props: {
   function handleOrderOpenOnBook(tick: ITick) {
     const price = new BigNumber(tick.price);
     const amount = new BigNumber(tick.amount);
-    const { asks, bids } = book;
+    const asks = [...book.asks];
+    const bids = [...book.bids];
 
     if (tick.side === 'ASK') {
       for (let i = 0; i < book.asks.length; i++) {
@@ -68,7 +69,7 @@ export default function BookComponent(props: {
       }
       bids.push(tick);
     }
-    setBook(Object.assign({}, { asks, bids }));
+    setBook({ asks, bids });
     setTimestamp(Date.now());
   }
 
@@ -76,7 +77,8 @@ export default function BookComponent(props: {
     const price = new BigNumber(tick.price);
     const amount = new BigNumber(tick.amount);
 
-    const { asks, bids } = book;
+    const asks = [...book.asks];
+    const bids = [...book.bids];
     if (tick.side === 'BID') {
       const index = bids.findIndex((bid) =>
         new BigNumber(bid.price).isEqualTo(price),
@@ -103,7 +105,7 @@ export default function BookComponent(props: {
       }
     }
 
-    setBook(Object.assign({}, { asks, bids }));
+    setBook({ asks, bids });
     setTimestamp(Date.now());
   }
 
@@ -118,7 +120,10 @@ export default function BookComponent(props: {
     switch (msg.data.event) {
       case 'BOOK-T0':
         const { asks, bids } = msg.data.data;
-        setBook({ asks: asks.slice(0, 1000), bids: bids.slice(0, 1000) });
+        setBook({
+          asks: [...book.asks, ...asks.slice(0, 1000)],
+          bids: [...book.bids, ...bids.slice(0, 1000)],
+        });
         break;
       case 'HEARTBEAT':
         return;
