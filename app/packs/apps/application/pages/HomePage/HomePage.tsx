@@ -72,7 +72,7 @@ export default function HomePage() {
           <div>
             <span>{t('connect_wallet_to_exhange')}</span>
             <a
-              className='mx-1 font-semibold'
+              className='mx-1 font-semibold cursor-pointer'
               onClick={() => location.replace('/login')}
             >
               {t('connect_wallet')}

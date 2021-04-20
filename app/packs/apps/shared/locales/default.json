@@ -225,6 +225,7 @@
   "24hHigh": { "id": "24h_high", "defaultMessage": "24H High" },
   "24hLow": { "id": "24h_low", "defaultMessage": "24H Low" },
   "24hVolumne": { "id": "24h_volumne", "defaultMessage": "24H Volume" },
+  "balance": { "id": "balance", "defaultMessage": "Balance" },
   "notification": { "id": "notification", "defaultMessage": "Notification" },
   "notificationsUserAuthorizedNotificationMessage": {
     "id": "notifications.user_authorized_notification.message",

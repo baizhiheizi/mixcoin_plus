@@ -1353,6 +1353,18 @@
             "deprecationReason": null
           },
           {
+            "name": "balance",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Float",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "chainAsset",
             "description": null,
             "args": [],
