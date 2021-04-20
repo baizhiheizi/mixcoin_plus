@@ -184,6 +184,7 @@ export type MarketEdge = {
 export type MixinAsset = {
   __typename?: 'MixinAsset';
   assetId: Scalars['String'];
+  balance?: Maybe<Scalars['Float']>;
   chainAsset?: Maybe<MixinAsset>;
   chainId?: Maybe<Scalars['String']>;
   changeUsd?: Maybe<Scalars['Float']>;
@@ -1438,14 +1439,14 @@ export type MarketQuery = (
     & Pick<Market, 'id' | 'favorited' | 'priceCurrent' | 'change24h' | 'vol24h' | 'highPrice24h' | 'lowPrice24h' | 'oceanMarketId'>
     & { baseAsset: (
       { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd' | 'changeUsd'>
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd' | 'changeUsd' | 'balance'>
       & { chainAsset?: Maybe<(
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'iconUrl'>
       )> }
     ), quoteAsset: (
       { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd'>
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd' | 'balance'>
       & { chainAsset?: Maybe<(
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'iconUrl'>
@@ -3055,6 +3056,7 @@ export const MarketDocument = gql`
       chainAsset {
         iconUrl
       }
+      balance
     }
     quoteAsset {
       assetId
@@ -3064,6 +3066,7 @@ export const MarketDocument = gql`
       chainAsset {
         iconUrl
       }
+      balance
     }
     oceanMarketId
   }

@@ -18,7 +18,7 @@ export default function MarketsComponent(props: {
 
   if (loading) {
     return (
-      <div className='flex items-center justify-center h-18'>
+      <div className='flex items-center justify-center w-full py-4'>
         <ActivityIndicator size='lg' />
       </div>
     );

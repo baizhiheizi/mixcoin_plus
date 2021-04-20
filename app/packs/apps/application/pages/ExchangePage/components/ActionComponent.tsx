@@ -354,7 +354,13 @@ export default function ActionComponent(props: {
                 <div>+</div>
               </Button>
             </div>
-            <div className='p-2 text-gray-500'></div>
+            <div className='py-2 text-xs text-gray-500'>
+              {market.quoteAsset.balance && (
+                <span>
+                  {t('balance')}: {market.quoteAsset.balance}
+                </span>
+              )}
+            </div>
           </div>
           <div className='mb-2'>
             <div className='flex space-x-1'>
@@ -397,7 +403,13 @@ export default function ActionComponent(props: {
                 <div>+</div>
               </Button>
             </div>
-            <div className='p-2 text-gray-500'></div>
+            <div className='py-2 text-xs text-gray-500'>
+              {market.baseAsset.balance && (
+                <span>
+                  {t('balance')}: {market.baseAsset.balance}
+                </span>
+              )}
+            </div>
           </div>
         </>
       ) : (
