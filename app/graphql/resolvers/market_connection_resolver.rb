@@ -12,9 +12,12 @@ module Resolvers
       query = params[:query].to_s.strip
       q_ransack = { base_asset_symbol_i_cont: query }
 
-      if current_user.present? && params[:type] == 'favorite'
+      case params[:type]
+      when 'favorite'
+        return [] if current_user.blank?
+
         current_user.favorite_markets.order_by_default.ransack(q_ransack.merge(m: 'or')).result
-      elsif params[:type] == 'hot'
+      when 'hot'
         Market.order(trades_count: :desc, ocean_orders_count: :desc).first(10)
       else
         markets =
