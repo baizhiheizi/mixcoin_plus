@@ -94,7 +94,7 @@ export default function ActionBarComponent(props: { market: Market }) {
           {t('sell')}
         </a>
       </div>
-      <div style={{ height: 'env(safe-area-inset-bottom)' }}></div>
+      <div className='bg-white dark:bg-dark' style={{ height: 'env(safe-area-inset-bottom)' }}></div>
     </div>
   );
 }

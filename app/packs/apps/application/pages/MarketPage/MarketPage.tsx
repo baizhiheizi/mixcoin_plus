@@ -60,7 +60,8 @@ export default function MarketPage() {
   function handleOrderOpenOnBook(tick: ITick) {
     const price = new BigNumber(tick.price);
     const amount = new BigNumber(tick.amount);
-    const { asks, bids } = book;
+    const asks = [...book.asks];
+    const bids = [...book.bids];
 
     if (tick.side === 'ASK') {
       for (let i = 0; i < book.asks.length; i++) {
@@ -91,14 +92,15 @@ export default function MarketPage() {
       }
       bids.push(tick);
     }
-    setBook(Object.assign({}, { asks, bids }));
+    setBook({ asks, bids });
   }
 
   function handleOrderRemoveFromBook(tick: ITick) {
     const price = new BigNumber(tick.price);
     const amount = new BigNumber(tick.amount);
 
-    const { asks, bids } = book;
+    const asks = [...book.asks];
+    const bids = [...book.bids];
     if (tick.side === 'BID') {
       const index = bids.findIndex((bid) =>
         new BigNumber(bid.price).isEqualTo(price),
@@ -125,7 +127,7 @@ export default function MarketPage() {
       }
     }
 
-    setBook(Object.assign({}, { asks, bids }));
+    setBook({ asks, bids });
   }
 
   function handleMessage(raw: string) {
