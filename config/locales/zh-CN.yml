@@ -1,9 +1,12 @@
 zh-CN:
   home: 首页
+  markets: 交易对
   exchange: 交易
   wallet: 钱包
   mine: 我的
   favorite: 自选
+  recommend: 推荐
+  hot: 热门
   language: 语言
   logout: 退出登录
   connect_wallet: 连接钱包
@@ -68,6 +71,7 @@ zh-CN:
   commission_plan_notice_1: 邀请佣金和群主佣金不能叠加，群主佣金优先；
   commission_plan_notice_2: 活动最终解释权归 Mixcoin 团队所有。
   exchange_any_asset: 交易任意加密货币
+  search_any_asset: 搜索您钱包里的任意加密货币
   no_record: 没有记录
   order_state:
     paid: '已支付'

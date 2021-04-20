@@ -1,6 +1,7 @@
 import {
   ExchangeThree as ExchangeIcon,
   HomeTwo as HomeIcon,
+  MarketAnalysis as MarketAnalysisIcon,
   WalletTwo as WalletIcon,
 } from '@icon-park/react';
 import React from 'react';
@@ -8,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { TabBar } from 'zarm';
 
-type ITabKey = 'home' | 'exchange' | 'wallet';
+type ITabKey = 'home' | 'markets' | 'exchange' | 'wallet';
 
 export default function TabbarComponent(props: { activeTabKey: ITabKey }) {
   const { activeTabKey } = props;
@@ -35,6 +36,11 @@ export default function TabbarComponent(props: { activeTabKey: ITabKey }) {
               itemKey='home'
               title={t('home')}
               icon={<HomeIcon size='1.5rem' />}
+            />
+            <TabBar.Item
+              itemKey='markets'
+              title={t('markets')}
+              icon={<MarketAnalysisIcon size='1.5rem' />}
             />
             <TabBar.Item
               itemKey='exchange'
