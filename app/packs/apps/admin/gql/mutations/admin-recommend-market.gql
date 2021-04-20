@@ -1,0 +1,3 @@
+mutation AdminRecommendMarket($input: AdminRecommendMarketMutationInput!) {
+  adminRecommendMarket(input: $input)
+}
