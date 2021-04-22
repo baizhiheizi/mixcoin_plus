@@ -1,0 +1,10 @@
+query CurrentConversation {
+  currentConversation {
+    id
+    conversationId
+    category
+    name
+    adminUuids
+    creatorId
+  }
+}

@@ -8,6 +8,7 @@ module Types
     field :name, String, null: true
     field :code_id, String, null: true
     field :creator_id, String, null: true
+    field :admin_uuids, [String], null: true
     field :participant_uuids, [String], null: false
 
     field :participants, [Types::UserType], null: true

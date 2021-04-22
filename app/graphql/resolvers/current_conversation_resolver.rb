@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 module Resolvers
-  class BaseResolver < GraphQL::Schema::Resolver
-    def current_user
-      context[:current_user]
-    end
+  class CurrentConversationResolver < Resolvers::BaseResolver
+    type Types::MixinConversationType, null: true
 
-    def current_conversation
+    def resolve
       MixinConversation.find_by conversation_id: context[:current_conversation_id]
     end
   end

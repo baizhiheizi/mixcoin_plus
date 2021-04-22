@@ -16,5 +16,7 @@ module Types
     field :unfavorite_market, mutation: Mutations::UnfavoriteMarketMutation
     field :generate_cancel_deprecated_ocean_order_pay_url, mutation: Mutations::GenerateCancelDeprecatedOceanOrderPayUrlMutation
     field :create_invitation, mutation: Mutations::CreateInvitationMutation
+    field :create_group_market, mutation: Mutations::CreateGroupMarketMutation
+    field :delete_group_market, mutation: Mutations::DeleteGroupMarketMutation
   end
 end

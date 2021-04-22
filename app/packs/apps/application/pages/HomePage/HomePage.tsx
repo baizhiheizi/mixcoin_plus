@@ -9,9 +9,11 @@ import { Message, Popup, Tabs } from 'zarm';
 import MarketsComponent from 'apps/application/components/MarketsComponent/MarketsComponent';
 import MineComponent from './components/MineComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
+import { useCurrentConversation } from 'apps/application/contexts/CurrentConversationContext';
 
 export default function HomePage() {
   const { currentUser } = useCurrentUser();
+  const { currentConversation } = useCurrentConversation();
   const history = useHistory();
   const tabs = ['favorite', 'recommended', 'hot'];
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -63,7 +65,11 @@ export default function HomePage() {
           }}
         >
           <Tabs.Panel title={t('favorite')}></Tabs.Panel>
-          <Tabs.Panel title={t('recommend')}></Tabs.Panel>
+          {currentConversation?.category === 'GROUP' ? (
+            <Tabs.Panel title={t('group')}></Tabs.Panel>
+          ) : (
+            <Tabs.Panel title={t('recommend')}></Tabs.Panel>
+          )}
           <Tabs.Panel title={t('hot')}></Tabs.Panel>
         </Tabs>
       </div>
