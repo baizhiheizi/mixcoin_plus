@@ -24,6 +24,8 @@ class MixinConversation < ApplicationRecord
   belongs_to :creator, class_name: 'User', primary_key: :mixin_uuid, optional: true
 
   has_many :ocean_orders, foreign_key: :conversation_id, primary_key: :conversation_id, inverse_of: :conversation, dependent: :restrict_with_exception
+  has_many :group_markets, dependent: :restrict_with_exception
+  has_many :markets, through: :group_markets
 
   before_validation :set_defaults, on: :create
 
@@ -34,6 +36,12 @@ class MixinConversation < ApplicationRecord
 
   def participants
     @participants = User.where(mixin_uuid: participant_uuids)
+  end
+
+  def admin_uuids
+    data['participants']
+      .filter(&->(participant) { participant['role'].in? %w[ADMIN OWNER] })
+      .map(&->(participant) { participant['user_id'] })
   end
 
   def group?

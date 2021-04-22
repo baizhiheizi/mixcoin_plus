@@ -1,19 +1,24 @@
 import {
   useCreateInvitationMutation,
+  useCurrentConversationQuery,
   useSwitchLocaleMutation,
 } from 'graphqlTypes';
 import React, { Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import LazyLoad from 'react-lazyload';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ActivityIndicator } from 'zarm';
 import LoaderComponent from './components/LoaderComponent/LoaderComponent';
-import { useCurrentUser } from './contexts';
+import { CurrentConversationContext, useCurrentUser } from './contexts';
 import CommissionPage from './pages/CommissionPage/CommissionPage';
 import ExchangePage from './pages/ExchangePage/ExchangePage';
 import HomePage from './pages/HomePage/HomePage';
 import MarketsPage from './pages/MarketsPage/MarketsPage';
 import WalletPage from './pages/WalletPage/WalletPage';
 const MarketPage = React.lazy(() => import('./pages/MarketPage/MarketPage'));
+const GroupMarketsPage = React.lazy(
+  () => import('./pages/GroupMarketsPage/GroupMarketsPage'),
+);
 const SnapshotsPage = React.lazy(
   () => import('./pages/SnapshotsPage/SnapshotsPage'),
 );
@@ -31,6 +36,7 @@ export default function Routes() {
       localStorage.setItem('_mixcoinInviteCode', '');
     },
   });
+  const { loading, data } = useCurrentConversationQuery();
 
   useEffect(() => {
     if (!currentUser) {
@@ -51,57 +57,73 @@ export default function Routes() {
     }
   }, []);
 
+  if (loading) {
+    return (
+      <div className='flex items-center justify-center w-full py-4'>
+        <ActivityIndicator size='lg' />
+      </div>
+    );
+  }
+  const { currentConversation } = data;
+
   return (
-    <Router>
-      <Suspense fallback={<LoaderComponent />}>
-        <Switch>
-          <Route path='/' exact>
-            <LazyLoad>
-              <HomePage />
-            </LazyLoad>
-          </Route>
-          <Route path='/markets' exact>
-            <LazyLoad>
-              <MarketsPage />
-            </LazyLoad>
-          </Route>
-          <Route path='/exchange' exact>
-            <LazyLoad>
-              <ExchangePage />
-            </LazyLoad>
-          </Route>
-          <Route path='/wallet' exact>
-            <LazyLoad>
-              <WalletPage />
-            </LazyLoad>
-          </Route>
-          <Route path='/markets/:marketId' exact>
-            <LazyLoad>
-              <MarketPage />
-            </LazyLoad>
-          </Route>
-          <Route path='/orders' exact>
-            <LazyLoad>
-              <OrdersPage />
-            </LazyLoad>
-          </Route>
-          <Route path='/snapshots/:assetId' exact>
-            <LazyLoad>
-              <SnapshotsPage />
-            </LazyLoad>
-          </Route>
-          <Route path='/deprecated_orders' exact>
-            <LazyLoad>
-              <DeprecatedOrdersPage />
-            </LazyLoad>
-          </Route>
-          <Route path='/commission' exact>
-            <LazyLoad>
-              <CommissionPage />
-            </LazyLoad>
-          </Route>
-        </Switch>
-      </Suspense>
-    </Router>
+    <CurrentConversationContext.Provider value={{ currentConversation }}>
+      <Router>
+        <Suspense fallback={<LoaderComponent />}>
+          <Switch>
+            <Route path='/' exact>
+              <LazyLoad>
+                <HomePage />
+              </LazyLoad>
+            </Route>
+            <Route path='/markets' exact>
+              <LazyLoad>
+                <MarketsPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/group_markets' exact>
+              <LazyLoad>
+                <GroupMarketsPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/exchange' exact>
+              <LazyLoad>
+                <ExchangePage />
+              </LazyLoad>
+            </Route>
+            <Route path='/wallet' exact>
+              <LazyLoad>
+                <WalletPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/markets/:marketId' exact>
+              <LazyLoad>
+                <MarketPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/orders' exact>
+              <LazyLoad>
+                <OrdersPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/snapshots/:assetId' exact>
+              <LazyLoad>
+                <SnapshotsPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/deprecated_orders' exact>
+              <LazyLoad>
+                <DeprecatedOrdersPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/commission' exact>
+              <LazyLoad>
+                <CommissionPage />
+              </LazyLoad>
+            </Route>
+          </Switch>
+        </Suspense>
+      </Router>
+    </CurrentConversationContext.Provider>
   );
 }

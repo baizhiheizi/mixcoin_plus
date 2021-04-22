@@ -1,8 +1,13 @@
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
+import {
+  useCurrentConversation,
+  useCurrentUser,
+} from 'apps/application/contexts';
 import { useMarketConnectionQuery } from 'graphqlTypes';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 import { ActivityIndicator } from 'zarm';
 
 export default function MarketsComponent(props: {
@@ -12,6 +17,8 @@ export default function MarketsComponent(props: {
   const history = useHistory();
   const { t } = useTranslation();
   const { type, query } = props;
+  const { currentUser } = useCurrentUser();
+  const { currentConversation } = useCurrentConversation();
   const { loading, data, refetch, fetchMore } = useMarketConnectionQuery({
     variables: { type, query },
   });
@@ -83,6 +90,13 @@ export default function MarketsComponent(props: {
           </div>
         ))}
       </PullComponent>
+      {type === 'recommended' &&
+        currentConversation?.category === 'GROUP' &&
+        currentConversation.adminUuids.includes(currentUser.mixinUuid) && (
+          <div className='text-sm text-center text-blue-500'>
+            <Link to='/group_markets'>{t('edit_group_markets')}</Link>
+          </div>
+        )}
     </>
   );
 }

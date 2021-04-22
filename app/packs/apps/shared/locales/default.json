@@ -42,6 +42,7 @@
   "mine": { "id": "mine", "defaultMessage": "Mine" },
   "favorite": { "id": "favorite", "defaultMessage": "Favorite" },
   "recommend": { "id": "recommend", "defaultMessage": "Recommend" },
+  "group": { "id": "group", "defaultMessage": "Group" },
   "hot": { "id": "hot", "defaultMessage": "Hot" },
   "language": { "id": "language", "defaultMessage": "Language" },
   "logout": { "id": "logout", "defaultMessage": "Logout" },
@@ -226,6 +227,16 @@
   "24hLow": { "id": "24h_low", "defaultMessage": "24H Low" },
   "24hVolumne": { "id": "24h_volumne", "defaultMessage": "24H Volume" },
   "balance": { "id": "balance", "defaultMessage": "Balance" },
+  "editGroupMarkets": {
+    "id": "edit_group_markets",
+    "defaultMessage": "Edit Group Markets"
+  },
+  "groupAdminNotice": {
+    "id": "group_admin_notice",
+    "defaultMessage": "You are Group Admin, you can edit group markets that will show to your group member when Mixcoin open in group conversation."
+  },
+  "choose": { "id": "choose", "defaultMessage": "Choose" },
+  "remove": { "id": "remove", "defaultMessage": "Remove" },
   "notification": { "id": "notification", "defaultMessage": "Notification" },
   "notificationsUserAuthorizedNotificationMessage": {
     "id": "notifications.user_authorized_notification.message",

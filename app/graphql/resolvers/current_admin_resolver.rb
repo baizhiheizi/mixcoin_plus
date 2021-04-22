@@ -4,7 +4,7 @@ module Resolvers
   class CurrentAdminResolver < Resolvers::AdminBaseResolver
     type Types::AdministratorType, null: false
 
-    def resovle
+    def resolve
       current_admin
     end
   end

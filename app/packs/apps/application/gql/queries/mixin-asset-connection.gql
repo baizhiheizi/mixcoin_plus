@@ -1,0 +1,16 @@
+query MixinAssetConnection($after: String, $query: String) {
+  mixinAssetConnection(after: $after, query: $query) {
+    nodes {
+      assetId
+      symbol
+      iconUrl
+      chainAsset {
+        iconUrl
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

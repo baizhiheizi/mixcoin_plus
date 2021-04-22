@@ -1,0 +1,3 @@
+mutation CreateGroupMarket($input: CreateGroupMarketMutationInput!) {
+  createGroupMarket(input: $input)
+}

@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
       current_user: current_user && {
         name: current_user.name,
         avatar: current_user.avatar,
+        mixin_uuid: current_user.mixin_uuid,
         invite_code: current_user.invite_code,
         may_invited: current_user.may_invited?,
         invitor: current_user.invitor && {
@@ -44,7 +45,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_conversation_id
-    request.env['HTTP_X_CONVERSATION_ID']
+    @current_conversation_id ||= request.env['HTTP_X_CONVERSATION_ID']
   end
 
   def with_locale(&action)

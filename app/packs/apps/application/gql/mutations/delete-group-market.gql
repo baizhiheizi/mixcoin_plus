@@ -1,0 +1,3 @@
+mutation DeleteGroupMarket($input: DeleteGroupMarketMutationInput!) {
+  deleteGroupMarket(input: $input)
+}

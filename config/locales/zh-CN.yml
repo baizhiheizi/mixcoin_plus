@@ -6,6 +6,7 @@ zh-CN:
   mine: 我的
   favorite: 自选
   recommend: 推荐
+  group: 群组
   hot: 热门
   language: 语言
   logout: 退出登录
@@ -83,3 +84,7 @@ zh-CN:
   24h_low: 24小时最低 
   24h_volumne: 24小时成交
   balance: 余额
+  edit_group_markets: 编辑群组交易对
+  group_admin_notice: 您是群组管理员。您可以编辑群组交易对，当群成员从群组中打开 Mixcoin 时，将显示群组交易对。
+  choose: 选择
+  remove: 移除

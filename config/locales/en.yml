@@ -6,6 +6,7 @@ en:
   mine: Mine
   favorite: Favorite
   recommend: Recommend
+  group: Group
   hot: Hot
   language: Language
   logout: Logout
@@ -83,3 +84,7 @@ en:
   24h_low: 24H Low
   24h_volumne: 24H Volume
   balance: Balance
+  edit_group_markets: Edit Group Markets
+  group_admin_notice: You are Group Admin, you can edit group markets that will show to your group member when Mixcoin open in group conversation.
+  choose: Choose
+  remove: Remove

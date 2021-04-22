@@ -26,8 +26,10 @@ module Types
     field :admin_user_deprecated_ocean_snapshots, resolver: Resolvers::AdminUserDeprecatedOceanSnapshotsResolver
     field :admin_user_deprecated_ocean_orders, resolver: Resolvers::AdminUserDeprecatedOceanOrdersResolver
 
+    field :current_conversation, resolver: Resolvers::CurrentConversationResolver
     field :market, resolver: Resolvers::MarketResolver
     field :market_connection, resolver: Resolvers::MarketConnectionResolver
+    field :mixin_asset_connection, resolver: Resolvers::MixinAssetConnectionResolver
     field :ocean_order_connection, resolver: Resolvers::OceanOrderConnectionResolver
     field :user_assets, resolver: Resolvers::UserAssetsResolver
     field :user_snapshots, resolver: Resolvers::UserSnapshotsResolver

@@ -31,7 +31,11 @@ module Resolvers
           when 'XIN'
             Market.where(quote_asset_id: Market::XIN_ASSET_ID).order_by_default
           when 'recommended'
-            Market.recommended
+            if current_conversation&.group?
+              current_conversation.markets
+            else
+              Market.recommended
+            end
           else
             Market.order_by_default
           end
