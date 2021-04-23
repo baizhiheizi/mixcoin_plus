@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_21_003216) do
+ActiveRecord::Schema.define(version: 2021_04_23_024004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(version: 2021_04_21_003216) do
     t.jsonb "raw", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.decimal "price_usd"
     t.index ["asset_id"], name: "index_mixin_assets_on_asset_id", unique: true
   end
 
