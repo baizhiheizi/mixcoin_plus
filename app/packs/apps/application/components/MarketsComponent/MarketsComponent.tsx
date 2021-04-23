@@ -92,7 +92,7 @@ export default function MarketsComponent(props: {
       </PullComponent>
       {type === 'recommended' &&
         currentConversation?.category === 'GROUP' &&
-        currentConversation.adminUuids.includes(currentUser.mixinUuid) && (
+        currentConversation.adminUuids.includes(currentUser?.mixinUuid) && (
           <div className='text-sm text-center text-blue-500'>
             <Link to='/group_markets'>{t('edit_group_markets')}</Link>
           </div>
