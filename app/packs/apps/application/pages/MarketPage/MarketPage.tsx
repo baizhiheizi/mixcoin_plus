@@ -1,17 +1,13 @@
 import { useInterval, useWebSocket } from 'ahooks';
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
 import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
-import {
-  fetchTrades,
-  ITick,
-  ITrade,
-  WS_ENDPOINT,
-} from 'apps/application/utils';
+import { orderBookMessageReducer } from 'apps/application/reducers';
+import { fetchTrades, ITrade, WS_ENDPOINT } from 'apps/application/utils';
 import { ReadyState } from 'apps/shared';
 import BigNumber from 'bignumber.js';
 import { Market, useMarketQuery } from 'graphqlTypes';
 import pako from 'pako';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router';
 import { v4 as uuid } from 'uuid';
@@ -40,10 +36,10 @@ export default function MarketPage() {
   });
   const [tradesFetched, setTradesFetched] = useState(false);
   const [trades, setTrades] = useState<ITrade[]>([]);
-  const [book, setBook] = useState<{
-    asks: ITick[];
-    bids: ITick[];
-  }>({ asks: [], bids: [] });
+  const [book, dispatchBook] = useReducer(orderBookMessageReducer, {
+    asks: [],
+    bids: [],
+  });
 
   async function refreshTrades() {
     if (data?.market?.oceanMarketId) {
@@ -57,117 +53,7 @@ export default function MarketPage() {
     }
   }
 
-  function handleOrderOpenOnBook(tick: ITick) {
-    const price = new BigNumber(tick.price);
-    const amount = new BigNumber(tick.amount);
-    const asks = [...book.asks];
-    const bids = [...book.bids];
-
-    if (tick.side === 'ASK') {
-      for (let i = 0; i < book.asks.length; i++) {
-        const bo = book.asks[i];
-        const bp = new BigNumber(bo.price);
-        if (bp.isEqualTo(price)) {
-          bo.amount = new BigNumber(bo.amount).plus(amount).toFixed(4);
-          return;
-        }
-        if (bp.isGreaterThan(price)) {
-          book.asks.splice(i, 0, tick);
-          return;
-        }
-      }
-      asks.push(tick);
-    } else if (tick.side === 'BID') {
-      for (let i = 0; i < book.bids.length; i++) {
-        const bo = book.bids[i];
-        const bp = new BigNumber(bo.price);
-        if (bp.isEqualTo(price)) {
-          bo.amount = new BigNumber(bo.amount).plus(amount).toFixed(4);
-          return;
-        }
-        if (bp.isLessThan(price)) {
-          book.bids.splice(i, 0, tick);
-          return;
-        }
-      }
-      bids.push(tick);
-    }
-    setBook({ asks, bids });
-  }
-
-  function handleOrderRemoveFromBook(tick: ITick) {
-    const price = new BigNumber(tick.price);
-    const amount = new BigNumber(tick.amount);
-
-    const asks = [...book.asks];
-    const bids = [...book.bids];
-    if (tick.side === 'BID') {
-      const index = bids.findIndex((bid) =>
-        new BigNumber(bid.price).isEqualTo(price),
-      );
-      if (index > -1) {
-        bids[index].amount = new BigNumber(bids[index].amount)
-          .minus(amount)
-          .toFixed(4);
-        if (bids[index].amount === '0.0000') {
-          bids.splice(index, 1);
-        }
-      }
-    } else if (tick.side === 'ASK') {
-      const index = asks.findIndex((ask) =>
-        new BigNumber(ask.price).isEqualTo(price),
-      );
-      if (index > -1) {
-        asks[index].amount = new BigNumber(asks[index].amount)
-          .minus(amount)
-          .toFixed(4);
-        if (asks[index].amount === '0.0000') {
-          asks.splice(index, 1);
-        }
-      }
-    }
-
-    setBook({ asks, bids });
-  }
-
-  function handleMessage(raw: string) {
-    let msg: any;
-    try {
-      msg = JSON.parse(raw);
-    } catch {
-      msg = {};
-    }
-    switch (msg.data.event) {
-      case 'BOOK-T0':
-        const { asks, bids } = msg.data.data;
-        setBook({ asks: asks.slice(0, 1000), bids: bids.slice(0, 1000) });
-        break;
-      case 'HEARTBEAT':
-        return;
-      case 'ORDER-OPEN':
-        handleOrderOpenOnBook(msg.data.data);
-        break;
-      case 'ORDER-CANCEL':
-        handleOrderRemoveFromBook(msg.data.data);
-        break;
-      case 'ORDER-MATCH':
-        handleOrderRemoveFromBook(msg.data.data);
-        break;
-    }
-  }
-
-  const { sendMessage, readyState } = useWebSocket(WS_ENDPOINT, {
-    onMessage: (event) => {
-      const fileReader = new FileReader();
-      fileReader.onload = (e: any) => {
-        const msg = pako.ungzip(new Uint8Array(e.target.result), {
-          to: 'string',
-        });
-        handleMessage(msg);
-      };
-      fileReader.readAsArrayBuffer(event.data);
-    },
-    onOpen: () => {},
+  const { latestMessage, sendMessage, readyState } = useWebSocket(WS_ENDPOINT, {
     onError: (e) => {
       console.log(e);
     },
@@ -184,7 +70,25 @@ export default function MarketPage() {
       };
       sendMessage && sendMessage(pako.gzip(JSON.stringify(msg)));
     }
-  }, [data?.market, readyState]);
+  }, [marketId, readyState]);
+
+  useEffect(() => {
+    if (latestMessage) {
+      const fileReader = new FileReader();
+      fileReader.onload = (e: any) => {
+        let msg: any = pako.ungzip(new Uint8Array(e.target.result), {
+          to: 'string',
+        });
+        try {
+          msg = JSON.parse(msg);
+        } catch {
+          msg = {};
+        }
+        dispatchBook(msg.data);
+      };
+      fileReader.readAsArrayBuffer(latestMessage.data);
+    }
+  }, [marketId, latestMessage]);
 
   useEffect(() => {
     refreshTrades();
