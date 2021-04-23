@@ -10,7 +10,11 @@ module Mutations
     def resolve(quote:, base_asset_id:)
       return unless current_user.mixin_uuid.in?(current_conversation&.admin_uuids || [])
 
-      market = Market.includes(:quote_asset).find_by(quote_asset: { symbol: quote }, base_asset_id: base_asset_id)
+      market =
+        Market
+        .includes(:quote_asset)
+        .where.not(quote_asset_id: Market::OMNI_USDT_ASSET_ID)
+        .find_by(quote_asset: { symbol: quote }, base_asset_id: base_asset_id)
 
       current_conversation.group_markets.create! market: market
     end
