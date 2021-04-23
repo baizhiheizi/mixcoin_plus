@@ -5,6 +5,6 @@ class MixinAssetSyncPriceWorker
   sidekiq_options queue: :low, retry: false
 
   def perform
-    MixinAsset.all.map(&:sync)
+    MixinAsset.with_price.map(&:sync)
   end
 end

@@ -6,6 +6,7 @@
 #
 #  id         :uuid             not null, primary key
 #  name       :string
+#  price_usd  :decimal(, )
 #  raw        :jsonb            not null
 #  symbol     :string
 #  created_at :datetime         not null
@@ -18,12 +19,14 @@
 #  index_mixin_assets_on_asset_id  (asset_id) UNIQUE
 #
 class MixinAsset < ApplicationRecord
-  store :raw, accessors: %i[icon_url change_usd change_btc price_usd price_btc]
+  store :raw, accessors: %i[icon_url change_usd change_btc price_btc]
 
   before_validation :set_defaults, on: :create
   after_commit :generate_markets_async, on: :create
 
   belongs_to :chain_asset, class_name: 'MixinAsset', primary_key: :assets_id, foreign_key: :chain_id, inverse_of: false, optional: true
+
+  scope :with_price, -> { where('price_usd > ?', 0) }
 
   def self.find_or_create_by_asset_id(_asset_id)
     currency = find_by(asset_id: _asset_id)
