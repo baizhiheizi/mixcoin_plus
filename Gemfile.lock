@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/webpacker.git
-  revision: 863e07bb875cb4f1cba2f0fba51d34dd49a5822d
+  revision: 532eb2fa92ea3af21554d603e5b628809b4059cc
   specs:
     webpacker (6.0.0.beta.7)
       activesupport (>= 5.2)
@@ -144,8 +144,8 @@ GEM
     jose (1.1.3)
       hamster
     jwt (2.2.3)
-    libv8-node (15.14.0.0-x86_64-darwin-20)
-    libv8-node (15.14.0.0-x86_64-linux)
+    libv8-node (15.14.0.1-x86_64-darwin-20)
+    libv8-node (15.14.0.1-x86_64-linux)
     listen (3.5.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
