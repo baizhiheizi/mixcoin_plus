@@ -27,7 +27,7 @@
     "bignumber.js": "^9.0.1",
     "css-loader": "^5.2.1",
     "css-minimizer-webpack-plugin": "^2.0.0",
-    "fork-ts-checker-webpack-plugin": "^6.2.4",
+    "fork-ts-checker-webpack-plugin": "^6.2.7",
     "graphql": "^15.5.0",
     "highcharts": "^9.0.1",
     "highcharts-react-official": "^3.0.0",
