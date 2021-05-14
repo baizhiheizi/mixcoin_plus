@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/webpacker.git
-  revision: 532eb2fa92ea3af21554d603e5b628809b4059cc
+  revision: 8c0e69ce65f4a35a52de2feba5dec2ec86b272aa
   specs:
     webpacker (6.0.0.beta.7)
       activesupport (>= 5.2)
@@ -111,7 +111,7 @@ GEM
     et-orbi (1.2.4)
       tzinfo
     eventmachine (1.2.7)
-    execjs (2.7.0)
+    execjs (2.8.0)
     faye-websocket (0.11.0)
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.5.1)
@@ -124,7 +124,7 @@ GEM
       raabro (~> 1.4)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    graphql (1.12.8)
+    graphql (1.12.9)
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
     http (4.4.1)
@@ -193,7 +193,7 @@ GEM
       ast (~> 2.4.1)
     pg (1.2.3)
     public_suffix (4.0.6)
-    puma (5.2.2)
+    puma (5.3.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.5.2)
@@ -238,7 +238,7 @@ GEM
       activerecord (>= 5.2.4)
       activesupport (>= 5.2.4)
       i18n
-    rb-fsevent (0.10.4)
+    rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rbnacl (7.1.1)
