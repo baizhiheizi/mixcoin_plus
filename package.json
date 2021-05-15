@@ -25,6 +25,7 @@
     "babel-plugin-import": "^1.13.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "bignumber.js": "^9.0.1",
+    "camelcase-keys": "^6.2.2",
     "css-loader": "^5.2.1",
     "css-minimizer-webpack-plugin": "^2.0.0",
     "fork-ts-checker-webpack-plugin": "^6.2.7",

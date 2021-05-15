@@ -4,11 +4,13 @@ import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarC
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
+import { useFennec } from 'apps/shared';
 import { useUserAssetsQuery } from 'graphqlTypes';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { Button } from 'zarm';
+import camelcaseKeys from 'camelcase-keys';
 
 export default function WalletPage() {
   const { currentUser } = useCurrentUser();
@@ -37,20 +39,37 @@ export default function WalletPage() {
 
 function UserAssets() {
   const { currentUser } = useCurrentUser();
-  const { t } = useTranslation();
   const history = useHistory();
-  const { loading, data, refetch } = useUserAssetsQuery({ skip: !currentUser });
+  const { fennec } = useFennec();
+  const [userAssets, setUserAssets] = useState([]);
+  const { loading, data, refetch } = useUserAssetsQuery({
+    skip: !currentUser || currentUser.fennec,
+  });
+
+  const fetchFromFennec = async () => {
+    const assets = camelcaseKeys(await fennec.wallet.getAssets());
+    setUserAssets(assets);
+  };
+
+  useEffect(() => {
+    if (userAssets.length === 0 && currentUser?.fennec && fennec) {
+      fetchFromFennec();
+    }
+  }, [currentUser, userAssets, fennec]);
 
   if (loading) {
     return <LoaderComponent />;
   }
 
-  const { userAssets = [] } = data || {};
+  if (userAssets.length === 0 && data?.userAssets) {
+    setUserAssets(data.userAssets);
+  }
+
   const total = userAssets
-    .map((asset) => asset.balanceUsd)
+    .map((asset) => parseFloat(asset.balance) * parseFloat(asset.priceUsd))
     .reduce((prev, cur) => prev + cur, 0);
   const totalBtc = userAssets.reduce(
-    (prev, cur) => prev + cur.balance * cur.priceBtc,
+    (prev, cur) => prev + parseFloat(cur.balance) * parseFloat(cur.priceBtc),
     0,
   );
 
@@ -67,12 +86,26 @@ function UserAssets() {
           <div className='text-gray-500 dark:text-gray-100'>BTC</div>
         </div>
       </div>
-      <PullComponent refetch={refetch} hasNextPage={false}>
+      <PullComponent
+        refetch={() => {
+          if (currentUser.fennec) {
+            fetchFromFennec();
+          } else {
+            refetch();
+          }
+        }}
+        hasNextPage={false}
+      >
         {userAssets.map((asset) => (
           <div
             key={asset.assetId}
             className='flex items-center px-4 py-2 bg-white dark:bg-dark'
-            onClick={() => history.push(`/snapshots/${asset.assetId}`)}
+            onClick={() => {
+              if (currentUser.fennec) {
+                return;
+              }
+              history.push(`/snapshots/${asset.assetId}`);
+            }}
           >
             <div className='relative'>
               <img
@@ -92,7 +125,10 @@ function UserAssets() {
                 <div className='text-sm font-light'>{asset.symbol}</div>
               </div>
               <div className='text-xs text-gray-300'>
-                ≈ ${asset.balanceUsd.toFixed(2)}
+                ≈ $
+                {(
+                  parseFloat(asset.balance) * parseFloat(asset.priceUsd)
+                ).toFixed(2)}
               </div>
             </div>
             <div className='ml-auto text-right'>
@@ -104,7 +140,7 @@ function UserAssets() {
                 {(asset.changeUsd * 100).toFixed(2)}%
               </div>
               <div className='text-xs text-gray-300'>
-                ≈ ${asset.priceUsd.toFixed(2)}
+                ≈ ${parseFloat(asset.priceUsd).toFixed(2)}
               </div>
             </div>
           </div>

@@ -13,7 +13,7 @@ export default function LoginComponent(props: {
   const { logging, setLogging } = props;
   const { t } = useTranslation();
   const { setCurrentUser } = useCurrentUser();
-  const { setFennec, fennec } = useFennec();
+  const { fennec } = useFennec();
   const [loginWithToken] = useLoginWithTokenMutation({
     update(_, { data: { loginWithToken: user } }) {
       if (user) {
@@ -34,21 +34,14 @@ export default function LoginComponent(props: {
         {
           text: t('connect_fennec_wallet'),
           onClick: async () => {
-            const ext = checkFennec();
-            if (!ext) {
-              return;
-            }
-            let ctx: any;
             if (fennec) {
-              ctx = fennec;
+              const token = await fennec.wallet.signToken({
+                payload: { from: 'Mixcoin' },
+              });
+              loginWithToken({ variables: { input: { token } } });
             } else {
-              ctx = await ext.enable('Mixcoin');
-              setFennec(ctx);
+              ToastError(t('fennec_not_found'));
             }
-            const token = await ctx.wallet.signToken({
-              payload: { from: 'Mixcoin' },
-            });
-            loginWithToken({ variables: { input: { token } } });
           },
         },
       ]}
@@ -56,20 +49,3 @@ export default function LoginComponent(props: {
     />
   );
 }
-
-export const checkFennec = (retryTimes = 0) => {
-  const { t } = useTranslation();
-
-  Toast.show(t('checking_fennec'));
-  if ((window as any)?.__MIXIN__?.mixin_ext) {
-    const ext = (window as any).__MIXIN__.mixin_ext;
-    return ext;
-  }
-  if (retryTimes < 3) {
-    setTimeout(() => {
-      checkFennec(retryTimes + 1);
-    }, 1000);
-  } else {
-    ToastError(t('fennec_not_found'));
-  }
-};

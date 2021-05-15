@@ -10,5 +10,6 @@ mutation LoginWithToken($input: LoginWithTokenMutationInput!) {
       mixinUuid
       name
     }
+    fennec
   }
 }

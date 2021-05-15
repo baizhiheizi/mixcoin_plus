@@ -5,7 +5,7 @@ import { User } from 'graphqlTypes';
 import { mixinContext, reloadTheme } from 'mixin-messenger-utils';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ConfigProvider as ZarmConfigProvider } from 'zarm';
+import { ConfigProvider as ZarmConfigProvider, Toast } from 'zarm';
 import enUS from 'zarm/lib/config-provider/locale/en_US';
 import zhCN from 'zarm/lib/config-provider/locale/zh_CN';
 import { CurrentUserContext } from './contexts/CurrentUserContext';
@@ -45,6 +45,13 @@ export default function App(props: {
       document.querySelector('html').classList.remove('dark');
     }
   }, []);
+
+  useEffect(() => {
+    if ((window as any)?.__MIXIN__?.mixin_ext && !fennec) {
+      const ext = (window as any).__MIXIN__.mixin_ext;
+      ext.enable('Mixcoin').then((ctx: any) => setFennec(ctx));
+    }
+  }, [fennec]);
 
   return (
     <>
