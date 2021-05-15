@@ -196,6 +196,10 @@ class OceanOrder < ApplicationRecord
     @payment_asset = MixinAsset.find_by asset_id: payment_asset_id
   end
 
+  def payment_memo
+    @payment_memo = Base64.strict_encode64("OCEAN|CREATE|#{side.upcase}|#{order_type.upcase}|#{side.ask? ? quote_asset_id : base_asset_id}|#{price.to_f.round(8)}") 
+  end
+
   # OCEAN|Action|Side|Type|AssetId|Price
   def pay_url
     format(
@@ -203,7 +207,7 @@ class OceanOrder < ApplicationRecord
       recipient: broker_id,
       asset: payment_asset_id,
       amount: payment_amount,
-      memo: Base64.strict_encode64("OCEAN|CREATE|#{side.upcase}|#{order_type.upcase}|#{side.ask? ? quote_asset_id : base_asset_id}|#{price.to_f.round(8)}"),
+      memo: payment_memo,
       trace: id
     )
   end
