@@ -10,8 +10,13 @@ zh-CN:
   hot: 热门
   language: 语言
   logout: 退出登录
+  success_logged_in: 成功登录
   connect_wallet: 连接钱包
+  connect_mixin_messenger_wallet: 连接 Mixin Messenger
+  connect_fennec_wallet: 连接 Fennec 钱包
   connect_wallet_to_exhange: 交易您 Mixin 钱包里的任意加密货币：
+  fennec_not_found: 检测不到 Fennec 钱包
+  checking_fennec: 正在检测 Fennec 钱包
   logout_confirm: 确定要退出登录吗？
   authorize_tips: 即将授权 Mixcoin 登录
   empty_markets: 没有交易对

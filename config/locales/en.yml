@@ -10,7 +10,12 @@ en:
   hot: Hot
   language: Language
   logout: Logout
+  success_logged_in: Successfully logged in
   connect_wallet: Connect Wallet
+  connect_mixin_messenger_wallet: Connect Mixin Messenger
+  connect_fennec_wallet: Connect Fennec Wallet
+  fennec_not_found: Couldn't find Fennec
+  checking_fennec: Checking Fennec
   connect_wallet_to_exhange: 'Exchange any asset in you Mixin Wallet:'
   logout_confirm: Are sure to logout?
   authorize_tips: You'll authorize Mixcoin to read your profile.

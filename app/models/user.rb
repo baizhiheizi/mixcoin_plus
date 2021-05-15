@@ -19,7 +19,7 @@
 # Indexes
 #
 #  index_users_on_invite_code  (invite_code) UNIQUE
-#  index_users_on_mixin_id     (mixin_id) UNIQUE
+#  index_users_on_mixin_id     (mixin_id)
 #  index_users_on_mixin_uuid   (mixin_uuid) UNIQUE
 #
 class User < ApplicationRecord
@@ -45,7 +45,6 @@ class User < ApplicationRecord
 
   before_validation :set_defaults, on: :create
 
-  validates :mixin_id, presence: true, uniqueness: true
   validates :mixin_uuid, presence: true, uniqueness: true
 
   enumerize :locale, in: I18n.available_locales, default: I18n.default_locale
@@ -59,6 +58,8 @@ class User < ApplicationRecord
   action_store :favorite, :market
 
   def mixin_assets
+    return [] if fennec?
+
     @mixin_assets ||= MixcoinPlusBot.api.assets(access_token: access_token)&.[]('data') || []
   end
 
@@ -81,7 +82,7 @@ class User < ApplicationRecord
   end
 
   def avatar
-    avatar_url || generated_avatar_url
+    avatar_url.presence || generated_avatar_url
   end
 
   def generated_avatar_url
@@ -110,7 +111,13 @@ class User < ApplicationRecord
   end
 
   def create_contact_conversation
+    return if fennec?
+
     MixcoinPlusBot.api.create_contact_conversation mixin_uuid
+  end
+
+  def fennec?
+    mixin_id == '0'
   end
 
   private

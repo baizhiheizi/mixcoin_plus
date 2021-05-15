@@ -4,8 +4,8 @@ module Authenticatable
   extend ActiveSupport::Concern
 
   class_methods do
-    def auth_from_mixin(code)
-      access_token = MixcoinPlusBot.api.oauth_token(code)
+    def auth_from_mixin(code: nil, access_token: nil)
+      access_token ||= MixcoinPlusBot.api.oauth_token(code)
       res = MixcoinPlusBot.api.read_me access_token: access_token
       raise res.inspect if res['error'].present?
 

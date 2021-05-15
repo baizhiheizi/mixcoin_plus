@@ -19,7 +19,7 @@
 # Indexes
 #
 #  index_users_on_invite_code  (invite_code) UNIQUE
-#  index_users_on_mixin_id     (mixin_id) UNIQUE
+#  index_users_on_mixin_id     (mixin_id)
 #  index_users_on_mixin_uuid   (mixin_uuid) UNIQUE
 #
 require 'test_helper'

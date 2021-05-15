@@ -1,5 +1,6 @@
 import { useInterval } from 'ahooks';
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
+import LoginComponent from 'apps/application/components/LoginComponent/LoginComponent';
 import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
@@ -8,7 +9,7 @@ import { Market, useMarketQuery } from 'graphqlTypes';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { Button, Modal, Tabs } from 'zarm';
+import { Tabs } from 'zarm';
 import ActionComponent from './components/ActionComponent';
 import BookComponent from './components/BookComponent';
 import HeaderComponent from './components/HeaderComponent';
@@ -19,7 +20,7 @@ export default function ExchangePage() {
   const marketIdParam = new URLSearchParams(history.location.search).get(
     'market',
   );
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { currentUser } = useCurrentUser();
   const [marketId, setMarketId] = useState(
     marketIdParam || localStorage.getItem('_cachedMarketId') || '',
@@ -128,20 +129,7 @@ export default function ExchangePage() {
           </Tabs>
         )}
       </div>
-      <Modal
-        visible={!currentUser}
-        maskClosable
-        onCancel={() => history.replace('/')}
-        footer={
-          <Button
-            block
-            theme='primary'
-            onClick={() => location.replace('/login')}
-          >
-            {t('connect_wallet')}
-          </Button>
-        }
-      ></Modal>
+      <LoginComponent logging={!currentUser} />
       <TabbarComponent activeTabKey='exchange' />
     </div>
   );
