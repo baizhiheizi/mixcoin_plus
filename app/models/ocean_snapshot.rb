@@ -149,7 +149,7 @@ class OceanSnapshot < MixinNetworkSnapshot
     when :create_order_from_user
       raise 'Invalid Payment' unless (amount.to_f - _ocean_order.payment_amount.to_f).zero? && asset_id == _ocean_order.payment_asset_id
 
-      _ocean_order.pay!
+      _ocean_order.pay! if _ocean_order.may_pay?
     when :create_order_to_engine
       _ocean_order.book! if _ocean_order.may_book?
     when :match_from_engine

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TransferProcessedNotification < ApplicationNotification
-  deliver_by :mixcoin_plus_bot, class: 'DeliveryMethods::MixcoinPlusBot', category: 'APP_CARD'
+  deliver_by :mixcoin_plus_bot, class: 'DeliveryMethods::MixcoinPlusBot', category: 'APP_CARD', if: :recipient_messenger?
 
   param :transfer
 

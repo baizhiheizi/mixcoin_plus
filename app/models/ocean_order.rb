@@ -197,7 +197,7 @@ class OceanOrder < ApplicationRecord
   end
 
   def payment_memo
-    @payment_memo = Base64.strict_encode64("OCEAN|CREATE|#{side.upcase}|#{order_type.upcase}|#{side.ask? ? quote_asset_id : base_asset_id}|#{price.to_f.round(8)}") 
+    @payment_memo = Base64.strict_encode64("OCEAN|CREATE|#{side.upcase}|#{order_type.upcase}|#{side.ask? ? quote_asset_id : base_asset_id}|#{price.to_f.round(8)}")
   end
 
   # OCEAN|Action|Side|Type|AssetId|Price
