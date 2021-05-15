@@ -87,7 +87,7 @@ function UserAssets() {
         </div>
       </div>
       <PullComponent
-        refetch={() => {
+        refetch={async () => {
           if (currentUser.fennec) {
             fetchFromFennec();
           } else {
