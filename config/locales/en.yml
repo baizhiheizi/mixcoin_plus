@@ -16,6 +16,7 @@ en:
   connect_fennec_wallet: Connect Fennec Wallet
   fennec_not_found: Couldn't find Fennec
   checking_fennec: Checking Fennec
+  scan_with_mixin_messenger: Scan with Mixin Messenger to pay
   connect_wallet_to_exhange: 'Exchange any asset in you Mixin Wallet:'
   logout_confirm: Are sure to logout?
   authorize_tips: You'll authorize Mixcoin to read your profile.

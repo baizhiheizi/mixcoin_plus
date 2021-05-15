@@ -7,9 +7,11 @@ import {
   OMNI_USDT_ASSET_ID,
   PUSD_ASSET_ID,
   useFennec,
+  useMixin,
 } from 'apps/shared';
 import BigNumber from 'bignumber.js';
 import { Market, useCreateOceanOrderMutation } from 'graphqlTypes';
+import QRCode from 'qrcode.react';
 import React, { useState } from 'react';
 import { ChevronDown as ChevronDownIcon } from 'react-feather';
 import { useTranslation } from 'react-i18next';
@@ -36,6 +38,7 @@ export default function ActionComponent(props: {
     props;
   const { t, i18n } = useTranslation();
   const { currentUser } = useCurrentUser();
+  const { platform } = useMixin();
   const { fennec } = useFennec();
   const history = useHistory();
   const side = new URLSearchParams(history.location.search).get('side');
@@ -69,8 +72,17 @@ export default function ActionComponent(props: {
           memo: paymentMemo,
           trace_id: id,
         });
-      } else {
+      } else if (platform) {
         location.replace(payUrl);
+      } else {
+        Modal.confirm({
+          title: t('scan_with_mixin_messenger'),
+          content: (
+            <div className='flex items-center justify-center'>
+              <QRCode value={payUrl} size={200} />
+            </div>
+          ),
+        });
       }
     },
   });

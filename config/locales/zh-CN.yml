@@ -17,6 +17,7 @@ zh-CN:
   connect_wallet_to_exhange: 交易您 Mixin 钱包里的任意加密货币：
   fennec_not_found: 检测不到 Fennec 钱包
   checking_fennec: 正在检测 Fennec 钱包
+  scan_with_mixin_messenger: 使用 Mixin Messenger 扫码支付
   logout_confirm: 确定要退出登录吗？
   authorize_tips: 即将授权 Mixcoin 登录
   empty_markets: 没有交易对

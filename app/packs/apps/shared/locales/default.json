@@ -70,6 +70,10 @@
     "id": "checking_fennec",
     "defaultMessage": "Checking Fennec"
   },
+  "scanWithMixinMessenger": {
+    "id": "scan_with_mixin_messenger",
+    "defaultMessage": "Scan with Mixin Messenger to pay"
+  },
   "connectWalletToExhange": {
     "id": "connect_wallet_to_exhange",
     "defaultMessage": "Exchange any asset in you Mixin Wallet:"

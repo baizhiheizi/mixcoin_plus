@@ -75,11 +75,13 @@ export default function MineComponent() {
             }
           />
         )}
-        <Cell
-          title={t('deprecated_orders')}
-          hasArrow
-          onClick={() => history.push('/deprecated_orders')}
-        />
+        {!currentUser.fennec && (
+          <Cell
+            title={t('deprecated_orders')}
+            hasArrow
+            onClick={() => history.push('/deprecated_orders')}
+          />
+        )}
         <Cell
           title={t('language')}
           description={
