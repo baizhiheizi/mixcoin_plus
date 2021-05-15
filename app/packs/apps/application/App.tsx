@@ -51,7 +51,7 @@ export default function App(props: {
       const ext = (window as any).__MIXIN__.mixin_ext;
       ext.enable('Mixcoin').then((ctx: any) => setFennec(ctx));
     }
-  }, [fennec]);
+  }, [(window as any)?.__MIXIN__, fennec]);
 
   return (
     <>
