@@ -117,7 +117,15 @@ class User < ApplicationRecord
   end
 
   def fennec?
-    mixin_id == '0'
+    mixin_id == '0' || mixin_bot?
+  end
+
+  def mixin_bot?
+    mixin_id.match?(/^7000\d{6}/)
+  end
+
+  def messenger?
+    !fennec? && !mixin_bot?
   end
 
   private

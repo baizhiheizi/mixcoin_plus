@@ -21,7 +21,8 @@ class ApplicationController < ActionController::Base
           mixin_id: current_user.invitor.mixin_id,
           mixin_uuid: current_user.invitor.mixin_uuid,
           name: current_user.invitor.name
-        }
+        },
+        fennec: current_user.fennec?
       },
       mixin_bot: {
         app_id: MixcoinPlusBot.api.client_id,

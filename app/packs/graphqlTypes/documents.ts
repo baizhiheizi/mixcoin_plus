@@ -841,6 +841,7 @@ export type User = {
   __typename?: 'User';
   avatar: Scalars['String'];
   createdAt: Scalars['ISO8601DateTime'];
+  fennec?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   invitationsCount: Scalars['Int'];
   inviteCode: Scalars['String'];
@@ -1449,7 +1450,7 @@ export type LoginWithTokenMutation = (
   { __typename?: 'Mutation' }
   & { loginWithToken?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'name' | 'avatar' | 'mixinUuid' | 'inviteCode' | 'mayInvited'>
+    & Pick<User, 'name' | 'avatar' | 'mixinUuid' | 'inviteCode' | 'mayInvited' | 'fennec'>
     & { invitor?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'mixinId' | 'mixinUuid' | 'name'>
@@ -3077,6 +3078,7 @@ export const LoginWithTokenDocument = gql`
       mixinUuid
       name
     }
+    fennec
   }
 }
     `;

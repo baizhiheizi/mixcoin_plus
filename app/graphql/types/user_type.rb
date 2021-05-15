@@ -10,12 +10,17 @@ module Types
     field :invite_code, String, null: false
     field :invitations_count, Int, null: false
     field :may_invited, Boolean, null: false
+    field :fennec, Boolean, null: true
 
     field :invitor, Types::UserType, null: true
     field :ocean_broker, MixinNetworkUserType, null: true
 
     def may_invited
       object.may_invited?
+    end
+
+    def fennec
+      object&.fennec?
     end
   end
 end
