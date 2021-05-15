@@ -18,5 +18,6 @@ module Types
     field :create_invitation, mutation: Mutations::CreateInvitationMutation
     field :create_group_market, mutation: Mutations::CreateGroupMarketMutation
     field :delete_group_market, mutation: Mutations::DeleteGroupMarketMutation
+    field :login_with_token, mutation: Mutations::LoginWithTokenMutation
   end
 end

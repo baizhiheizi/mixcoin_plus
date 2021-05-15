@@ -1,0 +1,14 @@
+mutation LoginWithToken($input: LoginWithTokenMutationInput!) {
+  loginWithToken(input: $input) {
+    name
+    avatar
+    mixinUuid
+    inviteCode
+    mayInvited
+    invitor {
+      mixinId
+      mixinUuid
+      name
+    }
+  }
+}

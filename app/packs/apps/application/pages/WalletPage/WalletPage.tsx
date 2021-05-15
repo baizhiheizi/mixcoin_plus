@@ -1,10 +1,11 @@
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
+import LoginComponent from 'apps/application/components/LoginComponent/LoginComponent';
 import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
 import { useUserAssetsQuery } from 'graphqlTypes';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { Button } from 'zarm';
@@ -12,6 +13,7 @@ import { Button } from 'zarm';
 export default function WalletPage() {
   const { currentUser } = useCurrentUser();
   const { t } = useTranslation();
+  const [logging, setLogging] = useState(false);
   return (
     <>
       {currentUser ? (
@@ -21,10 +23,11 @@ export default function WalletPage() {
           <Button
             className='m-auto'
             theme='primary'
-            onClick={() => location.replace('/login')}
+            onClick={() => setLogging(true)}
           >
             {t('connect_wallet')}
           </Button>
+          <LoginComponent logging={logging} setLogging={setLogging} />
         </div>
       )}
       <TabbarComponent activeTabKey='wallet' />

@@ -1,15 +1,17 @@
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
-import { useCurrentUser } from 'apps/application/contexts';
-import { imageAsset } from 'apps/application/utils';
-import React, { useState } from 'react';
 import { User as UserIcon } from '@icon-park/react';
+import LoginComponent from 'apps/application/components/LoginComponent/LoginComponent';
+import MarketsComponent from 'apps/application/components/MarketsComponent/MarketsComponent';
+import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
+import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
+import { useCurrentUser } from 'apps/application/contexts';
+import { useCurrentConversation } from 'apps/application/contexts/CurrentConversationContext';
+import { imageAsset } from 'apps/application/utils';
+import { useMixin } from 'apps/shared';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { Message, Popup, Tabs } from 'zarm';
-import MarketsComponent from 'apps/application/components/MarketsComponent/MarketsComponent';
 import MineComponent from './components/MineComponent';
-import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
-import { useCurrentConversation } from 'apps/application/contexts/CurrentConversationContext';
 
 export default function HomePage() {
   const { currentUser } = useCurrentUser();
@@ -24,6 +26,8 @@ export default function HomePage() {
     cachedTabIndex > -1 ? cachedTabIndex : currentUser ? 0 : 1,
   );
   const { t } = useTranslation();
+  const { platform } = useMixin();
+  const [logging, setLogging] = useState(false);
 
   return (
     <div className='min-h-screen pb-24 bg-white dark:bg-dark'>
@@ -79,11 +83,18 @@ export default function HomePage() {
             <span>{t('connect_wallet_to_exhange')}</span>
             <a
               className='mx-1 font-semibold cursor-pointer'
-              onClick={() => location.replace('/login')}
+              onClick={() => {
+                if (platform) {
+                  location.replace('/login');
+                } else {
+                  setLogging(true);
+                }
+              }}
             >
               {t('connect_wallet')}
             </a>
           </div>
+          <LoginComponent logging={logging} setLogging={setLogging} />
         </Message>
       )}
       <MarketsComponent type={tabs[tabIndex]} />

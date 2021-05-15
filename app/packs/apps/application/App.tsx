@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/client';
-import { MixinBotContext, MixinContext } from 'apps/shared';
+import { FennecContext, MixinBotContext, MixinContext } from 'apps/shared';
 import 'apps/shared/locales/i18n';
 import { User } from 'graphqlTypes';
 import { mixinContext, reloadTheme } from 'mixin-messenger-utils';
@@ -18,6 +18,7 @@ export default function App(props: {
 }) {
   const { i18n } = useTranslation();
   const [currentUser, setCurrentUser] = useState(props.currentUser);
+  const [fennec, setFennec] = useState();
   const { mixinBot } = props;
   const theme =
     mixinContext.appearance ||
@@ -48,23 +49,32 @@ export default function App(props: {
   return (
     <>
       <MixinContext.Provider value={mixinContext}>
-        <MixinBotContext.Provider value={mixinBot}>
-          <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
-            <ZarmConfigProvider
-              theme={theme}
-              locale={i18n.language.includes('en') ? enUS : zhCN}
-              primaryColor='#1890ff'
+        <FennecContext.Provider
+          value={{
+            fennec,
+            setFennec,
+          }}
+        >
+          <MixinBotContext.Provider value={mixinBot}>
+            <CurrentUserContext.Provider
+              value={{ currentUser, setCurrentUser }}
             >
-              <ApolloProvider
-                client={apolloClient('/graphql', mixinContext.conversationId)}
+              <ZarmConfigProvider
+                theme={theme}
+                locale={i18n.language.includes('en') ? enUS : zhCN}
+                primaryColor='#1890ff'
               >
-                <div className='min-h-screen mx-auto bg-gray-100 max-w-screen-md dark:bg-black dark:text-gray-50'>
-                  <Routes />
-                </div>
-              </ApolloProvider>
-            </ZarmConfigProvider>
-          </CurrentUserContext.Provider>
-        </MixinBotContext.Provider>
+                <ApolloProvider
+                  client={apolloClient('/graphql', mixinContext.conversationId)}
+                >
+                  <div className='min-h-screen mx-auto bg-gray-100 max-w-screen-md dark:bg-black dark:text-gray-50'>
+                    <Routes />
+                  </div>
+                </ApolloProvider>
+              </ZarmConfigProvider>
+            </CurrentUserContext.Provider>
+          </MixinBotContext.Provider>
+        </FennecContext.Provider>
       </MixinContext.Provider>
     </>
   );
