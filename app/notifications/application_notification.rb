@@ -10,4 +10,8 @@ class ApplicationNotification < Noticed::Base
 
   def url
   end
+
+  def recipient_messenger?
+    recipient.messenger?
+  end
 end

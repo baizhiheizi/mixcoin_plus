@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class OceanOrderStateNotification < ApplicationNotification
-  deliver_by :mixcoin_plus_bot, class: 'DeliveryMethods::MixcoinPlusBot', category: 'PLAIN_TEXT'
+  deliver_by :mixcoin_plus_bot, class: 'DeliveryMethods::MixcoinPlusBot', category: 'PLAIN_TEXT', if: :recipient_messenger?
 
   param :ocean_order
 
