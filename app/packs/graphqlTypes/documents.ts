@@ -516,6 +516,7 @@ export type OceanOrder = {
   baseAsset: MixinAsset;
   baseAssetId: Scalars['String'];
   broker: MixinNetworkUser;
+  brokerId: Scalars['String'];
   conversationId?: Maybe<Scalars['String']>;
   createdAt: Scalars['ISO8601DateTime'];
   filledAmount: Scalars['Float'];
@@ -525,6 +526,9 @@ export type OceanOrder = {
   marketId: Scalars['String'];
   orderType: Scalars['String'];
   payUrl: Scalars['String'];
+  paymentAmount: Scalars['String'];
+  paymentAssetId: Scalars['String'];
+  paymentMemo: Scalars['String'];
   price: Scalars['Float'];
   quoteAsset: MixinAsset;
   quoteAssetId: Scalars['String'];
@@ -1404,7 +1408,7 @@ export type CreateOceanOrderMutation = (
   { __typename?: 'Mutation' }
   & { createOceanOrder?: Maybe<(
     { __typename?: 'OceanOrder' }
-    & Pick<OceanOrder, 'id' | 'payUrl' | 'state'>
+    & Pick<OceanOrder, 'id' | 'payUrl' | 'state' | 'brokerId' | 'paymentAssetId' | 'paymentAmount' | 'paymentMemo'>
   )> }
 );
 
@@ -2940,6 +2944,10 @@ export const CreateOceanOrderDocument = gql`
     id
     payUrl
     state
+    brokerId
+    paymentAssetId
+    paymentAmount
+    paymentMemo
   }
 }
     `;

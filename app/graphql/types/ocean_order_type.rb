@@ -19,6 +19,10 @@ module Types
     field :filled_amount, Float, null: false
     field :filled_funds, Float, null: false
     field :pay_url, String, null: false
+    field :broker_id, String, null: false
+    field :payment_asset_id, String, null: false
+    field :payment_amount, String, null: false
+    field :payment_memo, String, null: false
 
     field :user, Types::UserType, null: false
     field :broker, Types::MixinNetworkUserType, null: false

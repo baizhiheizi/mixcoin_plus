@@ -6,6 +6,7 @@ import {
   ERC20_USDT_ASSET_ID,
   OMNI_USDT_ASSET_ID,
   PUSD_ASSET_ID,
+  useFennec,
 } from 'apps/shared';
 import BigNumber from 'bignumber.js';
 import { Market, useCreateOceanOrderMutation } from 'graphqlTypes';
@@ -40,6 +41,7 @@ export default function ActionComponent(props: {
   } = props;
   const { t, i18n } = useTranslation();
   const { currentUser } = useCurrentUser();
+  const { fennec } = useFennec();
   const history = useHistory();
   const side = new URLSearchParams(history.location.search).get('side');
   const [actionSheetVisible, setActionSheetVisible] = useState(false);
@@ -53,11 +55,28 @@ export default function ActionComponent(props: {
       _,
       {
         data: {
-          createOceanOrder: { payUrl },
+          createOceanOrder: {
+            payUrl,
+            id,
+            brokerId,
+            paymentAmount,
+            paymentAssetId,
+            paymentMemo,
+          },
         },
       },
     ) {
-      location.replace(payUrl);
+      if (currentUser.fennec) {
+        fennec.wallet.transfer({
+          asset_id: paymentAssetId,
+          amount: paymentAmount,
+          opponent_id: brokerId,
+          memo: paymentMemo,
+          trace_id: id,
+        });
+      } else {
+        location.replace(payUrl);
+      }
     },
   });
 

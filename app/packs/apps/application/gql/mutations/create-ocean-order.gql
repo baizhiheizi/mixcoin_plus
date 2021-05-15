@@ -3,5 +3,9 @@ mutation CreateOceanOrder($input: CreateOceanOrderMutationInput!) {
     id
     payUrl
     state
+    brokerId
+    paymentAssetId
+    paymentAmount
+    paymentMemo
   }
 }
