@@ -6,14 +6,10 @@ import React from 'react';
 
 export default function InvitationsComponent(props: { invitorId?: string }) {
   const { invitorId } = props;
-  const {
-    loading,
-    data,
-    refetch,
-    fetchMore,
-  } = useAdminInvitationConnectionQuery({
-    variables: { invitorId },
-  });
+  const { loading, data, refetch, fetchMore } =
+    useAdminInvitationConnectionQuery({
+      variables: { invitorId },
+    });
 
   if (loading) {
     return <LoadingComponent />;

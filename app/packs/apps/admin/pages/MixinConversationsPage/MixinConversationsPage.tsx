@@ -6,12 +6,8 @@ import React from 'react';
 import { useHistory } from 'react-router';
 
 export default function MixinConversationsPage() {
-  const {
-    loading,
-    data,
-    refetch,
-    fetchMore,
-  } = useAdminMixinConversationConnectionQuery();
+  const { loading, data, refetch, fetchMore } =
+    useAdminMixinConversationConnectionQuery();
   const history = useHistory();
 
   if (loading) {

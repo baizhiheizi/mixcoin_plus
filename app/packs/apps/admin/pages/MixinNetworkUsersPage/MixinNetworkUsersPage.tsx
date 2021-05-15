@@ -15,14 +15,10 @@ export default function MixinNetworkUsersPage() {
   const [type, setType] = useState('OceanBroker');
   const debouncedQuery = useDebounce(query, { wait: 1000 });
   const history = useHistory();
-  const {
-    loading,
-    data,
-    refetch,
-    fetchMore,
-  } = useAdminMixinNetworkUserConnectionQuery({
-    variables: { query: debouncedQuery, state, type },
-  });
+  const { loading, data, refetch, fetchMore } =
+    useAdminMixinNetworkUserConnectionQuery({
+      variables: { query: debouncedQuery, state, type },
+    });
 
   if (loading) {
     return <LoadingComponent />;

@@ -15,20 +15,16 @@ export default function OceanOrdersComponent(props: {
   const [state, setState] = useState('booking');
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, { wait: 1000 });
-  const {
-    loading,
-    data,
-    refetch,
-    fetchMore,
-  } = useAdminOceanOrderConnectionQuery({
-    variables: {
-      conversationId,
-      state,
-      userId,
-      marketId,
-      query: debouncedQuery,
-    },
-  });
+  const { loading, data, refetch, fetchMore } =
+    useAdminOceanOrderConnectionQuery({
+      variables: {
+        conversationId,
+        state,
+        userId,
+        marketId,
+        query: debouncedQuery,
+      },
+    });
 
   if (loading) {
     return <LoadingComponent />;

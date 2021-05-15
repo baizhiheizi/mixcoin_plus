@@ -12,13 +12,12 @@ import { Message, Modal } from 'zarm';
 export default function DeprecatedOrdersPage() {
   const { t } = useTranslation();
   const { loading, data, refetch } = useDeprecatedOceanOrdersQuery();
-  const [
-    generateCancelPayUrl,
-  ] = useGenerateCancelDeprecatedOceanOrderPayUrlMutation({
-    update: (_, { data: { generateCancelDeprecatedOceanOrderPayUrl } }) => {
-      location.replace(generateCancelDeprecatedOceanOrderPayUrl);
-    },
-  });
+  const [generateCancelPayUrl] =
+    useGenerateCancelDeprecatedOceanOrderPayUrlMutation({
+      update: (_, { data: { generateCancelDeprecatedOceanOrderPayUrl } }) => {
+        location.replace(generateCancelDeprecatedOceanOrderPayUrl);
+      },
+    });
 
   if (loading) {
     return <LoaderComponent />;

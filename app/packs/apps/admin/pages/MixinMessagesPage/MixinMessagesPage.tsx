@@ -5,12 +5,8 @@ import { useAdminMixinMessageConnectionQuery } from 'graphqlTypes';
 import React from 'react';
 
 export default function MixinMessagesPage() {
-  const {
-    loading,
-    data,
-    refetch,
-    fetchMore,
-  } = useAdminMixinMessageConnectionQuery();
+  const { loading, data, refetch, fetchMore } =
+    useAdminMixinMessageConnectionQuery();
 
   if (loading) {
     return <LoadingComponent />;

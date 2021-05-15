@@ -32,13 +32,8 @@ export default function ActionComponent(props: {
   orderAmount: string;
   setOrderAmount: (params: any) => any;
 }) {
-  const {
-    market,
-    orderPrice,
-    setOrderPrice,
-    orderAmount,
-    setOrderAmount,
-  } = props;
+  const { market, orderPrice, setOrderPrice, orderAmount, setOrderAmount } =
+    props;
   const { t, i18n } = useTranslation();
   const { currentUser } = useCurrentUser();
   const { fennec } = useFennec();

@@ -10,14 +10,10 @@ export default function MixinNetworkSnapshotsComponent(props: {
 }) {
   const { oceanOrderId } = props;
   const [snapshotType, setSnapshotType] = useState('match_to_user');
-  const {
-    loading,
-    data,
-    refetch,
-    fetchMore,
-  } = useAdminMixinNetworkSnapshotConnectionQuery({
-    variables: { oceanOrderId, snapshotType },
-  });
+  const { loading, data, refetch, fetchMore } =
+    useAdminMixinNetworkSnapshotConnectionQuery({
+      variables: { oceanOrderId, snapshotType },
+    });
 
   if (loading) {
     return <LoadingComponent />;

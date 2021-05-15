@@ -62,6 +62,14 @@
     "id": "connect_fennec_wallet",
     "defaultMessage": "Connect Fennec Wallet"
   },
+  "fennecNotFound": {
+    "id": "fennec_not_found",
+    "defaultMessage": "Couldn't find Fennec"
+  },
+  "checkingFennec": {
+    "id": "checking_fennec",
+    "defaultMessage": "Checking Fennec"
+  },
   "connectWalletToExhange": {
     "id": "connect_wallet_to_exhange",
     "defaultMessage": "Exchange any asset in you Mixin Wallet:"

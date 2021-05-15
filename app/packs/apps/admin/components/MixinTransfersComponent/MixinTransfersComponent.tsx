@@ -12,14 +12,10 @@ export default function MixinTransfersComponent(props: {
 }) {
   const { oceanOrderId, userId, opponentId } = props;
   const [transferType, setTranferType] = useState('ocean_order_mixcoin_fee');
-  const {
-    loading,
-    data,
-    refetch,
-    fetchMore,
-  } = useAdminMixinTransferConnectionQuery({
-    variables: { oceanOrderId, userId, opponentId, transferType },
-  });
+  const { loading, data, refetch, fetchMore } =
+    useAdminMixinTransferConnectionQuery({
+      variables: { oceanOrderId, userId, opponentId, transferType },
+    });
   const { appId } = useMixinBot();
 
   if (loading) {
