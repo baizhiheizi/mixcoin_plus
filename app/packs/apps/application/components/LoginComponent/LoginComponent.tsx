@@ -13,7 +13,7 @@ export default function LoginComponent(props: {
   const { logging, setLogging } = props;
   const { t } = useTranslation();
   const { setCurrentUser } = useCurrentUser();
-  const { fennec } = useFennec();
+  const { fennec, setFennec } = useFennec();
   const [loginWithToken] = useLoginWithTokenMutation({
     update(_, { data: { loginWithToken: user } }) {
       if (user) {
@@ -34,14 +34,23 @@ export default function LoginComponent(props: {
         {
           text: t('connect_fennec_wallet'),
           onClick: async () => {
-            if (fennec) {
-              const token = await fennec.wallet.signToken({
-                payload: { from: 'Mixcoin' },
-              });
-              loginWithToken({ variables: { input: { token } } });
-            } else {
+            let ctx: any;
+            const ext = (window as any).__MIXIN__?.mixin_ext;
+            if (!ext) {
               ToastError(t('fennec_not_found'));
+              return;
             }
+
+            if (fennec) {
+              ctx = fennec;
+            } else {
+              ctx = await ext.enable('Mixcoin');
+              setFennec(ctx);
+            }
+            const token = await ctx.wallet.signToken({
+              payload: { from: 'Mixcoin' },
+            });
+            loginWithToken({ variables: { input: { token } } });
           },
         },
       ]}

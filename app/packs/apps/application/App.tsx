@@ -47,11 +47,15 @@ export default function App(props: {
   }, []);
 
   useEffect(() => {
-    if ((window as any)?.__MIXIN__?.mixin_ext && !fennec) {
+    if (
+      currentUser?.fennec &&
+      (window as any)?.__MIXIN__?.mixin_ext &&
+      !fennec
+    ) {
       const ext = (window as any).__MIXIN__.mixin_ext;
       ext.enable('Mixcoin').then((ctx: any) => setFennec(ctx));
     }
-  }, [(window as any)?.__MIXIN__, fennec]);
+  }, [(window as any)?.__MIXIN__, fennec, currentUser]);
 
   return (
     <>
