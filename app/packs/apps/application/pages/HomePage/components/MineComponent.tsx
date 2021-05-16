@@ -89,10 +89,13 @@ export default function MineComponent() {
               type='button'
               compact
               value={i18n.language}
-              onChange={(value: 'en' | 'zh-CN') => i18n.changeLanguage(value)}
+              onChange={(value: 'en' | 'zh-CN' | 'ko') =>
+                i18n.changeLanguage(value)
+              }
             >
               <Radio value='en'>EN</Radio>
               <Radio value='zh-CN'>中文</Radio>
+              <Radio value='ko'>한국어</Radio>
             </Radio.Group>
           }
         />

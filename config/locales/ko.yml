@@ -1,0 +1,96 @@
+ko:
+  home: 홈페이지
+  markets: 트레이딩 페어
+  exchange: 거래
+  wallet: 지갑
+  mine:  나의 것
+  favorite: 즐겨 찾기
+  recommend: 추천
+  group: 그룹
+  hot: 핫 코인
+  language: 언어
+  logout: 로그아웃
+  success_logged_in: 성공적으로 로그인
+  connect_wallet: 지갑연결
+  connect_mixin_messenger_wallet: 연결 Mixin Messenger
+  connect_fennec_wallet: 연결 Fennec 지갑
+  connect_wallet_to_exhange: 지갑 연결 후 거래
+  fennec_not_found: 감지 할 수 없음 Fennec 지갑
+  checking_fennec: 테스팅 Fennec 지갑
+  scan_with_mixin_messenger: 사용하다 Mixin Messenger 결제하려면 QR 코드를 스캔하세요
+  logout_confirm: 로그 아웃 하시겠습니까?
+  authorize_tips: 권한부여 후 로그인
+  empty_markets: 트레이딩 페어 없음
+  empty_orders: 주문서 없음
+  share: 공유
+  fee: 요율
+  buy: 매수
+  sell: 매도
+  volume: 수량
+  filled: 거래완료
+  price: 가격
+  buy_price: 매수가격
+  sell_price: 매도가격
+  buy_volume: 매수수량
+  sell_volume: 매도수량
+  depth_chart: 심도차트
+  time: 시간
+  limit_order: 리밋주문
+  market_order: 시가주문
+  market_price: 시장가격
+  my_open_orders: 미체결내역
+  my_order_history: 체결내역
+  open_orders: 주문내역
+  history_trades: 거래내역
+  market_order_warning: 시장거래가기준
+  confirm_cancel_ocean_order: 위탁주문을 취소하시겠습니까?
+  order_will_be_handled: 주문서는 이체를 받은 후 즉시 처리하니, 로봇의 소식 알림을 유의하시기 바랍니다.
+  price_too_low: 가격이 너무 낮아요
+  price_too_high: 가격이 너무 높아요
+  order_too_small: 주문이 너무 작아요
+  order_too_big: 주문이 너무 커요
+  no_ask_order: 매도주문내역이 없어요
+  no_bid_order: 매수주문내역이 없어요
+  no_depth_yet: 심도 부족
+  no_trades_yet: 거래내역이 없어요
+  confirm_place_ask_order: 매도확인
+  confirm_place_bid_order: 매수확인
+  confirm_unfavorite_market: 즐겨 찾기 취소 확인
+  important_warning: '경고: 시장가격에서 너무 많이 벗어나 있습니다. 주문하시겠습니까?'
+  already_paid: 지불완료
+  cancel: 취소
+  cancel_order: 주문취소
+  orders: 주문
+  deprecated_orders: 이전 버전 주문내역
+  deprecated_version_notice: 이전 버전의 Mixcoin은 더 이상 사용되지 않습니다. 진행중인 주문서가 남아있다면 여기서 취소해 주세요. 새로운 Mixcoin에 오신 것을 환영합니다!
+  invite: 초대
+  commission_plan: 커미션 프랜
+  grow_along_with_mixcoin: Mixcoin과 함께 성장 합시다.
+  you_have_two_ways_to_earn_your_commission: 커미션을 받을 수 있는 두 가지 방법
+  invitation_commission: 초대 커미션
+  invitation_commission_rule_1: 신규 사용자가 귀하의 초대 링크를 클릭하여 Mixcoin에 로그인하고 성공적으로 주문하면 초대가 성공한 것으로 간주됩니다.
+  invitation_commission_rule_2: 초대가 성사된 후, 초대 받은 사람이 개별적으로 MAKER 주문을 마칠 때마다, 그 수수료의 50%를 초대 커미션으로 즉시 발급됩니다.
+  invitation_commission_rule_3: 초대 링크는 일대일 세션에서만 작동합니다. 초대 링크를 어떤 그룹에서도 공유하지 마십시오.
+  group_owner_commission: 그룹 오너 커미션
+  group_owner_commission_rule_1: Mixcoin 봇을 개인그룹으로 끌어옵니다.
+  group_owner_commission_rule_2: 그룹 멤버가 그룹 내 세션에서 Mixcoin 을 통해 완료한 모든 MAKER 주문서의 수수료 50%는 그룹 오너의 커미션으로 사용되며, 즉시 발급됩니다.
+  commission_plan_notice: 중요설명
+  commission_plan_notice_1: 초대 커미션과 그룹 오너 커미션은 겹쳐 질 수 없으며 그룹 오너 커미션이 우선합니다.
+  commission_plan_notice_2: 이벤트의 최종 해석권은 Mixcoin 팀에 있습니다.
+  exchange_any_asset: 가상화폐 거래하기
+  search_any_asset: 지갑에서 가상화폐 검색
+  no_record: 기록없음
+  order_state:
+    paid: 지불됨
+    booking: 주문서 접수 중
+    completed: 완료
+    canceling: 취소 중
+    refunded: 환불
+  24h_high: 24시 최고
+  24h_low: 24시 최저
+  24h_volumne: 24시 거래량
+  balance: 잔액
+  edit_group_markets: 그룹 내 트레이딩 페어 편집
+  group_admin_notice: 당신은 그룹 관리자입니다. 그룹 트레이딩 페어를 편집 할 수 있습니다. 그룹 구성원이 그룹에서 Mixcoin 을 열면 그룹 트레이딩 페어가 표시됩니다.
+  choose: 선택
+  remove: 제거

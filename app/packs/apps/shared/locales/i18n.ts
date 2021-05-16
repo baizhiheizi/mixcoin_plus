@@ -22,8 +22,9 @@ i18n
     resources: {
       en: { translation: translations['en'] },
       'zh-CN': { translation: translations['zh-CN'] },
+      ko: { translation: translations['ko'] },
     },
-    supportedLngs: ['en', 'zh-CN'],
+    supportedLngs: ['en', 'zh-CN', 'ko'],
   });
 
 export default i18n;
