@@ -30,7 +30,7 @@
     "css-minimizer-webpack-plugin": "^3.0.0",
     "fork-ts-checker-webpack-plugin": "^6.2.9",
     "graphql": "^15.5.0",
-    "highcharts": "^9.0.1",
+    "highcharts": "^9.1.0",
     "highcharts-react-official": "^3.0.0",
     "i18next": "^20.2.4",
     "i18next-browser-languagedetector": "^6.1.1",
