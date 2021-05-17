@@ -14,4 +14,9 @@ class ApplicationNotification < Noticed::Base
   def recipient_messenger?
     recipient.messenger?
   end
+
+  def with_locale(&action)
+    locale = recipient&.locale || I18n.default_locale
+    I18n.with_locale(locale, &action)
+  end
 end

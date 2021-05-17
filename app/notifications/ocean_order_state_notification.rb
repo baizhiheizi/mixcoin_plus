@@ -4,6 +4,8 @@ class OceanOrderStateNotification < ApplicationNotification
   deliver_by :action_cable, format: :format_for_action_cable
   deliver_by :mixcoin_plus_bot, class: 'DeliveryMethods::MixcoinPlusBot', category: 'PLAIN_TEXT', if: :recipient_messenger?
 
+  around_action_cable :with_locale
+
   param :ocean_order
 
   def ocean_order

@@ -69,8 +69,7 @@ export default function App(props: {
       disconnected() {
         console.log('Action Cable disconnected');
       },
-      received(data) {
-        console.log(data);
+      received(data: any) {
         Toast.show(data);
       },
     });

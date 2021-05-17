@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class TransferProcessedNotification < ApplicationNotification
+  deliver_by :action_cable, format: :format_for_action_cable
   deliver_by :mixcoin_plus_bot, class: 'DeliveryMethods::MixcoinPlusBot', category: 'APP_CARD', if: :recipient_messenger?
+
+  around_action_cable :with_locale
 
   param :transfer
 
@@ -14,8 +17,12 @@ class TransferProcessedNotification < ApplicationNotification
     }
   end
 
+  def format_for_action_cable
+    message
+  end
+
   def message
-    [t('.received'), params[:transfer].transfer_type.humanize].join(' ')
+    [t('.received'), params[:transfer].amount, params[:transfer].asset.symbol].join(' ')
   end
 
   def url
