@@ -1,6 +1,7 @@
 import { ApolloProvider } from '@apollo/client';
 import { FennecContext, MixinBotContext, MixinContext } from 'apps/shared';
 import 'apps/shared/locales/i18n';
+import consumer from 'channels/consumer';
 import { User } from 'graphqlTypes';
 import { mixinContext, reloadTheme } from 'mixin-messenger-utils';
 import React, { useEffect, useState } from 'react';
@@ -56,6 +57,24 @@ export default function App(props: {
       ext.enable('Mixcoin').then((ctx: any) => setFennec(ctx));
     }
   }, [(window as any)?.__MIXIN__, fennec, currentUser]);
+
+  useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
+    consumer.subscriptions.create('Noticed::NotificationChannel', {
+      connected() {
+        console.log('Action Cable Connected');
+      },
+      disconnected() {
+        console.log('Action Cable disconnected');
+      },
+      received(data) {
+        console.log(data);
+        Toast.show(data);
+      },
+    });
+  }, [currentUser]);
 
   return (
     <>

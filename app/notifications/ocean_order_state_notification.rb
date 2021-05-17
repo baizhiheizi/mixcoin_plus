@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class OceanOrderStateNotification < ApplicationNotification
+  deliver_by :action_cable, format: :format_for_action_cable
   deliver_by :mixcoin_plus_bot, class: 'DeliveryMethods::MixcoinPlusBot', category: 'PLAIN_TEXT', if: :recipient_messenger?
 
   param :ocean_order
@@ -21,6 +22,13 @@ class OceanOrderStateNotification < ApplicationNotification
            filled: ocean_order.side.ask? ? ocean_order.filled_amount : ocean_order.filled_funds,
            remaining_symbol: ocean_order.side.ask? ? ocean_order.base_asset.symbol : ocean_order.quote_asset.symbol,
            remaining: ocean_order.side.ask? ? ocean_order.remaining_amount : ocean_order.remaining_funds)
+  end
+
+  def format_for_action_cable
+    format(t('.cable_tpl'),
+           base_asset_symbol: ocean_order.base_asset.symbol,
+           quote_asset_symbol: ocean_order.quote_asset.symbol,
+           state: t("order_state.#{ocean_order.state}"))
   end
 
   def data

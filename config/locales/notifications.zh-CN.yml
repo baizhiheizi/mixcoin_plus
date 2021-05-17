@@ -15,3 +15,4 @@ zh-CN:
         价格: %<price>s %<quote_asset_symbol>s
         已成交: %<filled>s %<filled_symbol>s
         待成交: %<remaining>s %<remaining_symbol>s
+      cable_tpl: 订单 %<base_asset_symbol>s/%<quote_asset_symbol>s %<state>s
