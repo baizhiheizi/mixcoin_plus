@@ -34,7 +34,7 @@ class OceanBroker < MixinNetworkUser
   include AASM
 
   belongs_to :user, optional: true, inverse_of: :broker
-  has_many :ocean_orders, foreign_key: :broker_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :broker
+  has_many :ocean_orders, foreign_key: :broker_id, primary_key: :mixin_uuid, dependent: :restrict_with_exception, inverse_of: :broker
 
   validates :ocean_private_key, presence: true
 

@@ -23,8 +23,10 @@ class ArbitrageOrder < ApplicationRecord
   extend Enumerize
   include AASM
 
+  store :raw, accessors: %i[expected_profit]
+
   belongs_to :market
-  belongs_to :arbitrager, optional: true
+  belongs_to :arbitrager, primary_key: :mixin_uuid, optional: true
   belongs_to :profit_asset, class_name: 'MixinAsset', primary_key: :asset_id
 
   before_validation :set_defaults, on: :create
@@ -34,11 +36,13 @@ class ArbitrageOrder < ApplicationRecord
 
   after_commit :notify_admin_async
 
+  scope :without_drafted, -> { where.not(state: :drafted) }
+
   aasm column: :state do
     state :drafted, initial: true
     state :arbitraging
     state :completed
-    state :cancelled
+    state :canceled
 
     event :arbitrage do
       transitions from: :drafted, to: :arbitraging

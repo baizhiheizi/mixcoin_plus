@@ -25,6 +25,7 @@ module Types
     field :admin_app_statistic, resolver: Resolvers::AdminAppStatisticResolver
     field :admin_user_deprecated_ocean_snapshots, resolver: Resolvers::AdminUserDeprecatedOceanSnapshotsResolver
     field :admin_user_deprecated_ocean_orders, resolver: Resolvers::AdminUserDeprecatedOceanOrdersResolver
+    field :admin_arbitrage_order_connection, resolver: Resolvers::AdminArbitrageOrderConnectionResolver
 
     field :current_conversation, resolver: Resolvers::CurrentConversationResolver
     field :market, resolver: Resolvers::MarketResolver

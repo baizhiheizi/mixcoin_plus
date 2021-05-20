@@ -1,6 +1,7 @@
 import { Button, Result } from 'antd';
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
+import ArbitrageOrdersPage from './pages/ArbitrageOrdersPage/ArbitrageOrdersPage';
 import BalancePage from './pages/BalancePage/BalancePage';
 import InvitationsPage from './pages/InvitationsPage/InvitationsPage';
 import MarketPage from './pages/MarketPage/MarketPage';
@@ -64,6 +65,9 @@ export default function Routes() {
       </Route>
       <Route path='/balance' exact>
         <BalancePage />
+      </Route>
+      <Route path='/arbitrage_orders' exact>
+        <ArbitrageOrdersPage />
       </Route>
       <Route>
         <Result

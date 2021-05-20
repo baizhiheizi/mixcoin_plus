@@ -6,6 +6,7 @@ import {
   MessageOutlined,
   MoneyCollectOutlined,
   PayCircleOutlined,
+  RetweetOutlined,
   ShareAltOutlined,
   SyncOutlined,
   UsergroupAddOutlined,
@@ -83,6 +84,12 @@ export default function Menus() {
         <Link to='/balance'>
           <DollarOutlined />
           <span>Balance</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
+        <Link to='/arbitrage_orders'>
+          <RetweetOutlined />
+          <span>Arbitrage Orders</span>
         </Link>
       </Menu.Item>
       <Menu.Item>
