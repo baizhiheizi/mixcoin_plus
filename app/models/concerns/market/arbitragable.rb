@@ -97,6 +97,7 @@ module Market::Arbitragable
   def patrol
     if ocean_ask.present? && ((sell_to_swap[:funds] - buy_from_ocean[:funds]) * quote_asset.price_usd - MINIMUM_PROFIT_EXPECTION).positive?
       arbitrage_orders.create!(
+        arbitrager_id: Arbitrager.ready.sample&.mixin_uuid,
         raw: {
           ocean: {
             side: :bid
@@ -110,6 +111,7 @@ module Market::Arbitragable
       )
     elsif ocean_bid.present? && ((buy_from_swap[:amount] - sell_to_ocean[:amount]) * base_asset.price_usd - MINIMUM_PROFIT_EXPECTION).positive?
       arbitrage_orders.create!(
+        arbitrager_id: Arbitrager.ready.sample&.mixin_uuid,
         raw: {
           ocean: {
             side: :ask
@@ -126,6 +128,7 @@ module Market::Arbitragable
     end
   rescue StandardError => e
     Rails.logger.error e.inspect
+    raise e unless Rails.env.development?
   end
 
   def patrol_async

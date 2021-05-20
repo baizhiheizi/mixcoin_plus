@@ -4,30 +4,32 @@
 #
 # Table name: ocean_orders
 #
-#  id               :uuid             not null, primary key
-#  filled_amount    :decimal(, )
-#  filled_funds     :decimal(, )
-#  maker_fee        :float            default(0.0)
-#  order_type       :string
-#  price            :decimal(, )
-#  remaining_amount :decimal(, )
-#  remaining_funds  :decimal(, )
-#  side             :string
-#  state            :string
-#  taker_fee        :float            default(0.0)
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  base_asset_id    :uuid
-#  broker_id        :uuid
-#  conversation_id  :uuid
-#  market_id        :uuid             not null
-#  quote_asset_id   :uuid
-#  trace_id         :uuid
-#  user_id          :uuid
+#  id                 :uuid             not null, primary key
+#  filled_amount      :decimal(, )
+#  filled_funds       :decimal(, )
+#  maker_fee          :float            default(0.0)
+#  order_type         :string
+#  price              :decimal(, )
+#  remaining_amount   :decimal(, )
+#  remaining_funds    :decimal(, )
+#  side               :string
+#  state              :string
+#  taker_fee          :float            default(0.0)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  arbitrage_order_id :uuid
+#  base_asset_id      :uuid
+#  broker_id          :uuid
+#  conversation_id    :uuid
+#  market_id          :uuid             not null
+#  quote_asset_id     :uuid
+#  trace_id           :uuid
+#  user_id            :uuid
 #
 # Indexes
 #
-#  index_ocean_orders_on_market_id  (market_id)
+#  index_ocean_orders_on_arbitrage_order_id  (arbitrage_order_id)
+#  index_ocean_orders_on_market_id           (market_id)
 #
 class OceanOrder < ApplicationRecord
   MAKER_FEE_RATIO = 0.001
@@ -39,8 +41,9 @@ class OceanOrder < ApplicationRecord
   include AASM
 
   belongs_to :market, counter_cache: true
-  belongs_to :user, inverse_of: :ocean_orders
-  belongs_to :broker, class_name: 'OceanBroker', primary_key: :mixin_uuid, inverse_of: :ocean_orders
+  belongs_to :arbitrage_order, optional: true
+  belongs_to :user, inverse_of: :ocean_orders, optional: true
+  belongs_to :broker, primary_key: :mixin_uuid, inverse_of: :ocean_orders, optional: true
   belongs_to :base_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
   belongs_to :quote_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
   belongs_to :conversation, class_name: 'MixinConversation', primary_key: :conversation_id, optional: true
@@ -103,6 +106,10 @@ class OceanOrder < ApplicationRecord
 
   scope :without_drafted, -> { where.not(state: :drafted) }
 
+  def arbitrage?
+    arbitrage_order.present?
+  end
+
   def amount
     remaining_amount.to_f + filled_amount.to_f
   end
@@ -145,7 +152,7 @@ class OceanOrder < ApplicationRecord
       source: self,
       user_id: broker.mixin_uuid,
       transfer_type: :ocean_order_create,
-      opponent_id: OceanBroker::OCEAN_ENGINE_USER_ID,
+      opponent_id: Broker::OCEAN_ENGINE_USER_ID,
       asset_id: side.ask? ? base_asset_id : quote_asset_id,
       amount: side.ask? ? remaining_amount : remaining_funds,
       memo: memo_for_creating
@@ -161,9 +168,9 @@ class OceanOrder < ApplicationRecord
       source: self,
       user_id: broker.mixin_uuid,
       transfer_type: :ocean_order_cancel,
-      opponent_id: OceanBroker::OCEAN_ENGINE_USER_ID,
-      asset_id: OceanBroker::EXCHANGE_ASSET_ID,
-      amount: OceanBroker::EXCHANGE_ASSET_AMOUNT,
+      opponent_id: Broker::OCEAN_ENGINE_USER_ID,
+      asset_id: Broker::EXCHANGE_ASSET_ID,
+      amount: Broker::EXCHANGE_ASSET_AMOUNT,
       memo: memo_for_canceling
     ).find_or_create_by!(
       trace_id: trace_id_for_canceling
@@ -234,7 +241,6 @@ class OceanOrder < ApplicationRecord
     return unless new_record?
 
     assign_attributes(
-      broker_id: user.ocean_broker.mixin_uuid,
       trace_id: SecureRandom.uuid,
       base_asset_id: market.base_asset_id,
       quote_asset_id: market.quote_asset_id,
@@ -243,6 +249,7 @@ class OceanOrder < ApplicationRecord
       maker_fee: MAKER_FEE_RATIO,
       taker_fee: TAKER_FEE_RATIO
     )
+    self.borker_id = user.broker.mixin_uuid if user.present?
   end
 
   # memo in transfer for creating order to engine

@@ -109,19 +109,29 @@ class MixinNetworkSnapshot < ApplicationRecord
     @base64_decoded_memo = Base64.decode64(data.to_s.gsub('-', '+').gsub('_', '/'))
   end
 
-  def decrypted_memo
-    @decrypted_memo ||=
-      begin
-        MessagePack.unpack base64_decoded_memo
-      rescue StandardError
-        {}
-      end
+  def decrypted_msgpack_memo
+    decrypted_msgpack_memo = MessagePack.unpack base64_decoded_memo
 
-    if @decrypted_memo.present?
-      @decrypted_memo['A'] = raw_to_uuid(@decrypted_memo['A'])
-      @decrypted_memo['B'] = raw_to_uuid(@decrypted_memo['B'])
-      @decrypted_memo['O'] = raw_to_uuid(@decrypted_memo['O'])
+    if decrypted_msgpack_memo.present?
+      decrypted_msgpack_memo['A'] = raw_to_uuid(decrypted_msgpack_memo['A'])
+      decrypted_msgpack_memo['B'] = raw_to_uuid(decrypted_msgpack_memo['B'])
+      decrypted_msgpack_memo['O'] = raw_to_uuid(decrypted_msgpack_memo['O'])
     end
+
+    decrypted_msgpack_memo
+  rescue StandardError
+    {}
+  end
+
+  def decrypted_json_memo
+    JSON.parse base64_decoded_memo
+  rescue JSON::ParserError
+    {}
+  end
+
+  def decrypted_memo
+    @decrypted_memo ||= decrypted_msgpack_memo
+    @decrypted_memo = decrypted_json_memo if @decrypted_memo.blank?
 
     @decrypted_memo
   end
@@ -152,6 +162,38 @@ class MixinNetworkSnapshot < ApplicationRecord
     nil
   end
 
+  def decrypted_snapshot_type
+    @_decrypted_snapshot_type ||=
+      if base64_decoded_memo.match?(/^OCEAN/)
+        case base64_decoded_memo.split('|')[1]
+        when 'REFUND', 'CANCEL'
+          'refund_to_user'
+        when 'MATCH'
+          'match_to_user'
+        when 'CREATE'
+          'create_order_from_user'
+        when 'BALANCE'
+          'ocean_broker_balance'
+        end
+      elsif decrypted_msgpack_memo.present?
+        if raw['amount'].to_f.negative?
+          # to engine
+          return 'ocean_broker_register' if decrypted_msgpack_memo['U'].present?
+          return 'cancel_order_to_engine' if decrypted_msgpack_memo['O'].present?
+          return 'create_order_to_engine' if decrypted_msgpack_memo['A'].present?
+        else
+          # from engine
+          case decrypted_msgpack_memo['S']
+          when 'CANCEL', 'REFUND'
+            'refund_from_engine'
+          when 'MATCH'
+            'match_from_engine'
+          end
+        end
+      end
+    @_decrypted_snapshot_type
+  end
+
   private
 
   def setup_attributes
@@ -168,6 +210,7 @@ class MixinNetworkSnapshot < ApplicationRecord
       trace_id: raw['trace_id']
     )
 
-    self.type = 'OceanSnapshot' if decrypted_memo.present? || base64_decoded_memo.match?(/^OCEAN/)
+    self.type = 'OceanSnapshot' if decrypted_msgpack_memo.present? || base64_decoded_memo.match?(/^OCEAN/)
+    self.type = 'SwapSnapshot' if decrypted_json_memo.present? || base64_decoded_memo.match?(/^SWAP/)
   end
 end

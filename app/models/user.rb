@@ -32,7 +32,7 @@ class User < ApplicationRecord
   has_many :notifications, as: :recipient, dependent: :destroy
 
   has_many :wallets, class_name: 'MixinNetworkUser', as: :owner, dependent: :restrict_with_exception
-  has_one :ocean_broker, class_name: 'OceanBroker', as: :owner, dependent: :restrict_with_exception
+  has_one :broker, as: :owner, dependent: :restrict_with_exception
   has_many :ocean_orders, dependent: :restrict_with_exception
   has_many :assets, class_name: 'UserAsset', dependent: :restrict_with_exception
   has_many :markets, through: :assets, inverse_of: false
@@ -90,7 +90,7 @@ class User < ApplicationRecord
   end
 
   def snapshots_with_ocean_engine(_snapshots = [], offset = nil)
-    r = MixcoinPlusBot.api.snapshots(access_token: access_token, opponent: OceanBroker::OCEAN_ENGINE_USER_ID, limit: 100, offset: offset)
+    r = MixcoinPlusBot.api.snapshots(access_token: access_token, opponent: Broker::OCEAN_ENGINE_USER_ID, limit: 100, offset: offset)
     if r['data'].count == 100
       snapshots_with_ocean_engine(_snapshots + r['data'], r['data'].last['created_at'])
     else

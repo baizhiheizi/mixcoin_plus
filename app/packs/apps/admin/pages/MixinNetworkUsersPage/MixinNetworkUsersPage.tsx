@@ -12,7 +12,7 @@ import { useHistory } from 'react-router';
 export default function MixinNetworkUsersPage() {
   const [query, setQuery] = useState('');
   const [state, setState] = useState('all');
-  const [type, setType] = useState('OceanBroker');
+  const [type, setType] = useState('Broker');
   const debouncedQuery = useDebounce(query, { wait: 1000 });
   const history = useHistory();
   const { loading, data, refetch, fetchMore } =
@@ -88,7 +88,7 @@ export default function MixinNetworkUsersPage() {
             onChange={(value) => setType(value)}
           >
             <Select.Option value=''>All</Select.Option>
-            <Select.Option value='OceanBroker'>OceanBroker</Select.Option>
+            <Select.Option value='Broker'>Broker</Select.Option>
           </Select>
           <Select
             className='w-32 mr-2'

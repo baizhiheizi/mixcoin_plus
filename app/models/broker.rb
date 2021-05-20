@@ -25,13 +25,10 @@
 #  index_mixin_network_users_on_mixin_uuid               (mixin_uuid) UNIQUE
 #  index_mixin_network_users_on_owner_id_and_owner_type  (owner_id,owner_type)
 #
-class Arbitrager < MixinNetworkUser
+class Broker < MixinNetworkUser
   include MixinNetworkUser::Oceanable
 
-  has_many :arbitrage_orders, primary_key: :mixin_uuid, dependent: :restrict_with_exception
-  has_many :ocean_orders, foreign_key: :broker_id, primary_key: :mixin_uuid, dependent: :restrict_with_exception, inverse_of: :arbitrager
-
-  def default_name
-    "Arbitrager##{Arbitrager.count + 1}"
-  end
+  belongs_to :user, optional: true, inverse_of: :broker
+  has_many :ocean_orders, primary_key: :mixin_uuid, dependent: :restrict_with_exception
+  has_many :swap_orders, primary_key: :mixin_uuid, dependent: :restrict_with_exception
 end

@@ -13,7 +13,7 @@ module Types
     field :fennec, Boolean, null: true
 
     field :invitor, Types::UserType, null: true
-    field :ocean_broker, MixinNetworkUserType, null: true
+    field :broker, MixinNetworkUserType, null: true
 
     def may_invited
       object.may_invited?

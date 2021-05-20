@@ -100,12 +100,16 @@ class MixinNetworkUser < ApplicationRecord
     MixinNetworkUserUpdateAvatarWorker.perform_async id
   end
 
+  def default_name
+    'Mixcoin'
+  end
+
   private
 
   def setup_attributes
     return unless new_record?
 
-    r = MixcoinPlusBot.api.create_user(name || 'Mixcoin', key_type: 'Ed25519')
+    r = MixcoinPlusBot.api.create_user(name || default_name, key_type: 'Ed25519')
 
     self.raw = r['data']
 
