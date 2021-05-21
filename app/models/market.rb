@@ -141,7 +141,7 @@ class Market < ApplicationRecord
     offset = trades.order(traded_at: :asc).last&.raw&.[]('created_at')
     r = Ocean.api.trades(ocean_market_id, limit: 100, offset: offset)
 
-    raise r.inspect if r['data'].blank?
+    raise r.inspect if r['data'].nil?
 
     r['data'].each do |trade|
       trades.create_with(

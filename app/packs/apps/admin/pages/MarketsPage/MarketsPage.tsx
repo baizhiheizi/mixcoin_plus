@@ -19,7 +19,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function MarketsPage() {
-  const [quoteAssetId, setQuoteAssetId] = useState(ERC20_USDT_ASSET_ID);
+  const [quoteAssetId, setQuoteAssetId] = useState('');
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, { wait: 1000 });
   const { loading, data, refetch, fetchMore } = useAdminMarketConnectionQuery({
@@ -158,6 +158,7 @@ export default function MarketsPage() {
             value={quoteAssetId}
             onChange={(value) => setQuoteAssetId(value)}
           >
+            <Select.Option value=''>All</Select.Option>
             <Select.Option value={BTC_ASSET_ID}>BTC</Select.Option>
             <Select.Option value={XIN_ASSET_ID}>XIN</Select.Option>
             <Select.Option value={PUSD_ASSET_ID}>pUSD</Select.Option>
