@@ -3,7 +3,7 @@
 module Market::Arbitragable
   MINIMUM_TO_EXCHNAGE = 1 # USD
   MAXIMUM_TO_EXCHNAGE = 10 # USD
-  MINIMUM_PROFIT_EXPECTION = 0.5 # USD
+  THRESHOLD_TO_EXCHANGE = 0.01
   OCEAN_TAKER_FEE_RATIO = 0.001
 
   def ocean_ask
@@ -95,7 +95,7 @@ module Market::Arbitragable
   end
 
   def patrol
-    if ocean_ask.present? && ((sell_to_swap[:funds] - buy_from_ocean[:funds]) * quote_asset.price_usd - MINIMUM_PROFIT_EXPECTION).positive?
+    if ocean_ask.present? && ((sell_to_swap[:funds] / buy_from_ocean[:funds]) - 1 - THRESHOLD_TO_EXCHANGE).positive?
       arbitrage_orders.create!(
         arbitrager_id: Arbitrager.ready.sample&.mixin_uuid,
         raw: {
@@ -109,7 +109,7 @@ module Market::Arbitragable
           profit_asset_id: quote_asset_id
         }
       )
-    elsif ocean_bid.present? && ((buy_from_swap[:amount] - sell_to_ocean[:amount]) * base_asset.price_usd - MINIMUM_PROFIT_EXPECTION).positive?
+    elsif ocean_bid.present? && ((buy_from_swap[:amount] / sell_to_ocean[:amount]) - 1 - THRESHOLD_TO_EXCHANGE).positive?
       arbitrage_orders.create!(
         arbitrager_id: Arbitrager.ready.sample&.mixin_uuid,
         raw: {
