@@ -94,6 +94,7 @@ export default function ActionComponent(props: {
     } else if (!validateOrder()) {
       return;
     }
+    const parsedOrderPrice = parseFloat(orderPrice).toFixed(4);
 
     let confirmText: string;
     let warningText: string;
@@ -105,7 +106,7 @@ export default function ActionComponent(props: {
           : t('confirm_place_bid_order')
       } ${orderAmount} ${market.baseAsset.symbol} (${t(
         'price',
-      )}: ${orderPrice} ${market.quoteAsset.symbol})?`;
+      )}: ${parsedOrderPrice} ${market.quoteAsset.symbol})?`;
     } else {
       confirmText = `${
         orderSide === 'ask'
@@ -120,10 +121,10 @@ export default function ActionComponent(props: {
 
     if (
       (orderType === 'limit' &&
-        (market.quoteAsset.priceUsd * parseFloat(orderPrice)) /
+        (market.quoteAsset.priceUsd * parseFloat(parsedOrderPrice)) /
           market.baseAsset.priceUsd >
           1.2) ||
-      (market.quoteAsset.priceUsd * parseFloat(orderPrice)) /
+      (market.quoteAsset.priceUsd * parseFloat(parsedOrderPrice)) /
         market.baseAsset.priceUsd <
         0.8
     ) {
@@ -145,13 +146,14 @@ export default function ActionComponent(props: {
 
   function calculateFunds() {
     let funds: any;
+    const parsedOrderPrice = parseFloat(orderPrice).toFixed(4);
 
     if (orderType === 'limit' && orderSide === 'bid') {
-      funds = new BigNumber(orderAmount).times(orderPrice);
+      funds = new BigNumber(orderAmount).times(parsedOrderPrice);
     }
     if (orderType === 'limit') {
       if (orderSide === 'bid') {
-        funds = new BigNumber(orderAmount).times(orderPrice);
+        funds = new BigNumber(orderAmount).times(parsedOrderPrice);
       } else {
         funds = new BigNumber(orderAmount);
       }
@@ -174,7 +176,7 @@ export default function ActionComponent(props: {
           marketId: market.id,
           side: orderSide,
           orderType,
-          price: orderPrice,
+          price: parseFloat(orderPrice).toFixed(4),
           funds: calculateFunds(),
         },
       },
@@ -182,8 +184,11 @@ export default function ActionComponent(props: {
   }
 
   function validateOrder() {
+    const parsedOrderPrice = parseFloat(orderPrice).toFixed(4);
+    setOrderPrice(parsedOrderPrice);
+
     if (orderType === 'limit') {
-      if (parseFloat(orderPrice) <= 0) {
+      if (parseFloat(parsedOrderPrice) <= 0) {
         ToastError(t('price_too_low'));
         return;
       } else if (parseFloat(orderAmount) <= 0) {
@@ -204,7 +209,7 @@ export default function ActionComponent(props: {
     const maxFunds = maxPrice.times(maxAmount);
 
     if (orderType === 'limit') {
-      const price = new BigNumber(orderPrice);
+      const price = new BigNumber(parsedOrderPrice);
       let quoteMaxPrice = maxPrice;
       if (
         [OMNI_USDT_ASSET_ID, ERC20_USDT_ASSET_ID, PUSD_ASSET_ID].includes(
@@ -262,7 +267,10 @@ export default function ActionComponent(props: {
       ) {
         minFunds = '1';
       }
-      if (orderType === 'limit' && amount.times(orderPrice).lt(minFunds)) {
+      if (
+        orderType === 'limit' &&
+        amount.times(parsedOrderPrice).lt(minFunds)
+      ) {
         ToastError(t('order_too_small'));
         return false;
       }
@@ -359,11 +367,12 @@ export default function ActionComponent(props: {
               >
                 <div>-</div>
               </Button>
-              <Input
+              <input
                 disabled={paying}
-                type='price'
+                type='number'
                 value={orderPrice}
-                onChange={(value: string) => setOrderPrice(value)}
+                min='0.0001'
+                onChange={(e: any) => setOrderPrice(e.target.value)}
                 placeholder={`${t('price')}(${market.quoteAsset.symbol})`}
                 className='w-full h-10 p-2 text-base text-center border rounded dark:border-gray-500'
               />
@@ -408,11 +417,11 @@ export default function ActionComponent(props: {
               >
                 <div>-</div>
               </Button>
-              <Input
+              <input
                 disabled={paying}
-                type='price'
+                type='number'
                 value={orderAmount}
-                onChange={(value: string) => setOrderAmount(value)}
+                onChange={(e: any) => setOrderAmount(e.target.value)}
                 placeholder={`${t('volume')}(${market.baseAsset.symbol})`}
                 className='w-full h-10 p-2 text-base text-center border rounded dark:border-gray-500'
               />
