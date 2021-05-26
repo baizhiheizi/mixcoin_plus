@@ -128,7 +128,7 @@ module Market::Arbitragable
     end
   rescue StandardError => e
     Rails.logger.error e.inspect
-    raise e unless Rails.env.development?
+    raise e unless Rails.env.production?
   end
 
   def patrol_async
