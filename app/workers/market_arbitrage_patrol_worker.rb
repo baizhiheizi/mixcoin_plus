@@ -2,7 +2,7 @@
 
 class MarketArbitragePatrolWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :low
+  sidekiq_options queue: :low, retry: false
 
   def perform(id)
     Market.find(id).patrol
