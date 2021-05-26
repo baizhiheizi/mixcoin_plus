@@ -178,6 +178,7 @@ export default function MarketsPage() {
         dataSource={markets}
         rowKey='id'
         pagination={false}
+        size='small'
       />
       <div className='m-4 text-center'>
         <Button

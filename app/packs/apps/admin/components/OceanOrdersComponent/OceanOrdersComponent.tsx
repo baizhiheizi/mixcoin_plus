@@ -146,6 +146,7 @@ export default function OceanOrdersComponent(props: {
         dataSource={oceanOrders}
         rowKey='id'
         pagination={false}
+        size='small'
       />
       <div className='m-4 text-center'>
         <Button

@@ -5107,6 +5107,39 @@
             "deprecationReason": null
           },
           {
+            "name": "adminMixinNetworkUser",
+            "description": null,
+            "args": [
+              {
+                "name": "mixinUuid",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "MixinNetworkUser",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "adminMixinNetworkUserConnection",
             "description": null,
             "args": [
@@ -6664,6 +6697,18 @@
             "deprecationReason": null
           },
           {
+            "name": "broker",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "MixinNetworkUser",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -6811,18 +6856,6 @@
                 "name": "String",
                 "ofType": null
               }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "oceanBroker",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "MixinNetworkUser",
-              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

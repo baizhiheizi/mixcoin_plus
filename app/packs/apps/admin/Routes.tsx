@@ -2,6 +2,7 @@ import { Button, Result } from 'antd';
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import ArbitrageOrdersPage from './pages/ArbitrageOrdersPage/ArbitrageOrdersPage';
+import ArbitragersPage from './pages/ArbitragersPage/ArbitragersPage';
 import BalancePage from './pages/BalancePage/BalancePage';
 import InvitationsPage from './pages/InvitationsPage/InvitationsPage';
 import MarketPage from './pages/MarketPage/MarketPage';
@@ -10,6 +11,7 @@ import MixinConversationPage from './pages/MixinConversationPage/MixinConversati
 import MixinConversationsPage from './pages/MixinConversationsPage/MixinConversationsPage';
 import MixinMessagesPage from './pages/MixinMessagesPage/MixinMessagesPage';
 import MixinNetworkSnapshotsPage from './pages/MixinNetworkSnapshotsPage/MixinNetworkSnapshotsPage';
+import MixinNetworkUserPage from './pages/MixinNetworkUserPage/MixinNetworkUserPage';
 import MixinNetworkUsersPage from './pages/MixinNetworkUsersPage/MixinNetworkUsersPage';
 import MixinTransfersPage from './pages/MixinTransfersPage/MixinTransfersPage';
 import OceanOrderPage from './pages/OceanOrderPage/OceanOrderPage';
@@ -65,6 +67,12 @@ export default function Routes() {
       </Route>
       <Route path='/balance' exact>
         <BalancePage />
+      </Route>
+      <Route path='/arbitragers' exact>
+        <ArbitragersPage />
+      </Route>
+      <Route path='/mixin_network_users/:uuid' exact>
+        <MixinNetworkUserPage />
       </Route>
       <Route path='/arbitrage_orders' exact>
         <ArbitrageOrdersPage />

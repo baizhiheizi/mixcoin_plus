@@ -1,0 +1,15 @@
+query AdminMixinNetworkUser($mixinUuid: String!) {
+  adminMixinNetworkUser(mixinUuid: $mixinUuid) {
+    id
+    name
+    state
+    type
+    hasPin
+    mixinUuid
+    owner {
+      name
+      mixinId
+    }
+    createdAt
+  }
+}

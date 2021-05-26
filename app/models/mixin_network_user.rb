@@ -90,7 +90,7 @@ class MixinNetworkUser < ApplicationRecord
 
   def update_avatar
     img = File.open DEFAULT_AVATAR_FILE
-    r = mixin_api.update_me full_name: 'Mixcoin', avatar_base64: Base64.strict_encode64(img.read)
+    r = mixin_api.update_me full_name: name, avatar_base64: Base64.strict_encode64(img.read)
     update raw: r['data'], name: r['data']['full_name'] if r['data'].present?
   ensure
     img.close

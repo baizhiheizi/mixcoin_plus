@@ -68,10 +68,10 @@ export default function UserPage() {
           <MixinTransfersComponent opponentId={user.mixinUuid} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Broker Wallet' key='wallet'>
-          <WalletBalanceComponent userId={user.oceanBroker.mixinUuid} />
+          <WalletBalanceComponent userId={user.broker.mixinUuid} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Broker Transfers' key='transfers'>
-          <MixinTransfersComponent userId={user.oceanBroker.mixinUuid} />
+          <MixinTransfersComponent userId={user.broker.mixinUuid} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Invitations' key='invitations'>
           <InvitationsComponent invitorId={user.id} />

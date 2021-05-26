@@ -109,6 +109,7 @@ export default function ArbitrageOrdersComponent(props: {
         dataSource={arbitrageOrders}
         rowKey='id'
         pagination={false}
+        size='small'
       />
       <div className='m-4 text-center'>
         <Button

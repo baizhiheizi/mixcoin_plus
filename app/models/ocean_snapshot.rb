@@ -142,7 +142,7 @@ class OceanSnapshot < MixinNetworkSnapshot
 
     case _snapshot_type.to_sym
     when :ocean_broker_balance
-      _broker = Broker.find_by(mixin_uuid: opponent_id)
+      _broker = MixinNetworkUser.where(type: %w[Broker Arbitrager]).find_by(mixin_uuid: opponent_id)
       _broker.balance! if _broker.may_balance?
     when :ocean_broker_register
       wallet.ready! if wallet.balanced?

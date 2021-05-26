@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 
 export default function Menus() {
   return (
-    <Menu theme='dark'>
+    <Menu theme='dark' mode='inline'>
       <div className='h-8 m-2 text-center leading-8'>Admin</div>
       <Menu.Item>
         <Link to='/'>
@@ -86,12 +86,18 @@ export default function Menus() {
           <span>Balance</span>
         </Link>
       </Menu.Item>
-      <Menu.Item>
-        <Link to='/arbitrage_orders'>
-          <RetweetOutlined />
-          <span>Arbitrage Orders</span>
-        </Link>
-      </Menu.Item>
+      <Menu.SubMenu title='Arbitrage' icon={<RetweetOutlined />}>
+        <Menu.Item>
+          <Link to='/arbitragers'>
+            <span>Arbitragers</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link to='/arbitrage_orders'>
+            <span>Orders</span>
+          </Link>
+        </Menu.Item>
+      </Menu.SubMenu>
       <Menu.Item>
         <a href='/admin/logout'>
           <LogoutOutlined />

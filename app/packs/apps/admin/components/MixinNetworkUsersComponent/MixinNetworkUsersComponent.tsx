@@ -1,52 +1,75 @@
 import { useDebounce } from 'ahooks';
-import { Button, Input, PageHeader, Space, Table } from 'antd';
-import Avatar from 'antd/lib/avatar/avatar';
+import { Button, Table } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
-import { useAdminUserConnectionQuery, User } from 'graphqlTypes';
-import React, { useState } from 'react';
-import { useHistory } from 'react-router';
+import {
+  MixinNetworkUser,
+  useAdminMixinNetworkUserConnectionQuery,
+} from 'graphqlTypes';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-export default function UsersPage() {
-  const [query, setQuery] = useState('');
+export default function MixinNetworkUsersComponent(props: {
+  query?: string;
+  state?: string;
+  type?: string;
+}) {
+  const { query, state = 'all', type } = props;
   const debouncedQuery = useDebounce(query, { wait: 1000 });
-  const history = useHistory();
-  const { loading, data, refetch, fetchMore } = useAdminUserConnectionQuery({
-    variables: { query: debouncedQuery },
-  });
+  const { loading, data, refetch, fetchMore } =
+    useAdminMixinNetworkUserConnectionQuery({
+      variables: { query: debouncedQuery, state, type },
+    });
 
   if (loading) {
     return <LoadingComponent />;
   }
 
   const {
-    adminUserConnection: {
+    adminMixinNetworkUserConnection: {
       nodes: users,
       pageInfo: { hasNextPage, endCursor },
     },
   } = data;
 
-  const columns: Array<ColumnProps<Partial<User>>> = [
+  const columns: Array<ColumnProps<Partial<MixinNetworkUser & any>>> = [
     {
-      dataIndex: 'mixinId',
-      key: 'mixinId',
-      title: 'Mixin ID',
+      dataIndex: 'id',
+      key: 'id',
+      title: 'ID',
+    },
+    {
+      dataIndex: 'mixinUuid',
+      key: 'mixinUuid',
+      title: 'mixin UUID',
     },
     {
       dataIndex: 'name',
       key: 'name',
-      render: (name, user) => (
-        <Space>
-          <Avatar src={user.avatar} />
-          {name}
-        </Space>
-      ),
       title: 'Name',
     },
     {
-      dataIndex: 'invitationsCount',
-      key: 'invitationsCount',
-      title: 'Invitations Count',
+      dataIndex: 'owner',
+      key: 'owner',
+      render: (_, user) =>
+        user.owner ? `${user.owner.name}(${user.owner.mixinId})` : '-',
+      title: 'Owner',
+    },
+    {
+      dataIndex: 'type',
+      key: 'type',
+      title: 'type',
+    },
+    {
+      dataIndex: 'state',
+      key: 'state',
+      title: 'state',
+    },
+    {
+      dataIndex: 'hasPin',
+      key: 'hasPin',
+      render: (_, user) => (user.hasPin ? 'Yes' : 'No'),
+      title: 'hasPin',
     },
     {
       dataIndex: 'createdAt',
@@ -57,7 +80,7 @@ export default function UsersPage() {
       dataIndex: 'actions',
       key: 'actions',
       render: (_, user) => (
-        <a onClick={() => history.push(`/users/${user.id}`)}>Details</a>
+        <Link to={`/mixin_network_users/${user.mixinUuid}`}>Detail</Link>
       ),
       title: 'Actions',
     },
@@ -65,14 +88,7 @@ export default function UsersPage() {
 
   return (
     <>
-      <PageHeader title='Users Manage' />
-      <div className='flex justify-between mb-4'>
-        <Input
-          className='w-36'
-          placeholder='User name/mixin ID'
-          value={query}
-          onChange={(e) => setQuery(e.currentTarget.value)}
-        />
+      <div className='flex justify-end mb-4'>
         <Button key='refresh' type='primary' onClick={() => refetch()}>
           Refresh
         </Button>

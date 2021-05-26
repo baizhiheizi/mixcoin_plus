@@ -10,6 +10,7 @@ module Types
     field :admin_user, resolver: Resolvers::AdminUserResolver
     field :admin_user_connection, resolver: Resolvers::AdminUserConnectionResolver
     field :admin_mixin_network_user_connection, resolver: Resolvers::AdminMixinNetworkUserConnectionResolver
+    field :admin_mixin_network_user, resolver: Resolvers::AdminMixinNetworkUserResolver
     field :admin_invitation_connection, resolver: Resolvers::AdminInvitationConnectionResolver
     field :admin_mixin_message_connection, resolver: Resolvers::AdminMixinMessageConnectionResolver
     field :admin_mixin_network_snapshot_connection, resolver: Resolvers::AdminMixinNetworkSnapshotConnectionResolver

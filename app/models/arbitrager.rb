@@ -31,7 +31,15 @@ class Arbitrager < MixinNetworkUser
   has_many :arbitrage_orders, primary_key: :mixin_uuid, dependent: :restrict_with_exception
   has_many :ocean_orders, foreign_key: :broker_id, primary_key: :mixin_uuid, dependent: :restrict_with_exception, inverse_of: :arbitrager
 
+  after_initialize :set_default_name, if: :new_record?
+
   def default_name
     "Arbitrager##{Arbitrager.count + 1}"
+  end
+
+  private
+
+  def set_default_name
+    self.name = default_name
   end
 end

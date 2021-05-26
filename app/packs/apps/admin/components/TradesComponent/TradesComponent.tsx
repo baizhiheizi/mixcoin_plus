@@ -69,8 +69,8 @@ export default function TradesComponent(props: { marketId?: string }) {
         columns={columns}
         dataSource={trades}
         rowKey='id'
-        size='small'
         pagination={false}
+        size='small'
       />
       <div className='m-4 text-center'>
         <Button
