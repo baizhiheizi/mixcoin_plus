@@ -33,6 +33,7 @@ class MixinNetworkUser < ApplicationRecord
   belongs_to :owner, optional: true, inverse_of: false, polymorphic: true
   has_many :snapshots, class_name: 'MixinNetworkSnapshot', foreign_key: :user_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :wallet
   has_many :transfers, class_name: 'MixinTransfer', foreign_key: :user_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :wallet
+  has_many :ocean_orders, primary_key: :mixin_uuid, foreign_key: :broker_id, dependent: :restrict_with_exception, inverse_of: :broker
 
   validates :name, presence: true
   validates :pin_token, presence: true

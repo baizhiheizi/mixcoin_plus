@@ -43,7 +43,7 @@ class OceanOrder < ApplicationRecord
   belongs_to :market, counter_cache: true
   belongs_to :arbitrage_order, optional: true
   belongs_to :user, inverse_of: :ocean_orders, optional: true
-  belongs_to :broker, primary_key: :mixin_uuid, inverse_of: :ocean_orders, optional: true
+  belongs_to :broker, class_name: 'MixinNetworkUser', primary_key: :mixin_uuid, inverse_of: :ocean_orders, optional: true
   belongs_to :base_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
   belongs_to :quote_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
   belongs_to :conversation, class_name: 'MixinConversation', primary_key: :conversation_id, optional: true
@@ -249,7 +249,7 @@ class OceanOrder < ApplicationRecord
       maker_fee: MAKER_FEE_RATIO,
       taker_fee: TAKER_FEE_RATIO
     )
-    self.borker_id = user.broker.mixin_uuid if user.present?
+    self.broker_id = user.broker.mixin_uuid if user.present?
   end
 
   # memo in transfer for creating order to engine
@@ -288,6 +288,6 @@ class OceanOrder < ApplicationRecord
   end
 
   def ensure_broker_ready
-    errors.add(:broker_id, 'not ready for exchange') unless broker.ready?
+    errors.add(:broker_id, ' not ready for exchange') unless broker.ready?
   end
 end
