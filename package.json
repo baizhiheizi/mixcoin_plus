@@ -19,7 +19,7 @@
     "@types/qrcode.react": "^1.0.1",
     "@types/react": "^17.0.5",
     "@types/react-router-dom": "^5.1.7",
-    "ahooks": "^2.10.3",
+    "ahooks": "^2.10.4",
     "antd": "^4.15.5",
     "autoprefixer": "^10.2.5",
     "axios": "^0.21.1",
