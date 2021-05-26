@@ -2,7 +2,7 @@
 
 class MarketSyncTradesFromEngineWorker
   include Sidekiq::Worker
-  sidekiq_options retry: true
+  sidekiq_options retry: false
 
   def perform(id)
     market = Market.find(id)

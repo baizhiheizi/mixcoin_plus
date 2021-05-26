@@ -76,6 +76,7 @@ export default function InvitationsComponent(props: { invitorId?: string }) {
         dataSource={invitations}
         rowKey='id'
         pagination={false}
+        size='small'
       />
       <div className='m-4 text-center'>
         <Button

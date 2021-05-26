@@ -83,6 +83,7 @@ export default function UsersPage() {
         dataSource={users}
         rowKey='id'
         pagination={false}
+        size='small'
       />
       <div className='m-4 text-center'>
         <Button

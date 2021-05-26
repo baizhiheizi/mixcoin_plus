@@ -33,6 +33,7 @@ class MixinNetworkUser < ApplicationRecord
   belongs_to :owner, optional: true, inverse_of: false, polymorphic: true
   has_many :snapshots, class_name: 'MixinNetworkSnapshot', foreign_key: :user_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :wallet
   has_many :transfers, class_name: 'MixinTransfer', foreign_key: :user_id, primary_key: :mixin_uuid, dependent: :nullify, inverse_of: :wallet
+  has_many :ocean_orders, primary_key: :mixin_uuid, foreign_key: :broker_id, dependent: :restrict_with_exception, inverse_of: :broker
 
   validates :name, presence: true
   validates :pin_token, presence: true
@@ -90,7 +91,7 @@ class MixinNetworkUser < ApplicationRecord
 
   def update_avatar
     img = File.open DEFAULT_AVATAR_FILE
-    r = mixin_api.update_me full_name: 'Mixcoin', avatar_base64: Base64.strict_encode64(img.read)
+    r = mixin_api.update_me full_name: name, avatar_base64: Base64.strict_encode64(img.read)
     update raw: r['data'], name: r['data']['full_name'] if r['data'].present?
   ensure
     img.close
@@ -100,12 +101,16 @@ class MixinNetworkUser < ApplicationRecord
     MixinNetworkUserUpdateAvatarWorker.perform_async id
   end
 
+  def default_name
+    'Mixcoin'
+  end
+
   private
 
   def setup_attributes
     return unless new_record?
 
-    r = MixcoinPlusBot.api.create_user(name || 'Mixcoin', key_type: 'Ed25519')
+    r = MixcoinPlusBot.api.create_user(name || default_name, key_type: 'Ed25519')
 
     self.raw = r['data']
 

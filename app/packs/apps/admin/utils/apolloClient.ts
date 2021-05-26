@@ -29,6 +29,11 @@ export const apolloClient = (uri: string) => {
     typePolicies: {
       Query: {
         fields: {
+          adminArbitrageOrderConnection: customizedConnectionMergeFunction([
+            'marketId',
+            'state',
+            'arbitragerId',
+          ]),
           adminInvitationConnection: customizedConnectionMergeFunction([
             'invitorId',
           ]),
@@ -39,9 +44,12 @@ export const apolloClient = (uri: string) => {
             'quoteAssetId',
           ]),
           adminMixinMessageConnection: customizedConnectionMergeFunction(),
-          adminMixinNetworkSnapshotConnection: customizedConnectionMergeFunction(
-            ['oceanOrderId', 'snapshotType', 'type'],
-          ),
+          adminMixinNetworkSnapshotConnection:
+            customizedConnectionMergeFunction([
+              'oceanOrderId',
+              'snapshotType',
+              'type',
+            ]),
           adminMixinNetworkUserConnection: customizedConnectionMergeFunction([
             'query',
             'state',

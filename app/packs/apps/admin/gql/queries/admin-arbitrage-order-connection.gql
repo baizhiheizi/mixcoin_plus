@@ -1,0 +1,41 @@
+query AdminArbitrageOrderConnection(
+  $after: String
+  $state: String
+  $marketId: ID
+  $arbitragerId: ID
+) {
+  adminArbitrageOrderConnection(
+    after: $after
+    state: $state
+    marketId: $marketId
+    arbitragerId: $arbitragerId
+  ) {
+    nodes {
+      id
+      state
+      expectedProfit
+      netProfit
+      raw
+      market {
+        baseAsset {
+          assetId
+          symbol
+        }
+        quoteAsset {
+          assetId
+          symbol
+        }
+      }
+      profitAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

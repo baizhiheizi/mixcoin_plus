@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/webpacker.git
-  revision: 8c0e69ce65f4a35a52de2feba5dec2ec86b272aa
+  revision: ad8010fbeb20a767fb1a0dc2a0dea5890f41e4a7
   specs:
     webpacker (6.0.0.beta.7)
       activesupport (>= 5.2)
@@ -124,7 +124,7 @@ GEM
       raabro (~> 1.4)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    graphql (1.12.9)
+    graphql (1.12.10)
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
     http (4.4.1)
@@ -180,9 +180,9 @@ GEM
       thor (~> 1.0)
     msgpack (1.4.2)
     nio4r (2.5.7)
-    nokogiri (1.11.4-x86_64-darwin)
+    nokogiri (1.11.5-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.11.4-x86_64-linux)
+    nokogiri (1.11.5-x86_64-linux)
       racc (~> 1.4)
     noticed (1.4.1)
       http (>= 4.0.0)
@@ -257,7 +257,7 @@ GEM
       redis (~> 4.0)
     regexp_parser (2.1.1)
     rexml (3.2.5)
-    rubocop (1.14.0)
+    rubocop (1.15.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)

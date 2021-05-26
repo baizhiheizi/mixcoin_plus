@@ -28,6 +28,7 @@ class Market < ApplicationRecord
   AVAILABLE_QUOTES = [ERC20_USDT_ASSET_ID, PUSD_ASSET_ID, XIN_ASSET_ID, BTC_ASSET_ID, OMNI_USDT_ASSET_ID].freeze
 
   include RankedModel
+  include Market::Arbitragable
 
   ranks :rank, with_same: :quote_asset_id
 
@@ -47,6 +48,7 @@ class Market < ApplicationRecord
   has_many :ocean_orders, dependent: :restrict_with_exception
   has_many :snapshots, through: :ocean_orders, source: :snapshots
   has_many :trades, dependent: :restrict_with_exception
+  has_many :arbitrage_orders, dependent: :restrict_with_exception
 
   scope :order_by_default, lambda {
     where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID])
@@ -138,6 +140,8 @@ class Market < ApplicationRecord
   def sync_trades_from_engine
     offset = trades.order(traded_at: :asc).last&.raw&.[]('created_at')
     r = Ocean.api.trades(ocean_market_id, limit: 100, offset: offset)
+
+    raise r.inspect if r['data'].nil?
 
     r['data'].each do |trade|
       trades.create_with(

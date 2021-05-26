@@ -48,5 +48,10 @@ module Ocean
         }
       )
     end
+
+    def book(market)
+      path = format('/markets/%<market>s/book', market: market)
+      client.get path
+    end
   end
 end

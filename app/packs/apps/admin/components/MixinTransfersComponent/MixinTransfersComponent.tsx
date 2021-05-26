@@ -11,7 +11,7 @@ export default function MixinTransfersComponent(props: {
   opponentId?: string;
 }) {
   const { oceanOrderId, userId, opponentId } = props;
-  const [transferType, setTranferType] = useState('ocean_order_mixcoin_fee');
+  const [transferType, setTranferType] = useState('all');
   const { loading, data, refetch, fetchMore } =
     useAdminMixinTransferConnectionQuery({
       variables: { oceanOrderId, userId, opponentId, transferType },
@@ -130,6 +130,7 @@ export default function MixinTransfersComponent(props: {
         dataSource={transfers}
         rowKey='id'
         pagination={false}
+        size='small'
       />
       <div className='m-4 text-center'>
         <Button

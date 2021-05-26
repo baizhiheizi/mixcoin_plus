@@ -142,7 +142,7 @@ class OceanSnapshot < MixinNetworkSnapshot
 
     case _snapshot_type.to_sym
     when :ocean_broker_balance
-      _broker = OceanBroker.find_by(mixin_uuid: opponent_id)
+      _broker = MixinNetworkUser.where(type: %w[Broker Arbitrager]).find_by(mixin_uuid: opponent_id)
       _broker.balance! if _broker.may_balance?
     when :ocean_broker_register
       wallet.ready! if wallet.balanced?
@@ -214,37 +214,5 @@ class OceanSnapshot < MixinNetworkSnapshot
     @_decrypted_ocean_order ||= OceanOrder.find_by(trace_id: _bid_order_id, side: 'bid', base_asset_id: raw['asset']['asset_id'])
 
     @_decrypted_ocean_order
-  end
-
-  def decrypted_snapshot_type
-    @_decrypted_snapshot_type ||=
-      if base64_decoded_memo.match?(/^OCEAN/)
-        case base64_decoded_memo.split('|')[1]
-        when 'REFUND', 'CANCEL'
-          'refund_to_user'
-        when 'MATCH'
-          'match_to_user'
-        when 'CREATE'
-          'create_order_from_user'
-        when 'BALANCE'
-          'ocean_broker_balance'
-        end
-      elsif decrypted_memo.present?
-        if raw['amount'].to_f.negative?
-          # to engine
-          return 'ocean_broker_register' if decrypted_memo['U'].present?
-          return 'cancel_order_to_engine' if decrypted_memo['O'].present?
-          return 'create_order_to_engine' if decrypted_memo['A'].present?
-        else
-          # from engine
-          case decrypted_memo['S']
-          when 'CANCEL', 'REFUND'
-            'refund_from_engine'
-          when 'MATCH'
-            'match_from_engine'
-          end
-        end
-      end
-    @_decrypted_snapshot_type
   end
 end
