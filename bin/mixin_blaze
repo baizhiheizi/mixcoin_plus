@@ -27,7 +27,7 @@ EM.run {
     end
   end
 
-  EM.add_periodic_timer(60) {
+  EM.add_periodic_timer(10) {
     Market.recommended.map(&:patrol_async)
   }
 
