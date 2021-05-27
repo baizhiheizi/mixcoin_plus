@@ -73,7 +73,7 @@
     "@graphql-codegen/introspection": "1.18.2",
     "@graphql-codegen/typescript": "1.22.0",
     "@graphql-codegen/typescript-operations": "^1.17.15",
-    "@graphql-codegen/typescript-react-apollo": "^2.2.3",
+    "@graphql-codegen/typescript-react-apollo": "^2.2.5",
     "@webpack-cli/serve": "^1.4.0",
     "negotiator": "^0.6.2",
     "prettier": "^2.3.0",
