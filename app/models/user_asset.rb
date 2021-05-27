@@ -34,6 +34,17 @@ class UserAsset < ApplicationRecord
 
   delegate :chain_asset, to: :asset
 
+  def sync
+    return unless _cache_expired?
+
+    r = MixcoinPlusBot.api.asset(asset_id, access_token: user.access_token)&.[]('data')
+    return if r.blank?
+
+    update raw: r
+
+    _mark_cache
+  end
+
   private
 
   def set_defaults
@@ -48,5 +59,17 @@ class UserAsset < ApplicationRecord
     return if asset.present?
 
     MixinAsset.find_or_create_by_asset_id asset_id
+  end
+
+  def _mark_cache
+    Global.redis.set _cache_key, true, ex: 30.seconds
+  end
+
+  def _cache_expired?
+    !Global.redis.get(_cache_key)
+  end
+
+  def _cache_key
+    "#{asset_id}@#{user.id}"
   end
 end

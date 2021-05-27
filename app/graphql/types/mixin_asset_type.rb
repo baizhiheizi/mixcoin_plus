@@ -25,7 +25,11 @@ module Types
     def balance
       return if context[:current_user].blank?
 
-      context[:current_user].assets.find_by(asset_id: object.asset_id)&.balance
+      asset = context[:current_user].assets.find_by(asset_id: object.asset_id)
+      return if asset.blank?
+
+      asset.sync
+      asset.balance
     end
   end
 end

@@ -12,7 +12,7 @@ import {
 import BigNumber from 'bignumber.js';
 import { Market, useCreateOceanOrderMutation } from 'graphqlTypes';
 import QRCode from 'qrcode.react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronDown as ChevronDownIcon } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
@@ -48,6 +48,10 @@ export default function ActionComponent(props: {
   );
   const [orderType, setOrderType] = useState<'limit' | 'market'>('limit');
   const [paying, setPaying] = useState<boolean>(false);
+  const [balance, setBalance] = useState({
+    quoteAsset: market.quoteAsset.balance,
+    baseAsset: market.baseAsset.balance,
+  });
   const [createOceanOrder] = useCreateOceanOrderMutation({
     update(
       _,
@@ -289,6 +293,21 @@ export default function ActionComponent(props: {
     return true;
   }
 
+  const fetchBalanceFromFennec = async () => {
+    const quoteAsset = await fennec.wallet.getAsset(market.quoteAsset.assetId);
+    const baseAsset = await fennec.wallet.getAsset(market.baseAsset.assetId);
+    setBalance({
+      quoteAsset: parseFloat(quoteAsset.balance),
+      baseAsset: parseFloat(baseAsset.balance),
+    });
+  };
+
+  useEffect(() => {
+    if (currentUser.fennec && fennec) {
+      fetchBalanceFromFennec();
+    }
+  }, [market.id, fennec]);
+
   return (
     <div className='flex flex-col h-full'>
       <div className='flex justify-between mb-2 space-x-2'>
@@ -390,9 +409,24 @@ export default function ActionComponent(props: {
               </Button>
             </div>
             <div className='py-2 text-xs text-gray-500'>
-              {market.quoteAsset.balance && (
+              {balance.quoteAsset !== null && (
                 <span>
-                  {t('balance')}: {market.quoteAsset.balance}
+                  {t('balance')}:{' '}
+                  <span
+                    className='text-blue-500'
+                    onClick={() => {
+                      if (orderSide === 'bid' && orderPrice) {
+                        setOrderAmount(
+                          (balance.quoteAsset / parseFloat(orderPrice)).toFixed(
+                            4,
+                          ),
+                        );
+                      }
+                    }}
+                  >
+                    {balance.quoteAsset}
+                  </span>{' '}
+                  {market.quoteAsset.symbol}
                 </span>
               )}
             </div>
@@ -439,9 +473,20 @@ export default function ActionComponent(props: {
               </Button>
             </div>
             <div className='py-2 text-xs text-gray-500'>
-              {market.baseAsset.balance && (
+              {balance.baseAsset !== null && (
                 <span>
-                  {t('balance')}: {market.baseAsset.balance}
+                  {t('balance')}:{' '}
+                  <span
+                    className='text-blue-500'
+                    onClick={() => {
+                      if (orderSide === 'ask' && orderType === 'limit') {
+                        setOrderAmount(market.baseAsset.balance);
+                      }
+                    }}
+                  >
+                    {balance.baseAsset}
+                  </span>{' '}
+                  {market.baseAsset.symbol}
                 </span>
               )}
             </div>

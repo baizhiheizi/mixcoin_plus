@@ -90,8 +90,8 @@ export default function BookComponent(props: {
                 key={index}
                 className='flex items-center justify-between'
                 onClick={() => {
-                  setOrderPrice(new BigNumber(ask.price).toFixed(6));
-                  setOrderAmount(new BigNumber(ask.amount).toFixed(6));
+                  setOrderPrice(new BigNumber(ask.price).toFixed(4));
+                  setOrderAmount(new BigNumber(ask.amount).toFixed(4));
                 }}
               >
                 <div className='text-red-500'>{parseBookNumber(ask.price)}</div>
@@ -125,8 +125,8 @@ export default function BookComponent(props: {
               key={index}
               className='flex items-center justify-between'
               onClick={() => {
-                setOrderPrice(new BigNumber(bid.price).toFixed(8));
-                setOrderAmount(new BigNumber(bid.amount).toFixed(8));
+                setOrderPrice(new BigNumber(bid.price).toFixed(4));
+                setOrderAmount(new BigNumber(bid.amount).toFixed(4));
               }}
             >
               <div className='text-green-500'>{parseBookNumber(bid.price)}</div>
