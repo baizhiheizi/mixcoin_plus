@@ -47,7 +47,18 @@ function UserAssets() {
   });
 
   const fetchFromFennec = async () => {
-    const assets = camelcaseKeys(await fennec.wallet.getAssets());
+    const assets = camelcaseKeys(await fennec.wallet.getAssets())
+      .concat()
+      .sort((a, b) =>
+        parseFloat(a.priceUsd) * parseFloat(a.balance) >
+        parseFloat(b.priceUsd) * parseFloat(b.balance)
+          ? -1
+          : parseFloat(b.priceUsd) * parseFloat(b.balance) >
+            parseFloat(a.priceUsd) * parseFloat(a.balance)
+          ? 1
+          : 0,
+      );
+    console.log(assets);
     setUserAssets(assets);
   };
 
