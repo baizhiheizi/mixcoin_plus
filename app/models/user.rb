@@ -36,7 +36,7 @@ class User < ApplicationRecord
   has_many :ocean_orders, dependent: :restrict_with_exception
   has_many :assets, class_name: 'UserAsset', dependent: :restrict_with_exception
   has_many :markets, through: :assets, inverse_of: false
-  has_many :transfers, class_name: 'MixinTransfer', dependent: :restrict_with_exception, inverse_of: :recipient
+  has_many :transfers, class_name: 'MixinTransfer', primary_key: :mixin_uuid, foreign_key: :opponent_id, dependent: :restrict_with_exception, inverse_of: :recipient
 
   has_one :invitation, foreign_key: :invitee_id, dependent: :restrict_with_exception, inverse_of: :invitee
   has_one :invitor, through: :invitation, source: :invitor

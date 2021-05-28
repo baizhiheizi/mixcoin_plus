@@ -7,7 +7,7 @@ module Resolvers
     type Types::MixinTransferType.connection_type, null: false
 
     def resolve(**_params)
-      current_user.transfers.with_transfer_type(:ocean_order_invitation_commission)
+      current_user.transfers.with_transfer_type(:ocean_order_invitation_commission).order(created_at: :desc)
     end
   end
 end

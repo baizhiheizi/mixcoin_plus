@@ -40,7 +40,7 @@ export default function GroupOwnerCommissionsComponent() {
             className='flex items-center px-4 py-2 space-x-4'
             href={
               platform
-                ? `mixin://snapshots/${commission.traceId}`
+                ? `mixin://snapshots?trace=${commission.traceId}`
                 : `https://mixin.one/snapshots/${commission.snapshotId}`
             }
             target='_blank'
@@ -49,8 +49,9 @@ export default function GroupOwnerCommissionsComponent() {
               className='w-12 h-12 rounded-full'
               src={commission.asset.iconUrl}
             />
-            <div className='text-base'>{commission.amount}</div>
-            <div className='text-base'>{commission.asset.symbol}</div>
+            <div className='text-base'>
+              {commission.amount} {commission.asset.symbol}
+            </div>
           </a>
         ))}
       </PullComponent>
