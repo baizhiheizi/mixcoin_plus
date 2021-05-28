@@ -1,4 +1,4 @@
-import { useWebSocket } from 'ahooks';
+import { useInterval, useWebSocket } from 'ahooks';
 import { orderBookMessageReducer } from 'apps/application/reducers';
 import {
   BigNumberConfig,
@@ -10,7 +10,7 @@ import { ReadyState } from 'apps/shared';
 import BigNumber from 'bignumber.js';
 import { Market } from 'graphqlTypes';
 import pako from 'pako';
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import { ActivityIndicator } from 'zarm';
@@ -31,6 +31,7 @@ export default function BookComponent(props: {
     asks: [],
     bids: [],
   });
+  const [subscribed, setSubscribed] = useState(false);
 
   const { sendMessage, readyState, latestMessage } = useWebSocket(WS_ENDPOINT, {
     onMessage: () => {},
@@ -42,16 +43,20 @@ export default function BookComponent(props: {
     reconnectInterval: 500,
   });
 
+  const sendSubscribeMessage = () => {
+    const msg = {
+      action: 'SUBSCRIBE_BOOK',
+      id: uuid().toLowerCase(),
+      params: { market: market?.oceanMarketId },
+    };
+    sendMessage(pako.gzip(JSON.stringify(msg)));
+  };
+
   useEffect(() => {
     if (readyState === ReadyState.Open) {
-      const msg = {
-        action: 'SUBSCRIBE_BOOK',
-        id: uuid().toLowerCase(),
-        params: { market: market?.oceanMarketId },
-      };
-      sendMessage && sendMessage(pako.gzip(JSON.stringify(msg)));
+      sendSubscribeMessage();
     }
-  }, [market, readyState]);
+  }, [market, readyState, sendMessage]);
 
   useEffect(() => {
     if (latestMessage) {
@@ -65,12 +70,22 @@ export default function BookComponent(props: {
         } catch {
           msg = {};
         }
+        if (!subscribed && msg.data?.event === 'BOOK-T0') {
+          setSubscribed(true);
+        }
         dispatchBook(msg.data);
         setTimestamp(Date.now());
       };
       fileReader.readAsArrayBuffer(latestMessage.data);
     }
   }, [market, latestMessage]);
+
+  useInterval(() => {
+    if (subscribed) {
+      return;
+    }
+    sendSubscribeMessage();
+  }, 1000);
 
   return (
     <>

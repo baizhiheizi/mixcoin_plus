@@ -40,6 +40,7 @@ export default function MarketPage() {
     asks: [],
     bids: [],
   });
+  const [subscribed, setSubscribed] = useState(false);
 
   async function refreshTrades() {
     if (data?.market?.oceanMarketId) {
@@ -55,20 +56,24 @@ export default function MarketPage() {
 
   const { latestMessage, sendMessage, readyState } = useWebSocket(WS_ENDPOINT, {
     onError: (e) => {
-      console.log(e);
+      console.error(e);
     },
     reconnectLimit: Infinity,
     reconnectInterval: 500,
   });
 
+  const sendSubscribeMessage = () => {
+    const msg = {
+      action: 'SUBSCRIBE_BOOK',
+      id: uuid().toLowerCase(),
+      params: { market: market?.oceanMarketId },
+    };
+    sendMessage(pako.gzip(JSON.stringify(msg)));
+  };
+
   useEffect(() => {
     if (readyState === ReadyState.Open) {
-      const msg = {
-        action: 'SUBSCRIBE_BOOK',
-        id: uuid().toLowerCase(),
-        params: { market: market?.oceanMarketId },
-      };
-      sendMessage && sendMessage(pako.gzip(JSON.stringify(msg)));
+      sendSubscribeMessage();
     }
   }, [marketId, readyState]);
 
@@ -84,19 +89,28 @@ export default function MarketPage() {
         } catch {
           msg = {};
         }
+        if (!subscribed && msg.data?.event === 'BOOK-T0') {
+          setSubscribed(true);
+        }
         dispatchBook(msg.data);
       };
       fileReader.readAsArrayBuffer(latestMessage.data);
     }
   }, [marketId, latestMessage]);
-
-  useEffect(() => {
-    refreshTrades();
-  }, [marketId]);
+  useInterval(
+    () => {
+      refreshTrades();
+    },
+    5000,
+    { immediate: true },
+  );
 
   useInterval(() => {
-    refreshTrades();
-  }, 5000);
+    if (subscribed) {
+      return;
+    }
+    sendSubscribeMessage();
+  }, 1000);
 
   useEffect(() => {
     if (data?.market) {
