@@ -1,0 +1,20 @@
+query GroupOwnerCommissionConnection($after: String) {
+  groupOwnerCommissionConnection(after: $after) {
+    nodes {
+      id
+      amount
+      transferType
+      traceId
+      snapshotId
+      asset {
+        name
+        symbol
+        iconUrl
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

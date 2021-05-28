@@ -635,6 +635,9 @@ export type Query = {
   currentAdmin: Administrator;
   currentConversation?: Maybe<MixinConversation>;
   deprecatedOceanOrders: Array<OceanOrder>;
+  groupOwnerCommissionConnection: MixinTransferConnection;
+  invitationCommissionConnection: MixinTransferConnection;
+  inviteeConnection: UserConnection;
   market: Market;
   marketConnection: MarketConnection;
   mixinAssetConnection: MixinAssetConnection;
@@ -797,6 +800,30 @@ export type QueryAdminUserDeprecatedOceanSnapshotsArgs = {
 
 export type QueryAdminWalletBalanceArgs = {
   userId?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGroupOwnerCommissionConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryInvitationCommissionConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryInviteeConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 
@@ -1617,6 +1644,71 @@ export type DeprecatedOceanOrdersQuery = (
       & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
     ) }
   )> }
+);
+
+export type GroupOwnerCommissionConnectionQueryVariables = Exact<{
+  after?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GroupOwnerCommissionConnectionQuery = (
+  { __typename?: 'Query' }
+  & { groupOwnerCommissionConnection: (
+    { __typename?: 'MixinTransferConnection' }
+    & { nodes?: Maybe<Array<Maybe<(
+      { __typename?: 'MixinTransfer' }
+      & Pick<MixinTransfer, 'id' | 'amount' | 'transferType' | 'traceId' | 'snapshotId'>
+      & { asset: (
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'name' | 'symbol' | 'iconUrl'>
+      ) }
+    )>>>, pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ) }
+  ) }
+);
+
+export type InvitationCommissionConnectionQueryVariables = Exact<{
+  after?: Maybe<Scalars['String']>;
+}>;
+
+
+export type InvitationCommissionConnectionQuery = (
+  { __typename?: 'Query' }
+  & { invitationCommissionConnection: (
+    { __typename?: 'MixinTransferConnection' }
+    & { nodes?: Maybe<Array<Maybe<(
+      { __typename?: 'MixinTransfer' }
+      & Pick<MixinTransfer, 'id' | 'amount' | 'transferType' | 'traceId' | 'snapshotId'>
+      & { asset: (
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'name' | 'symbol' | 'iconUrl'>
+      ) }
+    )>>>, pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ) }
+  ) }
+);
+
+export type InviteeConnectionQueryVariables = Exact<{
+  after?: Maybe<Scalars['String']>;
+}>;
+
+
+export type InviteeConnectionQuery = (
+  { __typename?: 'Query' }
+  & { inviteeConnection: (
+    { __typename?: 'UserConnection' }
+    & { nodes?: Maybe<Array<Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'name' | 'avatar' | 'mixinId' | 'mixinUuid'>
+    )>>>, pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ) }
+  ) }
 );
 
 export type MarketConnectionQueryVariables = Exact<{
@@ -3487,6 +3579,150 @@ export function useDeprecatedOceanOrdersLazyQuery(baseOptions?: Apollo.LazyQuery
 export type DeprecatedOceanOrdersQueryHookResult = ReturnType<typeof useDeprecatedOceanOrdersQuery>;
 export type DeprecatedOceanOrdersLazyQueryHookResult = ReturnType<typeof useDeprecatedOceanOrdersLazyQuery>;
 export type DeprecatedOceanOrdersQueryResult = Apollo.QueryResult<DeprecatedOceanOrdersQuery, DeprecatedOceanOrdersQueryVariables>;
+export const GroupOwnerCommissionConnectionDocument = gql`
+    query GroupOwnerCommissionConnection($after: String) {
+  groupOwnerCommissionConnection(after: $after) {
+    nodes {
+      id
+      amount
+      transferType
+      traceId
+      snapshotId
+      asset {
+        name
+        symbol
+        iconUrl
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useGroupOwnerCommissionConnectionQuery__
+ *
+ * To run a query within a React component, call `useGroupOwnerCommissionConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupOwnerCommissionConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupOwnerCommissionConnectionQuery({
+ *   variables: {
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useGroupOwnerCommissionConnectionQuery(baseOptions?: Apollo.QueryHookOptions<GroupOwnerCommissionConnectionQuery, GroupOwnerCommissionConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GroupOwnerCommissionConnectionQuery, GroupOwnerCommissionConnectionQueryVariables>(GroupOwnerCommissionConnectionDocument, options);
+      }
+export function useGroupOwnerCommissionConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GroupOwnerCommissionConnectionQuery, GroupOwnerCommissionConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GroupOwnerCommissionConnectionQuery, GroupOwnerCommissionConnectionQueryVariables>(GroupOwnerCommissionConnectionDocument, options);
+        }
+export type GroupOwnerCommissionConnectionQueryHookResult = ReturnType<typeof useGroupOwnerCommissionConnectionQuery>;
+export type GroupOwnerCommissionConnectionLazyQueryHookResult = ReturnType<typeof useGroupOwnerCommissionConnectionLazyQuery>;
+export type GroupOwnerCommissionConnectionQueryResult = Apollo.QueryResult<GroupOwnerCommissionConnectionQuery, GroupOwnerCommissionConnectionQueryVariables>;
+export const InvitationCommissionConnectionDocument = gql`
+    query InvitationCommissionConnection($after: String) {
+  invitationCommissionConnection(after: $after) {
+    nodes {
+      id
+      amount
+      transferType
+      traceId
+      snapshotId
+      asset {
+        name
+        symbol
+        iconUrl
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useInvitationCommissionConnectionQuery__
+ *
+ * To run a query within a React component, call `useInvitationCommissionConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInvitationCommissionConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInvitationCommissionConnectionQuery({
+ *   variables: {
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useInvitationCommissionConnectionQuery(baseOptions?: Apollo.QueryHookOptions<InvitationCommissionConnectionQuery, InvitationCommissionConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InvitationCommissionConnectionQuery, InvitationCommissionConnectionQueryVariables>(InvitationCommissionConnectionDocument, options);
+      }
+export function useInvitationCommissionConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InvitationCommissionConnectionQuery, InvitationCommissionConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InvitationCommissionConnectionQuery, InvitationCommissionConnectionQueryVariables>(InvitationCommissionConnectionDocument, options);
+        }
+export type InvitationCommissionConnectionQueryHookResult = ReturnType<typeof useInvitationCommissionConnectionQuery>;
+export type InvitationCommissionConnectionLazyQueryHookResult = ReturnType<typeof useInvitationCommissionConnectionLazyQuery>;
+export type InvitationCommissionConnectionQueryResult = Apollo.QueryResult<InvitationCommissionConnectionQuery, InvitationCommissionConnectionQueryVariables>;
+export const InviteeConnectionDocument = gql`
+    query InviteeConnection($after: String) {
+  inviteeConnection(after: $after) {
+    nodes {
+      name
+      avatar
+      mixinId
+      mixinUuid
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useInviteeConnectionQuery__
+ *
+ * To run a query within a React component, call `useInviteeConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInviteeConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInviteeConnectionQuery({
+ *   variables: {
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useInviteeConnectionQuery(baseOptions?: Apollo.QueryHookOptions<InviteeConnectionQuery, InviteeConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<InviteeConnectionQuery, InviteeConnectionQueryVariables>(InviteeConnectionDocument, options);
+      }
+export function useInviteeConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InviteeConnectionQuery, InviteeConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<InviteeConnectionQuery, InviteeConnectionQueryVariables>(InviteeConnectionDocument, options);
+        }
+export type InviteeConnectionQueryHookResult = ReturnType<typeof useInviteeConnectionQuery>;
+export type InviteeConnectionLazyQueryHookResult = ReturnType<typeof useInviteeConnectionLazyQuery>;
+export type InviteeConnectionQueryResult = Apollo.QueryResult<InviteeConnectionQuery, InviteeConnectionQueryVariables>;
 export const MarketConnectionDocument = gql`
     query MarketConnection($type: String!, $after: String, $query: String) {
   marketConnection(type: $type, after: $after, query: $query) {

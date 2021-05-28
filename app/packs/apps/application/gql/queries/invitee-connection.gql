@@ -1,0 +1,14 @@
+query InviteeConnection($after: String) {
+  inviteeConnection(after: $after) {
+    nodes {
+      name
+      avatar
+      mixinId
+      mixinUuid
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

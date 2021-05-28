@@ -35,6 +35,9 @@ module Types
     field :ocean_order_connection, resolver: Resolvers::OceanOrderConnectionResolver
     field :user_assets, resolver: Resolvers::UserAssetsResolver
     field :user_snapshots, resolver: Resolvers::UserSnapshotsResolver
+    field :invitee_connection, resolver: Resolvers::InviteeConnectionResolver
+    field :invitation_commission_connection, resolver: Resolvers::InvitationCommissionConnectionResolver
+    field :group_owner_commission_connection, resolver: Resolvers::GroupOwnerCommissionConnectionResolver
 
     field :deprecated_ocean_orders, resolver: Resolvers::DeprecatedOceanOrdersResolver
   end

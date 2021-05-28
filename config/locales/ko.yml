@@ -22,6 +22,8 @@ ko:
   authorize_tips: 권한부여 후 로그인
   empty_markets: 트레이딩 페어 없음
   empty_orders: 주문서 없음
+  empty_invitees: 초대 없음
+  empty_commissions: 위원회 없음
   share: 공유
   fee: 요율
   buy: 매수
@@ -64,6 +66,8 @@ ko:
   deprecated_orders: 이전 버전 주문내역
   deprecated_version_notice: 이전 버전의 Mixcoin은 더 이상 사용되지 않습니다. 진행중인 주문서가 남아있다면 여기서 취소해 주세요. 새로운 Mixcoin에 오신 것을 환영합니다!
   invite: 초대
+  invitations: 초대
+  rules: 규칙
   commission_plan: 커미션 프랜
   grow_along_with_mixcoin: Mixcoin과 함께 성장 합시다.
   you_have_two_ways_to_earn_your_commission: 커미션을 받을 수 있는 두 가지 방법

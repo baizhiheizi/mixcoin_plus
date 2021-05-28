@@ -88,6 +88,14 @@
   },
   "emptyMarkets": { "id": "empty_markets", "defaultMessage": "No market yet" },
   "emptyOrders": { "id": "empty_orders", "defaultMessage": "No order yet" },
+  "emptyInvitees": {
+    "id": "empty_invitees",
+    "defaultMessage": "No invitation yet"
+  },
+  "emptyCommissions": {
+    "id": "empty_commissions",
+    "defaultMessage": "No commission yet"
+  },
   "share": { "id": "share", "defaultMessage": "Share" },
   "fee": { "id": "fee", "defaultMessage": "Fee" },
   "buy": { "id": "buy", "defaultMessage": "Buy" },
@@ -169,6 +177,8 @@
     "defaultMessage": "The old version of Mixcoin has been DEPRECATED. If you have some old open orders, you can cancel them here. Enjoy the new version of Mixcoin!"
   },
   "invite": { "id": "invite", "defaultMessage": "Invite" },
+  "invitations": { "id": "invitations", "defaultMessage": "Invitations" },
+  "rules": { "id": "rules", "defaultMessage": "Rules" },
   "commissionPlan": {
     "id": "commission_plan",
     "defaultMessage": "Commission Plan"
@@ -277,6 +287,10 @@
   "notificationsOceanOrderStateNotificationTpl": {
     "id": "notifications.ocean_order_state_notification.tpl",
     "defaultMessage": "ID: %\u003ctrace_id\u003es\nTicker: %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es\nSide: %\u003cside\u003es\nState: %\u003cstate\u003es\nPrice: %\u003cprice\u003es %\u003cquote_asset_symbol\u003es\nFilled: %\u003cfilled\u003es %\u003cfilled_symbol\u003es\nRemaining: %\u003cremaining\u003es %\u003cremaining_symbol\u003es\n"
+  },
+  "notificationsOceanOrderStateNotificationCableTpl": {
+    "id": "notifications.ocean_order_state_notification.cable_tpl",
+    "defaultMessage": "Order %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es %\u003cstate\u003es"
   },
   "errorsUnavailableSession": {
     "id": "errors.unavailable_session",

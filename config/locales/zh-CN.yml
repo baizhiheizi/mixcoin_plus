@@ -22,6 +22,8 @@ zh-CN:
   authorize_tips: 即将授权 Mixcoin 登录
   empty_markets: 没有交易对
   empty_orders: 暂无委托
+  empty_invitees: 暂无邀请
+  empty_commissions: 暂无佣金
   share: 分享
   fee: 费率
   buy: 买入
@@ -64,6 +66,8 @@ zh-CN:
   deprecated_orders: 旧版订单
   deprecated_version_notice: 旧版的 Mixcoin 已经废弃，如果你还有进行中的订单，请在这里取消。欢迎使用全新的 Mixcoin！
   invite: 邀请
+  invitations: 成功邀请
+  rules: 规则
   commission_plan: 佣金计划
   grow_along_with_mixcoin: 与 Mixcoin 一起成长
   you_have_two_ways_to_earn_your_commission: 您可以通过两种途径赚取佣金。

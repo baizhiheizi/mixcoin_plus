@@ -22,6 +22,8 @@ en:
   authorize_tips: You'll authorize Mixcoin to read your profile.
   empty_markets: No market yet
   empty_orders: No order yet
+  empty_invitees: No invitation yet
+  empty_commissions: No commission yet
   share: Share
   fee: Fee
   buy: Buy
@@ -64,6 +66,8 @@ en:
   deprecated_orders: Deprecated Orders
   deprecated_version_notice: The old version of Mixcoin has been DEPRECATED. If you have some old open orders, you can cancel them here. Enjoy the new version of Mixcoin!
   invite: Invite
+  invitations: Invitations
+  rules: Rules
   commission_plan: Commission Plan
   grow_along_with_mixcoin: Grow along with Mixcoin
   you_have_two_ways_to_earn_your_commission: You have two ways to earn your commission.
