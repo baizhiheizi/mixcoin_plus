@@ -98,3 +98,7 @@ ko:
   group_admin_notice: 당신은 그룹 관리자입니다. 그룹 트레이딩 페어를 편집 할 수 있습니다. 그룹 구성원이 그룹에서 Mixcoin 을 열면 그룹 트레이딩 페어가 표시됩니다.
   choose: 선택
   remove: 제거
+  transfer_type:
+    create_order_from_user: 주문
+    match_to_user: 거래
+    refund_to_user: 환불금

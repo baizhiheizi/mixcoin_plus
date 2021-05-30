@@ -33,6 +33,8 @@ module Types
     field :market_connection, resolver: Resolvers::MarketConnectionResolver
     field :mixin_asset_connection, resolver: Resolvers::MixinAssetConnectionResolver
     field :ocean_order_connection, resolver: Resolvers::OceanOrderConnectionResolver
+    field :ocean_order, resolver: Resolvers::OceanOrderResolver
+    field :ocean_snapshot_connection, resolver: Resolvers::OceanSnapshotConnectionResolver
     field :user_assets, resolver: Resolvers::UserAssetsResolver
     field :user_snapshots, resolver: Resolvers::UserSnapshotsResolver
     field :invitee_connection, resolver: Resolvers::InviteeConnectionResolver

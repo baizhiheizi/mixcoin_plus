@@ -26,8 +26,8 @@ export default function NavbarComponent(props: {
         back && (
           <div
             onClick={() => {
-              if (history.length === 1) {
-                history.push('/');
+              if (history.length <= 1) {
+                history.replace('/');
               } else {
                 history.goBack();
               }

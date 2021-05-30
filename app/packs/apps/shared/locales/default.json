@@ -271,6 +271,18 @@
   },
   "choose": { "id": "choose", "defaultMessage": "Choose" },
   "remove": { "id": "remove", "defaultMessage": "Remove" },
+  "transferTypeCreateOrderFromUser": {
+    "id": "transfer_type.create_order_from_user",
+    "defaultMessage": "Order"
+  },
+  "transferTypeMatchToUser": {
+    "id": "transfer_type.match_to_user",
+    "defaultMessage": "Match"
+  },
+  "transferTypeRefundToUser": {
+    "id": "transfer_type.refund_to_user",
+    "defaultMessage": "Refund"
+  },
   "notification": { "id": "notification", "defaultMessage": "Notification" },
   "notificationsUserAuthorizedNotificationMessage": {
     "id": "notifications.user_authorized_notification.message",

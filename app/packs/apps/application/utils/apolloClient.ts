@@ -28,8 +28,14 @@ const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
+        groupOwnerCommissionConnection: customizedConnectionMergeFunction(),
+        invitationCommissionConnection: customizedConnectionMergeFunction(),
+        inviteeConnection: customizedConnectionMergeFunction(),
         marketConnection: customizedConnectionMergeFunction(['type', 'query']),
         mixinAssetConnection: customizedConnectionMergeFunction(['query']),
+        oceanSnapshotConnection: customizedConnectionMergeFunction([
+          'oceanOrderId',
+        ]),
         oceanOrderConnection: customizedConnectionMergeFunction([
           'marketId',
           'filter',

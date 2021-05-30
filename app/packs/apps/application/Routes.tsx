@@ -23,6 +23,7 @@ const SnapshotsPage = React.lazy(
   () => import('./pages/SnapshotsPage/SnapshotsPage'),
 );
 const OrdersPage = React.lazy(() => import('./pages/OrdersPage/OrdersPage'));
+const OrderPage = React.lazy(() => import('./pages/OrderPage/OrderPage'));
 const DeprecatedOrdersPage = React.lazy(
   () => import('./pages/DeprecatedOrdersPage/DeprecatedOrdersPage'),
 );
@@ -104,6 +105,11 @@ export default function Routes() {
             <Route path='/orders' exact>
               <LazyLoad>
                 <OrdersPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/orders/:orderId' exact>
+              <LazyLoad>
+                <OrderPage />
               </LazyLoad>
             </Route>
             <Route path='/snapshots/:assetId' exact>

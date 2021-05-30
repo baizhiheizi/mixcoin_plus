@@ -98,3 +98,7 @@ zh-CN:
   group_admin_notice: 您是群组管理员。您可以编辑群组交易对，当群成员从群组中打开 Mixcoin 时，将显示群组交易对。
   choose: 选择
   remove: 移除
+  transfer_type:
+    create_order_from_user: 下单
+    match_to_user: 成交
+    refund_to_user: 退款

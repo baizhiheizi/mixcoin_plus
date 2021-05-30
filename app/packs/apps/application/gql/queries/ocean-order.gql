@@ -1,0 +1,34 @@
+query OceanOrder($id: ID!) {
+  oceanOrder(id: $id) {
+    id
+    traceId
+    orderType
+    side
+    amount
+    funds
+    filledAmount
+    filledFunds
+    remainingAmount
+    remainingFunds
+    price
+    state
+    marketId
+    createdAt
+    baseAsset {
+      assetId
+      symbol
+      iconUrl
+      chainAsset {
+        iconUrl
+      }
+    }
+    quoteAsset {
+      assetId
+      symbol
+      iconUrl
+      chainAsset {
+        iconUrl
+      }
+    }
+  }
+}

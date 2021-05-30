@@ -641,7 +641,9 @@ export type Query = {
   market: Market;
   marketConnection: MarketConnection;
   mixinAssetConnection: MixinAssetConnection;
+  oceanOrder: OceanOrder;
   oceanOrderConnection: OceanOrderConnection;
+  oceanSnapshotConnection: MixinNetworkSnapshotConnection;
   userAssets: Array<UserAsset>;
   userSnapshots: Array<MixinNetworkSnapshot>;
 };
@@ -853,9 +855,23 @@ export type QueryMixinAssetConnectionArgs = {
 };
 
 
+export type QueryOceanOrderArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type QueryOceanOrderConnectionArgs = {
   marketId?: Maybe<Scalars['ID']>;
   filter?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryOceanSnapshotConnectionArgs = {
+  oceanOrderId: Scalars['ID'];
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
@@ -1823,6 +1839,61 @@ export type OceanOrderConnectionQuery = (
           & Pick<MixinAsset, 'iconUrl'>
         )> }
       ), quoteAsset: (
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+        & { chainAsset?: Maybe<(
+          { __typename?: 'MixinAsset' }
+          & Pick<MixinAsset, 'iconUrl'>
+        )> }
+      ) }
+    )>>>, pageInfo: (
+      { __typename?: 'PageInfo' }
+      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
+    ) }
+  ) }
+);
+
+export type OceanOrderQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type OceanOrderQuery = (
+  { __typename?: 'Query' }
+  & { oceanOrder: (
+    { __typename?: 'OceanOrder' }
+    & Pick<OceanOrder, 'id' | 'traceId' | 'orderType' | 'side' | 'amount' | 'funds' | 'filledAmount' | 'filledFunds' | 'remainingAmount' | 'remainingFunds' | 'price' | 'state' | 'marketId' | 'createdAt'>
+    & { baseAsset: (
+      { __typename?: 'MixinAsset' }
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+      & { chainAsset?: Maybe<(
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'iconUrl'>
+      )> }
+    ), quoteAsset: (
+      { __typename?: 'MixinAsset' }
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+      & { chainAsset?: Maybe<(
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'iconUrl'>
+      )> }
+    ) }
+  ) }
+);
+
+export type OceanSnapshotConnectionQueryVariables = Exact<{
+  oceanOrderId: Scalars['ID'];
+}>;
+
+
+export type OceanSnapshotConnectionQuery = (
+  { __typename?: 'Query' }
+  & { oceanSnapshotConnection: (
+    { __typename?: 'MixinNetworkSnapshotConnection' }
+    & { nodes?: Maybe<Array<Maybe<(
+      { __typename?: 'MixinNetworkSnapshot' }
+      & Pick<MixinNetworkSnapshot, 'id' | 'traceId' | 'snapshotType' | 'snapshotId' | 'amount' | 'transferredAt' | 'createdAt'>
+      & { asset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
         & { chainAsset?: Maybe<(
@@ -3973,6 +4044,125 @@ export function useOceanOrderConnectionLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type OceanOrderConnectionQueryHookResult = ReturnType<typeof useOceanOrderConnectionQuery>;
 export type OceanOrderConnectionLazyQueryHookResult = ReturnType<typeof useOceanOrderConnectionLazyQuery>;
 export type OceanOrderConnectionQueryResult = Apollo.QueryResult<OceanOrderConnectionQuery, OceanOrderConnectionQueryVariables>;
+export const OceanOrderDocument = gql`
+    query OceanOrder($id: ID!) {
+  oceanOrder(id: $id) {
+    id
+    traceId
+    orderType
+    side
+    amount
+    funds
+    filledAmount
+    filledFunds
+    remainingAmount
+    remainingFunds
+    price
+    state
+    marketId
+    createdAt
+    baseAsset {
+      assetId
+      symbol
+      iconUrl
+      chainAsset {
+        iconUrl
+      }
+    }
+    quoteAsset {
+      assetId
+      symbol
+      iconUrl
+      chainAsset {
+        iconUrl
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useOceanOrderQuery__
+ *
+ * To run a query within a React component, call `useOceanOrderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOceanOrderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOceanOrderQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useOceanOrderQuery(baseOptions: Apollo.QueryHookOptions<OceanOrderQuery, OceanOrderQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OceanOrderQuery, OceanOrderQueryVariables>(OceanOrderDocument, options);
+      }
+export function useOceanOrderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OceanOrderQuery, OceanOrderQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OceanOrderQuery, OceanOrderQueryVariables>(OceanOrderDocument, options);
+        }
+export type OceanOrderQueryHookResult = ReturnType<typeof useOceanOrderQuery>;
+export type OceanOrderLazyQueryHookResult = ReturnType<typeof useOceanOrderLazyQuery>;
+export type OceanOrderQueryResult = Apollo.QueryResult<OceanOrderQuery, OceanOrderQueryVariables>;
+export const OceanSnapshotConnectionDocument = gql`
+    query OceanSnapshotConnection($oceanOrderId: ID!) {
+  oceanSnapshotConnection(oceanOrderId: $oceanOrderId) {
+    nodes {
+      id
+      traceId
+      snapshotType
+      snapshotId
+      amount
+      transferredAt
+      createdAt
+      asset {
+        assetId
+        symbol
+        iconUrl
+        chainAsset {
+          iconUrl
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useOceanSnapshotConnectionQuery__
+ *
+ * To run a query within a React component, call `useOceanSnapshotConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOceanSnapshotConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOceanSnapshotConnectionQuery({
+ *   variables: {
+ *      oceanOrderId: // value for 'oceanOrderId'
+ *   },
+ * });
+ */
+export function useOceanSnapshotConnectionQuery(baseOptions: Apollo.QueryHookOptions<OceanSnapshotConnectionQuery, OceanSnapshotConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OceanSnapshotConnectionQuery, OceanSnapshotConnectionQueryVariables>(OceanSnapshotConnectionDocument, options);
+      }
+export function useOceanSnapshotConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OceanSnapshotConnectionQuery, OceanSnapshotConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OceanSnapshotConnectionQuery, OceanSnapshotConnectionQueryVariables>(OceanSnapshotConnectionDocument, options);
+        }
+export type OceanSnapshotConnectionQueryHookResult = ReturnType<typeof useOceanSnapshotConnectionQuery>;
+export type OceanSnapshotConnectionLazyQueryHookResult = ReturnType<typeof useOceanSnapshotConnectionLazyQuery>;
+export type OceanSnapshotConnectionQueryResult = Apollo.QueryResult<OceanSnapshotConnectionQuery, OceanSnapshotConnectionQueryVariables>;
 export const UserAssetsDocument = gql`
     query UserAssets {
   userAssets {

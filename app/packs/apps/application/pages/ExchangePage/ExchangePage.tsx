@@ -2,6 +2,7 @@ import { useInterval } from 'ahooks';
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
 import LoginComponent from 'apps/application/components/LoginComponent/LoginComponent';
 import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
+import OrdersComponent from 'apps/application/components/OrdersComponent/OrdersComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
 import { fetchTiker, ITrade } from 'apps/application/utils';
@@ -9,11 +10,9 @@ import { Market, useMarketQuery } from 'graphqlTypes';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { Tabs } from 'zarm';
 import ActionComponent from './components/ActionComponent';
 import BookComponent from './components/BookComponent';
 import HeaderComponent from './components/HeaderComponent';
-import OceanOrdersComponent from './components/OceanOrdersComponent';
 
 export default function ExchangePage() {
   const history = useHistory();
@@ -115,18 +114,7 @@ export default function ExchangePage() {
       </div>
       <div className='mb-1 overflow-y-scroll bg-white min-h-72 overscroll-y-contain dark:bg-dark'>
         {currentUser && (
-          <Tabs defaultValue={0}>
-            <Tabs.Panel title={t('my_open_orders')}>
-              <OceanOrdersComponent
-                marketId={market.id}
-                filter='booking'
-                timestamp={timestamp}
-              />
-            </Tabs.Panel>
-            <Tabs.Panel title={t('my_order_history')}>
-              <OceanOrdersComponent marketId={market.id} filter='history' />
-            </Tabs.Panel>
-          </Tabs>
+          <OrdersComponent marketId={market.id} timestamp={timestamp} />
         )}
       </div>
       <LoginComponent logging={!currentUser} />

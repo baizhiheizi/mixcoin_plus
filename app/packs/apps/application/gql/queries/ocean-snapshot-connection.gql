@@ -1,0 +1,25 @@
+query OceanSnapshotConnection($oceanOrderId: ID!) {
+  oceanSnapshotConnection(oceanOrderId: $oceanOrderId) {
+    nodes {
+      id
+      traceId
+      snapshotType
+      snapshotId
+      amount
+      transferredAt
+      createdAt
+      asset {
+        assetId
+        symbol
+        iconUrl
+        chainAsset {
+          iconUrl
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

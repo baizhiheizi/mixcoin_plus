@@ -98,3 +98,7 @@ en:
   group_admin_notice: You are Group Admin, you can edit group markets that will show to your group member when Mixcoin open in group conversation.
   choose: Choose
   remove: Remove
+  transfer_type:
+    create_order_from_user: Order
+    match_to_user: Match
+    refund_to_user: Refund
