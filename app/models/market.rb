@@ -51,7 +51,7 @@ class Market < ApplicationRecord
   has_many :trades, dependent: :restrict_with_exception
   has_many :arbitrage_orders, dependent: :restrict_with_exception
 
-  scope :without_hidden, -> { where.not(hidden_at: nil) }
+  scope :without_hidden, -> { where(hidden_at: nil) }
   scope :order_by_default, lambda {
     where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID])
          .order('recommended_at DESC NULLS LAST', rank: :asc, trades_count: :desc, ocean_orders_count: :desc, created_at: :desc)
