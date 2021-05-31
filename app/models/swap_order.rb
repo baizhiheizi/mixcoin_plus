@@ -105,7 +105,7 @@ class SwapOrder < ApplicationRecord
         {
           t: 'swap',
           a: fill_asset_id,
-          m: min_amount.presence&.to_f&.to_s,
+          m: min_amount.presence&.to_f&.to_s
         }.to_json
       )
     ).find_or_create_by!(

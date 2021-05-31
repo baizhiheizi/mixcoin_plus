@@ -5,6 +5,7 @@
 # Table name: markets
 #
 #  id                 :uuid             not null, primary key
+#  hidden_at          :datetime
 #  ocean_orders_count :integer          default(0)
 #  rank               :integer
 #  recommended_at     :datetime

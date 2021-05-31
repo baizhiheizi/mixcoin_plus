@@ -9,13 +9,13 @@ module Resolvers
     type Types::MarketType, null: false
 
     def resolve(**params)
-      markets = Market.all
+      markets = Market.without_hidden
 
       market =
         if params[:id].present?
-          markets.find_by(id: params[:id])
+          markets.without_hidden.find_by(id: params[:id])
         elsif params[:quote_asset_id].present? && params[:base_asset_id].present?
-          markets.find_by(quote_asset_id: params[:quote_asset_id], base_asset_id: params[:base_asset_id])
+          markets.without_hidden.find_by(quote_asset_id: params[:quote_asset_id], base_asset_id: params[:base_asset_id])
         end
 
       market ||= markets.recommended.sample

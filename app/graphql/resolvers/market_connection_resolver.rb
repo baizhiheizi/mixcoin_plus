@@ -40,7 +40,7 @@ module Resolvers
             Market.order_by_default
           end
 
-        markets.ransack(q_ransack.merge(m: 'or')).result
+        markets.without_hidden.ransack(q_ransack.merge(m: 'or')).result
       end
     end
   end
