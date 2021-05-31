@@ -29,6 +29,9 @@ class ArbitrageOrder < ApplicationRecord
   belongs_to :arbitrager, primary_key: :mixin_uuid, optional: true
   belongs_to :profit_asset, class_name: 'MixinAsset', primary_key: :asset_id
 
+  has_many :ocean_orders, dependent: :restrict_with_exception
+  has_many :swap_orders, dependent: :restrict_with_exception
+
   before_validation :set_defaults, on: :create
 
   validates :profit_asset_id, presence: true
@@ -47,6 +50,33 @@ class ArbitrageOrder < ApplicationRecord
     event :arbitrage do
       transitions from: :drafted, to: :arbitraging
     end
+  end
+
+  def arbitrager_balance_sufficient?
+    case raw[:ocean][:side]
+    when :bid
+      arbitrager_balance >= raw[:ocean][:funds]
+    when :ask
+      arbitrager_balance >= raw[:ocean][:amount]
+    end
+  end
+
+  def arbitrager_balance
+    return 0 if arbitrager.blank?
+
+    arbitrager.mixin_api.asset(profit_asset_id)['data']['balance'].to_f
+  end
+
+  def generate_ocean_order
+    ocean_orders.create(
+      broker: arbitrager,
+      market: market,
+      side: raw[:ocean][:side],
+      order_type: :limit,
+      price: raw[:ocean][:price],
+      remaining_amount: raw[:ocean][:amount],
+      remaining_funds: raw[:ocean][:funds]
+    )
   end
 
   def notify_admin_async

@@ -62,6 +62,21 @@ class OceanSnapshot < MixinNetworkSnapshot
     ocean_fee + extra_fee
   end
 
+  def process_arbitrage_match
+    return unless decrypted_snapshot_type == 'match_from_engine'
+
+    _ocean_order = decrypted_ocean_order
+
+    _ocean_order.arbitrage_order.swap_orders.create(
+      market: _ocean_order.market,
+      arbitrage_order: _ocean_order.arbitrage_order,
+      broker_id: user_id,
+      pay_asset_id: asset_id,
+      pay_amount: amount,
+      fill_asset_id: _ocean_order.side.ask? ? _ocean_order.quote_asset_id : _ocean_order.base_asset_id
+    )
+  end
+
   def process_match_from_engine
     return unless decrypted_snapshot_type == 'match_from_engine'
 
@@ -153,23 +168,32 @@ class OceanSnapshot < MixinNetworkSnapshot
     when :create_order_to_engine
       _ocean_order.book! if _ocean_order.may_book?
     when :match_from_engine
-      process_match_from_engine
+      if _ocean_order.arbitrage?
+        process_arbitrage_match
+      else
+        process_match_from_engine
+      end
     when :match_to_user
       _ocean_order.match!
     when :cancel_order_to_engine
       _ocean_order.cancel! if _ocean_order.may_cancel?
     when :refund_from_engine
-      MixinTransfer.create_with(
-        source: _ocean_order,
-        user_id: _ocean_order.broker.mixin_uuid,
-        transfer_type: :ocean_order_refund,
-        opponent_id: _ocean_order.user.mixin_uuid,
-        asset_id: asset_id,
-        amount: amount,
-        memo: Base64.strict_encode64("OCEAN|REFUND|#{_ocean_order.trace_id}")
-      ).find_or_create_by!(
-        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.trace_id)
-      )
+      if _ocean_order.arbitrage?
+        _ocean_order.refund!
+        _ocean_order.arbitrage_order.cancel! if _ocean_order.arbitrage_order.may_cancel?
+      else
+        MixinTransfer.create_with(
+          source: _ocean_order,
+          user_id: _ocean_order.broker.mixin_uuid,
+          transfer_type: :ocean_order_refund,
+          opponent_id: _ocean_order.user.mixin_uuid,
+          asset_id: asset_id,
+          amount: amount,
+          memo: Base64.strict_encode64("OCEAN|REFUND|#{_ocean_order.trace_id}")
+        ).find_or_create_by!(
+          trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.trace_id)
+        )
+      end
     when :refund_to_user
       _ocean_order.refund! if _ocean_order.may_refund?
     else

@@ -70,7 +70,7 @@ export type AppStatistic = {
 
 export type ArbitrageOrder = {
   __typename?: 'ArbitrageOrder';
-  arbitrager: MixinNetworkUser;
+  arbitrager?: Maybe<MixinNetworkUser>;
   createdAt: Scalars['ISO8601DateTime'];
   expectedProfit?: Maybe<Scalars['Float']>;
   id: Scalars['ID'];
@@ -574,7 +574,7 @@ export type OceanOrder = {
   state: Scalars['String'];
   traceId: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
-  user: User;
+  user?: Maybe<User>;
 };
 
 /** The connection type for OceanOrder. */
@@ -1061,7 +1061,10 @@ export type AdminArbitrageOrderConnectionQuery = (
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'ArbitrageOrder' }
       & Pick<ArbitrageOrder, 'id' | 'state' | 'expectedProfit' | 'netProfit' | 'raw' | 'createdAt'>
-      & { market: (
+      & { arbitrager?: Maybe<(
+        { __typename?: 'MixinNetworkUser' }
+        & Pick<MixinNetworkUser, 'name' | 'mixinUuid'>
+      )>, market: (
         { __typename?: 'Market' }
         & { baseAsset: (
           { __typename?: 'MixinAsset' }
@@ -1340,10 +1343,10 @@ export type AdminOceanOrderConnectionQuery = (
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'OceanOrder' }
       & Pick<OceanOrder, 'id' | 'traceId' | 'state' | 'conversationId' | 'side' | 'orderType' | 'price' | 'amount' | 'funds' | 'remainingAmount' | 'remainingFunds' | 'filledAmount' | 'filledFunds' | 'createdAt'>
-      & { user: (
+      & { user?: Maybe<(
         { __typename?: 'User' }
         & Pick<User, 'avatar' | 'name' | 'mixinId'>
-      ), broker: (
+      )>, broker: (
         { __typename?: 'MixinNetworkUser' }
         & Pick<MixinNetworkUser, 'mixinUuid'>
       ), baseAsset: (
@@ -1370,10 +1373,10 @@ export type AdminOceanOrderQuery = (
   & { adminOceanOrder: (
     { __typename?: 'OceanOrder' }
     & Pick<OceanOrder, 'id' | 'traceId' | 'state' | 'conversationId' | 'side' | 'orderType' | 'price' | 'amount' | 'funds' | 'remainingAmount' | 'remainingFunds' | 'filledAmount' | 'filledFunds' | 'createdAt'>
-    & { user: (
+    & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'avatar' | 'name' | 'mixinId'>
-    ), broker: (
+    )>, broker: (
       { __typename?: 'MixinNetworkUser' }
       & Pick<MixinNetworkUser, 'mixinUuid'>
     ), baseAsset: (
@@ -2128,6 +2131,10 @@ export const AdminArbitrageOrderConnectionDocument = gql`
       expectedProfit
       netProfit
       raw
+      arbitrager {
+        name
+        mixinUuid
+      }
       market {
         baseAsset {
           assetId

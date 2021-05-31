@@ -26,9 +26,8 @@
 #  index_mixin_network_users_on_owner_id_and_owner_type  (owner_id,owner_type)
 #
 class Broker < MixinNetworkUser
-  include MixinNetworkUser::Oceanable
+  include MixinNetworkUsers::Oceanable
 
   belongs_to :user, optional: true, inverse_of: :broker
-  has_many :ocean_orders, primary_key: :mixin_uuid, dependent: :restrict_with_exception
   has_many :swap_orders, primary_key: :mixin_uuid, dependent: :restrict_with_exception
 end

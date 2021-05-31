@@ -35,13 +35,17 @@ export default function OceanOrderPage() {
           {order.baseAsset.symbol}/{order.quoteAsset.symbol}
         </Descriptions.Item>
         <Descriptions.Item label='user'>
-          <div className='flex items-center'>
-            <img
-              className='w-6 h-6 mr-1 rounded-full'
-              src={order.user.avatar}
-            />
-            {order.user.name}({order.user.mixinId})
-          </div>
+          {order.user ? (
+            <div className='flex items-center'>
+              <img
+                className='w-6 h-6 mr-1 rounded-full'
+                src={order.user.avatar}
+              />
+              {order.user.name}({order.user.mixinId})
+            </div>
+          ) : (
+            '-'
+          )}
         </Descriptions.Item>
         <Descriptions.Item label='State'>{order.state}</Descriptions.Item>
         <Descriptions.Item label='Amount'>

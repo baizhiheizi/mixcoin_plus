@@ -34,4 +34,18 @@ class SwapSnapshot < MixinNetworkSnapshot
 
   enumerize :snapshot_type,
             in: %i[default swap_from_user swap_to_fox trade_from_fox trade_to_user reject_from_fox reject_to_user]
+
+  def process!
+    return if amount.negative?
+
+    swap_order = SwapOrder.find_by trace_id: decrypted_memo['t']
+
+    case decrypted_memo['s']
+    when '4swapTrade'
+      swap_order.update! amount: amount
+      swap_order.trade! if swap_order.swapping?
+    when '4swapRefund'
+      swap_order.reject!
+    end
+  end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module MixinNetworkUser::Oceanable
+module MixinNetworkUsers::Oceanable
   extend ActiveSupport::Concern
 
   EXCHANGE_ASSET_ID = '965e5c6e-434c-3fa9-b780-c50f43cd955c'

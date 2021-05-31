@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Market::Arbitragable
+module Markets::Arbitragable
   MINIMUM_TO_EXCHNAGE = 1 # USD
   MAXIMUM_TO_EXCHNAGE = 10 # USD
   THRESHOLD_TO_EXCHANGE = 0.01
@@ -34,7 +34,7 @@ module Market::Arbitragable
 
     buying_price = ocean_ask['price'].to_f
     buying_funds = [ocean_ask['funds'].to_f, MAXIMUM_TO_EXCHNAGE].min
-    buying_amount = (buying_funds / buying_price * (1 - OCEAN_TAKER_FEE_RATIO)).round(8)
+    buying_amount = (buying_funds / buying_price).round(8)
 
     @buy_from_ocean = {
       price: buying_price,
@@ -46,7 +46,7 @@ module Market::Arbitragable
   def sell_to_swap
     return @sell_to_swap if @sell_to_swap.present?
 
-    selling_amount = buy_from_ocean[:amount]
+    selling_amount = (buy_from_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO)).round(8)
     selling_funds = Foxswap.api.pre_order(
       pay_asset_id: base_asset_id,
       fill_asset_id: quote_asset_id,
@@ -67,7 +67,7 @@ module Market::Arbitragable
 
     selling_price = ocean_bid['price'].to_f
     selling_funds = [ocean_bid['funds'].to_f, MAXIMUM_TO_EXCHNAGE].min
-    selling_amount = (selling_funds / (1 - OCEAN_TAKER_FEE_RATIO) / selling_price).round(8)
+    selling_amount = (selling_funds / selling_price).round(8)
 
     @sell_to_ocean = {
       price: selling_price,
@@ -95,8 +95,11 @@ module Market::Arbitragable
   end
 
   def patrol
-    if ocean_ask.present? && ((sell_to_swap[:funds] / buy_from_ocean[:funds]) - 1 - THRESHOLD_TO_EXCHANGE).positive?
+    return if arbitraging?
+
+    if ocean_ask.present? && (sell_to_swap[:funds] * (1 - THRESHOLD_TO_EXCHANGE) - buy_from_ocean[:funds]).positive?
       arbitrage_orders.create!(
+        arbitrager: Arbitrager.ready.take,
         arbitrager_id: Arbitrager.ready.sample&.mixin_uuid,
         raw: {
           ocean: {
@@ -109,8 +112,9 @@ module Market::Arbitragable
           profit_asset_id: quote_asset_id
         }
       )
-    elsif ocean_bid.present? && ((buy_from_swap[:amount] / sell_to_ocean[:amount]) - 1 - THRESHOLD_TO_EXCHANGE).positive?
+    elsif ocean_bid.present? && (buy_from_swap[:amount] * (1 - THRESHOLD_TO_EXCHANGE) - sell_to_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO)).positive?
       arbitrage_orders.create!(
+        arbitrager: Arbitrager.ready.take,
         arbitrager_id: Arbitrager.ready.sample&.mixin_uuid,
         raw: {
           ocean: {
@@ -129,6 +133,10 @@ module Market::Arbitragable
   rescue StandardError => e
     Rails.logger.error e.inspect
     raise e unless Rails.env.production?
+  end
+
+  def arbitraging?
+    arbitrage_orders.arbitraging.present?
   end
 
   def patrol_async

@@ -24,7 +24,7 @@ module Types
     field :payment_amount, String, null: false
     field :payment_memo, String, null: false
 
-    field :user, Types::UserType, null: false
+    field :user, Types::UserType, null: true
     field :broker, Types::MixinNetworkUserType, null: false
     field :base_asset, Types::MixinAssetType, null: false
     field :quote_asset, Types::MixinAssetType, null: false

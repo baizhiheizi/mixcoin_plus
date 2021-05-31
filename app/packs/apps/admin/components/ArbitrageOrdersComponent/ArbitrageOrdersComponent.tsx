@@ -46,7 +46,7 @@ export default function ArbitrageOrdersComponent(props: {
     {
       dataIndex: 'arbitragerId',
       key: 'arbitragerId',
-      render: (_, order) => order.arbitragerId || '-',
+      render: (_, order) => order.arbitrager?.name || '-',
       title: 'Arbitrager',
     },
     {

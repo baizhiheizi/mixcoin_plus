@@ -28,7 +28,7 @@ class Market < ApplicationRecord
   AVAILABLE_QUOTES = [ERC20_USDT_ASSET_ID, PUSD_ASSET_ID, XIN_ASSET_ID, BTC_ASSET_ID, OMNI_USDT_ASSET_ID].freeze
 
   include RankedModel
-  include Market::Arbitragable
+  include Markets::Arbitragable
 
   ranks :rank, with_same: :quote_asset_id
 

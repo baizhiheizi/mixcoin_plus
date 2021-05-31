@@ -26,10 +26,9 @@
 #  index_mixin_network_users_on_owner_id_and_owner_type  (owner_id,owner_type)
 #
 class Arbitrager < MixinNetworkUser
-  include MixinNetworkUser::Oceanable
+  include MixinNetworkUsers::Oceanable
 
   has_many :arbitrage_orders, primary_key: :mixin_uuid, dependent: :restrict_with_exception
-  has_many :ocean_orders, foreign_key: :broker_id, primary_key: :mixin_uuid, dependent: :restrict_with_exception, inverse_of: :arbitrager
 
   after_initialize :set_default_name, if: :new_record?
 

@@ -10,12 +10,18 @@ module Types
     field :raw, String, null: false
 
     field :market, Types::MarketType, null: false
-    field :arbitrager, Types::MixinNetworkUserType, null: false
+    field :arbitrager, Types::MixinNetworkUserType, null: true
     field :profit_asset, Types::MixinAssetType, null: false
 
     def market
       BatchLoader::GraphQL.for(object.market_id).batch do |market_ids, loader|
         Market.where(id: market_ids).each { |market| loader.call(market.id, market) }
+      end
+    end
+
+    def arbitrager
+      BatchLoader::GraphQL.for(object.arbitrager_id).batch do |arbitrager_ids, loader|
+        Arbitrager.where(mixin_uuid: arbitrager_ids).each { |arbitrager| loader.call(arbitrager.mixin_uuid, arbitrager) }
       end
     end
 

@@ -1,12 +1,12 @@
 import { UserAsset, useAdminWalletBalanceQuery } from 'graphqlTypes';
-import { Avatar, Table } from 'antd';
+import { Avatar, Button, Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
 import React from 'react';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
 
 export default function WalletBalanceComponent(props: { userId?: string }) {
   const { userId } = props;
-  const { loading, data } = useAdminWalletBalanceQuery({
+  const { loading, data, refetch } = useAdminWalletBalanceQuery({
     fetchPolicy: 'network-only',
     variables: { userId },
   });
@@ -37,14 +37,21 @@ export default function WalletBalanceComponent(props: { userId?: string }) {
     },
   ];
   return (
-    <Table
-      scroll={{ x: true }}
-      columns={columns}
-      dataSource={assets}
-      rowKey='assetId'
-      loading={loading}
-      pagination={{ pageSize: 50 }}
-      size='small'
-    />
+    <>
+      <div className='flex justify-end mb-4'>
+        <Button type='primary' onClick={() => refetch()}>
+          Refresh
+        </Button>
+      </div>
+      <Table
+        scroll={{ x: true }}
+        columns={columns}
+        dataSource={assets}
+        rowKey='assetId'
+        loading={loading}
+        pagination={{ pageSize: 50 }}
+        size='small'
+      />
+    </>
   );
 }

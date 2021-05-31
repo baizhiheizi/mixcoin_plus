@@ -124,6 +124,8 @@ class OceanOrder < ApplicationRecord
   end
 
   def match!
+    return if completed?
+
     sync_with_engine
 
     if booking? && all_filled?
@@ -186,6 +188,7 @@ class OceanOrder < ApplicationRecord
   end
 
   def notify_for_order_state
+    return if user.blank?
     return if drafted?
 
     OceanOrderStateNotification.with(ocean_order: self).deliver(user)

@@ -16,6 +16,10 @@ query AdminArbitrageOrderConnection(
       expectedProfit
       netProfit
       raw
+      arbitrager {
+        name
+        mixinUuid
+      }
       market {
         baseAsset {
           assetId

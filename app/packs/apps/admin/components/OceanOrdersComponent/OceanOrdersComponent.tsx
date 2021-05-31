@@ -53,12 +53,18 @@ export default function OceanOrdersComponent(props: {
     {
       dataIndex: 'user',
       key: 'user',
-      render: (_, order) => (
-        <div className='flex items-center'>
-          <img className='w-6 h-6 mr-1 rounded-full' src={order.user.avatar} />
-          {order.user.name}({order.user.mixinId})
-        </div>
-      ),
+      render: (_, order) =>
+        order.user ? (
+          <div className='flex items-center'>
+            <img
+              className='w-6 h-6 mr-1 rounded-full'
+              src={order.user.avatar}
+            />
+            {order.user.name}({order.user.mixinId})
+          </div>
+        ) : (
+          '-'
+        ),
       title: 'user',
     },
     {
