@@ -16,9 +16,9 @@ module Resolvers
       when 'favorite'
         return [] if current_user.blank?
 
-        current_user.favorite_markets.order_by_default.ransack(q_ransack.merge(m: 'or')).result
+        current_user.favorite_markets.without_hidden.order_by_default.ransack(q_ransack.merge(m: 'or')).result
       when 'hot'
-        Market.where.not(quote_asset_id: Market::OMNI_USDT_ASSET_ID).order(trades_count: :desc, ocean_orders_count: :desc).first(10)
+        Market.without_hidden.where.not(quote_asset_id: Market::OMNI_USDT_ASSET_ID).order(trades_count: :desc, ocean_orders_count: :desc).first(10)
       else
         markets =
           case params[:type]

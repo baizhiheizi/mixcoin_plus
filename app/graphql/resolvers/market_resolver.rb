@@ -18,7 +18,7 @@ module Resolvers
           markets.without_hidden.find_by(quote_asset_id: params[:quote_asset_id], base_asset_id: params[:base_asset_id])
         end
 
-      market ||= markets.recommended.sample
+      market ||= markets.without_hidden.recommended.sample
       market.sync_trades_from_engine_async
 
       market
