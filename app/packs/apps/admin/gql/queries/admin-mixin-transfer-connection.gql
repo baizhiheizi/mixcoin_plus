@@ -1,6 +1,7 @@
 query AdminMixinTransferConnection(
   $after: String
   $oceanOrderId: ID
+  $swapOrderId: ID
   $userId: ID
   $opponentId: ID
   $transferType: String
@@ -8,6 +9,7 @@ query AdminMixinTransferConnection(
   adminMixinTransferConnection(
     after: $after
     oceanOrderId: $oceanOrderId
+    swapOrderId: $swapOrderId
     userId: $userId
     opponentId: $opponentId
     transferType: $transferType

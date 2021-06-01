@@ -1,0 +1,51 @@
+query AdminSwapOrderConnection(
+  $after: String
+  $state: String
+  $query: String
+  $userId: ID
+  $brokerId: ID
+) {
+  adminSwapOrderConnection(
+    after: $after
+    state: $state
+    query: $query
+    userId: $userId
+    brokerId: $brokerId
+  ) {
+    nodes {
+      id
+      traceId
+      state
+      payAmount
+      fillAmount
+      minAmount
+      payAmount
+      brokerId
+      user {
+        avatar
+        name
+        mixinId
+      }
+      broker {
+        mixinUuid
+        name
+      }
+      payAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      fillAsset {
+        assetId
+        symbol
+        iconUrl
+      }
+      arbitrageOrderId
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

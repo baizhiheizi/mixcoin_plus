@@ -51,6 +51,12 @@ export default function Menus() {
         </Link>
       </Menu.Item>
       <Menu.Item>
+        <Link to='/swap_orders'>
+          <SyncOutlined />
+          <span>Swap Orders</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item>
         <Link to='/mixin_network_snapshots'>
           <MoneyCollectOutlined />
           <span>Snapshots</span>

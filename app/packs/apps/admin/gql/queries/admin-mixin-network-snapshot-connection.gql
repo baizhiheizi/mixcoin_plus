@@ -1,11 +1,13 @@
 query AdminMixinNetworkSnapshotConnection(
   $after: String
   $oceanOrderId: ID
+  $swapOrderId: ID
   $snapshotType: String
 ) {
   adminMixinNetworkSnapshotConnection(
     after: $after
     oceanOrderId: $oceanOrderId
+    swapOrderId: $swapOrderId
     snapshotType: $snapshotType
   ) {
     nodes {

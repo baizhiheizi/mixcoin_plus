@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_31_220653) do
+ActiveRecord::Schema.define(version: 2021_06_01_070838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -223,7 +223,7 @@ ActiveRecord::Schema.define(version: 2021_05_31_220653) do
     t.index ["market_id"], name: "index_ocean_orders_on_market_id"
   end
 
-  create_table "swap_orders", force: :cascade do |t|
+  create_table "swap_orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "arbitrage_order_id"
     t.uuid "user_id"
     t.uuid "pay_asset_id"

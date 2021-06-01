@@ -17,6 +17,8 @@ import MixinTransfersPage from './pages/MixinTransfersPage/MixinTransfersPage';
 import OceanOrderPage from './pages/OceanOrderPage/OceanOrderPage';
 import OceanOrdersPage from './pages/OceanOrdersPage/OceanOrdersPage';
 import OverviewPage from './pages/OverviewPage/OverivewPage';
+import SwapOrderPage from './pages/SwapOrderPage/SwapOrderPage';
+import SwapOrdersPage from './pages/SwapOrdersPage/SwapOrdersPage';
 import UserPage from './pages/UserPage/UserPage';
 import UsersPage from './pages/UsersPage/UsersPage';
 
@@ -37,6 +39,12 @@ export default function Routes() {
       </Route>
       <Route path='/ocean_orders/:id' exact>
         <OceanOrderPage />
+      </Route>
+      <Route path='/swap_orders' exact>
+        <SwapOrdersPage />
+      </Route>
+      <Route path='/swap_orders/:id' exact>
+        <SwapOrderPage />
       </Route>
       <Route path='/mixin_network_snapshots' exact>
         <MixinNetworkSnapshotsPage />

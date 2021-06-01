@@ -4,7 +4,7 @@
 #
 # Table name: swap_orders
 #
-#  id                 :bigint           not null, primary key
+#  id                 :uuid             not null, primary key
 #  fill_amount        :decimal(, )
 #  min_amount         :decimal(, )
 #  pay_amount         :decimal(, )
@@ -34,9 +34,9 @@ class SwapOrder < ApplicationRecord
 
   include AASM
 
-  belongs_to :market
+  belongs_to :user, optional: true
   belongs_to :arbitrage_order, optional: true
-  belongs_to :broker, primary_key: :mixin_uuid, inverse_of: :swap_orders
+  belongs_to :broker, class_name: 'MixinNetworkUser', primary_key: :mixin_uuid, inverse_of: :swap_orders
   belongs_to :pay_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
   belongs_to :fill_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
 
@@ -46,6 +46,9 @@ class SwapOrder < ApplicationRecord
   before_validation :set_defaults, on: :create
 
   validates :trace_id, presence: true, uniqueness: true
+  validate :pay_and_fill_asset_not_the_same
+
+  scope :without_drafted, -> { where.not(state: :drafted) }
 
   aasm column: :state do
     state :drafted, initial: true
@@ -69,11 +72,6 @@ class SwapOrder < ApplicationRecord
 
     event :reject do
       transitions from: :swapping, to: :rejected
-    end
-
-    event :refund do
-      transitions from: :paid, to: :refunded
-      transitions from: :rejected, to: :refunded
     end
   end
 
@@ -121,5 +119,9 @@ class SwapOrder < ApplicationRecord
     assign_attributes(
       trace_id: SecureRandom.uuid
     )
+  end
+
+  def pay_and_fill_asset_not_the_same
+    errors.add(:fill_asset, ' is the same with pay asset') unless pay_asset_id != fill_asset_id
   end
 end

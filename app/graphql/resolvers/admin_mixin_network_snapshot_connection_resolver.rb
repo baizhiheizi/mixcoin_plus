@@ -3,6 +3,7 @@
 module Resolvers
   class AdminMixinNetworkSnapshotConnectionResolver < Resolvers::AdminBaseResolver
     argument :ocean_order_id, ID, required: false
+    argument :swap_order_id, ID, required: false
     argument :snapshot_type, String, required: false
     argument :after, String, required: false
 
@@ -12,6 +13,8 @@ module Resolvers
       snapshots =
         if params[:ocean_order_id].present?
           OceanSnapshot.where(source_id: params[:ocean_order_id])
+        elsif params[:swap_order_id].present?
+          SwapSnapshot.where(source_id: params[:swap_order_id])
         else
           MixinNetworkSnapshot.all
         end

@@ -3,6 +3,7 @@
 module Resolvers
   class AdminMixinTransferConnectionResolver < Resolvers::AdminBaseResolver
     argument :ocean_order_id, ID, required: false
+    argument :swap_order_id, ID, required: false
     argument :transfer_type, String, required: false
     argument :user_id, ID, required: false
     argument :opponent_id, ID, required: false
@@ -14,6 +15,8 @@ module Resolvers
       transfers =
         if params[:ocean_order_id].present?
           MixinTransfer.where(source_id: params[:ocean_order_id], source_type: 'OceanOrder')
+        elsif params[:swap_order_id].present?
+          MixinTransfer.where(source_id: params[:swap_order_id], source_type: 'SwapOrder')
         else
           MixinTransfer.all
         end

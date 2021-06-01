@@ -8,7 +8,7 @@ module Markets::Arbitragable
 
   def ocean_ask
     @ocean_ask ||=
-      if ocean_book['asks'].last&.[]('funds').to_f > MINIMUM_TO_EXCHNAGE
+      if ocean_book['asks'].last&.[]('funds').to_f * quote_asset.price_usd > MINIMUM_TO_EXCHNAGE
         ocean_book['asks'].last
       else
         ocean_book['asks'][-2]
@@ -17,7 +17,7 @@ module Markets::Arbitragable
 
   def ocean_bid
     @ocean_bid ||=
-      if ocean_book['bids'].first&.[]('funds').to_f > MINIMUM_TO_EXCHNAGE
+      if ocean_book['bids'].first&.[]('funds').to_f * quote_asset.price_usd > MINIMUM_TO_EXCHNAGE
         ocean_book['bids'].first
       else
         ocean_book['bids'].second
@@ -30,7 +30,7 @@ module Markets::Arbitragable
 
   def buy_from_ocean
     return @buy_from_ocean if @buy_from_ocean.present?
-    return if ocean_ask['funds'].to_f < MINIMUM_TO_EXCHNAGE
+    return if ocean_ask['funds'].to_f * quote_asset.price_usd < MINIMUM_TO_EXCHNAGE
 
     buying_price = ocean_ask['price'].to_f
     buying_funds = [ocean_ask['funds'].to_f, MAXIMUM_TO_EXCHNAGE].min
@@ -63,7 +63,7 @@ module Markets::Arbitragable
 
   def sell_to_ocean
     return @sell_to_ocean if @sell_to_ocean.present?
-    return if ocean_bid['funds'].to_f < MINIMUM_TO_EXCHNAGE
+    return if ocean_bid['funds'].to_f * quote_asset.price_usd < MINIMUM_TO_EXCHNAGE
 
     selling_price = ocean_bid['price'].to_f
     selling_funds = [ocean_bid['funds'].to_f, MAXIMUM_TO_EXCHNAGE].min

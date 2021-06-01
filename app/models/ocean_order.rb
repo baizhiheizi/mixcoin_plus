@@ -54,6 +54,7 @@ class OceanOrder < ApplicationRecord
   enumerize :order_type, in: %w[limit market], scope: true, predicates: true
 
   before_validation :set_defaults, on: :create
+  after_commit :auto_pay_arbitrage_order, on: :create
 
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0.000_000_01 }, if: -> { order_type.limit? }
   validates :remaining_amount, presence: true, numericality: { greater_than_or_equal_to: 0.0 }
@@ -108,6 +109,12 @@ class OceanOrder < ApplicationRecord
 
   def arbitrage?
     arbitrage_order.present?
+  end
+
+  def auto_pay_arbitrage_order
+    return unless arbitrage?
+
+    pay! if drafted?
   end
 
   def amount

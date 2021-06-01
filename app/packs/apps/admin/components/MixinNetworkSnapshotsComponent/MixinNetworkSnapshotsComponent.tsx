@@ -7,12 +7,13 @@ import React, { useState } from 'react';
 
 export default function MixinNetworkSnapshotsComponent(props: {
   oceanOrderId?: string;
+  swapOrderId?: string;
 }) {
-  const { oceanOrderId } = props;
-  const [snapshotType, setSnapshotType] = useState('match_to_user');
+  const { oceanOrderId, swapOrderId } = props;
+  const [snapshotType, setSnapshotType] = useState('all');
   const { loading, data, refetch, fetchMore } =
     useAdminMixinNetworkSnapshotConnectionQuery({
-      variables: { oceanOrderId, snapshotType },
+      variables: { oceanOrderId, snapshotType, swapOrderId },
     });
 
   if (loading) {

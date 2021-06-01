@@ -4,7 +4,7 @@
 #
 # Table name: swap_orders
 #
-#  id                 :bigint           not null, primary key
+#  id                 :uuid             not null, primary key
 #  fill_amount        :decimal(, )
 #  min_amount         :decimal(, )
 #  pay_amount         :decimal(, )

@@ -35,17 +35,102 @@ class SwapSnapshot < MixinNetworkSnapshot
   enumerize :snapshot_type,
             in: %i[default swap_from_user swap_to_fox trade_from_fox trade_to_user reject_from_fox reject_to_user]
 
+  alias swap_order source
+
   def process!
-    return if amount.negative?
+    return if processed?
 
-    swap_order = SwapOrder.find_by trace_id: decrypted_memo['t']
+    _swap_order = decrypted_swap_order
+    _snapshot_type = decrypted_snapshot_type
 
-    case decrypted_memo['s']
-    when '4swapTrade'
-      swap_order.update! amount: amount
-      swap_order.trade! if swap_order.swapping?
-    when '4swapRefund'
-      swap_order.reject!
+    case _snapshot_type.to_sym
+    when :swap_from_user
+      raise 'Invalid Payment' unless (amount - _swap_order.pay_amount).zero? && asset_id == _swap_order.pay_asset_id
+
+      _swap_order.pay!
+    when :swap_to_fox
+      _swap_order.swap! if _swap_order.may_swap?
+    when :trade_from_fox
+      if _swap_order.arbitrage?
+        _swap_order.trade!
+      else
+        MixinTransfer.create_with(
+          source: _swap_order,
+          user_id: _swap_order.broker.mixin_uuid,
+          transfer_type: :swap_order_trade,
+          opponent_id: _swap_order.user.mixin_uuid,
+          asset_id: asset_id,
+          amount: amount,
+          memo: Base64.strict_encode64("SWAP|TRADE|#{_swap_order.trace_id}")
+        ).find_or_create_by!(
+          trace_id: OceanSwapBot.api.unique_uuid(trace_id, _swap_order.trace_id)
+        )
+      end
+    when :trade_to_user
+      _swap_order.trade!
+    when :reject_from_fox
+      if _swap_order.arbitrage?
+        _swap_order.reject!
+      else
+        MixinTransfer.create_with(
+          source: _swap_order,
+          user_id: _swap_order.broker.mixin_uuid,
+          transfer_type: :swap_order_reject,
+          opponent_id: _swap_order.user.mixin_uuid,
+          asset_id: asset_id,
+          amount: amount,
+          memo: Base64.strict_encode64("SWAP|REJECT|#{_swap_order.trace_id}")
+        ).find_or_create_by!(
+          trace_id: OceanSwapBot.api.unique_uuid(trace_id, _swap_order.trace_id)
+        )
+      end
+    when :reject_to_user
+      _swap_order.reject!
+    end
+
+    update!(
+      source: decrypted_swap_order,
+      snapshot_type: decrypted_snapshot_type,
+      processed_at: Time.current,
+      amount_usd: asset.price_usd.to_f * amount
+    )
+  end
+
+  # associate to swap_order
+  def decrypted_swap_order
+    return if raw['user_id'] == MixcoinPlusBot.api.client_id
+
+    # from broker to fox
+    _swap_order ||= SwapOrder.find_by(trace_id: raw['trace_id'])
+
+    # from user to broker
+    _swap_order ||= SwapOrder.find_by(id: raw['trace_id'])
+
+    # from broker to user
+    _swap_order ||= SwapOrder.find_by(trace_id: base64_decoded_memo.split('|')[2]) if base64_decoded_memo.match?(/^SWAP/)
+
+    # from fox to broker
+    _swap_order ||= SwapOrder.find_by(trace_id: decrypted_json_memo['t']) if decrypted_json_memo.present?
+
+    _swap_order
+  end
+
+  def decrypted_snapshot_type
+    if base64_decoded_memo.match?(/^SWAP/)
+      {
+        CREATE: 'swap_from_user',
+        TRADE: 'trade_to_user',
+        REJECT: 'reject_to_user'
+      }[base64_decoded_memo.split('|')[1]&.to_sym]
+    elsif decrypted_json_memo['t'] == 'swap'
+      'swap_to_fox'
+    elsif decrypted_json_memo.present?
+      case decrypted_json_memo['s']
+      when '4swapTrade'
+        'trade_from_fox'
+      when '4swapRefund'
+        'reject_from_fox'
+      end
     end
   end
 end

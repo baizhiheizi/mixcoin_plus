@@ -37,7 +37,10 @@ class ArbitrageOrder < ApplicationRecord
   validates :profit_asset_id, presence: true
   validates :raw, presence: true
 
-  after_commit :notify_admin_async
+  after_commit on: :create do
+    notify_admin_async
+    arbitrage! if arbitrager_balance_sufficient?
+  end
 
   scope :without_drafted, -> { where.not(state: :drafted) }
 
@@ -47,8 +50,16 @@ class ArbitrageOrder < ApplicationRecord
     state :completed
     state :canceled
 
-    event :arbitrage do
+    event :arbitrage, guards: %i[arbitrager_balance_sufficient?], after: %i[generate_ocean_order] do
       transitions from: :drafted, to: :arbitraging
+    end
+
+    event :cancel, after: :calculate_net_profit do
+      transitions from: :arbitraging, to: :canceled
+    end
+
+    event :complete do
+      transitions from: :arbitraging, to: :completed
     end
   end
 

@@ -1,0 +1,32 @@
+query AdminSwapOrder($id: ID!) {
+  adminSwapOrder(id: $id) {
+    id
+    traceId
+    state
+    payAmount
+    fillAmount
+    minAmount
+    payAmount
+    user {
+      avatar
+      name
+      mixinId
+    }
+    broker {
+      mixinUuid
+      name
+    }
+    payAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    fillAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    arbitrageOrderId
+    createdAt
+  }
+}

@@ -7,14 +7,21 @@ import React, { useState } from 'react';
 
 export default function MixinTransfersComponent(props: {
   oceanOrderId?: string;
+  swapOrderId?: string;
   userId?: string;
   opponentId?: string;
 }) {
-  const { oceanOrderId, userId, opponentId } = props;
+  const { oceanOrderId, swapOrderId, userId, opponentId } = props;
   const [transferType, setTranferType] = useState('all');
   const { loading, data, refetch, fetchMore } =
     useAdminMixinTransferConnectionQuery({
-      variables: { oceanOrderId, userId, opponentId, transferType },
+      variables: {
+        oceanOrderId,
+        swapOrderId,
+        userId,
+        opponentId,
+        transferType,
+      },
     });
   const { appId } = useMixinBot();
 
