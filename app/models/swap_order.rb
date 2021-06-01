@@ -48,7 +48,12 @@ class SwapOrder < ApplicationRecord
   validates :trace_id, presence: true, uniqueness: true
   validate :pay_and_fill_asset_not_the_same
 
+  after_commit on: :create do
+    pay! if arbitrage?
+  end
+
   scope :without_drafted, -> { where.not(state: :drafted) }
+  scope :without_finished, -> { where.not(state: %i[rejected traded]) }
 
   aasm column: :state do
     state :drafted, initial: true
@@ -56,7 +61,6 @@ class SwapOrder < ApplicationRecord
     state :swapping
     state :rejected
     state :traded
-    state :refunded
 
     event :pay, after: :create_swap_transfer! do
       transitions from: :drafted, to: :paid
@@ -66,7 +70,7 @@ class SwapOrder < ApplicationRecord
       transitions from: :paid, to: :swapping
     end
 
-    event :trade do
+    event :trade, after_commit: %i[sync_order check_arbitrage_order] do
       transitions from: :swapping, to: :traded
     end
 
@@ -109,6 +113,22 @@ class SwapOrder < ApplicationRecord
     ).find_or_create_by!(
       trace_id: trace_id
     )
+  end
+
+  def sync_order
+    r = Foxswap.api.order(trace_id, authorization: broker.mixin_api.access_token('GET', '/me'))
+    return if r['data'].blank?
+
+    update(
+      fill_amount: r['data']['fill_amount'],
+      raw: r['data']
+    )
+  end
+
+  def check_arbitrage_order
+    return unless arbitrage?
+
+    arbitrage_order.complete!
   end
 
   private

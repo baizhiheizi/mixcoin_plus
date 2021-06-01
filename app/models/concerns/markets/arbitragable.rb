@@ -9,9 +9,9 @@ module Markets::Arbitragable
   def ocean_ask
     @ocean_ask ||=
       if ocean_book['asks'].last&.[]('funds').to_f * quote_asset.price_usd > MINIMUM_TO_EXCHNAGE
-        ocean_book['asks'].last
+        ocean_book['asks'].first
       else
-        ocean_book['asks'][-2]
+        ocean_book['asks'].second
       end
   end
 

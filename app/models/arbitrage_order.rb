@@ -58,9 +58,21 @@ class ArbitrageOrder < ApplicationRecord
       transitions from: :arbitraging, to: :canceled
     end
 
-    event :complete do
+    event :complete, guards: :ensure_ocean_and_swap_orders_finished, after: :calculate_net_profit do
       transitions from: :arbitraging, to: :completed
     end
+  end
+
+  def calculate_net_profit
+    profit =
+      case raw[:ocean][:side]
+      when :bid
+        swap_orders.sum(:fill_amount) - ocean_orders.sum(:filled_funds)
+      when :ask
+        swap_orders.sum(:fill_amount) - ocean_orders.sum(:filled_amount)
+      end
+
+    update net_profit: profit
   end
 
   def arbitrager_balance_sufficient?
@@ -98,6 +110,10 @@ class ArbitrageOrder < ApplicationRecord
   end
 
   private
+
+  def ensure_ocean_and_swap_orders_finished
+    ocean_orders.without_finished.blank? && swap_orders.without_finished.blank?
+  end
 
   def set_defaults
     assign_attributes(

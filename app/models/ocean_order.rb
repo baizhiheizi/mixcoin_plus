@@ -106,6 +106,7 @@ class OceanOrder < ApplicationRecord
   end
 
   scope :without_drafted, -> { where.not(state: :drafted) }
+  scope :without_finished, -> { where.not(state: %i[completed refunded]) }
 
   def arbitrage?
     arbitrage_order.present?
