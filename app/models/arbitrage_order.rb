@@ -38,7 +38,6 @@ class ArbitrageOrder < ApplicationRecord
   validates :raw, presence: true
 
   after_commit on: :create do
-    notify_admin_async
     arbitrage! if arbitrager_balance_sufficient?
   end
 
@@ -50,15 +49,15 @@ class ArbitrageOrder < ApplicationRecord
     state :completed
     state :canceled
 
-    event :arbitrage, guards: %i[arbitrager_balance_sufficient?], after: %i[generate_ocean_order] do
+    event :arbitrage, guards: %i[arbitrager_balance_sufficient?], after: %i[generate_ocean_order notify_admin_async] do
       transitions from: :drafted, to: :arbitraging
     end
 
-    event :cancel, after: :calculate_net_profit do
+    event :cancel, after: %i[calculate_net_profit notify_admin_async] do
       transitions from: :arbitraging, to: :canceled
     end
 
-    event :complete, guards: :ensure_ocean_and_swap_orders_finished, after: :calculate_net_profit do
+    event :complete, guards: :ensure_ocean_and_swap_orders_finished, after: %i[calculate_net_profit notify_admin_async] do
       transitions from: :arbitraging, to: :completed
     end
   end
@@ -105,7 +104,7 @@ class ArbitrageOrder < ApplicationRecord
   def notify_admin_async
     SendMixinMessageWorker.perform_async MixcoinPlusBot.api.plain_text(
       conversation_id: MixcoinPlusBot.api.unique_uuid(Rails.application.credentials.fetch(:admin_mixin_uuid)),
-      data: "#{market.base_asset.symbol}/#{market.quote_asset.symbol} arbitrage order created, expected profit: #{(raw['expected_profit'] * profit_asset.price_usd).round(4)} USD"
+      data: "#{market.base_asset.symbol}/#{market.quote_asset.symbol} order #{state}, profit:#{net_profit || '-'}/#{raw['expected_profit']} #{profit_asset.symbol}"
     )
   end
 
