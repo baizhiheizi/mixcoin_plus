@@ -8,7 +8,6 @@ zh-CN:
     ocean_order_state_notification:
       market_price: 시장가
       tpl: |
-        '주문 번호': %<trace_id>s
         '트레이딩 페어': %<base_asset_symbol>s/%<quote_asset_symbol>s
         '주문종류': %<side>s
         '주문 상태': %<state>s

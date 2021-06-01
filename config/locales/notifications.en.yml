@@ -8,7 +8,6 @@ en:
     ocean_order_state_notification:
       market_price: 'Market Price'
       tpl: |
-        ID: %<trace_id>s
         Ticker: %<base_asset_symbol>s/%<quote_asset_symbol>s
         Side: %<side>s
         State: %<state>s

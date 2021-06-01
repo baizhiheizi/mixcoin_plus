@@ -77,7 +77,7 @@ class OceanOrder < ApplicationRecord
     state :refunded
 
     # user pay for the order
-    event :pay, after: %i[transfer_to_ocean_for_creating notify_for_order_state] do
+    event :pay, after: %i[transfer_to_ocean_for_creating] do
       transitions from: :drafted, to: :paid
     end
 
@@ -197,7 +197,7 @@ class OceanOrder < ApplicationRecord
 
   def notify_for_order_state
     return if user.blank?
-    return if drafted?
+    return if drafted? || paid?
 
     OceanOrderStateNotification.with(ocean_order: self).deliver(user)
   end

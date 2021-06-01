@@ -16,7 +16,6 @@ class OceanOrderStateNotification < ApplicationNotification
     format(t('.tpl'),
            base_asset_symbol: ocean_order.base_asset.symbol,
            quote_asset_symbol: ocean_order.quote_asset.symbol,
-           trace_id: ocean_order.trace_id,
            side: ocean_order.side_text,
            state: t("order_state.#{ocean_order.state}"),
            price: ocean_order.order_type.limit? ? ocean_order.price.to_f : t('.market_price'),
