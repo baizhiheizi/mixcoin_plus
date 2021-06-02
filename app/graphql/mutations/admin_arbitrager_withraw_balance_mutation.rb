@@ -12,11 +12,10 @@ module Mutations
       return if arbitrager.blank?
 
       balance = arbitrager.mixin_api.asset(asset_id)['data']['balance']
-      admin_id = MixcoinPlusBot.api.me['data']['app']['creator_id']
       MixinTransfer.create!(
         user_id: arbitrager.mixin_uuid,
         transfer_type: :withraw_to_admin,
-        opponent_id: admin_id,
+        opponent_id: Rails.application.credentials[:admin_mixin_uuid],
         asset_id: asset_id,
         amount: balance,
         memo: 'WITHRAW TO OWNER',
