@@ -1,5 +1,9 @@
-import { UserAsset, useAdminWalletBalanceQuery } from 'graphqlTypes';
-import { Avatar, Button, Table } from 'antd';
+import {
+  UserAsset,
+  useAdminWalletBalanceQuery,
+  useAdminArbitragerWithrawBalanceMutation,
+} from 'graphqlTypes';
+import { Avatar, Button, Table, Popconfirm, message } from 'antd';
 import { ColumnProps } from 'antd/es/table';
 import React from 'react';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
@@ -10,6 +14,17 @@ export default function WalletBalanceComponent(props: { userId?: string }) {
     fetchPolicy: 'network-only',
     variables: { userId },
   });
+  const [withdrawBalance, { loading: withrawing }] =
+    useAdminArbitragerWithrawBalanceMutation({
+      update: (_, { data: { adminArbitragerWithrawBalance } }) => {
+        if (adminArbitragerWithrawBalance) {
+          message.success('success');
+          refetch();
+        } else {
+          message.error('faied');
+        }
+      },
+    });
   if (loading) {
     return <LoadingComponent />;
   }
@@ -20,7 +35,7 @@ export default function WalletBalanceComponent(props: { userId?: string }) {
     {
       dataIndex: 'iconUrl',
       key: 'iconUrl',
-      render: (text, record) => <Avatar src={text}>{record.symbol[0]}</Avatar>,
+      render: (text, asset) => <Avatar src={text}>{asset.symbol[0]}</Avatar>,
       title: 'icon',
     },
     { title: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
@@ -28,12 +43,34 @@ export default function WalletBalanceComponent(props: { userId?: string }) {
     {
       dataIndex: 'priceUsd',
       key: 'priceUsd',
-      render: (text, record) => {
-        return record.balance > 0
-          ? `$ ${parseFloat(text) * record.balance}`
-          : 0;
+      render: (text, asset) => {
+        return asset.balance > 0 ? `$ ${parseFloat(text) * asset.balance}` : 0;
       },
       title: 'Value',
+    },
+    {
+      dataIndex: 'actions',
+      key: 'actions',
+      render: (_, asset) => (
+        <Popconfirm
+          title='Are you sure to withraw?'
+          onConfirm={() =>
+            withdrawBalance({
+              variables: {
+                input: {
+                  mixinUuid: userId,
+                  assetId: asset.assetId,
+                },
+              },
+            })
+          }
+        >
+          <Button type='link' disabled={withrawing}>
+            Withraw
+          </Button>
+        </Popconfirm>
+      ),
+      title: 'Actions',
     },
   ];
   return (

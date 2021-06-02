@@ -1,0 +1,5 @@
+mutation AdminArbitragerWithrawBalance(
+  $input: AdminArbitragerWithrawBalanceMutationInput!
+) {
+  adminArbitragerWithrawBalance(input: $input)
+}

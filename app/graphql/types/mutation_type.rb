@@ -7,6 +7,7 @@ module Types
     field :admin_recommend_market, mutation: Mutations::AdminRecommendMarketMutation
     field :admin_unrecommend_market, mutation: Mutations::AdminUnrecommendMarketMutation
     field :admin_rank_market, mutation: Mutations::AdminRankMarketMutation
+    field :admin_arbitrager_withraw_balance, mutation: Mutations::AdminArbitragerWithrawBalanceMutation
 
     # application
     field :switch_locale, mutation: Mutations::SwitchLocaleMutation
