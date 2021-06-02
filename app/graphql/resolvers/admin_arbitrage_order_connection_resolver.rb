@@ -10,7 +10,7 @@ module Resolvers
     type Types::ArbitrageOrderType.connection_type, null: false
 
     def resolve(**params)
-      arbitrager = Arbitrager.find_by(id: params[:arbitrager_id])
+      arbitrager = Arbitrager.find_by(mixin_uuid: params[:arbitrager_id])
       orders =
         if arbitrager.present?
           arbitrager.arbitrage_orders

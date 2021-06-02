@@ -33,9 +33,13 @@ export default function ArbitrageOrderPage() {
       <Descriptions>
         <Descriptions.Item label='ID'>{order.id}</Descriptions.Item>
         <Descriptions.Item label='Arbitrager'>
-          <Link to={`/mixin_network_users/${order.arbitrager.mixinUuid}`}>
-            {order.arbitrager.name}
-          </Link>
+          {order.arbitrager ? (
+            <Link to={`/mixin_network_users/${order.arbitrager.mixinUuid}`}>
+              {order.arbitrager.name}
+            </Link>
+          ) : (
+            '-'
+          )}
         </Descriptions.Item>
         <Descriptions.Item label='State'>{order.state}</Descriptions.Item>
         <Descriptions.Item label='Market'>
@@ -56,9 +60,11 @@ export default function ArbitrageOrderPage() {
         <Tabs.TabPane tab='Swap Orders' key='swapOrders'>
           <SwapOrdersComponent arbitrageOrderId={order.id} />
         </Tabs.TabPane>
-        <Tabs.TabPane tab='Broker Wallet' key='wallet'>
-          <WalletBalanceComponent userId={order.arbitrager.mixinUuid} />
-        </Tabs.TabPane>
+        {order.arbitrager && (
+          <Tabs.TabPane tab='Broker Wallet' key='wallet'>
+            <WalletBalanceComponent userId={order.arbitrager.mixinUuid} />
+          </Tabs.TabPane>
+        )}
       </Tabs>
     </>
   );
