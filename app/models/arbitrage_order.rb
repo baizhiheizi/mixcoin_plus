@@ -20,6 +20,7 @@
 #  index_arbitrage_orders_on_market_id      (market_id)
 #
 class ArbitrageOrder < ApplicationRecord
+  REASONABLE_EXPECTED_PROFIT_RATIO = 0.1
   TIMEOUT_SECONDS = 60
 
   extend Enumerize
@@ -40,7 +41,7 @@ class ArbitrageOrder < ApplicationRecord
   validates :raw, presence: true
 
   after_commit on: :create do
-    arbitrage! if arbitrager_balance_sufficient?
+    arbitrage! if arbitrager_balance_sufficient? && expected_profit_reasonable?
   end
 
   scope :without_drafted, -> { where.not(state: :drafted) }
@@ -83,6 +84,15 @@ class ArbitrageOrder < ApplicationRecord
       arbitrager_balance >= raw[:ocean][:funds]
     when :ask
       arbitrager_balance >= raw[:ocean][:amount]
+    end
+  end
+
+  def expected_profit_reasonable?
+    case raw[:ocean][:side]
+    when :bid
+      expected_profit / raw[:ocean][:funds] < REASONABLE_EXPECTED_PROFIT_RATIO
+    when :ask
+      expected_profit / raw[:ocean][:amount] < REASONABLE_EXPECTED_PROFIT_RATIO
     end
   end
 
