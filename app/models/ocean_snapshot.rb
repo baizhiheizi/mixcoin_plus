@@ -180,7 +180,11 @@ class OceanSnapshot < MixinNetworkSnapshot
     when :refund_from_engine
       if _ocean_order.arbitrage?
         _ocean_order.refund!
-        _ocean_order.arbitrage_order.cancel! if _ocean_order.arbitrage_order.may_cancel?
+        if _ocean_order.arbitrage_order.may_cancel?
+          _ocean_order.arbitrage_order.cancel! 
+        else
+          _ocean_order.arbitrage_order.calculate_net_profit
+        end
       else
         MixinTransfer.create_with(
           source: _ocean_order,

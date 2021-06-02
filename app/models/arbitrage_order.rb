@@ -20,6 +20,8 @@
 #  index_arbitrage_orders_on_market_id      (market_id)
 #
 class ArbitrageOrder < ApplicationRecord
+  TIMEOUT_SECONDS = 60
+
   extend Enumerize
   include AASM
 
@@ -42,6 +44,7 @@ class ArbitrageOrder < ApplicationRecord
   end
 
   scope :without_drafted, -> { where.not(state: :drafted) }
+  scope :only_timeout, -> { arbitraging.where(created_at: ...(Time.current - TIMEOUT_SECONDS.seconds)) }
 
   aasm column: :state do
     state :drafted, initial: true
@@ -99,6 +102,16 @@ class ArbitrageOrder < ApplicationRecord
       remaining_amount: raw[:ocean][:amount],
       remaining_funds: raw[:ocean][:funds]
     )
+  end
+
+  def timeout?
+    arbitraging? && (Time.current - created_at - TIMEOUT_SECONDS.seconds).positive?
+  end
+
+  def timeout!
+    return unless arbitraging?
+
+    ocean_orders.booking.where(created_at: ...(Time.current - TIMEOUT_SECONDS.seconds).map(&:cancel!))
   end
 
   def notify_admin_async

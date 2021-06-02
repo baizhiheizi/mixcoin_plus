@@ -4,3 +4,6 @@ sync_mixin_asset_price_worker:
 recommended_markets_sync_trades_from_engine_worker:
   cron: '* * * * *'
   class: 'RecommendedMarketsSyncTradesFromEngineWorker'
+arbitrage_orders_timeout_worker:
+  cron: '* * * * *'
+  class: 'ArbitrageOrdersTimeoutWorker'
