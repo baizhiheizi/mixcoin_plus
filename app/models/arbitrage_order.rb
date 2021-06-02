@@ -121,7 +121,7 @@ class ArbitrageOrder < ApplicationRecord
   def timeout!
     return unless arbitraging?
 
-    ocean_orders.booking.where(created_at: ...(Time.current - TIMEOUT_SECONDS.seconds).map(&:cancel!))
+    ocean_orders.booking.where(created_at: ...(Time.current - TIMEOUT_SECONDS.seconds)).map(&:cancel!)
   end
 
   def notify_admin_async

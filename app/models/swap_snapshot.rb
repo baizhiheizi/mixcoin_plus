@@ -52,7 +52,8 @@ class SwapSnapshot < MixinNetworkSnapshot
       _swap_order.swap! if _swap_order.may_swap?
     when :trade_from_fox
       if _swap_order.arbitrage?
-        _swap_order.trade!
+        _swap_order.trade! if _swap_order.may_trade?
+
         if _swap_order.arbitrage_order.map_complete?
           _swap_order.arbitrage_order.complete!
         else
