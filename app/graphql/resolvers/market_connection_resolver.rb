@@ -18,7 +18,7 @@ module Resolvers
 
         current_user.favorite_markets.without_hidden.order_by_default.ransack(q_ransack.merge(m: 'or')).result
       when 'hot'
-        Market.without_hidden.where.not(quote_asset_id: Market::OMNI_USDT_ASSET_ID).order(trades_count: :desc, ocean_orders_count: :desc).first(10)
+        Market.hot
       else
         markets =
           case params[:type]
@@ -40,7 +40,7 @@ module Resolvers
             Market.order_by_default
           end
 
-        markets.without_hidden.ransack(q_ransack.merge(m: 'or')).result
+        markets.ransack(q_ransack.merge(m: 'or')).result
       end
     end
   end

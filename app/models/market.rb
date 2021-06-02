@@ -53,10 +53,20 @@ class Market < ApplicationRecord
 
   scope :without_hidden, -> { where(hidden_at: nil) }
   scope :order_by_default, lambda {
-    where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID])
-         .order('recommended_at DESC NULLS LAST', rank: :asc, trades_count: :desc, ocean_orders_count: :desc, created_at: :desc)
+    without_hidden
+      .where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID])
+      .order('recommended_at DESC NULLS LAST', rank: :asc, trades_count: :desc, ocean_orders_count: :desc, created_at: :desc)
   }
-  scope :recommended, -> { where.not(recommended_at: nil).order(recommended_at: :desc) }
+  scope :hot, lambda {
+    without_hidden
+      .joins(:trades)
+      .group(:id)
+      .where(trades: { created_at: (Time.current - 7.days)... })
+      .where.not(quote_asset_id: Market::OMNI_USDT_ASSET_ID)
+      .order('trades.count desc, markets.trades_count desc')
+      .first(10)
+  }
+  scope :recommended, -> { without_hidden.where.not(recommended_at: nil).order(recommended_at: :desc) }
   scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
   scope :order_by_trades_24h, lambda {
     joins(:trades)
