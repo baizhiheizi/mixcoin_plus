@@ -181,7 +181,7 @@ class OceanSnapshot < MixinNetworkSnapshot
       if _ocean_order.arbitrage?
         _ocean_order.refund!
         if _ocean_order.arbitrage_order.may_cancel?
-          _ocean_order.arbitrage_order.cancel! 
+          _ocean_order.arbitrage_order.cancel!
         else
           _ocean_order.arbitrage_order.calculate_net_profit
         end
