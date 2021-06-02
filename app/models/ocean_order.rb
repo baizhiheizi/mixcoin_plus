@@ -89,7 +89,7 @@ class OceanOrder < ApplicationRecord
     # ocean engine complete the order
     # exchanged asset transfered to user
     event :complete, guards: :all_filled?, after: :notify_for_order_state do
-      transitions from: :cancelling, to: :completed
+      transitions from: :canceling, to: :completed
       transitions from: :booking, to: :completed
     end
 
@@ -137,7 +137,7 @@ class OceanOrder < ApplicationRecord
 
     sync_with_engine
 
-    if booking? && all_filled?
+    if may_complete? && all_filled?
       complete!
     else
       notify_for_order_state
