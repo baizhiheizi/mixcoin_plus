@@ -1,10 +1,13 @@
 import { Button, Descriptions, PageHeader, Tabs } from 'antd';
+import ArbitrageOrdersComponent from 'apps/admin/components/ArbitrageOrdersComponent/ArbitrageOrdersComponent';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import MixinTransfersComponent from 'apps/admin/components/MixinTransfersComponent/MixinTransfersComponent';
+import OceanOrdersComponent from 'apps/admin/components/OceanOrdersComponent/OceanOrdersComponent';
+import SwapOrdersComponent from 'apps/admin/components/SwapOrdersComponent/SwapOrdersComponent';
 import WalletBalanceComponent from 'apps/admin/components/WalletBalanceComponent/WalletBalanceComponent';
 import { useAdminMixinNetworkUserQuery } from 'graphqlTypes';
-import React from 'react';
 import QRCode from 'qrcode.react';
+import React from 'react';
 import { useParams } from 'react-router';
 
 export default function ArbitragerPage() {
@@ -41,6 +44,17 @@ export default function ArbitragerPage() {
       <Tabs defaultActiveKey='balance'>
         <Tabs.TabPane tab='Balance' key='balance'>
           <WalletBalanceComponent userId={user.mixinUuid} />
+        </Tabs.TabPane>
+        {user.type === 'Arbitrager' && (
+          <Tabs.TabPane tab='Arbitrager Orders' key='arbitrageOrders'>
+            <ArbitrageOrdersComponent arbitragerId={user.mixinUuid} />
+          </Tabs.TabPane>
+        )}
+        <Tabs.TabPane tab='Ocean Orders' key='oceanOrders'>
+          <OceanOrdersComponent brokerId={user.mixinUuid} />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab='Swap Orders' key='swapOrders'>
+          <SwapOrdersComponent brokerId={user.mixinUuid} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Transfers' key='transfers'>
           <MixinTransfersComponent userId={user.mixinUuid} />

@@ -8,14 +8,22 @@ module Resolvers
     argument :conversation_id, ID, required: false
     argument :market_id, ID, required: false
     argument :user_id, ID, required: false
+    argument :broker_id, ID, required: false
+    argument :arbitrage_order_id, ID, required: false
 
     type Types::OceanOrderType.connection_type, null: false
 
     def resolve(**params)
       user = User.find_by(id: params[:user_id])
+      broker = MixinNetworkUser.find_by(mixin_uuid: params[:broker_id])
+      arbitrage_order = ArbitrageOrder.find_by(id: params[:arbitrage_order_id])
       orders =
         if user.present?
           user.ocean_orders
+        elsif broker.present?
+          broker.ocean_orders
+        elsif arbitrage_order.present?
+          arbitrage_order.ocean_orders
         else
           OceanOrder.all
         end
@@ -40,7 +48,7 @@ module Resolvers
 
       query = params[:query].to_s.strip
       q_ransack = { trace_id_eq: query }
-      orders.ransack(q_ransack.merge(m: 'or')).result.order(created_at: :desc)
+      orders.ransack(q_ransack.merge(m: 'or')).result.order(updated_at: :desc)
     end
   end
 end

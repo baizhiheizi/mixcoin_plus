@@ -62,8 +62,17 @@ export const apolloClient = (uri: string) => {
             'transferType',
           ]),
           adminOceanOrderConnection: customizedConnectionMergeFunction([
+            'arbitrageOrderId',
+            'brokerId',
             'conversationId',
             'marketId',
+            'query',
+            'state',
+            'userId',
+          ]),
+          adminSwapOrderConnection: customizedConnectionMergeFunction([
+            'arbitrageOrderId',
+            'brokerId',
             'query',
             'state',
             'userId',

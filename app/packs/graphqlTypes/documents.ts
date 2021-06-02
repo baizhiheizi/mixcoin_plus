@@ -613,6 +613,7 @@ export type PageInfo = {
 export type Query = {
   __typename?: 'Query';
   adminAppStatistic: AppStatistic;
+  adminArbitrageOrder: ArbitrageOrder;
   adminArbitrageOrderConnection: ArbitrageOrderConnection;
   adminInvitationConnection: InvitationConnection;
   adminMarket: Market;
@@ -653,6 +654,11 @@ export type Query = {
 
 export type QueryAdminAppStatisticArgs = {
   scope?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryAdminArbitrageOrderArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -765,6 +771,8 @@ export type QueryAdminOceanOrderConnectionArgs = {
   conversationId?: Maybe<Scalars['ID']>;
   marketId?: Maybe<Scalars['ID']>;
   userId?: Maybe<Scalars['ID']>;
+  brokerId?: Maybe<Scalars['ID']>;
+  arbitrageOrderId?: Maybe<Scalars['ID']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
@@ -782,6 +790,7 @@ export type QueryAdminSwapOrderConnectionArgs = {
   state?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['ID']>;
   brokerId?: Maybe<Scalars['ID']>;
+  arbitrageOrderId?: Maybe<Scalars['ID']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
@@ -1146,6 +1155,35 @@ export type AdminArbitrageOrderConnectionQuery = (
   ) }
 );
 
+export type AdminArbitrageOrderQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AdminArbitrageOrderQuery = (
+  { __typename?: 'Query' }
+  & { adminArbitrageOrder: (
+    { __typename?: 'ArbitrageOrder' }
+    & Pick<ArbitrageOrder, 'id' | 'state' | 'expectedProfit' | 'netProfit' | 'raw' | 'createdAt'>
+    & { arbitrager?: Maybe<(
+      { __typename?: 'MixinNetworkUser' }
+      & Pick<MixinNetworkUser, 'name' | 'mixinUuid'>
+    )>, market: (
+      { __typename?: 'Market' }
+      & { baseAsset: (
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'assetId' | 'symbol'>
+      ), quoteAsset: (
+        { __typename?: 'MixinAsset' }
+        & Pick<MixinAsset, 'assetId' | 'symbol'>
+      ) }
+    ), profitAsset: (
+      { __typename?: 'MixinAsset' }
+      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
+    ) }
+  ) }
+);
+
 export type AdminInvitationConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
   invitorId?: Maybe<Scalars['String']>;
@@ -1397,6 +1435,8 @@ export type AdminOceanOrderConnectionQueryVariables = Exact<{
   conversationId?: Maybe<Scalars['ID']>;
   marketId?: Maybe<Scalars['ID']>;
   userId?: Maybe<Scalars['ID']>;
+  brokerId?: Maybe<Scalars['ID']>;
+  arbitrageOrderId?: Maybe<Scalars['ID']>;
 }>;
 
 
@@ -1412,7 +1452,7 @@ export type AdminOceanOrderConnectionQuery = (
         & Pick<User, 'avatar' | 'name' | 'mixinId'>
       )>, broker: (
         { __typename?: 'MixinNetworkUser' }
-        & Pick<MixinNetworkUser, 'mixinUuid'>
+        & Pick<MixinNetworkUser, 'name' | 'mixinUuid'>
       ), baseAsset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
@@ -1459,6 +1499,7 @@ export type AdminSwapOrderConnectionQueryVariables = Exact<{
   query?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['ID']>;
   brokerId?: Maybe<Scalars['ID']>;
+  arbitrageOrderId?: Maybe<Scalars['ID']>;
 }>;
 
 
@@ -2316,6 +2357,65 @@ export function useAdminArbitrageOrderConnectionLazyQuery(baseOptions?: Apollo.L
 export type AdminArbitrageOrderConnectionQueryHookResult = ReturnType<typeof useAdminArbitrageOrderConnectionQuery>;
 export type AdminArbitrageOrderConnectionLazyQueryHookResult = ReturnType<typeof useAdminArbitrageOrderConnectionLazyQuery>;
 export type AdminArbitrageOrderConnectionQueryResult = Apollo.QueryResult<AdminArbitrageOrderConnectionQuery, AdminArbitrageOrderConnectionQueryVariables>;
+export const AdminArbitrageOrderDocument = gql`
+    query AdminArbitrageOrder($id: ID!) {
+  adminArbitrageOrder(id: $id) {
+    id
+    state
+    expectedProfit
+    netProfit
+    raw
+    arbitrager {
+      name
+      mixinUuid
+    }
+    market {
+      baseAsset {
+        assetId
+        symbol
+      }
+      quoteAsset {
+        assetId
+        symbol
+      }
+    }
+    profitAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useAdminArbitrageOrderQuery__
+ *
+ * To run a query within a React component, call `useAdminArbitrageOrderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminArbitrageOrderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminArbitrageOrderQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAdminArbitrageOrderQuery(baseOptions: Apollo.QueryHookOptions<AdminArbitrageOrderQuery, AdminArbitrageOrderQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminArbitrageOrderQuery, AdminArbitrageOrderQueryVariables>(AdminArbitrageOrderDocument, options);
+      }
+export function useAdminArbitrageOrderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminArbitrageOrderQuery, AdminArbitrageOrderQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminArbitrageOrderQuery, AdminArbitrageOrderQueryVariables>(AdminArbitrageOrderDocument, options);
+        }
+export type AdminArbitrageOrderQueryHookResult = ReturnType<typeof useAdminArbitrageOrderQuery>;
+export type AdminArbitrageOrderLazyQueryHookResult = ReturnType<typeof useAdminArbitrageOrderLazyQuery>;
+export type AdminArbitrageOrderQueryResult = Apollo.QueryResult<AdminArbitrageOrderQuery, AdminArbitrageOrderQueryVariables>;
 export const AdminInvitationConnectionDocument = gql`
     query AdminInvitationConnection($after: String, $invitorId: String) {
   adminInvitationConnection(after: $after, invitorId: $invitorId) {
@@ -2886,7 +2986,7 @@ export type AdminMixinTransferConnectionQueryHookResult = ReturnType<typeof useA
 export type AdminMixinTransferConnectionLazyQueryHookResult = ReturnType<typeof useAdminMixinTransferConnectionLazyQuery>;
 export type AdminMixinTransferConnectionQueryResult = Apollo.QueryResult<AdminMixinTransferConnectionQuery, AdminMixinTransferConnectionQueryVariables>;
 export const AdminOceanOrderConnectionDocument = gql`
-    query AdminOceanOrderConnection($after: String, $state: String, $query: String, $conversationId: ID, $marketId: ID, $userId: ID) {
+    query AdminOceanOrderConnection($after: String, $state: String, $query: String, $conversationId: ID, $marketId: ID, $userId: ID, $brokerId: ID, $arbitrageOrderId: ID) {
   adminOceanOrderConnection(
     after: $after
     state: $state
@@ -2894,6 +2994,8 @@ export const AdminOceanOrderConnectionDocument = gql`
     conversationId: $conversationId
     marketId: $marketId
     userId: $userId
+    brokerId: $brokerId
+    arbitrageOrderId: $arbitrageOrderId
   ) {
     nodes {
       id
@@ -2915,6 +3017,7 @@ export const AdminOceanOrderConnectionDocument = gql`
         mixinId
       }
       broker {
+        name
         mixinUuid
       }
       baseAsset {
@@ -2955,6 +3058,8 @@ export const AdminOceanOrderConnectionDocument = gql`
  *      conversationId: // value for 'conversationId'
  *      marketId: // value for 'marketId'
  *      userId: // value for 'userId'
+ *      brokerId: // value for 'brokerId'
+ *      arbitrageOrderId: // value for 'arbitrageOrderId'
  *   },
  * });
  */
@@ -3036,13 +3141,14 @@ export type AdminOceanOrderQueryHookResult = ReturnType<typeof useAdminOceanOrde
 export type AdminOceanOrderLazyQueryHookResult = ReturnType<typeof useAdminOceanOrderLazyQuery>;
 export type AdminOceanOrderQueryResult = Apollo.QueryResult<AdminOceanOrderQuery, AdminOceanOrderQueryVariables>;
 export const AdminSwapOrderConnectionDocument = gql`
-    query AdminSwapOrderConnection($after: String, $state: String, $query: String, $userId: ID, $brokerId: ID) {
+    query AdminSwapOrderConnection($after: String, $state: String, $query: String, $userId: ID, $brokerId: ID, $arbitrageOrderId: ID) {
   adminSwapOrderConnection(
     after: $after
     state: $state
     query: $query
     userId: $userId
     brokerId: $brokerId
+    arbitrageOrderId: $arbitrageOrderId
   ) {
     nodes {
       id
@@ -3100,6 +3206,7 @@ export const AdminSwapOrderConnectionDocument = gql`
  *      query: // value for 'query'
  *      userId: // value for 'userId'
  *      brokerId: // value for 'brokerId'
+ *      arbitrageOrderId: // value for 'arbitrageOrderId'
  *   },
  * });
  */

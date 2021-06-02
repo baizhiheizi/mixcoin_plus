@@ -5,6 +5,8 @@ query AdminOceanOrderConnection(
   $conversationId: ID
   $marketId: ID
   $userId: ID
+  $brokerId: ID
+  $arbitrageOrderId: ID
 ) {
   adminOceanOrderConnection(
     after: $after
@@ -13,6 +15,8 @@ query AdminOceanOrderConnection(
     conversationId: $conversationId
     marketId: $marketId
     userId: $userId
+    brokerId: $brokerId
+    arbitrageOrderId: $arbitrageOrderId
   ) {
     nodes {
       id
@@ -34,6 +38,7 @@ query AdminOceanOrderConnection(
         mixinId
       }
       broker {
+        name
         mixinUuid
       }
       baseAsset {

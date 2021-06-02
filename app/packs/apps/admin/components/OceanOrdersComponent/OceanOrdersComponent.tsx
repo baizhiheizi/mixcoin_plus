@@ -10,14 +10,19 @@ export default function OceanOrdersComponent(props: {
   marketId?: string;
   conversationId?: string;
   userId?: string;
+  brokerId?: string;
+  arbitrageOrderId?: string;
 }) {
-  const { conversationId, userId, marketId } = props;
-  const [state, setState] = useState('booking');
+  const { conversationId, userId, marketId, brokerId, arbitrageOrderId } =
+    props;
+  const [state, setState] = useState('valid');
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, { wait: 1000 });
   const { loading, data, refetch, fetchMore } =
     useAdminOceanOrderConnectionQuery({
       variables: {
+        arbitrageOrderId,
+        brokerId,
         conversationId,
         state,
         userId,
@@ -63,7 +68,9 @@ export default function OceanOrdersComponent(props: {
             {order.user.name}({order.user.mixinId})
           </div>
         ) : (
-          '-'
+          <Link to={`/mixin_network_users/${order.broker.mixinUuid}`}>
+            {order.broker.name}
+          </Link>
         ),
       title: 'user',
     },

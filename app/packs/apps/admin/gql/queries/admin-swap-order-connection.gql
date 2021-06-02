@@ -4,6 +4,7 @@ query AdminSwapOrderConnection(
   $query: String
   $userId: ID
   $brokerId: ID
+  $arbitrageOrderId: ID
 ) {
   adminSwapOrderConnection(
     after: $after
@@ -11,6 +12,7 @@ query AdminSwapOrderConnection(
     query: $query
     userId: $userId
     brokerId: $brokerId
+    arbitrageOrderId: $arbitrageOrderId
   ) {
     nodes {
       id

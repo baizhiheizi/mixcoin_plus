@@ -45,7 +45,7 @@ export default function MixinNetworkSnapshotsComponent(props: {
               {snapshot.opponent.name}({snapshot.opponent.mixinId})
             </div>
           ) : (
-            snapshot.opponentId
+            snapshot.opponentId || 'MTG'
           )}
         </>
       ),
@@ -67,7 +67,9 @@ export default function MixinNetworkSnapshotsComponent(props: {
     {
       dataIndex: 'data',
       key: 'data',
-      render: (text) => <span className='max-w-sm line-clamp-2'>{text}</span>,
+      render: (text) => (
+        <span className='max-w-sm line-clamp-2'>{text || '-'}</span>
+      ),
       title: 'memo',
     },
     {
@@ -116,6 +118,8 @@ export default function MixinNetworkSnapshotsComponent(props: {
             Match from Engine
           </Select.Option>
           <Select.Option value='match_to_user'>Match to User</Select.Option>
+          <Select.Option value='swap_to_fox'>Swap to Fox</Select.Option>
+          <Select.Option value='trade_from_fox'>Trade from Fox</Select.Option>
         </Select>
         <Button type='primary' onClick={() => refetch()}>
           Refresh

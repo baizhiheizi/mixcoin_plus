@@ -3,6 +3,7 @@ import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import { useAdminArbitrageOrderConnectionQuery } from 'graphqlTypes';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function ArbitrageOrdersComponent(props: {
   marketId?: string;
@@ -44,9 +45,16 @@ export default function ArbitrageOrdersComponent(props: {
       title: 'Market',
     },
     {
-      dataIndex: 'arbitragerId',
-      key: 'arbitragerId',
-      render: (_, order) => order.arbitrager?.name || '-',
+      dataIndex: 'arbitrager',
+      key: 'arbitrager',
+      render: (_, order) =>
+        order.arbitrager ? (
+          <Link to={`/mixin_network_users/${order.arbitrager.mixinUuid}`}>
+            {order.arbitrager.name}
+          </Link>
+        ) : (
+          '-'
+        ),
       title: 'Arbitrager',
     },
     {
@@ -79,6 +87,14 @@ export default function ArbitrageOrdersComponent(props: {
       dataIndex: 'createdAt',
       key: 'createdAt',
       title: 'createdAt',
+    },
+    {
+      dataIndex: 'actions',
+      key: 'actions',
+      render: (_, order) => (
+        <Link to={`/arbitrage_orders/${order.id}`}>Detail</Link>
+      ),
+      title: 'Actions',
     },
   ];
 

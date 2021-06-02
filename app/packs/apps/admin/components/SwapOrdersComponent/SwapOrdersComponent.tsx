@@ -9,14 +9,16 @@ import { Link } from 'react-router-dom';
 export default function SwapOrdersComponent(props: {
   brokerId?: string;
   userId?: string;
+  arbitrageOrderId?: string;
 }) {
-  const { brokerId, userId } = props;
+  const { brokerId, userId, arbitrageOrderId } = props;
   const [state, setState] = useState('valid');
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, { wait: 1000 });
   const { loading, data, refetch, fetchMore } =
     useAdminSwapOrderConnectionQuery({
       variables: {
+        arbitrageOrderId,
         state,
         brokerId,
         userId,
@@ -42,9 +44,14 @@ export default function SwapOrdersComponent(props: {
       title: 'traceId',
     },
     {
-      dataIndex: 'brokerId',
-      key: 'brokerId',
-      title: 'broker ID',
+      dataIndex: 'broker',
+      key: 'broker',
+      render: (_, order) => (
+        <Link to={`/mixin_network_users/${order.brokerId}`}>
+          {order.broker.name}
+        </Link>
+      ),
+      title: 'Broker',
     },
     {
       dataIndex: 'state',

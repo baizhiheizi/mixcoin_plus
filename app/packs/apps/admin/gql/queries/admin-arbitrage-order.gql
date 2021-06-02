@@ -1,0 +1,29 @@
+query AdminArbitrageOrder($id: ID!) {
+  adminArbitrageOrder(id: $id) {
+    id
+    state
+    expectedProfit
+    netProfit
+    raw
+    arbitrager {
+      name
+      mixinUuid
+    }
+    market {
+      baseAsset {
+        assetId
+        symbol
+      }
+      quoteAsset {
+        assetId
+        symbol
+      }
+    }
+    profitAsset {
+      assetId
+      symbol
+      iconUrl
+    }
+    createdAt
+  }
+}
