@@ -57,7 +57,7 @@ class SwapSnapshot < MixinNetworkSnapshot
         if _swap_order.arbitrage_order.may_complete?
           _swap_order.arbitrage_order.complete!
         else
-          _swap_order.calculate_net_profit
+          _swap_order.arbitrage_order.calculate_net_profit
         end
       else
         MixinTransfer.create_with(
