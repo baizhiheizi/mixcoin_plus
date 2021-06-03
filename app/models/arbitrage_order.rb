@@ -42,7 +42,7 @@ class ArbitrageOrder < ApplicationRecord
 
   after_commit on: :create do
     if arbitrager_balance_sufficient? && expected_profit_reasonable?
-      arbitrage! 
+      arbitrage!
     else
       notify_admin_async
     end
