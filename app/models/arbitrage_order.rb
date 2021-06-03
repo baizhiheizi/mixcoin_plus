@@ -41,7 +41,11 @@ class ArbitrageOrder < ApplicationRecord
   validates :raw, presence: true
 
   after_commit on: :create do
-    arbitrage! if arbitrager_balance_sufficient? && expected_profit_reasonable?
+    if arbitrager_balance_sufficient? && expected_profit_reasonable?
+      arbitrage! 
+    else
+      notify_admin_async
+    end
   end
 
   scope :without_drafted, -> { where.not(state: :drafted) }
