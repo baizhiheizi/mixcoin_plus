@@ -34,7 +34,11 @@ module Markets::Arbitragable
 
     buying_price = ocean_ask['price'].to_f
     buying_funds = [ocean_ask['funds'].to_f, MAXIMUM_TO_EXCHNAGE].min
-    buying_amount = (buying_funds / buying_price).round(8)
+    buying_amount = (buying_funds / buying_price).floor(4)
+
+    return if buying_amount.zero?
+
+    buying_funds = (buying_amount * buying_price).floor(8)
 
     @buy_from_ocean = {
       price: buying_price,
@@ -46,13 +50,13 @@ module Markets::Arbitragable
   def sell_to_swap
     return @sell_to_swap if @sell_to_swap.present?
 
-    selling_amount = (buy_from_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO)).round(8)
+    selling_amount = (buy_from_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO)).floor(8)
     selling_funds = Foxswap.api.pre_order(
       pay_asset_id: base_asset_id,
       fill_asset_id: quote_asset_id,
       funds: selling_amount
     )&.[]('data')&.[]('fill_amount')&.to_f
-    selling_price = (selling_funds / selling_amount).round(8)
+    selling_price = (selling_funds / selling_amount).floor(8)
 
     @sell_to_swap = {
       price: selling_price,
@@ -67,7 +71,11 @@ module Markets::Arbitragable
 
     selling_price = ocean_bid['price'].to_f
     selling_funds = [ocean_bid['funds'].to_f, MAXIMUM_TO_EXCHNAGE].min
-    selling_amount = (selling_funds / selling_price).round(8)
+    selling_amount = (selling_funds / selling_price).floor(4)
+
+    return if selling_amount.zero?
+
+    selling_funds = (selling_amount * selling_price).floor(8)
 
     @sell_to_ocean = {
       price: selling_price,
@@ -85,7 +93,7 @@ module Markets::Arbitragable
       fill_asset_id: base_asset_id,
       funds: buying_funds
     )&.[]('data')&.[]('fill_amount')&.to_f
-    buying_price = (buying_funds / buying_amount).round(8)
+    buying_price = (buying_funds / buying_amount).floor(8)
 
     @buy_from_swap = {
       price: buying_price,
@@ -108,7 +116,7 @@ module Markets::Arbitragable
           swap: {
             side: :ask
           }.merge(sell_to_swap),
-          expected_profit: (sell_to_swap[:funds] - buy_from_ocean[:funds]).round(8),
+          expected_profit: (sell_to_swap[:funds] - buy_from_ocean[:funds]).floor(8),
           profit_asset_id: quote_asset_id
         }
       )
@@ -123,7 +131,7 @@ module Markets::Arbitragable
           swap: {
             side: :bid
           }.merge(buy_from_swap),
-          expected_profit: (buy_from_swap[:amount] - sell_to_ocean[:amount]).round(8),
+          expected_profit: (buy_from_swap[:amount] - sell_to_ocean[:amount]).floor(8),
           profit_asset_id: base_asset_id
         }
       )
