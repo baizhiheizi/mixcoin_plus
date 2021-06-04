@@ -37,6 +37,11 @@ export default function ArbitragerPage() {
           {user.mixinUuid}
         </Descriptions.Item>
         <Descriptions.Item label='Name'>{user.name}</Descriptions.Item>
+        {user.type === 'Arbitrager' && (
+          <Descriptions.Item label='Profit'>
+            {user.netProfit} USD
+          </Descriptions.Item>
+        )}
         <Descriptions.Item label='Receive'>
           <QRCode value={`mixin://transfer/${user.mixinUuid}`} size={100} />
         </Descriptions.Item>

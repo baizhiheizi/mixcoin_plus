@@ -8,6 +8,8 @@ module Types
     field :state, String, null: false
     field :type, String, null: false
 
+    field :net_profit, Float, null: true
+
     field :has_pin, Boolean, null: false
 
     field :owner, Types::UserType, null: true
@@ -20,6 +22,12 @@ module Types
 
     def has_pin
       object.pin.present?
+    end
+
+    def net_profit
+      return unless object.type == 'Arbitrager'
+
+      object.net_profit
     end
   end
 end

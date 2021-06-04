@@ -6,6 +6,7 @@ query AdminMixinNetworkUser($mixinUuid: String!) {
     type
     hasPin
     mixinUuid
+    netProfit
     owner {
       name
       mixinId

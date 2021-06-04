@@ -401,6 +401,7 @@ export type MixinNetworkUser = {
   id: Scalars['ID'];
   mixinUuid: Scalars['String'];
   name: Scalars['String'];
+  netProfit?: Maybe<Scalars['Float']>;
   owner?: Maybe<User>;
   state: Scalars['String'];
   type: Scalars['String'];
@@ -1413,7 +1414,7 @@ export type AdminMixinNetworkUserQuery = (
   { __typename?: 'Query' }
   & { adminMixinNetworkUser: (
     { __typename?: 'MixinNetworkUser' }
-    & Pick<MixinNetworkUser, 'id' | 'name' | 'state' | 'type' | 'hasPin' | 'mixinUuid' | 'createdAt'>
+    & Pick<MixinNetworkUser, 'id' | 'name' | 'state' | 'type' | 'hasPin' | 'mixinUuid' | 'netProfit' | 'createdAt'>
     & { owner?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'name' | 'mixinId'>
@@ -2931,6 +2932,7 @@ export const AdminMixinNetworkUserDocument = gql`
     type
     hasPin
     mixinUuid
+    netProfit
     owner {
       name
       mixinId

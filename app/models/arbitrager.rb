@@ -36,6 +36,14 @@ class Arbitrager < MixinNetworkUser
     "Arbitrager##{Arbitrager.count + 1}"
   end
 
+  def net_profit
+    arbitrage_orders
+      .without_drafted
+      .includes(:profit_asset)
+      .map(&->(order) { order.net_profit.to_f * order.profit_asset.price_usd })
+      .sum
+  end
+
   private
 
   def set_default_name
