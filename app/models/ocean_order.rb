@@ -160,6 +160,7 @@ class OceanOrder < ApplicationRecord
   # trace_id unique.
   def transfer_to_ocean_for_creating
     MixinTransfer.create_with(
+      priority: :critical,
       source: self,
       user_id: broker.mixin_uuid,
       transfer_type: :ocean_order_create,
@@ -176,6 +177,7 @@ class OceanOrder < ApplicationRecord
   # trace_id unique
   def transfer_to_ocean_for_canceling
     MixinTransfer.create_with(
+      priority: :critical,
       source: self,
       user_id: broker.mixin_uuid,
       transfer_type: :ocean_order_cancel,
