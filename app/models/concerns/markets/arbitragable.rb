@@ -87,7 +87,7 @@ module Markets::Arbitragable
   def buy_from_swap
     return @buy_from_swap if @buy_from_swap.present?
 
-    buying_funds = sell_to_ocean[:funds]
+    buying_funds = sell_to_ocean[:funds] * (1 - OCEAN_TAKER_FEE_RATIO).floor(8)
     buying_amount = Foxswap.api.pre_order(
       pay_asset_id: quote_asset_id,
       fill_asset_id: base_asset_id,
