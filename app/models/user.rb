@@ -49,7 +49,7 @@ class User < ApplicationRecord
 
   enumerize :locale, in: I18n.available_locales, default: I18n.default_locale
 
-  after_commit :sync_assets_async, :create_ocean_broker, :create_contact_conversation, on: :create
+  after_commit :sync_assets_async, :create_broker, :create_contact_conversation, on: :create
 
   delegate :access_token, to: :mixin_authorization
 
