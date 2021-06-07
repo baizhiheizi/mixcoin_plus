@@ -73,7 +73,7 @@ class ArbitrageOrder < ApplicationRecord
   def start_arbitrage!
     ActiveRecord::Base.transaction do
       generate_ocean_order!
-      generate_swap_order!
+      # generate_swap_order!
       arbitrage!
     end
   end
@@ -97,10 +97,10 @@ class ArbitrageOrder < ApplicationRecord
     case raw[:ocean][:side]
     when :bid
       arbitrager_quote_balance >= raw[:ocean][:funds]
-      arbitrager_base_balance >= raw[:swap][:amount]
+      # arbitrager_base_balance >= raw[:swap][:amount]
     when :ask
       arbitrager_base_balance >= raw[:ocean][:amount]
-      arbitrager_quote_balance >= raw[:swap][:funds]
+      # arbitrager_quote_balance >= raw[:swap][:funds]
     end
   end
 

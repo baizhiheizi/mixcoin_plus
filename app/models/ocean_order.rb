@@ -90,7 +90,7 @@ class OceanOrder < ApplicationRecord
 
     # ocean engine complete the order
     # exchanged asset transfered to user
-    event :complete, guards: :all_filled?, after: :notify_for_order_state do
+    event :complete, guards: :all_filled?, after: %i[notify_for_order_state check_arbitrage_order] do
       transitions from: :canceling, to: :completed
       transitions from: :booking, to: :completed
     end
@@ -143,6 +143,16 @@ class OceanOrder < ApplicationRecord
       complete!
     else
       notify_for_order_state
+    end
+  end
+
+  def check_arbitrage_order
+    return unless arbitrage?
+
+    if arbitrage_order.may_complete?
+      arbitrage_order.complete!
+    else
+      arbitrage_order.calculate_net_profit
     end
   end
 
