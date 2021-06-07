@@ -3,7 +3,7 @@
 module Markets::Arbitragable
   MINIMUM_TO_EXCHNAGE = 1 # USD
   MAXIMUM_TO_EXCHNAGE = 10 # USD
-  THRESHOLD_TO_EXCHANGE = 0.001
+  SLIPPAGE_TO_EXCHANGE = 0.005
   OCEAN_TAKER_FEE_RATIO = 0.001
 
   def ocean_ask
@@ -105,7 +105,7 @@ module Markets::Arbitragable
   def patrol
     return if arbitraging?
 
-    if ocean_ask.present? && (sell_to_swap[:funds] * (1 - THRESHOLD_TO_EXCHANGE) - buy_from_ocean[:funds]).positive?
+    if ocean_ask.present? && (sell_to_swap[:funds] * (1 - SLIPPAGE_TO_EXCHANGE) - buy_from_ocean[:funds]).positive?
       arbitrage_orders.create!(
         arbitrager: Arbitrager.ready.take,
         arbitrager_id: Arbitrager.ready.sample&.mixin_uuid,
@@ -120,7 +120,7 @@ module Markets::Arbitragable
           profit_asset_id: quote_asset_id
         }
       )
-    elsif ocean_bid.present? && (buy_from_swap[:amount] * (1 - THRESHOLD_TO_EXCHANGE) - sell_to_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO)).positive?
+    elsif ocean_bid.present? && (buy_from_swap[:amount] * (1 - SLIPPAGE_TO_EXCHANGE) - sell_to_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO)).positive?
       arbitrage_orders.create!(
         arbitrager: Arbitrager.ready.take,
         arbitrager_id: Arbitrager.ready.sample&.mixin_uuid,
