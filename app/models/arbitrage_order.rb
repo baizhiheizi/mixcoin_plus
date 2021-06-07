@@ -6,7 +6,6 @@
 #
 #  id                 :uuid             not null, primary key
 #  base_asset_profit  :float            default(0.0)
-#  net_profit         :decimal(, )
 #  quote_asset_profit :float            default(0.0)
 #  raw                :json
 #  state              :string
