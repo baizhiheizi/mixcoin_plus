@@ -32,6 +32,8 @@
 #  index_ocean_orders_on_market_id           (market_id)
 #
 class OceanOrder < ApplicationRecord
+  BASE_MAKER_FEE_RATIO = 0.0
+  BASE_TAKER_FEE_RATIO = 0.001
   MAKER_FEE_RATIO = 0.001
   TAKER_FEE_RATIO = 0.0
   INVITATION_COMMISSION_RATIO = 0.5

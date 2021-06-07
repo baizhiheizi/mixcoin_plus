@@ -2,8 +2,9 @@ query AdminArbitrageOrder($id: ID!) {
   adminArbitrageOrder(id: $id) {
     id
     state
-    expectedProfit
-    netProfit
+    netProfitUsd
+    baseAssetProfit
+    quoteAssetProfit
     raw
     arbitrager {
       name
@@ -18,11 +19,6 @@ query AdminArbitrageOrder($id: ID!) {
         assetId
         symbol
       }
-    }
-    profitAsset {
-      assetId
-      symbol
-      iconUrl
     }
     createdAt
   }

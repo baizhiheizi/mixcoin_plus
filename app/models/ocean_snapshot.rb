@@ -67,14 +67,6 @@ class OceanSnapshot < MixinNetworkSnapshot
 
     _ocean_order = decrypted_ocean_order
     _ocean_order.match!
-
-    _ocean_order.arbitrage_order.swap_orders.create!(
-      arbitrage_order: _ocean_order.arbitrage_order,
-      broker: _ocean_order.broker,
-      pay_asset_id: asset_id,
-      pay_amount: amount,
-      fill_asset_id: _ocean_order.side.ask? ? _ocean_order.base_asset_id : _ocean_order.quote_asset_id
-    )
   end
 
   def process_match_from_engine

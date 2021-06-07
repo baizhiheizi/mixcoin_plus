@@ -4,15 +4,16 @@
 #
 # Table name: arbitrage_orders
 #
-#  id              :uuid             not null, primary key
-#  net_profit      :decimal(, )
-#  raw             :json
-#  state           :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  arbitrager_id   :uuid
-#  market_id       :uuid
-#  profit_asset_id :string
+#  id                 :uuid             not null, primary key
+#  base_asset_profit  :float            default(0.0)
+#  net_profit         :decimal(, )
+#  quote_asset_profit :float            default(0.0)
+#  raw                :json
+#  state              :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  arbitrager_id      :uuid
+#  market_id          :uuid
 #
 # Indexes
 #

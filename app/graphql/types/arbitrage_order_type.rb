@@ -5,9 +5,13 @@ module Types
     field :id, ID, null: false
     field :market_id, String, null: false
     field :state, String, null: false
-    field :net_profit, Float, null: true
+    field :base_asset_profit, Float, null: true
+    field :quote_asset_profit, Float, null: true
+    field :net_profit_usd, Float, null: true
     field :expected_profit, Float, null: true
     field :raw, String, null: false
+    field :base_asset, Types::MixinAssetType, null: false
+    field :quote_asset, Types::MixinAssetType, null: false
 
     field :market, Types::MarketType, null: false
     field :arbitrager, Types::MixinNetworkUserType, null: true

@@ -51,6 +51,7 @@ class Market < ApplicationRecord
   has_many :trades, dependent: :restrict_with_exception
   has_many :arbitrage_orders, dependent: :restrict_with_exception
 
+  default_scope { includes(:base_asset, :quote_asset) }
   scope :without_hidden, -> { where(hidden_at: nil) }
   scope :order_by_default, lambda {
     without_hidden
