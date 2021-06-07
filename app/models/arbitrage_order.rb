@@ -21,7 +21,7 @@
 #  index_arbitrage_orders_on_market_id      (market_id)
 #
 class ArbitrageOrder < ApplicationRecord
-  REASONABLE_EXPECTED_PROFIT_RATIO = 0.1
+  MAX_EXPECTED_PROFIT_RATIO = 0.1
   TIMEOUT_SECONDS = 60
 
   extend Enumerize
@@ -107,9 +107,9 @@ class ArbitrageOrder < ApplicationRecord
   def expected_profit_reasonable?
     case raw[:ocean][:side]
     when :bid
-      expected_profit / raw[:ocean][:funds] < REASONABLE_EXPECTED_PROFIT_RATIO
+      expected_profit / raw[:ocean][:funds] < MAX_EXPECTED_PROFIT_RATIO
     when :ask
-      expected_profit / raw[:ocean][:amount] < REASONABLE_EXPECTED_PROFIT_RATIO
+      expected_profit / raw[:ocean][:amount] < MAX_EXPECTED_PROFIT_RATIO
     end
   end
 
