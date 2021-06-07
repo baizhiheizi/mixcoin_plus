@@ -61,11 +61,11 @@ class ArbitrageOrder < ApplicationRecord
       transitions from: :drafted, to: :arbitraging
     end
 
-    event :cancel, after: %i[calculate_net_profit notify_admin_async] do
+    event :cancel, after_commit: %i[calculate_net_profit notify_admin_async] do
       transitions from: :arbitraging, to: :canceled
     end
 
-    event :complete, guards: :ensure_ocean_and_swap_orders_finished, after: %i[calculate_net_profit notify_admin_async] do
+    event :complete, guards: :ensure_ocean_and_swap_orders_finished, after_commit: %i[calculate_net_profit notify_admin_async] do
       transitions from: :arbitraging, to: :completed
     end
   end
@@ -169,7 +169,7 @@ class ArbitrageOrder < ApplicationRecord
   def notify_admin_async
     SendMixinMessageWorker.perform_async MixcoinPlusBot.api.plain_text(
       conversation_id: MixcoinPlusBot.api.unique_uuid(Rails.application.credentials.fetch(:admin_mixin_uuid)),
-      data: "#{base_asset.symbol}/#{quote_asset.symbol} order #{state}, profit:#{net_profit_usd || '-'}/#{expected_profit_usd} USD"
+      data: "#{base_asset.symbol}/#{quote_asset.symbol} order #{state}, price: #{raw[:ocean][:price]}/#{raw[:swap][:price]}, profit:#{net_profit_usd || '-'}/#{expected_profit_usd} USD"
     )
   end
 
