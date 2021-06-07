@@ -63,20 +63,18 @@ export default function ArbitrageOrdersComponent(props: {
       title: 'state',
     },
     {
-      dataIndex: 'expectedProfit',
-      key: 'expectedProfit',
+      dataIndex: 'baseAssetProfit',
+      key: 'baseAssetProfit',
       render: (_, order) =>
-        `${order.expectedProfit} ${order.profitAsset.symbol}`,
-      title: 'expectedProfit',
+        `${order.baseAssetProfit} ${order.market.baseAsset.symbol}`,
+      title: 'Base Asset Profit',
     },
     {
-      dataIndex: 'netProfit',
-      key: 'netProfit',
+      dataIndex: 'quoteAssetProfit',
+      key: 'quoteAssetProfit',
       render: (_, order) =>
-        order.netProfit
-          ? `${order.netProfit} ${order.profitAsset.symbol}`
-          : '-',
-      title: 'Net Profit',
+        `${order.quoteAssetProfit} ${order.market.quoteAsset.symbol}`,
+      title: 'Quote Asset Profit',
     },
     {
       dataIndex: 'raw',

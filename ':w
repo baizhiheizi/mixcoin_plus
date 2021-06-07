@@ -4,16 +4,15 @@
 #
 # Table name: arbitrage_orders
 #
-#  id                 :uuid             not null, primary key
-#  base_asset_profit  :float            default(0.0)
-#  net_profit         :decimal(, )
-#  quote_asset_profit :float            default(0.0)
-#  raw                :json
-#  state              :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  arbitrager_id      :uuid
-#  market_id          :uuid
+#  id              :uuid             not null, primary key
+#  net_profit      :decimal(, )
+#  raw             :json
+#  state           :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  arbitrager_id   :uuid
+#  market_id       :uuid
+#  profit_asset_id :string
 #
 # Indexes
 #
@@ -27,7 +26,7 @@ class ArbitrageOrder < ApplicationRecord
   extend Enumerize
   include AASM
 
-  store :raw, accessors: %i[expected_profit profit_asset_id]
+  store :raw, accessors: %i[expected_profit]
 
   belongs_to :market
   belongs_to :arbitrager, primary_key: :mixin_uuid, optional: true
@@ -36,13 +35,13 @@ class ArbitrageOrder < ApplicationRecord
   has_many :ocean_orders, dependent: :restrict_with_exception
   has_many :swap_orders, dependent: :restrict_with_exception
 
-  delegate :base_asset, :quote_asset, to: :market
+  before_validation :set_defaults, on: :create
 
+  validates :profit_asset_id, presence: true
   validates :raw, presence: true
 
   after_commit on: :create do
     if arbitrager_balance_sufficient? && expected_profit_reasonable?
-      start_arbitrage!
     else
       notify_admin_async
     end
@@ -79,28 +78,23 @@ class ArbitrageOrder < ApplicationRecord
   end
 
   def calculate_net_profit
-    case raw[:ocean][:side]
-    when :bid
-      update(
-        quote_asset_profit: swap_orders.sum(:fill_amount) - ocean_orders.sum(:filled_funds),
-        base_asset_profit: ocean_orders.sum(:filled_amount) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO) - swap_orders.sum(:pay_amount)
-      )
-    when :ask
-      update(
-        quote_asset_profit: ocean_orders.sum(:filled_funds) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO) - swap_orders.sum(:pay_amount),
-        base_asset_profit: swap_orders.sum(:fill_amount) - ocean_orders.sum(:filled_amount)
-      )
-    end
+    profit =
+      case raw[:ocean][:side]
+      when :bid
+        swap_orders.sum(:fill_amount) - ocean_orders.sum(:filled_funds)
+      when :ask
+        swap_orders.sum(:fill_amount) - ocean_orders.sum(:filled_amount)
+      end
+
+    update net_profit: profit
   end
 
   def arbitrager_balance_sufficient?
     case raw[:ocean][:side]
     when :bid
-      arbitrager_quote_balance >= raw[:ocean][:funds]
-      arbitrager_base_balance >= raw[:swap][:amount]
+      arbitrager_balance >= raw[:ocean][:funds]
     when :ask
-      arbitrager_base_balance >= raw[:ocean][:amount]
-      arbitrager_quote_balance >= raw[:swap][:funds]
+      arbitrager_balance >= raw[:ocean][:amount]
     end
   end
 
@@ -113,16 +107,10 @@ class ArbitrageOrder < ApplicationRecord
     end
   end
 
-  def arbitrager_quote_balance
+  def arbitrager_balance
     return 0 if arbitrager.blank?
 
-    arbitrager.mixin_api.asset(market.quote_asset_id)['data']['balance'].to_f
-  end
-
-  def arbitrager_base_balance
-    return 0 if arbitrager.blank?
-
-    arbitrager.mixin_api.asset(market.base_asset_id)['data']['balance'].to_f
+    arbitrager.mixin_api.asset(profit_asset_id)['data']['balance'].to_f
   end
 
   def generate_ocean_order!
@@ -156,30 +144,22 @@ class ArbitrageOrder < ApplicationRecord
     ocean_orders.booking.where(created_at: ...(Time.current - TIMEOUT_SECONDS.seconds)).map(&:cancel!)
   end
 
-  def net_profit_usd
-    return if drafted? || arbitraging?
-
-    (quote_asset_profit * quote_asset.price_usd + base_asset_profit * base_asset.price_usd).floor(8)
-  end
-
-  def expected_profit_usd
-    (expected_profit * profit_asset.price_usd).floor(8)
-  end
-
   def notify_admin_async
     SendMixinMessageWorker.perform_async MixcoinPlusBot.api.plain_text(
       conversation_id: MixcoinPlusBot.api.unique_uuid(Rails.application.credentials.fetch(:admin_mixin_uuid)),
-      data: "#{base_asset.symbol}/#{quote_asset.symbol} order #{state}, profit:#{net_profit_usd || '-'}/#{expected_profit_usd} USD"
+      data: "#{market.base_asset.symbol}/#{market.quote_asset.symbol} order #{state}, profit:#{net_profit || '-'}/#{raw['expected_profit']} #{profit_asset.symbol}"
     )
-  end
-
-  def profit_asset
-    @profit_asset ||= MixinAsset.find_by(asset_id: profit_asset_id)
   end
 
   private
 
   def ensure_ocean_and_swap_orders_finished
     ocean_orders.without_finished.blank? && swap_orders.without_finished.blank?
+  end
+
+  def set_defaults
+    assign_attributes(
+      profit_asset_id: raw['profit_asset_id']
+    )
   end
 end

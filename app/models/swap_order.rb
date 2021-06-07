@@ -128,7 +128,11 @@ class SwapOrder < ApplicationRecord
   def check_arbitrage_order
     return unless arbitrage?
 
-    arbitrage_order.complete!
+    if arbitrage_order.may_complete?
+      arbitrage_order.complete!
+    else
+      arbitrage_order.calculate_net_profit
+    end
   end
 
   private

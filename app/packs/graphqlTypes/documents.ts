@@ -79,13 +79,17 @@ export type AppStatistic = {
 export type ArbitrageOrder = {
   __typename?: 'ArbitrageOrder';
   arbitrager?: Maybe<MixinNetworkUser>;
+  baseAsset: MixinAsset;
+  baseAssetProfit?: Maybe<Scalars['Float']>;
   createdAt: Scalars['ISO8601DateTime'];
   expectedProfit?: Maybe<Scalars['Float']>;
   id: Scalars['ID'];
   market: Market;
   marketId: Scalars['String'];
-  netProfit?: Maybe<Scalars['Float']>;
+  netProfitUsd?: Maybe<Scalars['Float']>;
   profitAsset: MixinAsset;
+  quoteAsset: MixinAsset;
+  quoteAssetProfit?: Maybe<Scalars['Float']>;
   raw: Scalars['String'];
   state: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
@@ -1156,7 +1160,7 @@ export type AdminArbitrageOrderConnectionQuery = (
     { __typename?: 'ArbitrageOrderConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'ArbitrageOrder' }
-      & Pick<ArbitrageOrder, 'id' | 'state' | 'expectedProfit' | 'netProfit' | 'raw' | 'createdAt'>
+      & Pick<ArbitrageOrder, 'id' | 'state' | 'baseAssetProfit' | 'quoteAssetProfit' | 'raw' | 'createdAt'>
       & { arbitrager?: Maybe<(
         { __typename?: 'MixinNetworkUser' }
         & Pick<MixinNetworkUser, 'name' | 'mixinUuid'>
@@ -1169,9 +1173,6 @@ export type AdminArbitrageOrderConnectionQuery = (
           { __typename?: 'MixinAsset' }
           & Pick<MixinAsset, 'assetId' | 'symbol'>
         ) }
-      ), profitAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
       ) }
     )>>>, pageInfo: (
       { __typename?: 'PageInfo' }
@@ -1189,7 +1190,7 @@ export type AdminArbitrageOrderQuery = (
   { __typename?: 'Query' }
   & { adminArbitrageOrder: (
     { __typename?: 'ArbitrageOrder' }
-    & Pick<ArbitrageOrder, 'id' | 'state' | 'expectedProfit' | 'netProfit' | 'raw' | 'createdAt'>
+    & Pick<ArbitrageOrder, 'id' | 'state' | 'netProfitUsd' | 'baseAssetProfit' | 'quoteAssetProfit' | 'raw' | 'createdAt'>
     & { arbitrager?: Maybe<(
       { __typename?: 'MixinNetworkUser' }
       & Pick<MixinNetworkUser, 'name' | 'mixinUuid'>
@@ -1202,9 +1203,6 @@ export type AdminArbitrageOrderQuery = (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol'>
       ) }
-    ), profitAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
     ) }
   ) }
 );
@@ -2351,8 +2349,8 @@ export const AdminArbitrageOrderConnectionDocument = gql`
     nodes {
       id
       state
-      expectedProfit
-      netProfit
+      baseAssetProfit
+      quoteAssetProfit
       raw
       arbitrager {
         name
@@ -2367,11 +2365,6 @@ export const AdminArbitrageOrderConnectionDocument = gql`
           assetId
           symbol
         }
-      }
-      profitAsset {
-        assetId
-        symbol
-        iconUrl
       }
       createdAt
     }
@@ -2418,8 +2411,9 @@ export const AdminArbitrageOrderDocument = gql`
   adminArbitrageOrder(id: $id) {
     id
     state
-    expectedProfit
-    netProfit
+    netProfitUsd
+    baseAssetProfit
+    quoteAssetProfit
     raw
     arbitrager {
       name
@@ -2434,11 +2428,6 @@ export const AdminArbitrageOrderDocument = gql`
         assetId
         symbol
       }
-    }
-    profitAsset {
-      assetId
-      symbol
-      iconUrl
     }
     createdAt
   }

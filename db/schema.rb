@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_070838) do
+ActiveRecord::Schema.define(version: 2021_06_07_012803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -42,11 +42,12 @@ ActiveRecord::Schema.define(version: 2021_06_01_070838) do
     t.uuid "market_id"
     t.uuid "arbitrager_id"
     t.string "state"
-    t.string "profit_asset_id"
     t.decimal "net_profit"
     t.json "raw"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "base_asset_profit", default: 0.0
+    t.float "quote_asset_profit", default: 0.0
     t.index ["arbitrager_id"], name: "index_arbitrage_orders_on_arbitrager_id"
     t.index ["market_id"], name: "index_arbitrage_orders_on_market_id"
   end

@@ -45,11 +45,14 @@ export default function ArbitrageOrderPage() {
         <Descriptions.Item label='Market'>
           {`${order.market.baseAsset.symbol}/${order.market.quoteAsset.symbol}`}
         </Descriptions.Item>
-        <Descriptions.Item label='expectedProfit'>
-          {`${order.expectedProfit} ${order.profitAsset.symbol}`}
+        <Descriptions.Item label='baseAssetProfit'>
+          {`${order.baseAssetProfit} ${order.market.baseAsset.symbol}`}
         </Descriptions.Item>
-        <Descriptions.Item label='Net Profit'>
-          {`${order.netProfit} ${order.profitAsset.symbol}`}
+        <Descriptions.Item label='quoteAssetProfit'>
+          {`${order.quoteAssetProfit} ${order.market.quoteAsset.symbol}`}
+        </Descriptions.Item>
+        <Descriptions.Item label='netProfitUsd'>
+          {`${order.netProfitUsd || '-'} USD`}
         </Descriptions.Item>
         <Descriptions.Item label='raw'>{order.raw}</Descriptions.Item>
       </Descriptions>

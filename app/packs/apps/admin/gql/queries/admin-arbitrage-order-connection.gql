@@ -13,8 +13,8 @@ query AdminArbitrageOrderConnection(
     nodes {
       id
       state
-      expectedProfit
-      netProfit
+      baseAssetProfit
+      quoteAssetProfit
       raw
       arbitrager {
         name
@@ -29,11 +29,6 @@ query AdminArbitrageOrderConnection(
           assetId
           symbol
         }
-      }
-      profitAsset {
-        assetId
-        symbol
-        iconUrl
       }
       createdAt
     }
