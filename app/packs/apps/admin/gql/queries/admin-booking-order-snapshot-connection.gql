@@ -1,0 +1,42 @@
+query AdminBookingOrderSnapshotConnection(
+  $after: String
+  $marketId: ID
+  $userId: ID
+  $oceanOrderId: ID
+) {
+  adminBookingOrderSnapshotConnection(
+    after: $after
+    marketId: $marketId
+    userId: $userId
+    oceanOrderId: $oceanOrderId
+  ) {
+    nodes {
+      id
+      funds
+      orderWeight
+      price
+      scores
+      timestamp
+      user {
+        avatar
+        name
+        mixinId
+      }
+      market {
+        baseAsset {
+          assetId
+          symbol
+        }
+        quoteAsset {
+          assetId
+          symbol
+        }
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

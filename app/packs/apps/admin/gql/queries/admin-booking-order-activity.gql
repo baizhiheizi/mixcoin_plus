@@ -1,0 +1,25 @@
+query AdminBookingOrderActivity($id: ID!) {
+  adminBookingOrderActivity(id: $id) {
+    id
+    startedAt
+    endedAt
+    bonusTotal
+    scoresTotal
+    validOrdersCount
+    market {
+      baseAsset {
+        assetId
+        symbol
+      }
+      quoteAsset {
+        assetId
+        symbol
+      }
+    }
+    bonusAsset {
+      assetId
+      symbol
+    }
+    createdAt
+  }
+}
