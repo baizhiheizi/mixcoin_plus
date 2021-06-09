@@ -20,9 +20,9 @@ class OceanOrderStateNotification < ApplicationNotification
            state: t("order_state.#{ocean_order.state}"),
            price: ocean_order.order_type.limit? ? ocean_order.price.to_f : t('.market_price'),
            filled_symbol: ocean_order.side.ask? ? ocean_order.base_asset.symbol : ocean_order.quote_asset.symbol,
-           filled: ocean_order.side.ask? ? ocean_order.filled_amount : ocean_order.filled_funds,
+           filled: ocean_order.side.ask? ? ocean_order.filled_amount.to_f : ocean_order.filled_funds.to_f,
            remaining_symbol: ocean_order.side.ask? ? ocean_order.base_asset.symbol : ocean_order.quote_asset.symbol,
-           remaining: ocean_order.side.ask? ? ocean_order.remaining_amount : ocean_order.remaining_funds)
+           remaining: ocean_order.side.ask? ? ocean_order.remaining_amount.to_f : ocean_order.remaining_funds.to_f)
   end
 
   def format_for_action_cable
