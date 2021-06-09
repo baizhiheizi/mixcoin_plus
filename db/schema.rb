@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_07_222155) do
+ActiveRecord::Schema.define(version: 2021_06_08_215620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(version: 2021_06_07_222155) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.decimal "amount_usd", default: "0.0"
+    t.json "opponent_multisig", default: "{}"
     t.index ["source_id", "source_type"], name: "index_mixin_transfers_on_source_id_and_source_type"
     t.index ["trace_id"], name: "index_mixin_transfers_on_trace_id", unique: true
     t.index ["user_id"], name: "index_mixin_transfers_on_user_id"

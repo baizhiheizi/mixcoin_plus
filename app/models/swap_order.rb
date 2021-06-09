@@ -29,8 +29,9 @@
 #  index_swap_orders_on_user_id             (user_id)
 #
 class SwapOrder < ApplicationRecord
-  FOX_SWAP_APP_ID = 'a753e0eb-3010-4c4a-a7b2-a7bda4063f62'
-  FOX_SWAP_BROKER_ID = 'd8d186c4-62a7-320b-b930-11dfc1c76708'
+  FSWAP_MTG_MEMBERS = Rails.application.credentials.dig(:foxswap, :mtg_members)
+  FSWAP_MTG_THRESHOLD = Rails.application.credentials.dig(:foxswap, :mtg_threshold)
+  FSWAP_MTG_PUBLIC_KEY = Rails.application.credentials.dig(:foxswap, :mtg_public_key)
 
   include AASM
 
@@ -100,19 +101,27 @@ class SwapOrder < ApplicationRecord
       wallet: broker,
       transfer_type: :swap_order_create,
       priority: :critical,
-      opponent_id: FOX_SWAP_BROKER_ID,
+      opponent_multisig: {
+        receivers: FSWAP_MTG_MEMBERS,
+        threshold: FSWAP_MTG_THRESHOLD
+      },
       asset_id: pay_asset_id,
       amount: pay_amount.to_f,
-      memo: Base64.encode64(
-        {
-          t: 'swap',
-          a: fill_asset_id,
-          m: min_amount.presence&.to_f&.to_s
-        }.to_json
-      )
+      memo: fswap_mtg_memo
     ).find_or_create_by!(
       trace_id: trace_id
     )
+  end
+
+  def fswap_mtg_memo
+    r = Foxswap.api.actions(
+      user_id: broker.mixin_uuid,
+      follow_id: trace_id,
+      asset_id: fill_asset_id,
+      minimum_fill: min_amount.present? ? format('%.8f', min_amount) : nil
+    )
+
+    r['data']['action']
   end
 
   def sync_order
@@ -140,9 +149,7 @@ class SwapOrder < ApplicationRecord
   def set_defaults
     return unless new_record?
 
-    assign_attributes(
-      trace_id: SecureRandom.uuid
-    )
+    self.trace_id = SecureRandom.uuid if trace_id.blank?
   end
 
   def pay_and_fill_asset_not_the_same

@@ -122,7 +122,7 @@ class SwapSnapshot < MixinNetworkSnapshot
         TRADE: 'trade_to_user',
         REJECT: 'reject_to_user'
       }[base64_decoded_memo.split('|')[1]&.to_sym]
-    elsif decrypted_json_memo['t'] == 'swap'
+    elsif decrypted_json_memo['t'] == 'swap' || (opponent_id.blank? && amount.negative?)
       'swap_to_fox'
     elsif decrypted_json_memo.present?
       case decrypted_json_memo['s']

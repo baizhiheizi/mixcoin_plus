@@ -211,6 +211,6 @@ class MixinNetworkSnapshot < ApplicationRecord
     )
 
     self.type = 'OceanSnapshot' if decrypted_msgpack_memo.present? || base64_decoded_memo.match?(/^OCEAN/)
-    self.type = 'SwapSnapshot' if decrypted_json_memo.present? || base64_decoded_memo.match?(/^SWAP/)
+    self.type = 'SwapSnapshot' if decrypted_json_memo.present? || base64_decoded_memo.match?(/^SWAP/) || (amount.negative? && opponent_id.blank?)
   end
 end

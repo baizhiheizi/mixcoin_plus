@@ -81,13 +81,13 @@ class ArbitrageOrder < ApplicationRecord
     case raw[:ocean][:side]
     when :bid
       update(
-        quote_asset_profit: swap_orders.sum(:fill_amount) - ocean_orders.sum(:filled_funds),
-        base_asset_profit: ocean_orders.sum(:filled_amount) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO) - swap_orders.sum(:pay_amount)
+        quote_asset_profit: swap_orders.traded.sum(:fill_amount) - ocean_orders.sum(:filled_funds),
+        base_asset_profit: ocean_orders.sum(:filled_amount) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO) - swap_orders.traded.sum(:pay_amount)
       )
     when :ask
       update(
-        quote_asset_profit: ocean_orders.sum(:filled_funds) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO) - swap_orders.sum(:pay_amount),
-        base_asset_profit: swap_orders.sum(:fill_amount) - ocean_orders.sum(:filled_amount)
+        quote_asset_profit: ocean_orders.sum(:filled_funds) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO) - swap_orders.traded.sum(:pay_amount),
+        base_asset_profit: swap_orders.traded.sum(:fill_amount) - ocean_orders.sum(:filled_amount)
       )
     end
   end
@@ -125,7 +125,7 @@ class ArbitrageOrder < ApplicationRecord
   end
 
   def generate_ocean_order!
-    ocean_orders.create!(
+    ocean_orders.create_with(
       broker: arbitrager,
       market: market,
       side: raw[:ocean][:side],
@@ -133,6 +133,8 @@ class ArbitrageOrder < ApplicationRecord
       price: raw[:ocean][:price],
       remaining_amount: raw[:ocean][:amount],
       remaining_funds: raw[:ocean][:funds]
+    ).find_or_create_by!(
+      trace_id: MixcoinPlusBot.api.unique_uuid(id, market_id)
     )
   end
 
@@ -179,6 +181,6 @@ class ArbitrageOrder < ApplicationRecord
   private
 
   def ensure_ocean_and_swap_orders_finished
-    ocean_orders.without_finished.blank? && swap_orders.without_finished.blank?
+    ocean_orders.count.positive? && swap_orders.count.positive? && ocean_orders.without_finished.blank? && swap_orders.without_finished.blank?
   end
 end

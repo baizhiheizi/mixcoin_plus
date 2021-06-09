@@ -4,22 +4,23 @@
 #
 # Table name: mixin_transfers
 #
-#  id            :uuid             not null, primary key
-#  amount        :decimal(, )
-#  amount_usd    :decimal(, )      default(0.0)
-#  memo          :string
-#  priority      :string
-#  processed_at  :datetime
-#  snapshot      :json
-#  source_type   :string
-#  transfer_type :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  asset_id      :uuid
-#  opponent_id   :uuid
-#  source_id     :uuid
-#  trace_id      :uuid
-#  user_id       :uuid
+#  id                :uuid             not null, primary key
+#  amount            :decimal(, )
+#  amount_usd        :decimal(, )      default(0.0)
+#  memo              :string
+#  opponent_multisig :json
+#  priority          :string
+#  processed_at      :datetime
+#  snapshot          :json
+#  source_type       :string
+#  transfer_type     :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  asset_id          :uuid
+#  opponent_id       :uuid
+#  source_id         :uuid
+#  trace_id          :uuid
+#  user_id           :uuid
 #
 # Indexes
 #
@@ -32,6 +33,8 @@ class MixinTransfer < ApplicationRecord
 
   extend Enumerize
 
+  store :opponent_multisig, accessors: %i[receivers threshold]
+
   belongs_to :source, polymorphic: true, optional: true
   belongs_to :wallet, class_name: 'MixinNetworkUser', primary_key: :mixin_uuid, foreign_key: :user_id, inverse_of: :transfers, optional: true
   belongs_to :recipient, class_name: 'User', primary_key: :mixin_uuid, foreign_key: :opponent_id, inverse_of: :transfers, optional: true
@@ -39,8 +42,8 @@ class MixinTransfer < ApplicationRecord
 
   validates :trace_id, presence: true, uniqueness: true
   validates :asset_id, presence: true
-  validates :opponent_id, presence: true
   validates :amount, numericality: { greater_than_or_equal_to: MINIMUM_AMOUNT }
+  validate :ensure_opponent_presence
 
   after_commit :process_async, on: :create
 
@@ -79,16 +82,30 @@ class MixinTransfer < ApplicationRecord
           }
         )
       elsif wallet.present?
-        wallet.mixin_api.create_transfer(
-          wallet.pin,
-          {
-            asset_id: asset_id,
-            opponent_id: opponent_id,
-            amount: amount,
-            trace_id: trace_id,
-            memo: memo
-          }
-        )
+        if opponent_id.present?
+          wallet.mixin_api.create_transfer(
+            wallet.pin,
+            {
+              asset_id: asset_id,
+              opponent_id: opponent_id,
+              amount: amount,
+              trace_id: trace_id,
+              memo: memo
+            }
+          )
+        elsif opponent_multisig.present?
+          wallet.mixin_api.create_multisig_transaction(
+            wallet.pin,
+            {
+              asset_id: asset_id,
+              receivers: receivers,
+              threshold: threshold,
+              amount: amount,
+              trace_id: trace_id,
+              memo: memo
+            }
+          )
+        end
       end
 
     return unless r['data']['trace_id'] == trace_id
@@ -111,5 +128,11 @@ class MixinTransfer < ApplicationRecord
     else
       MixinTransferProcessWorker.perform_async id
     end
+  end
+
+  private
+
+  def ensure_opponent_presence
+    errors.add(:opponent_id, ' must cannot be blank') if opponent_id.blank? && opponent_multisig.blank?
   end
 end

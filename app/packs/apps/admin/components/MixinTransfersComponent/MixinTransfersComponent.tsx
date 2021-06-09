@@ -61,7 +61,7 @@ export default function MixinTransfersComponent(props: {
               {transfer.recipient.name}({transfer.recipient.mixinId})
             </div>
           ) : (
-            transfer.opponentId
+            transfer.opponentId || 'MTG'
           )}
         </>
       ),

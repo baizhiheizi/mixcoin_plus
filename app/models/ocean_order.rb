@@ -267,7 +267,6 @@ class OceanOrder < ApplicationRecord
     return unless new_record?
 
     assign_attributes(
-      trace_id: SecureRandom.uuid,
       base_asset_id: market.base_asset_id,
       quote_asset_id: market.quote_asset_id,
       filled_amount: 0.0,
@@ -276,6 +275,7 @@ class OceanOrder < ApplicationRecord
       taker_fee: TAKER_FEE_RATIO
     )
     self.broker_id = user.broker.mixin_uuid if user.present?
+    self.trace_id = SecureRandom.uuid if trace_id.blank?
   end
 
   # memo in transfer for creating order to engine
