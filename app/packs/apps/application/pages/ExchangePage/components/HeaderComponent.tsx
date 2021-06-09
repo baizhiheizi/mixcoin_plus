@@ -1,22 +1,12 @@
-import {
-  Change as ChangeIcon,
-  MenuFoldOne as MenuIcon,
-  Star as StarIcon,
-} from '@icon-park/react';
+import { MenuFoldOne as MenuIcon, Star as StarIcon } from '@icon-park/react';
 import { useDebounce } from 'ahooks';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
-import { useCurrentUser } from 'apps/application/contexts';
 import { ITrade } from 'apps/application/utils';
-import { ERC20_USDT_ASSET_ID, OMNI_USDT_ASSET_ID } from 'apps/shared';
-import {
-  Market,
-  useMarketConnectionQuery,
-  useMarketLazyQuery,
-} from 'graphqlTypes';
+import { Market, useMarketConnectionQuery } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
-import { ActivityIndicator, Loading, Popup, SearchBar, Tabs } from 'zarm';
+import { ActivityIndicator, Popup, SearchBar, Tabs } from 'zarm';
 
 export default function HeaderComponent(props: {
   market: Partial<Market> & any;
@@ -25,14 +15,8 @@ export default function HeaderComponent(props: {
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-  const { currentUser } = useCurrentUser();
   const { market, setMarketId, ticker } = props;
   const [sidebarVisible, setSidebarVisible] = useState(false);
-  const [marketQuery, { called, data }] = useMarketLazyQuery();
-
-  if (called && data?.market) {
-    location.replace(`/exchange?market=${data.market.id}`);
-  }
 
   return (
     <>
@@ -51,7 +35,7 @@ export default function HeaderComponent(props: {
               />
               {market.baseAsset.chainAsset && (
                 <img
-                  className='absolute bottom-0 left-0 w-2 h-2 border border-white rounded-full'
+                  className='absolute bottom-0 left-0 w-3 h-3 border border-white rounded-full'
                   src={market.baseAsset.chainAsset.iconUrl.replace(
                     /s128/,
                     's32',
@@ -63,32 +47,6 @@ export default function HeaderComponent(props: {
               {market.baseAsset.symbol}/{market.quoteAsset.symbol}
             </div>
           </div>
-          {market.quoteAsset.symbol === 'USDT' && (
-            <div
-              className='mr-4'
-              onClick={() => {
-                Loading.show();
-                marketQuery({
-                  variables: {
-                    baseAssetId: market.baseAsset.assetId,
-                    quoteAssetId:
-                      market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
-                        ? OMNI_USDT_ASSET_ID
-                        : ERC20_USDT_ASSET_ID,
-                  },
-                });
-              }}
-            >
-              <div className='flex items-center text-xs h-7'>
-                <div className='mr-1'>
-                  {market.quoteAsset.assetId === ERC20_USDT_ASSET_ID
-                    ? 'ERC20'
-                    : 'Omni'}
-                </div>
-                <ChangeIcon size='0.75rem' />
-              </div>
-            </div>
-          )}
         </div>
         <div className='ml-auto text-right'>
           <div
