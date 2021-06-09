@@ -4,16 +4,17 @@
 #
 # Table name: markets
 #
-#  id                 :uuid             not null, primary key
-#  hidden_at          :datetime
-#  ocean_orders_count :integer          default(0)
-#  rank               :integer
-#  recommended_at     :datetime
-#  trades_count       :integer          default(0)
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  base_asset_id      :uuid
-#  quote_asset_id     :uuid
+#  id                            :uuid             not null, primary key
+#  booking_order_activity_enable :boolean          default(FALSE)
+#  hidden_at                     :datetime
+#  ocean_orders_count            :integer          default(0)
+#  rank                          :integer
+#  recommended_at                :datetime
+#  trades_count                  :integer          default(0)
+#  created_at                    :datetime         not null
+#  updated_at                    :datetime         not null
+#  base_asset_id                 :uuid
+#  quote_asset_id                :uuid
 #
 # Indexes
 #
@@ -28,10 +29,10 @@ class Market < ApplicationRecord
   PUSD_ASSET_ID = '31d2ea9c-95eb-3355-b65b-ba096853bc18'
   AVAILABLE_QUOTES = [ERC20_USDT_ASSET_ID, PUSD_ASSET_ID, XIN_ASSET_ID, BTC_ASSET_ID, OMNI_USDT_ASSET_ID].freeze
 
-  include RankedModel
+  # include RankedModel
   include Markets::Arbitragable
 
-  ranks :rank, with_same: :quote_asset_id
+  # ranks :rank, with_same: :quote_asset_id
 
   # Ocean ONE accepts all assets in Mixin Network as base currencies,
   # and the only supported quote currencies are
@@ -50,8 +51,11 @@ class Market < ApplicationRecord
   has_many :snapshots, through: :ocean_orders, source: :snapshots
   has_many :trades, dependent: :restrict_with_exception
   has_many :arbitrage_orders, dependent: :restrict_with_exception
+  has_many :booking_order_snapshots, dependent: :restrict_with_exception
 
   default_scope { includes(:base_asset, :quote_asset) }
+
+  scope :booking_order_activity_enabled, -> { where(booking_order_activity_enable: true) }
   scope :without_hidden, -> { where(hidden_at: nil) }
   scope :order_by_default, lambda {
     without_hidden
@@ -181,6 +185,10 @@ class Market < ApplicationRecord
 
   def sync_trades_frequency_unlock!
     Global.redis.del "sync_trades_frequency_lock_#{id}"
+  end
+
+  def generate_booking_order_snapshots
+    ocean_orders.booking.map(&:generate_booking_snapshot)
   end
 
   private

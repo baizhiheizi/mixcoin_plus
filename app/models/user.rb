@@ -42,6 +42,7 @@ class User < ApplicationRecord
   has_one :invitor, through: :invitation, source: :invitor
   has_many :invitations, foreign_key: :invitor_id, dependent: :restrict_with_exception, inverse_of: :invitor
   has_many :invitees, -> { order('invitations.created_at desc') }, through: :invitations, source: :invitee
+  has_many :booking_order_activity_participators, dependent: :restrict_with_exception
 
   before_validation :set_defaults, on: :create
 

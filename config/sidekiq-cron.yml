@@ -7,3 +7,6 @@ recommended_markets_sync_trades_from_engine_worker:
 arbitrage_orders_timeout_worker:
   cron: '* * * * *'
   class: 'ArbitrageOrdersTimeoutWorker'
+booking_order_snapshot_generate_worker:
+  cron: '* * * * *'
+  class: 'BookingOrderSnapshotGenerateWorker'
