@@ -40,7 +40,7 @@ class Arbitrager < MixinNetworkUser
     arbitrage_orders
       .without_drafted
       .includes(:market)
-      .map(&->(order) { order.net_profit_usd })
+      .map(&->(order) { order.net_profit_usd.to_f })
       .sum
   end
 
