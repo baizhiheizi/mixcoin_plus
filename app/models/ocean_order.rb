@@ -51,6 +51,7 @@ class OceanOrder < ApplicationRecord
   belongs_to :conversation, class_name: 'MixinConversation', primary_key: :conversation_id, optional: true
 
   has_many :snapshots, class_name: 'OceanSnapshot', as: :source, dependent: :restrict_with_exception
+  has_many :booking_snapshots, class_name: 'BookingOrderSnapshot', dependent: :restrict_with_exception
 
   enumerize :side, in: %w[ask bid], scope: true, predicates: true, i18n_scope: ['activerecord.attributes.ocean_order.sides']
   enumerize :order_type, in: %w[limit market], scope: true, predicates: true
@@ -259,6 +260,19 @@ class OceanOrder < ApplicationRecord
     else
       0
     end
+  end
+
+  def generate_booking_snapshot
+    return unless booking?
+    return if (1 - price / market.price_current.to_f).abs > BookingOrderSnapshot::ALPHA_CONST / 100.0
+
+    booking_snapshots.create_with(
+      user: user,
+      market: market,
+      snapshot: as_json
+    ).find_or_create_by(
+      timestamp: Time.current.beginning_of_minute.to_i
+    )
   end
 
   private

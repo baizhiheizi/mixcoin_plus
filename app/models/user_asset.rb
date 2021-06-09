@@ -40,7 +40,7 @@ class UserAsset < ApplicationRecord
     r = MixcoinPlusBot.api.asset(asset_id, access_token: user.access_token)&.[]('data')
     return if r.blank?
 
-    update raw: r
+    update raw: r, balance: r['balance']
 
     _mark_cache
   end

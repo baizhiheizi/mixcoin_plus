@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_08_215620) do
+ActiveRecord::Schema.define(version: 2021_06_09_085358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -51,6 +51,50 @@ ActiveRecord::Schema.define(version: 2021_06_08_215620) do
     t.index ["market_id"], name: "index_arbitrage_orders_on_market_id"
   end
 
+  create_table "booking_order_activities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "market_id"
+    t.datetime "started_at"
+    t.datetime "ended_at"
+    t.integer "valid_orders_count"
+    t.float "scores_total"
+    t.float "bonus_total"
+    t.uuid "bonus_asset_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["market_id"], name: "index_booking_order_activities_on_market_id"
+  end
+
+  create_table "booking_order_activity_participants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "booking_order_activity_id"
+    t.float "scores"
+    t.float "bonus"
+    t.uuid "bonus_asset_id"
+    t.string "state"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["booking_order_activity_id"], name: "participants_on_booking_order_activities_fk"
+    t.index ["user_id"], name: "index_booking_order_activity_participants_on_user_id"
+  end
+
+  create_table "booking_order_snapshots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "market_id"
+    t.uuid "user_id"
+    t.uuid "ocean_order_id"
+    t.float "ticker"
+    t.float "funds"
+    t.float "price"
+    t.float "scores"
+    t.float "order_weight"
+    t.json "snapshot"
+    t.integer "timestamp"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["market_id"], name: "index_booking_order_snapshots_on_market_id"
+    t.index ["ocean_order_id"], name: "index_booking_order_snapshots_on_ocean_order_id"
+    t.index ["user_id"], name: "index_booking_order_snapshots_on_user_id"
+  end
+
   create_table "group_markets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "market_id", null: false
     t.uuid "mixin_conversation_id", null: false
@@ -80,6 +124,7 @@ ActiveRecord::Schema.define(version: 2021_06_08_215620) do
     t.integer "rank"
     t.datetime "recommended_at"
     t.datetime "hidden_at"
+    t.boolean "booking_order_activity_enable", default: false
     t.index ["base_asset_id"], name: "index_markets_on_base_asset_id"
     t.index ["quote_asset_id"], name: "index_markets_on_quote_asset_id"
   end

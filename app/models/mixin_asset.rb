@@ -40,7 +40,7 @@ class MixinAsset < ApplicationRecord
     return if updated_at > Time.current - 10.minutes
 
     r = MixcoinPlusBot.api.asset asset_id
-    update! raw: r['data']
+    update! raw: r['data'], price_usd: r['data']['price_usd']
   end
 
   def generate_markets_async
@@ -63,7 +63,8 @@ class MixinAsset < ApplicationRecord
     assign_attributes(
       name: raw['name'],
       symbol: raw['symbol'],
-      chain_id: raw['chain_id']
+      chain_id: raw['chain_id'],
+      price_usd: raw['price_usd']
     )
   end
 end
