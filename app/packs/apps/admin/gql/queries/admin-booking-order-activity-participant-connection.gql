@@ -1,0 +1,48 @@
+query AdminBookingOrderActivityParticipantConnection(
+  $after: String
+  $userId: ID
+  $bookingOrderActivityId: ID
+  $state: String
+) {
+  adminBookingOrderActivityParticipantConnection(
+    after: $after
+    userId: $userId
+    bookingOrderActivityId: $bookingOrderActivityId
+    state: $state
+  ) {
+    nodes {
+      id
+      state
+      bonus
+      scores
+      bookingOrderActivity {
+        bonusTotal
+        scoresTotal
+        market {
+          baseAsset {
+            assetId
+            symbol
+          }
+          quoteAsset {
+            assetId
+            symbol
+          }
+        }
+      }
+      bonusAsset {
+        assetId
+        symbol
+      }
+      user {
+        avatar
+        mixinId
+        mixinUuid
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

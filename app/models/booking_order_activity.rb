@@ -21,6 +21,7 @@
 #
 class BookingOrderActivity < ApplicationRecord
   belongs_to :market
+  belongs_to :bonus_asset, class_name: 'MixinAsset', primary_key: :asset_id, dependent: :restrict_with_exception
 
   has_many :participants, class_name: 'BookingOrderActivityParticipant', dependent: :restrict_with_exception
   has_many :booking_order_snapshots, -> { where(created_at: started_at...ended_at) }, through: :market

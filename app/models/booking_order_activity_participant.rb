@@ -20,4 +20,7 @@
 #  participants_on_booking_order_activities_fk           (booking_order_activity_id)
 #
 class BookingOrderActivityParticipant < ApplicationRecord
+  belongs_to :user
+  belongs_to :booking_order_activity
+  belongs_to :bonus_asset, class_name: 'MixinAsset', primary_key: :asset_id 
 end

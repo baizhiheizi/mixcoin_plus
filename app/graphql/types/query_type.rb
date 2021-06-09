@@ -30,6 +30,10 @@ module Types
     field :admin_user_deprecated_ocean_orders, resolver: Resolvers::AdminUserDeprecatedOceanOrdersResolver
     field :admin_arbitrage_order_connection, resolver: Resolvers::AdminArbitrageOrderConnectionResolver
     field :admin_arbitrage_order, resolver: Resolvers::AdminArbitrageOrderResolver
+    field :admin_booking_order_snapshot_connection, resolver: Resolvers::AdminBookingOrderSnapshotConnectionResolver
+    field :admin_booking_order_activity, resolver: Resolvers::AdminBookingOrderActivityResolver
+    field :admin_booking_order_activity_connection, resolver: Resolvers::AdminBookingOrderActivityConnectionResolver
+    field :admin_booking_order_activity_participant_connection, resolver: Resolvers::AdminBookingOrderActivityParticipantConnectionResolver
 
     field :current_conversation, resolver: Resolvers::CurrentConversationResolver
     field :market, resolver: Resolvers::MarketResolver

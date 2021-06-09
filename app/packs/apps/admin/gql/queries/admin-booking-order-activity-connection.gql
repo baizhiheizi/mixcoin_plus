@@ -1,0 +1,31 @@
+query AdminBookingOrderActivityConnection($after: String, $marketId: ID) {
+  adminBookingOrderActivityConnection(after: $after, marketId: $marketId) {
+    nodes {
+      id
+      startedAt
+      endedAt
+      bonusTotal
+      scoresTotal
+      validOrdersCount
+      market {
+        baseAsset {
+          assetId
+          symbol
+        }
+        quoteAsset {
+          assetId
+          symbol
+        }
+      }
+      bonusAsset {
+        assetId
+        symbol
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
