@@ -2,6 +2,7 @@ import {
   BarsOutlined,
   DashboardOutlined,
   DollarOutlined,
+  FundOutlined,
   LogoutOutlined,
   MessageOutlined,
   MoneyCollectOutlined,
@@ -93,6 +94,18 @@ export default function Menus() {
           <span>MixinNetworkUser</span>
         </Link>
       </Menu.Item>
+      <Menu.SubMenu icon={<FundOutlined />} key='booking_order_activity' title='Activity'>
+        <Menu.Item key='booking_order_activities'>
+          <Link to='/booking_order_activities'>
+            <span>BookingOrderActivities</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key='booking_order_snapshots'>
+          <Link to='/booking_order_snapshots'>
+            <span>BookingOrderSnapshots</span>
+          </Link>
+        </Menu.Item>
+      </Menu.SubMenu>
       <Menu.Item key='balance'>
         <Link to='/balance'>
           <DollarOutlined />

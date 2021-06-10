@@ -34,6 +34,12 @@ export const apolloClient = (uri: string) => {
             'state',
             'arbitragerId',
           ]),
+          adminBookingOrderSnapshotConnection:
+            customizedConnectionMergeFunction([
+              'marketId',
+              'userId',
+              'oceanOrderId',
+            ]),
           adminInvitationConnection: customizedConnectionMergeFunction([
             'invitorId',
           ]),

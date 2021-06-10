@@ -3,21 +3,27 @@ query AdminBookingOrderSnapshotConnection(
   $marketId: ID
   $userId: ID
   $oceanOrderId: ID
+  $startedAt: String
+  $endedAt: String
 ) {
   adminBookingOrderSnapshotConnection(
     after: $after
     marketId: $marketId
     userId: $userId
     oceanOrderId: $oceanOrderId
+    startedAt: $startedAt
+    endedAt: $endedAt
   ) {
     nodes {
       id
       funds
       orderWeight
       price
+      ticker
       scores
       timestamp
       user {
+        id
         avatar
         name
         mixinId

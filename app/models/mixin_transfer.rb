@@ -49,7 +49,7 @@ class MixinTransfer < ApplicationRecord
 
   enumerize :priority, in: %i[default critical high low], default: :default, predicates: true
   enumerize :transfer_type,
-            in: %i[default ocean_broker_balance ocean_broker_register ocean_order_create ocean_order_cancel ocean_order_match ocean_order_refund ocean_order_group_owner_commission ocean_order_invitation_commission ocean_order_mixcoin_fee swap_order_create withraw_to_admin],
+            in: %i[default ocean_broker_balance ocean_broker_register ocean_order_create ocean_order_cancel ocean_order_match ocean_order_refund ocean_order_group_owner_commission ocean_order_invitation_commission ocean_order_mixcoin_fee swap_order_create withraw_to_admin booking_order_activity_bonus],
             default: :default,
             scope: true,
             predicates: true

@@ -12,7 +12,7 @@ module Resolvers
 
     def resolve(**params)
       user = User.find_by(id: params[:user_id])
-      participants = 
+      participants =
         if user.present?
           user.booking_order_activity_participants
         else
@@ -40,7 +40,7 @@ module Resolvers
           participants
         end
 
-      snapshots.order(created_at: :desc)
+      participants.order(created_at: :desc)
     end
   end
 end

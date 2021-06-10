@@ -1,0 +1,5 @@
+mutation AdminBookingOrderActivityParticipantDistributeBonus(
+  $input: AdminBookingOrderActivityParticipantDistributeBonusMutationInput!
+) {
+  adminBookingOrderActivityParticipantDistributeBonus(input: $input)
+}

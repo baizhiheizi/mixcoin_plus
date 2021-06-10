@@ -4,6 +4,9 @@ import { Link, Route, Switch } from 'react-router-dom';
 import ArbitrageOrderPage from './pages/ArbitrageOrderPage/ArbitrageOrderPage';
 import ArbitrageOrdersPage from './pages/ArbitrageOrdersPage/ArbitrageOrdersPage';
 import BalancePage from './pages/BalancePage/BalancePage';
+import BookingOrderActivitiesPage from './pages/BookingOrderActivitiesPage/BookingOrderActivitiesPage';
+import BookingOrderActivityPage from './pages/BookingOrderActivityPage/BookingOrderActivityPage';
+import BookingOrderSnapshotsPage from './pages/BookingOrderSnapshotsPage/BookingOrderSnapshotsPage';
 import InvitationsPage from './pages/InvitationsPage/InvitationsPage';
 import MarketPage from './pages/MarketPage/MarketPage';
 import MarketsPage from './pages/MarketsPage/MarketsPage';
@@ -84,6 +87,15 @@ export default function Routes() {
       </Route>
       <Route path='/arbitrage_orders/:id' exact>
         <ArbitrageOrderPage />
+      </Route>
+      <Route path='/booking_order_snapshots' exact>
+        <BookingOrderSnapshotsPage />
+      </Route>
+      <Route path='/booking_order_activities' exact>
+        <BookingOrderActivitiesPage />
+      </Route>
+      <Route path='/booking_order_activities/:id' exact>
+        <BookingOrderActivityPage />
       </Route>
       <Route>
         <Result

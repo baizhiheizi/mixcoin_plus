@@ -52,6 +52,7 @@ class Market < ApplicationRecord
   has_many :trades, dependent: :restrict_with_exception
   has_many :arbitrage_orders, dependent: :restrict_with_exception
   has_many :booking_order_snapshots, dependent: :restrict_with_exception
+  has_many :booking_order_activities, dependent: :restrict_with_exception
 
   default_scope { includes(:base_asset, :quote_asset) }
 
@@ -189,6 +190,21 @@ class Market < ApplicationRecord
 
   def generate_booking_order_snapshots
     ocean_orders.booking.map(&:generate_booking_snapshot)
+  end
+
+  def generate_booking_activity(
+    bonus_asset_id: BTC_ASSET_ID,
+    started_at: DateTime.yesterday.beginning_of_day.utc,
+    ended_at: DateTime.yesterday.end_of_day.utc,
+    bonus_total: BookingOrderActivity::BONUS_TOTAL_DEFAULT
+  )
+    booking_order_activities.create_with(
+      bonus_asset_id: bonus_asset_id,
+      bonus_total: bonus_total
+    ).find_or_create_by(
+      started_at: started_at,
+      ended_at: ended_at
+    )
   end
 
   private

@@ -5,6 +5,8 @@ module Types
     field :id, ID, null: false
     field :bonus, Float, null: true
     field :scores, Float, null: false
+    field :scores_ratio, Float, null: false
+    field :scores_total, Float, null: false
     field :bonus_asset_id, String, null: true
     field :state, String, null: true
 
