@@ -36,9 +36,17 @@ class BookingOrderSnapshot < ApplicationRecord
 
   validates :price, presence: true
   validates :order_weight, presence: true, numericality: { greater_than_or_equal_to: 0 }
-  validates :timestamp, presence: true, uniqueness: true
+  validates :timestamp, presence: true, uniqueness: { scope: :ocean_order_id }
 
   validate :ensure_price_valid
+
+  def calculate_order_weight
+    (1 - ((price / ticker - 1).abs / (ALPHA_CONST / 100.0)))**N_CONST
+  end
+
+  def calculate_scores
+    calculate_order_weight * price
+  end
 
   private
 
@@ -49,11 +57,11 @@ class BookingOrderSnapshot < ApplicationRecord
       ticker: market.price_current
     )
 
-    self.order_weight = (1 - ((price / ticker).abs / ALPHA_CONST).to_f / 100.0)**N_CONST
-    self.scores = order_weight * price
+    self.order_weight = calculate_order_weight
+    self.scores = calculate_scores
   end
 
   def ensure_price_valid
-    errors.add(:price, ' not valid') if (1 - price / ticker).abs > ALPHA_CONST.to_f / 100
+    errors.add(:price, ' not valid') if (1 - price / ticker).abs > ALPHA_CONST / 100.0
   end
 end

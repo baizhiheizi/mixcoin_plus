@@ -17,7 +17,7 @@ module Resolvers
           activities
         end
 
-      snapshots.order(created_at: :desc)
+      activities.order(created_at: :desc)
     end
   end
 end

@@ -6,6 +6,8 @@ module Resolvers
     argument :user_id, ID, required: false
     argument :market_id, ID, required: false
     argument :ocean_order_id, ID, required: false
+    argument :started_at, String, required: false
+    argument :ended_at, String, required: false
 
     type Types::BookingOrderSnapshotType.connection_type, null: false
 
@@ -28,6 +30,13 @@ module Resolvers
       snapshots =
         if params[:ocean_order_id].present?
           snapshots.where(ocean_order_id: params[:ocean_order_id])
+        else
+          snapshots
+        end
+
+      snapshots =
+        if params[:started_at].present? && params[:ended_at].present?
+          snapshots.where(created_at: Time.zone.parse(params[:started_at])...Time.zone.parse(params[:ended_at]))
         else
           snapshots
         end

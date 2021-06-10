@@ -15,9 +15,13 @@ query AdminBookingOrderActivityParticipantConnection(
       state
       bonus
       scores
+      scoresRatio
+      scoresTotal
       bookingOrderActivity {
         bonusTotal
         scoresTotal
+        startedAt
+        endedAt
         market {
           baseAsset {
             assetId
@@ -34,6 +38,7 @@ query AdminBookingOrderActivityParticipantConnection(
         symbol
       }
       user {
+        name
         avatar
         mixinId
         mixinUuid

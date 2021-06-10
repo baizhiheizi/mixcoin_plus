@@ -9,6 +9,7 @@ module Types
     field :funds, Float, null: false
     field :order_weight, Float, null: false
     field :price, Float, null: false
+    field :ticker, Float, null: false
     field :scores, Float, null: false
     field :timestamp, Integer, null: false
 

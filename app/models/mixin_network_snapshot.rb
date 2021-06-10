@@ -91,7 +91,16 @@ class MixinNetworkSnapshot < ApplicationRecord
 
     raise 'No Processor Implemented!' unless data.to_s.downcase.match?(/fee|commission|withraw/) || data.blank? || user_id == MixcoinPlusBot.api.client_id
 
+    process_booking_order_activit_bonus_snapshot
+
     touch_proccessed_at
+  end
+
+  def process_booking_order_activit_bonus_snapshot
+    return unless data.to_s.match?(/^Bonus/)
+
+    participant = BookingOrderActivityParticipant.find_by(id: trace_id)
+    participant.complete! if participant&.may_complete?
   end
 
   def touch_proccessed_at
