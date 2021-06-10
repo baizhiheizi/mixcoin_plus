@@ -10,3 +10,6 @@ arbitrage_orders_timeout_worker:
 booking_order_snapshot_generate_worker:
   cron: '* * * * *'
   class: 'BookingOrderSnapshotGenerateWorker'
+booking_order_activity_generate_worker:
+  cron: '5 0 * * *'
+  class: 'BookingOrderActivityGenerateWorker'
