@@ -18,7 +18,7 @@ module Resolvers
 
         current_user.favorite_markets.without_hidden.order_by_default.ransack(q_ransack.merge(m: 'or')).result
       when 'hot'
-        Market.hot.without_hidden
+        Market.hot
       else
         markets =
           case params[:type]
