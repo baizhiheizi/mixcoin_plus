@@ -29,10 +29,10 @@ class Market < ApplicationRecord
   PUSD_ASSET_ID = '31d2ea9c-95eb-3355-b65b-ba096853bc18'
   AVAILABLE_QUOTES = [ERC20_USDT_ASSET_ID, PUSD_ASSET_ID, XIN_ASSET_ID, BTC_ASSET_ID, OMNI_USDT_ASSET_ID].freeze
 
-  # include RankedModel
   include Markets::Arbitragable
 
   # ranks :rank, with_same: :quote_asset_id
+  acts_as_list column: :rank, scope: :quote_asset
 
   # Ocean ONE accepts all assets in Mixin Network as base currencies,
   # and the only supported quote currencies are
