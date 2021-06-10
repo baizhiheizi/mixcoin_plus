@@ -73,6 +73,11 @@ export default function MarketsPage() {
       title: 'base/quote',
     },
     {
+      dataIndex: 'rank',
+      key: 'rank',
+      title: 'rank',
+    },
+    {
       dataIndex: 'oceanOrdersCount',
       key: 'oceanOrdersCount',
       title: 'oceanOrdersCount',
@@ -161,7 +166,7 @@ export default function MarketsPage() {
             onClick={() =>
               rankMarket({
                 variables: {
-                  input: { marketId: market.id, position: 'first' },
+                  input: { marketId: market.id, position: 'top' },
                 },
               })
             }
@@ -171,20 +176,29 @@ export default function MarketsPage() {
           <a
             onClick={() =>
               rankMarket({
-                variables: { input: { marketId: market.id, position: 'down' } },
+                variables: { input: { marketId: market.id, position: 'higher' } },
               })
             }
           >
-            Down
+            Higher
           </a>
           <a
             onClick={() =>
               rankMarket({
-                variables: { input: { marketId: market.id, position: 'last' } },
+                variables: { input: { marketId: market.id, position: 'lower' } },
               })
             }
           >
-            Last
+            Lower
+          </a>
+          <a
+            onClick={() =>
+              rankMarket({
+                variables: { input: { marketId: market.id, position: 'bottom' } },
+              })
+            }
+          >
+            Bottom
           </a>
         </Space>
       ),

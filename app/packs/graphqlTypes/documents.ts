@@ -365,6 +365,7 @@ export type Market = {
   priceCurrent?: Maybe<Scalars['Float']>;
   quoteAsset: MixinAsset;
   quoteAssetId: Scalars['String'];
+  rank: Scalars['Int'];
   recommended?: Maybe<Scalars['Boolean']>;
   tradesCount: Scalars['Int'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
@@ -1633,7 +1634,7 @@ export type AdminMarketConnectionQuery = (
     { __typename?: 'MarketConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'Market' }
-      & Pick<Market, 'id' | 'oceanMarketId' | 'oceanOrdersCount' | 'tradesCount' | 'recommended' | 'hiddenAt' | 'bookingOrderActivityEnable' | 'createdAt'>
+      & Pick<Market, 'id' | 'oceanMarketId' | 'oceanOrdersCount' | 'tradesCount' | 'recommended' | 'hiddenAt' | 'rank' | 'bookingOrderActivityEnable' | 'createdAt'>
       & { baseAsset: (
         { __typename?: 'MixinAsset' }
         & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
@@ -3313,6 +3314,7 @@ export const AdminMarketConnectionDocument = gql`
       tradesCount
       recommended
       hiddenAt
+      rank
       bookingOrderActivityEnable
       baseAsset {
         assetId
