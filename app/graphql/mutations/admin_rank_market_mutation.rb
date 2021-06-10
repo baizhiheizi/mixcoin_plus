@@ -8,7 +8,18 @@ module Mutations
     type Boolean
 
     def resolve(market_id:, position:)
-      Market.find(market_id).update rank_position: position
+      market = Market.find(market_id)
+
+      case position
+      when 'first'
+        market.move_to_top
+      when 'last'
+        market.move_to_bottom
+      when 'up'
+        market.move_higher
+      when 'down'
+        market.move_lower
+      end
     end
   end
 end
