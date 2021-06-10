@@ -33,7 +33,7 @@ class TransferProcessedNotification < ApplicationNotification
     )
   end
 
-  def from_mixcoin_bot?
-    params[:transfer].user_id == MixcoinPlusBot.api.client_id
+  def not_from_mixcoin_bot?
+    params[:transfer].user_id != MixcoinPlusBot.api.client_id
   end
 end
