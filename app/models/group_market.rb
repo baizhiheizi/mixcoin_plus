@@ -17,10 +17,8 @@
 #  index_group_markets_on_mixin_conversation_id  (mixin_conversation_id)
 #
 class GroupMarket < ApplicationRecord
-  include RankedModel
-
   belongs_to :market
   belongs_to :mixin_conversation
 
-  ranks :rank
+  acts_as_list column: :rank
 end
