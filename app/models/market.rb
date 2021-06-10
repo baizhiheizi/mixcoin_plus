@@ -31,7 +31,6 @@ class Market < ApplicationRecord
 
   include Markets::Arbitragable
 
-  # ranks :rank, with_same: :quote_asset_id
   acts_as_list column: :rank, scope: :quote_asset
 
   # Ocean ONE accepts all assets in Mixin Network as base currencies,
