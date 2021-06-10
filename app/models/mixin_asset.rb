@@ -36,9 +36,14 @@ class MixinAsset < ApplicationRecord
     create_with(raw: r['data']).find_or_create_by(asset_id: r['data']&.[]('asset_id'))
   end
 
-  def sync
-    return if updated_at > Time.current - 10.minutes
+  def sync_price_as_schedule
+    return if price_usd.positive? && updated_at > Time.current - 5.minutes
+    return if price_usd.zero? && updated_at > Time.current - 1.hour
 
+    sync
+  end
+
+  def sync
     r = MixcoinPlusBot.api.asset asset_id
     update! raw: r['data'], price_usd: r['data']['price_usd']
   end
