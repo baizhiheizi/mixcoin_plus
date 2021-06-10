@@ -8,6 +8,7 @@ module Types
     field :ocean_market_id, String, null: false
     field :ocean_orders_count, Int, null: false
     field :trades_count, Int, null: false
+    field :rank, Int, null: false
     field :favorited, Boolean, null: true
     field :recommended, Boolean, null: true
     field :booking_order_activity_enable, Boolean, null: true

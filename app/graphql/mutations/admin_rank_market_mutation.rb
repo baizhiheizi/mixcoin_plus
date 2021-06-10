@@ -11,13 +11,13 @@ module Mutations
       market = Market.find(market_id)
 
       case position
-      when 'first'
+      when 'top'
         market.move_to_top
-      when 'last'
+      when 'bottom'
         market.move_to_bottom
-      when 'up'
+      when 'higher'
         market.move_higher
-      when 'down'
+      when 'lower'
         market.move_lower
       end
     end
