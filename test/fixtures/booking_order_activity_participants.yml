@@ -3,7 +3,7 @@
 # Table name: booking_order_activity_participants
 #
 #  id                        :uuid             not null, primary key
-#  bonus                     :float
+#  bonus                     :float            default(0.0)
 #  scores                    :float
 #  state                     :string
 #  created_at                :datetime         not null

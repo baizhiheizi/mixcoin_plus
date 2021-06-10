@@ -4,16 +4,15 @@
 #
 # Table name: booking_order_activities
 #
-#  id                 :uuid             not null, primary key
-#  bonus_total        :float
-#  ended_at           :datetime
-#  scores_total       :float
-#  started_at         :datetime
-#  valid_orders_count :integer
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  bonus_asset_id     :uuid
-#  market_id          :uuid
+#  id             :uuid             not null, primary key
+#  bonus_total    :float
+#  ended_at       :datetime
+#  scores_total   :float
+#  started_at     :datetime
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  bonus_asset_id :uuid
+#  market_id      :uuid
 #
 # Indexes
 #
@@ -30,12 +29,15 @@ class BookingOrderActivity < ApplicationRecord
 
   validates :started_at, presence: true, uniqueness: { scope: :ended_at }
   validates :ended_at, presence: true, uniqueness: { scope: :started_at }
-  validates :valid_orders_count, presence: true
   validates :scores_total, presence: true
 
   before_validation :set_defaults, on: :create
 
   after_commit :generate_participants, on: :create
+
+  def valid_order_snapshots_count
+    booking_order_snapshots.count
+  end
 
   def generate_participants
     booking_order_snapshots.pluck(:user_id).uniq.each do |user_id|
@@ -54,7 +56,6 @@ class BookingOrderActivity < ApplicationRecord
 
   def set_defaults
     assign_attributes(
-      valid_orders_count: booking_order_snapshots.count,
       scores_total: booking_order_snapshots.sum(:scores)
     )
     self.bonus_total = BONUS_TOTAL_DEFAULT if bonus_total.blank?

@@ -4,7 +4,7 @@ class CreateBookingOrderActivityParticipants < ActiveRecord::Migration[6.1]
       t.uuid :user_id
       t.uuid :booking_order_activity_id
       t.float :scores
-      t.float :bonus
+      t.float :bonus, default: 0.0
       t.uuid :bonus_asset_id
       t.string :state
 

@@ -1180,7 +1180,7 @@
             "deprecationReason": null
           },
           {
-            "name": "validOrdersCount",
+            "name": "validOrderSnapshotsCount",
             "description": null,
             "args": [],
             "type": {
