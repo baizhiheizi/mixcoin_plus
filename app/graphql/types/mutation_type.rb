@@ -9,6 +9,9 @@ module Types
     field :admin_rank_market, mutation: Mutations::AdminRankMarketMutation
     field :admin_arbitrager_withraw_balance, mutation: Mutations::AdminArbitragerWithrawBalanceMutation
     field :admin_booking_order_activity_participant_distribute_bonus, mutation: Mutations::AdminBookingOrderActivityParticipantDistributeBonusMutation
+    field :admin_toggle_market_booking_order_activity_enable, mutation: Mutations::AdminToggleMarketBookingOrderActivityEnableMutation
+    field :admin_hide_market, mutation: Mutations::AdminHideMarketMutation
+    field :admin_unhide_market, mutation: Mutations::AdminUnhideMarketMutation
 
     # application
     field :switch_locale, mutation: Mutations::SwitchLocaleMutation

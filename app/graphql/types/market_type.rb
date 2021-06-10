@@ -10,6 +10,8 @@ module Types
     field :trades_count, Int, null: false
     field :favorited, Boolean, null: true
     field :recommended, Boolean, null: true
+    field :booking_order_activity_enable, Boolean, null: true
+    field :hidden_at, GraphQL::Types::ISO8601DateTime, null: true
 
     field :price_current, Float, null: true
     field :price_24h_ago, Float, null: true

@@ -10,9 +10,12 @@ import {
   XIN_ASSET_ID,
 } from 'apps/shared';
 import {
+  useAdminHideMarketMutation,
   useAdminMarketConnectionQuery,
   useAdminRankMarketMutation,
   useAdminRecommendMarketMutation,
+  useAdminToggleMarketBookingOrderActivityEnableMarketMutation,
+  useAdminUnhideMarketMutation,
   useAdminUnrecommendMarketMutation,
 } from 'graphqlTypes';
 import React, { useState } from 'react';
@@ -34,6 +37,16 @@ export default function MarketsPage() {
   const [unrecommendMarket] = useAdminUnrecommendMarketMutation({
     update: () => refetch(),
   });
+  const [hideMarket] = useAdminHideMarketMutation({
+    update: () => refetch(),
+  });
+  const [unhideMarket] = useAdminUnhideMarketMutation({
+    update: () => refetch(),
+  });
+  const [toggleBookingOrderActivityEnable] =
+    useAdminToggleMarketBookingOrderActivityEnableMarketMutation({
+      update: () => refetch(),
+    });
 
   if (loading) {
     return <LoadingComponent />;
@@ -80,19 +93,8 @@ export default function MarketsPage() {
       render: (_, market) => (
         <Space>
           <Link to={`/markets/${market.id}`}>Detail</Link>
-          <a
-            onClick={() =>
-              recommendMarket({
-                variables: {
-                  input: { marketId: market.id },
-                },
-              })
-            }
-          >
-            Recommend
-          </a>
 
-          {market.recommended && (
+          {market.recommended ? (
             <a
               onClick={() =>
                 unrecommendMarket({
@@ -104,8 +106,57 @@ export default function MarketsPage() {
             >
               Unrecommend
             </a>
+          ) : (
+            <a
+              onClick={() =>
+                recommendMarket({
+                  variables: {
+                    input: { marketId: market.id },
+                  },
+                })
+              }
+            >
+              Recommend
+            </a>
           )}
-          <Divider type='vertical' />
+          {market.hiddenAt ? (
+            <a
+              onClick={() =>
+                unhideMarket({
+                  variables: {
+                    input: { marketId: market.id },
+                  },
+                })
+              }
+            >
+              Unhide
+            </a>
+          ) : (
+            <a
+              onClick={() =>
+                hideMarket({
+                  variables: {
+                    input: { marketId: market.id },
+                  },
+                })
+              }
+            >
+              Hide
+            </a>
+          )}
+          <a
+            onClick={() =>
+              toggleBookingOrderActivityEnable({
+                variables: {
+                  input: { marketId: market.id },
+                },
+              })
+            }
+          >
+            {market.bookingOrderActivityEnable
+              ? 'Disable Activity'
+              : 'Enable Activity'}
+          </a>
           <a
             onClick={() =>
               rankMarket({

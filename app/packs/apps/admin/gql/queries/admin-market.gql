@@ -4,6 +4,8 @@ query AdminMarket($id: ID!) {
     oceanMarketId
     oceanOrdersCount
     tradesCount
+    hiddenAt
+    bookingOrderActivityEnable
     baseAsset {
       assetId
       symbol

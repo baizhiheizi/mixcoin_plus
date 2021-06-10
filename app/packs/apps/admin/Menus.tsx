@@ -94,15 +94,19 @@ export default function Menus() {
           <span>MixinNetworkUser</span>
         </Link>
       </Menu.Item>
-      <Menu.SubMenu icon={<FundOutlined />} key='booking_order_activity' title='Activity'>
+      <Menu.SubMenu
+        icon={<FundOutlined />}
+        key='booking_order_activity'
+        title='Activity'
+      >
         <Menu.Item key='booking_order_activities'>
           <Link to='/booking_order_activities'>
-            <span>BookingOrderActivities</span>
+            <span>Activities</span>
           </Link>
         </Menu.Item>
         <Menu.Item key='booking_order_snapshots'>
           <Link to='/booking_order_snapshots'>
-            <span>BookingOrderSnapshots</span>
+            <span>Order Snapshots</span>
           </Link>
         </Menu.Item>
       </Menu.SubMenu>

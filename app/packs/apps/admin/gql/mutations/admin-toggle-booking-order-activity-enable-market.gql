@@ -1,0 +1,5 @@
+mutation AdminToggleMarketBookingOrderActivityEnableMarket(
+  $input: AdminToggleMarketBookingOrderActivityEnableMutationInput!
+) {
+  adminToggleMarketBookingOrderActivityEnable(input: $input)
+}
