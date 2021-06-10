@@ -59,9 +59,8 @@ class Market < ApplicationRecord
   scope :booking_order_activity_enabled, -> { where(booking_order_activity_enable: true) }
   scope :without_hidden, -> { where(hidden_at: nil) }
   scope :order_by_default, lambda {
-    without_hidden
-      .where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID])
-      .order('recommended_at DESC NULLS LAST', rank: :asc, trades_count: :desc, ocean_orders_count: :desc, created_at: :desc)
+    where.not(base_asset_id: [OMNI_USDT_ASSET_ID, PUSD_ASSET_ID, ERC20_USDT_ASSET_ID])
+         .order('recommended_at DESC NULLS LAST', rank: :asc, trades_count: :desc, ocean_orders_count: :desc, created_at: :desc)
   }
   scope :hot, lambda {
     without_hidden
@@ -205,6 +204,18 @@ class Market < ApplicationRecord
       started_at: started_at,
       ended_at: ended_at
     )
+  end
+
+  def hide!
+    update! hidden_at: Time.current
+  end
+
+  def unhide!
+    update! hidden_at: nil
+  end
+
+  def toggle_booking_order_activity_enable!
+    update! booking_order_activity_enable: !booking_order_activity_enable
   end
 
   private

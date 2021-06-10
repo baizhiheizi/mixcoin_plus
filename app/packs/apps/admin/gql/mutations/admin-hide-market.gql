@@ -1,0 +1,3 @@
+mutation AdminHideMarket($input: AdminHideMarketMutationInput!) {
+  adminHideMarket(input: $input)
+}

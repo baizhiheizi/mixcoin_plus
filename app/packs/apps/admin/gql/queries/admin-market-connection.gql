@@ -14,6 +14,8 @@ query AdminMarketConnection(
       oceanOrdersCount
       tradesCount
       recommended
+      hiddenAt
+      bookingOrderActivityEnable
       baseAsset {
         assetId
         symbol
