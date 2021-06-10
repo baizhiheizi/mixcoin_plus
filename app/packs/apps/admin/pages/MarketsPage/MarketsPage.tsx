@@ -176,7 +176,9 @@ export default function MarketsPage() {
           <a
             onClick={() =>
               rankMarket({
-                variables: { input: { marketId: market.id, position: 'higher' } },
+                variables: {
+                  input: { marketId: market.id, position: 'higher' },
+                },
               })
             }
           >
@@ -185,7 +187,9 @@ export default function MarketsPage() {
           <a
             onClick={() =>
               rankMarket({
-                variables: { input: { marketId: market.id, position: 'lower' } },
+                variables: {
+                  input: { marketId: market.id, position: 'lower' },
+                },
               })
             }
           >
@@ -194,7 +198,9 @@ export default function MarketsPage() {
           <a
             onClick={() =>
               rankMarket({
-                variables: { input: { marketId: market.id, position: 'bottom' } },
+                variables: {
+                  input: { marketId: market.id, position: 'bottom' },
+                },
               })
             }
           >
