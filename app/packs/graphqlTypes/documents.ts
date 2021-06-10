@@ -156,7 +156,7 @@ export type BookingOrderActivity = {
   scoresTotal: Scalars['Float'];
   startedAt: Scalars['ISO8601DateTime'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
-  validOrdersCount: Scalars['Int'];
+  validOrderSnapshotsCount: Scalars['Int'];
 };
 
 /** The connection type for BookingOrderActivity. */
@@ -1467,7 +1467,7 @@ export type AdminBookingOrderActivityConnectionQuery = (
     { __typename?: 'BookingOrderActivityConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'BookingOrderActivity' }
-      & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'validOrdersCount' | 'createdAt'>
+      & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'validOrderSnapshotsCount' | 'createdAt'>
       & { market: (
         { __typename?: 'Market' }
         & { baseAsset: (
@@ -1539,7 +1539,7 @@ export type AdminBookingOrderActivityQuery = (
   { __typename?: 'Query' }
   & { adminBookingOrderActivity: (
     { __typename?: 'BookingOrderActivity' }
-    & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'validOrdersCount' | 'marketId' | 'createdAt'>
+    & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'validOrderSnapshotsCount' | 'marketId' | 'createdAt'>
     & { market: (
       { __typename?: 'Market' }
       & { baseAsset: (
@@ -2980,7 +2980,7 @@ export const AdminBookingOrderActivityConnectionDocument = gql`
       endedAt
       bonusTotal
       scoresTotal
-      validOrdersCount
+      validOrderSnapshotsCount
       market {
         baseAsset {
           assetId
@@ -3122,7 +3122,7 @@ export const AdminBookingOrderActivityDocument = gql`
     endedAt
     bonusTotal
     scoresTotal
-    validOrdersCount
+    validOrderSnapshotsCount
     marketId
     market {
       baseAsset {

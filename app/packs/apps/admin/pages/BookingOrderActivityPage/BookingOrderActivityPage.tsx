@@ -32,6 +32,9 @@ export default function BookingOrderActivityPage() {
         <Descriptions.Item label='Market'>
           {`${activity.market.baseAsset.symbol}/${activity.market.quoteAsset.symbol}`}
         </Descriptions.Item>
+        <Descriptions.Item label='validOrderSnapshotsCount'>
+          {activity.validOrderSnapshotsCount}
+        </Descriptions.Item>
         <Descriptions.Item label='bonuse total'>
           {`${activity.bonusTotal} ${activity.bonusAsset.symbol}`}
         </Descriptions.Item>

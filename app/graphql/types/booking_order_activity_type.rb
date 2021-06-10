@@ -8,7 +8,7 @@ module Types
     field :ended_at, GraphQL::Types::ISO8601DateTime, null: false
     field :bonus_total, Float, null: true
     field :scores_total, Float, null: false
-    field :valid_orders_count, Integer, null: false
+    field :valid_order_snapshots_count, Integer, null: false
     field :bonus_asset_id, String, null: true
 
     field :market, Types::MarketType, null: false

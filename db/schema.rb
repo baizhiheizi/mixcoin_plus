@@ -55,7 +55,6 @@ ActiveRecord::Schema.define(version: 2021_06_09_085358) do
     t.uuid "market_id"
     t.datetime "started_at"
     t.datetime "ended_at"
-    t.integer "valid_orders_count"
     t.float "scores_total"
     t.float "bonus_total"
     t.uuid "bonus_asset_id"
@@ -68,7 +67,7 @@ ActiveRecord::Schema.define(version: 2021_06_09_085358) do
     t.uuid "user_id"
     t.uuid "booking_order_activity_id"
     t.float "scores"
-    t.float "bonus"
+    t.float "bonus", default: 0.0
     t.uuid "bonus_asset_id"
     t.string "state"
     t.datetime "created_at", precision: 6, null: false
