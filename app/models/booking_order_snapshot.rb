@@ -54,7 +54,7 @@ class BookingOrderSnapshot < ApplicationRecord
     assign_attributes(
       price: snapshot['price'],
       funds: snapshot['remaining_funds'],
-      ticker: market.refrence_price
+      ticker: market.reference_price
     )
 
     self.order_weight = calculate_order_weight

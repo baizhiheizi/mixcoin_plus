@@ -102,4 +102,4 @@ ko:
     create_order_from_user: 주문
     match_to_user: 거래
     refund_to_user: 환불금
-  refrence_price: 참조 가격
+  reference_price: 참조 가격

@@ -247,16 +247,16 @@ class Market < ApplicationRecord
       funds: (1 / quote_asset.price_usd).round(8)
     )
     _amount = r&.[]('data')&.[]('fill_amount')
-    _refrence_price =
+    _reference_price =
       if _amount.present?
         (_funds / _amount.to_f).round(8)
       else
         (base_asset.price_usd / quote_asset.price_usd).round(8)
       end
 
-    Global.redis.set _reference_price_key, _refrence_price, ex: 30.seconds
+    Global.redis.set _reference_price_key, _reference_price, ex: 30.seconds
 
-    _refrence_price
+    _reference_price
   end
 
   def ensure_quote_and_base_not_the_same

@@ -110,7 +110,7 @@
     "transfer_type.create_order_from_user": "Order",
     "transfer_type.match_to_user": "Match",
     "transfer_type.refund_to_user": "Refund",
-    "refrence_price": "Ref",
+    "reference_price": "Ref",
     "notification": "Notification",
     "notifications.user_authorized_notification.message": "Authorized",
     "notifications.transfer_processed_notification.received": "Received",
@@ -232,7 +232,7 @@
     "transfer_type.create_order_from_user": "주문",
     "transfer_type.match_to_user": "거래",
     "transfer_type.refund_to_user": "환불금",
-    "refrence_price": "참조 가격"
+    "reference_price": "참조 가격"
   },
   "zh-CN": {
     "activerecord.models.ocean_order": "订单",
@@ -462,6 +462,6 @@
     "transfer_type.create_order_from_user": "下单",
     "transfer_type.match_to_user": "成交",
     "transfer_type.refund_to_user": "退款",
-    "refrence_price": "参考价"
+    "reference_price": "参考价"
   }
 }

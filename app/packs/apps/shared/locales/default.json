@@ -283,7 +283,7 @@
     "id": "transfer_type.refund_to_user",
     "defaultMessage": "Refund"
   },
-  "refrencePrice": { "id": "refrence_price", "defaultMessage": "Ref" },
+  "referencePrice": { "id": "reference_price", "defaultMessage": "Ref" },
   "notification": { "id": "notification", "defaultMessage": "Notification" },
   "notificationsUserAuthorizedNotificationMessage": {
     "id": "notifications.user_authorized_notification.message",
