@@ -217,7 +217,47 @@ class Market < ApplicationRecord
     update! booking_order_activity_enable: !booking_order_activity_enable
   end
 
+  def reference_price
+    _reference_price = (_get_reference_price.presence || _set_reference_price).to_f
+    if _reference_price < 10
+      _reference_price.floor(4)
+    else
+      _reference_price.floor(2)
+    end
+  end
+
   private
+
+  def _reference_price_key
+    "refrenece_price_#{id}"
+  end
+
+  def _get_reference_price
+    Global.redis.get _reference_price_key
+  end
+
+  def _set_reference_price
+    return if base_asset.price_usd.blank? || quote_asset.price_usd.blank?
+    return if base_asset.price_usd.zero? || quote_asset.price_usd.zero?
+
+    _funds = (1 / quote_asset.price_usd).round(8)
+    r = Foxswap.api.pre_order(
+      pay_asset_id: quote_asset_id,
+      fill_asset_id: base_asset_id,
+      funds: (1 / quote_asset.price_usd).round(8)
+    )
+    _amount = r&.[]('data')&.[]('fill_amount')
+    _refrence_price =
+      if _amount.present?
+        (_funds / _amount.to_f).round(8)
+      else
+        (base_asset.price_usd / quote_asset.price_usd).round(8)
+      end
+
+    Global.redis.set _reference_price_key, _refrence_price, ex: 30.seconds
+
+    _refrence_price
+  end
 
   def ensure_quote_and_base_not_the_same
     errors.add(:base_asset_id, 'cannot be same with quote') if base_asset_id == quote_asset_id

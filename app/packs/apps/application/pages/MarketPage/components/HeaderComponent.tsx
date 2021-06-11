@@ -33,18 +33,28 @@ export default function HeaderComponent(props: {
             </div>
           </div>
         </div>
-        <div className='flex items-center'>
+        <div className='flex items-start'>
           <div className='flex-1'>
-            <div
-              className={`${
-                market.priceCurrent ? 'text-2xl' : 'text-base'
-              } font-bold ${
-                market.change24h < 0 ? 'text-red-500' : 'text-green-500'
-              }`}
-            >
-              {market.priceCurrent || t('no_trades_yet')}
+            <div className='flex flex-wrap items-baseline'>
+              <div
+                className={`${
+                  market.priceCurrent ? 'text-xl' : 'text-base'
+                } font-bold mr-2 ${
+                  market.change24h < 0 ? 'text-red-500' : 'text-green-500'
+                }`}
+              >
+                {market.priceCurrent || t('no_trades_yet')}
+              </div>
+              <div
+                className={`text-sm ${
+                  market.change24h < 0 ? 'text-red-500' : 'text-green-500'
+                }`}
+              >
+                {market.change24h > 0 && '+'}
+                {(market.change24h * 100)?.toFixed(2)}%
+              </div>
             </div>
-            <div className='flex items-baseline'>
+            <div className='flex flex-wrap items-baseline'>
               {market.quoteAsset.priceUsd && market.priceCurrent && (
                 <div className='mr-2 text-xs text-gray-300'>
                   ≈ $
@@ -53,17 +63,14 @@ export default function HeaderComponent(props: {
                   )}
                 </div>
               )}
-              <div
-                className={`${
-                  market.change24h < 0 ? 'text-red-500' : 'text-green-500'
-                }`}
-              >
-                {market.change24h > 0 && '+'}
-                {(market.change24h * 100)?.toFixed(2)}%
-              </div>
+              {market.referencePrice && market.referencePrice > 0 && (
+                <div className='text-xs text-gray-300'>
+                  {t('refrence_price')}:{market.referencePrice}
+                </div>
+              )}
             </div>
           </div>
-          <div className='flex-1 pl-16 text-xs text-gray-300'>
+          <div className='flex-1 ml-4 text-xs text-gray-300'>
             <div className='flex items-center'>
               <div className=''>{t('24h_high')}:</div>
               <div className='ml-auto'>{market.highPrice24h || '-'}</div>

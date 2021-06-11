@@ -283,6 +283,7 @@
     "id": "transfer_type.refund_to_user",
     "defaultMessage": "Refund"
   },
+  "refrencePrice": { "id": "refrence_price", "defaultMessage": "Ref" },
   "notification": { "id": "notification", "defaultMessage": "Notification" },
   "notificationsUserAuthorizedNotificationMessage": {
     "id": "notifications.user_authorized_notification.message",
@@ -298,7 +299,7 @@
   },
   "notificationsOceanOrderStateNotificationTpl": {
     "id": "notifications.ocean_order_state_notification.tpl",
-    "defaultMessage": "ID: %\u003ctrace_id\u003es\nTicker: %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es\nSide: %\u003cside\u003es\nState: %\u003cstate\u003es\nPrice: %\u003cprice\u003es %\u003cquote_asset_symbol\u003es\nFilled: %\u003cfilled\u003es %\u003cfilled_symbol\u003es\nRemaining: %\u003cremaining\u003es %\u003cremaining_symbol\u003es\n"
+    "defaultMessage": "Ticker: %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es\nSide: %\u003cside\u003es\nState: %\u003cstate\u003es\nPrice: %\u003cprice\u003es %\u003cquote_asset_symbol\u003es\nFilled: %\u003cfilled\u003es %\u003cfilled_symbol\u003es\nRemaining: %\u003cremaining\u003es %\u003cremaining_symbol\u003es\n"
   },
   "notificationsOceanOrderStateNotificationCableTpl": {
     "id": "notifications.ocean_order_state_notification.cable_tpl",

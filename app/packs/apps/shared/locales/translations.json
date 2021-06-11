@@ -110,11 +110,12 @@
     "transfer_type.create_order_from_user": "Order",
     "transfer_type.match_to_user": "Match",
     "transfer_type.refund_to_user": "Refund",
+    "refrence_price": "Ref",
     "notification": "Notification",
     "notifications.user_authorized_notification.message": "Authorized",
     "notifications.transfer_processed_notification.received": "Received",
     "notifications.ocean_order_state_notification.market_price": "Market Price",
-    "notifications.ocean_order_state_notification.tpl": "ID: %\u003ctrace_id\u003es\nTicker: %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es\nSide: %\u003cside\u003es\nState: %\u003cstate\u003es\nPrice: %\u003cprice\u003es %\u003cquote_asset_symbol\u003es\nFilled: %\u003cfilled\u003es %\u003cfilled_symbol\u003es\nRemaining: %\u003cremaining\u003es %\u003cremaining_symbol\u003es\n",
+    "notifications.ocean_order_state_notification.tpl": "Ticker: %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es\nSide: %\u003cside\u003es\nState: %\u003cstate\u003es\nPrice: %\u003cprice\u003es %\u003cquote_asset_symbol\u003es\nFilled: %\u003cfilled\u003es %\u003cfilled_symbol\u003es\nRemaining: %\u003cremaining\u003es %\u003cremaining_symbol\u003es\n",
     "notifications.ocean_order_state_notification.cable_tpl": "Order %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es %\u003cstate\u003es",
     "errors.unavailable_session": "Session {id} is no longer available in memory.\n\nIf you happen to run on a multi-process server (like Unicorn or Puma) the process\nthis request hit doesn't store {id} in memory. Consider turning the number of\nprocesses/workers to one (1) or using a different server in development.\n",
     "errors.unacceptable_request": "A supported version is expected in the Accept header.\n",
@@ -230,7 +231,8 @@
     "remove": "제거",
     "transfer_type.create_order_from_user": "주문",
     "transfer_type.match_to_user": "거래",
-    "transfer_type.refund_to_user": "환불금"
+    "transfer_type.refund_to_user": "환불금",
+    "refrence_price": "참조 가격"
   },
   "zh-CN": {
     "activerecord.models.ocean_order": "订单",
@@ -357,7 +359,7 @@
     "notifications.user_authorized_notification.message": "成功授权",
     "notifications.transfer_processed_notification.received": "收到",
     "notifications.ocean_order_state_notification.market_price": "市场价",
-    "notifications.ocean_order_state_notification.tpl": "订单号: %\u003ctrace_id\u003es\n交易对: %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es\n订单种类: %\u003cside\u003es\n订单状态: %\u003cstate\u003es\n价格: %\u003cprice\u003es %\u003cquote_asset_symbol\u003es\n已成交: %\u003cfilled\u003es %\u003cfilled_symbol\u003es\n待成交: %\u003cremaining\u003es %\u003cremaining_symbol\u003es\n",
+    "notifications.ocean_order_state_notification.tpl": "交易对: %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es\n订单种类: %\u003cside\u003es\n订单状态: %\u003cstate\u003es\n价格: %\u003cprice\u003es %\u003cquote_asset_symbol\u003es\n已成交: %\u003cfilled\u003es %\u003cfilled_symbol\u003es\n待成交: %\u003cremaining\u003es %\u003cremaining_symbol\u003es\n",
     "notifications.ocean_order_state_notification.cable_tpl": "订单 %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es %\u003cstate\u003es",
     "home": "首页",
     "markets": "交易对",
@@ -459,6 +461,7 @@
     "remove": "移除",
     "transfer_type.create_order_from_user": "下单",
     "transfer_type.match_to_user": "成交",
-    "transfer_type.refund_to_user": "退款"
+    "transfer_type.refund_to_user": "退款",
+    "refrence_price": "参考价"
   }
 }

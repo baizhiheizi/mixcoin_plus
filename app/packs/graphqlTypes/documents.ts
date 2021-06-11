@@ -367,6 +367,7 @@ export type Market = {
   quoteAssetId: Scalars['String'];
   rank: Scalars['Int'];
   recommended?: Maybe<Scalars['Boolean']>;
+  referencePrice?: Maybe<Scalars['Float']>;
   tradesCount: Scalars['Int'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
   vol24h?: Maybe<Scalars['Float']>;
@@ -2354,7 +2355,7 @@ export type MarketQuery = (
   { __typename?: 'Query' }
   & { market: (
     { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'favorited' | 'priceCurrent' | 'change24h' | 'vol24h' | 'highPrice24h' | 'lowPrice24h' | 'oceanMarketId'>
+    & Pick<Market, 'id' | 'favorited' | 'priceCurrent' | 'change24h' | 'vol24h' | 'highPrice24h' | 'lowPrice24h' | 'referencePrice' | 'oceanMarketId'>
     & { baseAsset: (
       { __typename?: 'MixinAsset' }
       & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd' | 'changeUsd' | 'balance'>
@@ -5092,6 +5093,7 @@ export const MarketDocument = gql`
     vol24h
     highPrice24h
     lowPrice24h
+    referencePrice
     baseAsset {
       assetId
       symbol
