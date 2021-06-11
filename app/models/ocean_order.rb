@@ -264,7 +264,7 @@ class OceanOrder < ApplicationRecord
 
   def generate_booking_snapshot
     return unless booking?
-    return if (1 - price / market.price_current.to_f).abs > BookingOrderSnapshot::ALPHA_CONST / 100.0
+    return if (1 - price / market.reference_price).abs > BookingOrderSnapshot::ALPHA_CONST / 100.0
 
     booking_snapshots.create_with(
       user: user,
