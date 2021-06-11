@@ -57,7 +57,7 @@
     "react-on-rails": "12.2.0",
     "react-router-dom": "^5.2.0",
     "sass": "^1.34.1",
-    "sass-loader": "^12.0.0",
+    "sass-loader": "^12.1.0",
     "tailwindcss": "^2.1.4",
     "turbolinks": "^5.2.0",
     "typescript": "^4.3.2",
