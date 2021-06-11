@@ -45,7 +45,7 @@ class BookingOrderSnapshot < ApplicationRecord
   end
 
   def calculate_scores
-    calculate_order_weight * price
+    calculate_order_weight * funds
   end
 
   private
@@ -53,7 +53,7 @@ class BookingOrderSnapshot < ApplicationRecord
   def set_defaults
     assign_attributes(
       price: snapshot['price'],
-      funds: snapshot['remaining_funds'],
+      funds: snapshot['side'] == 'bid' ? snapshot['remaining_funds'] : snapshot['remaining_amount'] * snapshot['price'],
       ticker: market.reference_price
     )
 
