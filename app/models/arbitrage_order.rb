@@ -155,6 +155,9 @@ class ArbitrageOrder < ApplicationRecord
     return unless arbitraging?
 
     ocean_orders.booking.where(created_at: ...(Time.current - TIMEOUT_SECONDS.seconds)).map(&:cancel!)
+    ocean_orders.map(&:sync_with_engine)
+    swap_orders.map(&:sync_order)
+    complete! if may_complete?
   end
 
   def net_profit_usd
