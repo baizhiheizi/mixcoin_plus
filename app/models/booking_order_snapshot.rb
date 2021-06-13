@@ -25,7 +25,7 @@
 #  index_booking_order_snapshots_on_user_id         (user_id)
 #
 class BookingOrderSnapshot < ApplicationRecord
-  ALPHA_CONST = 5
+  ALPHA_CONST = 20
   N_CONST = 4
 
   belongs_to :user
