@@ -181,7 +181,7 @@ export default function ActionComponent(props: {
           side: orderSide,
           orderType,
           price: parseFloat(orderPrice).toFixed(4),
-          funds: calculateFunds(),
+          funds: calculateFunds().toFixed(4),
         },
       },
     });

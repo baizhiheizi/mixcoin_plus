@@ -179,7 +179,7 @@ class OceanOrder < ApplicationRecord
       transfer_type: :ocean_order_create,
       opponent_id: Broker::OCEAN_ENGINE_USER_ID,
       asset_id: side.ask? ? base_asset_id : quote_asset_id,
-      amount: side.ask? ? remaining_amount : remaining_funds,
+      amount: side.ask? ? remaining_amount.to_f : remaining_funds.to_f,
       memo: memo_for_creating
     ).find_or_create_by!(
       trace_id: trace_id_for_creating
