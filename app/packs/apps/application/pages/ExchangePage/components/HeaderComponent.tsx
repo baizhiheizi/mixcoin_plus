@@ -63,7 +63,7 @@ export default function HeaderComponent(props: {
               ).toFixed(2)}`}
             </div>
           )}
-          {market.referencePrice && (
+          {market.referencePrice && market.referencePrice > 0 && (
             <div className='text-xs text-gray-300'>
               ({t('reference_price')}:{market.referencePrice})
             </div>
