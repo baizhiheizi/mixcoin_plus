@@ -68,7 +68,7 @@ export default function ActionComponent(props: {
         },
       },
     ) {
-      if (currentUser.fennec) {
+      if (currentUser?.fennec) {
         fennec.wallet.transfer({
           asset_id: paymentAssetId,
           amount: paymentAmount,
@@ -303,7 +303,7 @@ export default function ActionComponent(props: {
   };
 
   useEffect(() => {
-    if (currentUser.fennec && fennec) {
+    if (currentUser?.fennec && fennec) {
       fetchBalanceFromFennec();
     }
   }, [market.id, fennec]);
