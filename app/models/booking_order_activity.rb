@@ -19,7 +19,7 @@
 #  index_booking_order_activities_on_market_id  (market_id)
 #
 class BookingOrderActivity < ApplicationRecord
-  BONUS_TOTAL_DEFAULT = 0.0001
+  BONUS_TOTAL_DEFAULT = 0.0003
 
   belongs_to :market
   belongs_to :bonus_asset, class_name: 'MixinAsset', primary_key: :asset_id
