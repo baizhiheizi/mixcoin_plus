@@ -53,7 +53,7 @@ class BookingOrderSnapshot < ApplicationRecord
   def set_defaults
     assign_attributes(
       price: snapshot['price'],
-      funds: snapshot['side'] == 'bid' ? snapshot['remaining_funds'] : snapshot['remaining_amount'] * snapshot['price'],
+      funds: snapshot['side'] == 'bid' ? snapshot['remaining_funds'].to_f : snapshot['remaining_amount'].to_f * snapshot['price'].to_f,
       ticker: market.reference_price
     )
 
