@@ -50,6 +50,8 @@ class BookingOrderActivityParticipant < ApplicationRecord
   end
 
   def distribute_bonus!
+    return if bonus.to_f < MixinTransfer::MINIMUM_AMOUNT
+
     ActiveRecord::Base.transaction do
       MixinTransfer.create_with(
         source: self,
