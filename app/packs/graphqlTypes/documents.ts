@@ -1469,7 +1469,7 @@ export type AdminBookingOrderActivityConnectionQuery = (
     { __typename?: 'BookingOrderActivityConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'BookingOrderActivity' }
-      & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'validOrderSnapshotsCount' | 'createdAt'>
+      & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'createdAt'>
       & { market: (
         { __typename?: 'Market' }
         & { baseAsset: (
@@ -1541,7 +1541,7 @@ export type AdminBookingOrderActivityQuery = (
   { __typename?: 'Query' }
   & { adminBookingOrderActivity: (
     { __typename?: 'BookingOrderActivity' }
-    & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'marketId' | 'createdAt'>
+    & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'validOrderSnapshotsCount' | 'marketId' | 'createdAt'>
     & { market: (
       { __typename?: 'Market' }
       & { baseAsset: (
@@ -2982,7 +2982,6 @@ export const AdminBookingOrderActivityConnectionDocument = gql`
       endedAt
       bonusTotal
       scoresTotal
-      validOrderSnapshotsCount
       market {
         baseAsset {
           assetId
@@ -3124,6 +3123,7 @@ export const AdminBookingOrderActivityDocument = gql`
     endedAt
     bonusTotal
     scoresTotal
+    validOrderSnapshotsCount
     marketId
     market {
       baseAsset {

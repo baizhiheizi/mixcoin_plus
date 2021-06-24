@@ -6,7 +6,6 @@ query AdminBookingOrderActivityConnection($after: String, $marketId: ID) {
       endedAt
       bonusTotal
       scoresTotal
-      validOrderSnapshotsCount
       market {
         baseAsset {
           assetId

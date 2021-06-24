@@ -5,6 +5,7 @@ query AdminBookingOrderActivity($id: ID!) {
     endedAt
     bonusTotal
     scoresTotal
+    validOrderSnapshotsCount
     marketId
     market {
       baseAsset {
