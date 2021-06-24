@@ -1541,7 +1541,7 @@ export type AdminBookingOrderActivityQuery = (
   { __typename?: 'Query' }
   & { adminBookingOrderActivity: (
     { __typename?: 'BookingOrderActivity' }
-    & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'validOrderSnapshotsCount' | 'marketId' | 'createdAt'>
+    & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'marketId' | 'createdAt'>
     & { market: (
       { __typename?: 'Market' }
       & { baseAsset: (
@@ -3124,7 +3124,6 @@ export const AdminBookingOrderActivityDocument = gql`
     endedAt
     bonusTotal
     scoresTotal
-    validOrderSnapshotsCount
     marketId
     market {
       baseAsset {

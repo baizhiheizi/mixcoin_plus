@@ -66,11 +66,6 @@ export default function BookingOrderActivitiesComponent(props: {
       title: 'scoresTotal',
     },
     {
-      dataIndex: 'validOrderSnapshotsCount',
-      key: 'validOrderSnapshotsCount',
-      title: 'validOrderSnapshotsCount',
-    },
-    {
       dataIndex: 'createdAt',
       key: 'createdAt',
       title: 'createdAt',
