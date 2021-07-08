@@ -2,12 +2,14 @@
 
 module Mutations
   class AdminBookingOrderActivityParticipantDistributeBonusMutation < Mutations::AdminBaseMutation
-    argument :id, ID, required: true
+    argument :participant_id, ID, required: false
+    argument :activity_id, ID, required: false
 
     type Boolean
 
-    def resolve(id:)
-      BookingOrderActivityParticipant.find(id).distribute_bonus!
+    def resolve(**params)
+      BookingOrderActivityParticipant.find(params[:participant_id]).distribute_bonus! if params[:participant_id].present?
+      BookingOrderActivity.find(params[:activity_id]).participants.pending.map(&:distribute_bonus!) if params[:activity_id].present?
     end
   end
 end

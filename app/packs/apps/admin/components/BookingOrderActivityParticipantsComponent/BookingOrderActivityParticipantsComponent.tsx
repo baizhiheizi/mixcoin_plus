@@ -121,11 +121,19 @@ export default function BookingOrderActivityParticipantsComponent(props: {
           } to ${participant.user.name}`}
           onConfirm={() =>
             distributeBonus({
-              variables: { input: { id: participant.id } },
+              variables: { input: { participantId: participant.id } },
             })
           }
         >
-          <span className='cursor-pointer'>Distribute</span>
+          <a
+            className={`${
+              (participant.bonus < 0.000_000_01 ||
+                participant.state !== 'pending') &&
+              'cursor-not-allowed'
+            }`}
+          >
+            Distribute
+          </a>
         </Popconfirm>
       ),
       title: 'Actions',

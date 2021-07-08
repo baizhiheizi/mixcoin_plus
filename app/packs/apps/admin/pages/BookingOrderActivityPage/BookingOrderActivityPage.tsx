@@ -1,5 +1,8 @@
-import { Button, Descriptions, PageHeader, Tabs } from 'antd';
-import { useAdminBookingOrderActivityQuery } from 'graphqlTypes';
+import { Button, Descriptions, PageHeader, Popconfirm, Tabs } from 'antd';
+import {
+  useAdminBookingOrderActivityParticipantDistributeBonusMutation,
+  useAdminBookingOrderActivityQuery,
+} from 'graphqlTypes';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import BookingOrderSnapshotsComponent from 'apps/admin/components/BookingOrderSnapshotsComponent/BookingOrderSnapshotsComponent';
 import BookingOrderActivityParticipantsComponent from 'apps/admin/components/BookingOrderActivityParticipantsComponent/BookingOrderActivityParticipantsComponent';
@@ -11,6 +14,10 @@ export default function BookingOrderActivityPage() {
   const { loading, data, refetch } = useAdminBookingOrderActivityQuery({
     variables: { id },
   });
+  const [distributeBonus] =
+    useAdminBookingOrderActivityParticipantDistributeBonusMutation({
+      update: () => refetch(),
+    });
 
   if (loading) {
     return <LoadingComponent />;
@@ -42,6 +49,16 @@ export default function BookingOrderActivityPage() {
           {activity.scoresTotal}
         </Descriptions.Item>
       </Descriptions>
+      <div className='mb-2'>
+        <Popconfirm
+          title='Are you sure to distribute all bonus?'
+          onConfirm={() =>
+            distributeBonus({ variables: { input: { activityId: id } } })
+          }
+        >
+          <Button type='primary'>Distribute</Button>
+        </Popconfirm>
+      </div>
       <Tabs defaultActiveKey='snapshots'>
         <Tabs.TabPane tab='Participants' key='participants'>
           <BookingOrderActivityParticipantsComponent
