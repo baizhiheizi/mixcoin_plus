@@ -151,7 +151,7 @@ GEM
     libv8-node (15.14.0.1)
     libv8-node (15.14.0.1-x86_64-darwin-20)
     libv8-node (15.14.0.1-x86_64-linux)
-    listen (3.5.1)
+    listen (3.6.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     loofah (2.10.0)
@@ -344,7 +344,7 @@ DEPENDENCIES
   groupdate
   jbuilder (~> 2.7)
   jwt
-  listen (~> 3.3)
+  listen (~> 3.6)
   mina (~> 1.2.2)
   mina-logs (~> 1.1.0)
   mina-multistage (~> 1.0.3)
