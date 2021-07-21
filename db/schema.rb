@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_085358) do
+ActiveRecord::Schema.define(version: 2021_07_21_010001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -111,6 +111,16 @@ ActiveRecord::Schema.define(version: 2021_06_09_085358) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["invitee_id"], name: "index_invitations_on_invitee_id", unique: true
     t.index ["invitor_id"], name: "index_invitations_on_invitor_id"
+  end
+
+  create_table "market_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "market_id"
+    t.float "price"
+    t.datetime "time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["market_id"], name: "index_market_prices_on_market_id"
+    t.index ["time"], name: "index_market_prices_on_time"
   end
 
   create_table "markets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

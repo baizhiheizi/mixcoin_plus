@@ -55,6 +55,8 @@ gem 'ransack'
 gem 'action-store'
 # This acts_as extension provides the capabilities for sorting and reordering a number of objects in a list.
 gem 'acts_as_list'
+# The simplest way to group temporal data
+gem 'groupdate'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

@@ -1,0 +1,16 @@
+query MarketTradeConnection($marketId: ID!, $after: String) {
+  marketTradeConnection(marketId: $marketId, after: $after) {
+    nodes {
+      id
+      tradeId
+      side
+      amount
+      price
+      tradedAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

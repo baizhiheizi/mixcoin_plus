@@ -13,3 +13,6 @@ booking_order_snapshot_generate_worker:
 booking_order_activity_generate_worker:
   cron: '5 0 * * *'
   class: 'BookingOrderActivityGenerateWorker'
+batch_market_generate_price_records_worker:
+  cron: '0 * * * *'
+  class: 'BatchMarketGeneratePriceRecordsWorker'

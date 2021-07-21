@@ -27,14 +27,7 @@ export function prepareCandleData(data: Array<Array<number>>) {
   return [ohlc, volume];
 }
 
-export function priceChartOptions(trades: ITrade[]): Highcharts.Options {
-  let data = [];
-  for (let i = 0; i < trades.length; i += 1) {
-    data.push([
-      moment(trades[i].created_at).valueOf(),
-      parseFloat(new BigNumber(trades[i].price).toFixed(8)),
-    ]);
-  }
+export function priceChartOptions(data: any[]): Highcharts.Options {
   return {
     navigator: {
       enabled: false,
@@ -55,7 +48,6 @@ export function priceChartOptions(trades: ITrade[]): Highcharts.Options {
         type: 'area',
         name: 'Price',
         data,
-        gapSize: 5,
         tooltip: {
           valueDecimals: 2,
         },

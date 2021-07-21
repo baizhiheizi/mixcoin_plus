@@ -2,7 +2,7 @@ import { useInterval, useWebSocket } from 'ahooks';
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
 import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import { orderBookMessageReducer } from 'apps/application/reducers';
-import { fetchTrades, ITrade, WS_ENDPOINT } from 'apps/application/utils';
+import { WS_ENDPOINT } from 'apps/application/utils';
 import { ReadyState } from 'apps/shared';
 import BigNumber from 'bignumber.js';
 import { Market, useMarketQuery } from 'graphqlTypes';
@@ -34,25 +34,11 @@ export default function MarketPage() {
   const { loading, data } = useMarketQuery({
     variables: { id: marketId },
   });
-  const [tradesFetched, setTradesFetched] = useState(false);
-  const [trades, setTrades] = useState<ITrade[]>([]);
   const [book, dispatchBook] = useReducer(orderBookMessageReducer, {
     asks: [],
     bids: [],
   });
   const [subscribed, setSubscribed] = useState(false);
-
-  async function refreshTrades() {
-    if (data?.market?.oceanMarketId) {
-      const res = await fetchTrades(data?.market?.oceanMarketId);
-      if (res?.data?.data) {
-        setTrades(res.data.data);
-        if (!tradesFetched) {
-          setTradesFetched(true);
-        }
-      }
-    }
-  }
 
   const { latestMessage, sendMessage, readyState } = useWebSocket(WS_ENDPOINT, {
     onError: (e) => {
@@ -97,13 +83,6 @@ export default function MarketPage() {
       fileReader.readAsArrayBuffer(latestMessage.data);
     }
   }, [marketId, latestMessage]);
-  useInterval(
-    () => {
-      refreshTrades();
-    },
-    5000,
-    { immediate: true },
-  );
 
   useInterval(() => {
     if (subscribed) {
@@ -136,11 +115,7 @@ export default function MarketPage() {
     <div className='pb-28'>
       <NavbarComponent back />
       <HeaderComponent market={market} />
-      <PriceChartComponent
-        market={market}
-        trades={trades}
-        fetched={tradesFetched}
-      />
+      <PriceChartComponent marketId={market.id} />
       <div className='mb-1'>
         <Tabs className='bg-white dark:bg-dark' defaultValue={0}>
           <Tabs.Panel title={t('open_orders')}>
@@ -158,11 +133,7 @@ export default function MarketPage() {
             />
           </Tabs.Panel>
           <Tabs.Panel title={t('history_trades')}>
-            <HistoryTradesComponent
-              fetched={tradesFetched}
-              market={market as Market}
-              trades={trades.slice(0, 20)}
-            />
+            <HistoryTradesComponent market={market as Market} />
           </Tabs.Panel>
         </Tabs>
       </div>

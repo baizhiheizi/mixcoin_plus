@@ -37,6 +37,8 @@ module Types
 
     field :current_conversation, resolver: Resolvers::CurrentConversationResolver
     field :market, resolver: Resolvers::MarketResolver
+    field :market_price_chart_data, resolver: Resolvers::MarketPriceChartDataResolver
+    field :market_trade_connection, resolver: Resolvers::MarketTradeConnectionResolver
     field :market_connection, resolver: Resolvers::MarketConnectionResolver
     field :mixin_asset_connection, resolver: Resolvers::MixinAssetConnectionResolver
     field :ocean_order_connection, resolver: Resolvers::OceanOrderConnectionResolver

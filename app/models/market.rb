@@ -52,6 +52,7 @@ class Market < ApplicationRecord
   has_many :arbitrage_orders, dependent: :restrict_with_exception
   has_many :booking_order_snapshots, dependent: :restrict_with_exception
   has_many :booking_order_activities, dependent: :restrict_with_exception
+  has_many :prices, class_name: 'MarketPrice', dependent: :restrict_with_exception
 
   default_scope { includes(:base_asset, :quote_asset) }
 
@@ -223,6 +224,30 @@ class Market < ApplicationRecord
       _reference_price.floor(4)
     else
       _reference_price.floor(2)
+    end
+  end
+
+  def generate_price_record_async(_time = Time.current)
+    MarketGeneratePriceRecordWorker.perform_async id, _time
+  end
+
+  def generate_price_record(_time = Time.current)
+    time = _time.beginning_of_hour
+    last_tade = trades.where(traded_at: ..._time).order(traded_at: :desc).first
+    prices.create_with(
+      price: last_tade.price
+    ).find_or_create_by(
+      time: time
+    )
+  end
+
+  def generate_price_records_in_last_week
+    _time = Time.current - 7.days
+    loop do
+      break if _time > Time.current
+
+      generate_price_record_async _time
+      _time += 1.hour
     end
   end
 

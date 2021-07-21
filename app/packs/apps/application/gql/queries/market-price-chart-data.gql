@@ -1,0 +1,3 @@
+query MarketPriceChartData($marketId: ID) {
+  marketPriceChartData(marketId: $marketId)
+}
