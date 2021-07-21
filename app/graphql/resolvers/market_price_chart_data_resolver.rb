@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Resolvers
-  class MarketPriceChartDataResolver < Resolvers::AdminBaseResolver
+  class MarketPriceChartDataResolver < Resolvers::BaseResolver
     argument :market_id, ID, required: false
     argument :range, String, required: false
 

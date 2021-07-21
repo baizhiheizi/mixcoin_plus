@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Resolvers
-  class MarketTradeConnectionResolver < Resolvers::AdminBaseResolver
+  class MarketTradeConnectionResolver < Resolvers::BaseResolver
     argument :market_id, ID, required: true
     argument :after, String, required: false
 
