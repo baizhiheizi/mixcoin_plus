@@ -29,6 +29,7 @@ export default function ExchangePage() {
   const [timestamp, setTimestamp] = useState(Date.now());
   const { loading, data } = useMarketQuery({
     variables: { id: marketId },
+    pollInterval: 5000,
   });
   const [ticker, setTicker] = useState<ITrade>();
 

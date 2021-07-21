@@ -33,6 +33,7 @@ export default function MarketPage() {
   const { marketId } = useParams<{ marketId: string }>();
   const { loading, data } = useMarketQuery({
     variables: { id: marketId },
+    pollInterval: 5000,
   });
   const [book, dispatchBook] = useReducer(orderBookMessageReducer, {
     asks: [],

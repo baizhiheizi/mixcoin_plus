@@ -21,6 +21,7 @@ export default function MarketsComponent(props: {
   const { currentConversation } = useCurrentConversation();
   const { loading, data, refetch, fetchMore } = useMarketConnectionQuery({
     variables: { type, query },
+    pollInterval: 5000,
   });
 
   if (loading) {

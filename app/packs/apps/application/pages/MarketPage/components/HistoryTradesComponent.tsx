@@ -11,6 +11,7 @@ export default function HistoryTradesComponent(props: {
   const { loading, data } = useMarketTradeConnectionQuery({
     variables: { marketId: market.id },
     fetchPolicy: 'network-only',
+    pollInterval: 5000,
   });
   const { t } = useTranslation();
 
