@@ -58,7 +58,7 @@
     "react-router-dom": "^5.2.0",
     "sass": "^1.35.2",
     "sass-loader": "^12.1.0",
-    "tailwindcss": "^2.2.4",
+    "tailwindcss": "^2.2.6",
     "turbolinks": "^5.2.0",
     "typescript": "^4.3.5",
     "uuid": "^8.3.2",
