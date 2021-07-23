@@ -2,15 +2,19 @@
 #
 # Table name: booking_order_activities
 #
-#  id             :uuid             not null, primary key
-#  bonus_total    :float
-#  ended_at       :datetime
-#  scores_total   :float
-#  started_at     :datetime
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  bonus_asset_id :uuid
-#  market_id      :uuid
+#  id                 :uuid             not null, primary key
+#  avg_funds          :float
+#  bonus_total        :float
+#  ended_at           :datetime
+#  participants_count :integer
+#  scores_total       :float
+#  started_at         :datetime
+#  traded_amount      :float
+#  traded_funds       :float
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  bonus_asset_id     :uuid
+#  market_id          :uuid
 #
 # Indexes
 #

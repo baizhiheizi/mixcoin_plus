@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_21_010001) do
+ActiveRecord::Schema.define(version: 2021_07_23_065907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -60,6 +60,10 @@ ActiveRecord::Schema.define(version: 2021_07_21_010001) do
     t.uuid "bonus_asset_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "traded_amount"
+    t.float "traded_funds"
+    t.float "avg_funds"
+    t.integer "participants_count"
     t.index ["market_id"], name: "index_booking_order_activities_on_market_id"
   end
 

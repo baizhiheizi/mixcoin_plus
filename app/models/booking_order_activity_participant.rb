@@ -23,7 +23,7 @@ class BookingOrderActivityParticipant < ApplicationRecord
   include AASM
 
   belongs_to :user
-  belongs_to :booking_order_activity
+  belongs_to :booking_order_activity, counter_cache: :participants_count
   belongs_to :bonus_asset, class_name: 'MixinAsset', primary_key: :asset_id
 
   validates :user_id, uniqueness: { scope: :booking_order_activity_id }
