@@ -7,6 +7,10 @@ query AdminBookingOrderActivity($id: ID!) {
     scoresTotal
     validOrderSnapshotsCount
     marketId
+    participantsCount
+    avgFunds
+    tradedAmount
+    tradedFunds
     market {
       baseAsset {
         assetId

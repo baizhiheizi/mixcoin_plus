@@ -1,4 +1,11 @@
-import { Button, Descriptions, PageHeader, Popconfirm, Tabs } from 'antd';
+import {
+  Button,
+  Descriptions,
+  message,
+  PageHeader,
+  Popconfirm,
+  Tabs,
+} from 'antd';
 import {
   useAdminBookingOrderActivityParticipantDistributeBonusMutation,
   useAdminBookingOrderActivityQuery,
@@ -16,7 +23,10 @@ export default function BookingOrderActivityPage() {
   });
   const [distributeBonus] =
     useAdminBookingOrderActivityParticipantDistributeBonusMutation({
-      update: () => refetch(),
+      update: () => {
+        refetch();
+        message.success('Distributed');
+      },
     });
 
   if (loading) {
@@ -47,6 +57,18 @@ export default function BookingOrderActivityPage() {
         </Descriptions.Item>
         <Descriptions.Item label='scoresTotal'>
           {activity.scoresTotal}
+        </Descriptions.Item>
+        <Descriptions.Item label='participantsCount'>
+          {activity.participantsCount}
+        </Descriptions.Item>
+        <Descriptions.Item label='avgFunds'>
+          {activity.avgFunds}
+        </Descriptions.Item>
+        <Descriptions.Item label='tradedAmount'>
+          {activity.tradedAmount} {activity.market.baseAsset.symbol}
+        </Descriptions.Item>
+        <Descriptions.Item label='tradedFunds'>
+          {activity.tradedFunds} {activity.market.quoteAsset.symbol}
         </Descriptions.Item>
       </Descriptions>
       <div className='mb-2'>

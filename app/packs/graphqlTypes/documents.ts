@@ -148,6 +148,7 @@ export type ArbitrageOrderEdge = {
 
 export type BookingOrderActivity = {
   __typename?: 'BookingOrderActivity';
+  avgFunds?: Maybe<Scalars['Float']>;
   bonusAsset: MixinAsset;
   bonusAssetId?: Maybe<Scalars['String']>;
   bonusTotal?: Maybe<Scalars['Float']>;
@@ -156,8 +157,11 @@ export type BookingOrderActivity = {
   id: Scalars['ID'];
   market: Market;
   marketId: Scalars['String'];
+  participantsCount?: Maybe<Scalars['Int']>;
   scoresTotal: Scalars['Float'];
   startedAt: Scalars['ISO8601DateTime'];
+  tradedAmount?: Maybe<Scalars['Float']>;
+  tradedFunds?: Maybe<Scalars['Float']>;
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
   validOrderSnapshotsCount: Scalars['Int'];
 };
@@ -1490,7 +1494,7 @@ export type AdminBookingOrderActivityConnectionQuery = (
     { __typename?: 'BookingOrderActivityConnection' }
     & { nodes?: Maybe<Array<Maybe<(
       { __typename?: 'BookingOrderActivity' }
-      & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'createdAt'>
+      & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'participantsCount' | 'avgFunds' | 'tradedAmount' | 'tradedFunds' | 'createdAt'>
       & { market: (
         { __typename?: 'Market' }
         & { baseAsset: (
@@ -1562,7 +1566,7 @@ export type AdminBookingOrderActivityQuery = (
   { __typename?: 'Query' }
   & { adminBookingOrderActivity: (
     { __typename?: 'BookingOrderActivity' }
-    & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'validOrderSnapshotsCount' | 'marketId' | 'createdAt'>
+    & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'validOrderSnapshotsCount' | 'marketId' | 'participantsCount' | 'avgFunds' | 'tradedAmount' | 'tradedFunds' | 'createdAt'>
     & { market: (
       { __typename?: 'Market' }
       & { baseAsset: (
@@ -3033,6 +3037,10 @@ export const AdminBookingOrderActivityConnectionDocument = gql`
       endedAt
       bonusTotal
       scoresTotal
+      participantsCount
+      avgFunds
+      tradedAmount
+      tradedFunds
       market {
         baseAsset {
           assetId
@@ -3176,6 +3184,10 @@ export const AdminBookingOrderActivityDocument = gql`
     scoresTotal
     validOrderSnapshotsCount
     marketId
+    participantsCount
+    avgFunds
+    tradedAmount
+    tradedFunds
     market {
       baseAsset {
         assetId

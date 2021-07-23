@@ -6,6 +6,10 @@ query AdminBookingOrderActivityConnection($after: String, $marketId: ID) {
       endedAt
       bonusTotal
       scoresTotal
+      participantsCount
+      avgFunds
+      tradedAmount
+      tradedFunds
       market {
         baseAsset {
           assetId

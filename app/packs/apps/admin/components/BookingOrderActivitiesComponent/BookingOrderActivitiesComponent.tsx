@@ -66,6 +66,32 @@ export default function BookingOrderActivitiesComponent(props: {
       title: 'scoresTotal',
     },
     {
+      dataIndex: 'avgFunds',
+      key: 'avgFunds',
+      render: (_, activity) =>
+        `${activity.avgFunds} ${activity.market.quoteAsset.symbol}`,
+      title: 'avgFunds',
+    },
+    {
+      dataIndex: 'participantsCount',
+      key: 'participantsCount',
+      title: 'participantsCount',
+    },
+    {
+      dataIndex: 'tradedAmount',
+      key: 'tradedAmount',
+      render: (_, activity) =>
+        `${activity.tradedAmount} ${activity.market.baseAsset.symbol}`,
+      title: 'tradedAmount',
+    },
+    {
+      dataIndex: 'tradedFunds',
+      key: 'tradedFunds',
+      render: (_, activity) =>
+        `${activity.tradedFunds} ${activity.market.quoteAsset.symbol}`,
+      title: 'tradedFunds',
+    },
+    {
       dataIndex: 'createdAt',
       key: 'createdAt',
       title: 'createdAt',
