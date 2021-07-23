@@ -40,7 +40,7 @@ class ArbitrageOrder < ApplicationRecord
   validates :raw, presence: true
 
   after_commit on: :create do
-    if arbitrager_balance_sufficient? && expected_profit_reasonable?
+    if arbitrager_balance_sufficient? && swap_price_reasonable?
       start_arbitrage!
     else
       notify_admin_async
@@ -103,13 +103,8 @@ class ArbitrageOrder < ApplicationRecord
     end
   end
 
-  def expected_profit_reasonable?
-    case raw[:ocean][:side]
-    when :bid
-      expected_profit / raw[:ocean][:funds] < MAX_EXPECTED_PROFIT_RATIO
-    when :ask
-      expected_profit / raw[:ocean][:amount] < MAX_EXPECTED_PROFIT_RATIO
-    end
+  def swap_price_reasonable?
+    (raw[:swap][:price] * market.quote_asset.price_usd / market.base_asset.price_usd - 1).abs < MAX_EXPECTED_PROFIT_RATIO
   end
 
   def arbitrager_quote_balance
