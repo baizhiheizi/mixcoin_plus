@@ -18,7 +18,7 @@ export default function TabbarComponent(props: { activeTabKey: ITabKey }) {
 
   return (
     <>
-      <div className='fixed bottom-0 left-0 z-50 w-full bg-gray-100 dark:bg-dark'>
+      <div className='fixed bottom-0 left-0 z-50 w-full bg-gray-50 dark:bg-dark'>
         <div className='m-auto max-w-screen-md'>
           <TabBar
             className='relative'
