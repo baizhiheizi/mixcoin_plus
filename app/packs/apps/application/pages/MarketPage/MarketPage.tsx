@@ -59,6 +59,10 @@ export default function MarketPage() {
   };
 
   useEffect(() => {
+    localStorage.setItem('_cachedMarketId', marketId);
+  }, [marketId]);
+
+  useEffect(() => {
     if (readyState === ReadyState.Open) {
       sendSubscribeMessage();
     }

@@ -40,7 +40,7 @@ export default function HistoryTradesComponent(props: {
       </div>
       {trades.length > 0 ? (
         trades.map((trade) => (
-          <div key={trade.tradedAt} className='flex items-center mb-1'>
+          <div key={trade.tradeId} className='flex items-center mb-1'>
             <div className='flex-1 text-left'>{trade.amount}</div>
             <div
               className={`text-center flex-1 ${
