@@ -20,7 +20,7 @@ export default function HeaderComponent(props: {
 
   return (
     <>
-      <div className='flex items-start px-4 py-2 mb-1 bg-white dark:bg-dark dark:text-white'>
+      <div className='sticky z-10 flex items-start px-4 py-2 mb-1 bg-white shadow-sm top-10 dark:bg-dark dark:text-white'>
         <div className='flex items-center'>
           <MenuIcon
             className='mr-2'

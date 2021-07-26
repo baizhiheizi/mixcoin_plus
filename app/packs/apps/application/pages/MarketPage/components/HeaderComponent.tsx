@@ -10,7 +10,7 @@ export default function HeaderComponent(props: {
 
   return (
     <>
-      <div className='px-4 py-2 mb-1 bg-white dark:bg-dark dark:text-white'>
+      <div className='sticky z-10 px-4 py-2 mb-1 bg-white shadow-sm top-10 dark:bg-dark dark:text-white'>
         <div className='flex items-center'>
           <div className='flex items-center mr-2'>
             <div className='relative mr-2'>
