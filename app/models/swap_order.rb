@@ -71,7 +71,7 @@ class SwapOrder < ApplicationRecord
       transitions from: :paid, to: :swapping
     end
 
-    event :trade, after_commit: %i[sync_order check_arbitrage_order] do
+    event :trade, after: %i[sync_order check_arbitrage_order] do
       transitions from: :swapping, to: :traded
     end
 

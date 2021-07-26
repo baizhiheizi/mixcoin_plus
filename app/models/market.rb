@@ -36,9 +36,9 @@ class Market < ApplicationRecord
   # Ocean ONE accepts all assets in Mixin Network as base currencies,
   # and the only supported quote currencies are
   # Mixin XIN (c94ac88f-4671-3976-b60a-09064f1811e8),
-  # Bitcoin BTC (c6d0c728-2624-429b-8e0d-d9d19b6592fa) and
-  # Omni USDT (815b0b1a-2764-3736-8faa-42d694fa620a).
-  # pUSD (31d2ea9c-95eb-3355-b65b-ba096853bc18).
+  # Bitcoin BTC (c6d0c728-2624-429b-8e0d-d9d19b6592fa),
+  # Omni USDT (815b0b1a-2764-3736-8faa-42d694fa620a),
+  # pUSD (31d2ea9c-95eb-3355-b65b-ba096853bc18) and
   # Erc20 USDT (4d8c508b-91c5-375b-92b0-ee702ed2dac5).
   validates :quote_asset_id, presence: true, inclusion: { in: AVAILABLE_QUOTES }
   validates :base_asset_id, presence: true
