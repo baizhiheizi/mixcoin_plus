@@ -22,7 +22,7 @@ gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
 # Integration of React + Webpack + Rails + rails/webpacker including server-side rendering of React, enabling a better developer experience and faster client performance.
-gem 'react_on_rails', '~> 12.0'
+gem 'react_on_rails', '~> 12.3'
 # Ruby implementation of GraphQL http://graphql-ruby.org
 gem 'graphql'
 # Powerful tool for avoiding N+1 DB or HTTP queries
