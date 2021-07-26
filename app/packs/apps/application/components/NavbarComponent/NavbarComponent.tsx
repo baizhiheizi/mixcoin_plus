@@ -17,6 +17,7 @@ export default function NavbarComponent(props: { title?: string }) {
 
   useEffect(() => {
     setShowBack(location.pathname !== '/');
+    setSidebarVisible(false);
   }, [location.pathname]);
 
   return (
