@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { Button, Cell, Modal, Panel, Radio } from 'zarm';
 
-export default function MineComponent() {
+export default function SettingComponent() {
   const history = useHistory();
   const { currentUser } = useCurrentUser();
   const { appId, appName, appIconUrl } = useMixinBot();

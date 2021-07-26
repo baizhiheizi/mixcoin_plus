@@ -1,6 +1,7 @@
 import { User as UserIcon } from '@icon-park/react';
 import LoginComponent from 'apps/application/components/LoginComponent/LoginComponent';
 import MarketsComponent from 'apps/application/components/MarketsComponent/MarketsComponent';
+import SettingComponent from 'apps/application/components/SettingComponent/SettingComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
 import { useCurrentConversation } from 'apps/application/contexts/CurrentConversationContext';
@@ -10,7 +11,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { Message, Popup, Tabs } from 'zarm';
-import MineComponent from './components/MineComponent';
 
 export default function HomePage() {
   const { currentUser } = useCurrentUser();
@@ -101,7 +101,7 @@ export default function HomePage() {
         onMaskClick={() => setSidebarVisible(false)}
         visible={sidebarVisible}
       >
-        <MineComponent />
+        <SettingComponent />
       </Popup>
       <TabbarComponent activeTabKey='home' />
     </div>

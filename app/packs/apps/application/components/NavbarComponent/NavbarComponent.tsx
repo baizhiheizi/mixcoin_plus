@@ -1,34 +1,31 @@
 import { Left as LeftIcon } from '@icon-park/react';
+import { Setting as SettingIcon } from '@icon-park/react';
 import { imageAsset } from 'apps/application/utils';
+import { useMixin } from 'apps/shared';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
-import { NavBar } from 'zarm';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Popup } from 'zarm';
+import SettingComponent from '../SettingComponent/SettingComponent';
 
 export default function NavbarComponent(props: { title?: string }) {
   const { title } = props;
   const history = useHistory();
   const location = useLocation();
+  const { immersive } = useMixin();
   const [showBack, setShowBack] = useState(location.pathname !== '/');
+  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   useEffect(() => {
     setShowBack(location.pathname !== '/');
   }, [location.pathname]);
 
   return (
-    <NavBar
-      className='sticky top-0 z-50 bg-white dark:bg-dark dark:text-white'
-      title={
-        <div className='flex items-center'>
-          <img
-            className='w-6 h-6 mr-2 rounded-full'
-            src={imageAsset('logo.png')}
-          />
-          <div className='font-semibold'>{title || 'Mixcoin'}</div>
-        </div>
-      }
-      left={
-        showBack && (
-          <div
+    <>
+      <div className='sticky top-0 z-50 flex items-center px-2 py-1 bg-white shadow-sm dark:bg-dark dark:text-white'>
+        {showBack && (
+          <LeftIcon
+            className='text-gray-500'
+            size='1.5rem'
             onClick={() => {
               if (history.length <= 1) {
                 history.replace('/');
@@ -36,11 +33,29 @@ export default function NavbarComponent(props: { title?: string }) {
                 history.goBack();
               }
             }}
-          >
-            <LeftIcon size='1.5rem' />
-          </div>
-        )
-      }
-    />
+          />
+        )}
+        <div className='flex items-center'>
+          <img
+            className='w-8 h-8 mx-2 rounded-full'
+            src={imageAsset('logo.png')}
+          />
+          <div className='text-lg font-semibold'>{title || 'Mixcoin'}</div>
+        </div>
+        <SettingIcon
+          className='ml-auto mr-2 text-gray-500'
+          size='1.5rem'
+          onClick={() => setSidebarVisible(!sidebarVisible)}
+        />
+        <div className={immersive && 'w-24'} />
+      </div>
+      <Popup
+        direction='left'
+        onMaskClick={() => setSidebarVisible(false)}
+        visible={sidebarVisible}
+      >
+        <SettingComponent />
+      </Popup>
+    </>
   );
 }
