@@ -79,7 +79,15 @@ class MixinMessage < ApplicationRecord
   def process_plain_text_message
     MixinConversation.find_or_create_by conversation_id: conversation_id
     base, quote = content.gsub(/@\d{10}/, '').strip.split(%r{/|\|,|-|_| })
-    market = Market.ransack({ base_asset_symbol_eq: base, quote_asset_symbol_eq: quote.presence || 'USDT', m: 'and' }).result.first
+    market =
+      Market.ransack(
+        {
+          base_asset_symbol_i_cont_all: base,
+          base_asset_symbol_not_cont_any: '-',
+          quote_asset_symbol_i_cont_all: quote.presence || 'USDT',
+          m: 'and'
+        }
+      ).result.first
     if market.blank?
       process_cs_message
     else
