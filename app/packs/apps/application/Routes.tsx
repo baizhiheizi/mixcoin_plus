@@ -73,14 +73,10 @@ export default function Routes() {
         <Suspense fallback={<LoaderComponent />}>
           <Switch>
             <Route path='/' exact>
-              <LazyLoad>
-                <HomePage />
-              </LazyLoad>
+              <HomePage />
             </Route>
             <Route path='/markets' exact>
-              <LazyLoad>
-                <MarketsPage />
-              </LazyLoad>
+              <MarketsPage />
             </Route>
             <Route path='/group_markets' exact>
               <LazyLoad>
@@ -88,9 +84,7 @@ export default function Routes() {
               </LazyLoad>
             </Route>
             <Route path='/exchange' exact>
-              <LazyLoad>
-                <ExchangePage />
-              </LazyLoad>
+              <ExchangePage />
             </Route>
             <Route path='/wallet' exact>
               <LazyLoad>
@@ -98,9 +92,7 @@ export default function Routes() {
               </LazyLoad>
             </Route>
             <Route path='/markets/:marketId' exact>
-              <LazyLoad>
-                <MarketPage />
-              </LazyLoad>
+              <MarketPage />
             </Route>
             <Route path='/orders' exact>
               <LazyLoad>
