@@ -1,4 +1,4 @@
-query UserSnapshots($offset: String, $asset: String, $opponent: String) {
+query UserAssetSnapshots($offset: String, $asset: String!, $opponent: String) {
   userSnapshots(offset: $offset, asset: $asset, opponent: $opponent) {
     amount
     traceId
@@ -13,5 +13,17 @@ query UserSnapshots($offset: String, $asset: String, $opponent: String) {
       }
     }
     createdAt
+  }
+  userAsset(assetId: $asset) {
+    id
+    assetId
+    name
+    symbol
+    balance
+    balanceUsd
+    iconUrl
+    chainAsset {
+      iconUrl
+    }
   }
 }

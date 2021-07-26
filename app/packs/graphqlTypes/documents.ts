@@ -522,7 +522,7 @@ export type MixinNetworkSnapshot = {
   processedAt?: Maybe<Scalars['ISO8601DateTime']>;
   snapshotId: Scalars['String'];
   snapshotType?: Maybe<Scalars['String']>;
-  traceId: Scalars['String'];
+  traceId?: Maybe<Scalars['String']>;
   transferredAt: Scalars['ISO8601DateTime'];
   type?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
@@ -847,6 +847,7 @@ export type Query = {
   oceanOrder: OceanOrder;
   oceanOrderConnection: OceanOrderConnection;
   oceanSnapshotConnection: MixinNetworkSnapshotConnection;
+  userAsset: UserAsset;
   userAssets: Array<UserAsset>;
   userSnapshots: Array<MixinNetworkSnapshot>;
 };
@@ -1160,6 +1161,11 @@ export type QueryOceanSnapshotConnectionArgs = {
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryUserAssetArgs = {
+  assetId: Scalars['String'];
 };
 
 
@@ -2544,29 +2550,14 @@ export type OceanSnapshotConnectionQuery = (
   ) }
 );
 
-export type UserAssetsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type UserAssetsQuery = (
-  { __typename?: 'Query' }
-  & { userAssets: Array<(
-    { __typename?: 'UserAsset' }
-    & Pick<UserAsset, 'assetId' | 'name' | 'symbol' | 'iconUrl' | 'chainId' | 'balance' | 'balanceUsd' | 'priceUsd' | 'priceBtc' | 'changeUsd' | 'changeBtc'>
-    & { chainAsset?: Maybe<(
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'iconUrl'>
-    )> }
-  )> }
-);
-
-export type UserSnapshotsQueryVariables = Exact<{
+export type UserAssetSnapshotsQueryVariables = Exact<{
   offset?: Maybe<Scalars['String']>;
-  asset?: Maybe<Scalars['String']>;
+  asset: Scalars['String'];
   opponent?: Maybe<Scalars['String']>;
 }>;
 
 
-export type UserSnapshotsQuery = (
+export type UserAssetSnapshotsQuery = (
   { __typename?: 'Query' }
   & { userSnapshots: Array<(
     { __typename?: 'MixinNetworkSnapshot' }
@@ -2579,6 +2570,28 @@ export type UserSnapshotsQuery = (
         & Pick<MixinAsset, 'iconUrl'>
       )> }
     ) }
+  )>, userAsset: (
+    { __typename?: 'UserAsset' }
+    & Pick<UserAsset, 'id' | 'assetId' | 'name' | 'symbol' | 'balance' | 'balanceUsd' | 'iconUrl'>
+    & { chainAsset?: Maybe<(
+      { __typename?: 'MixinAsset' }
+      & Pick<MixinAsset, 'iconUrl'>
+    )> }
+  ) }
+);
+
+export type UserAssetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserAssetsQuery = (
+  { __typename?: 'Query' }
+  & { userAssets: Array<(
+    { __typename?: 'UserAsset' }
+    & Pick<UserAsset, 'assetId' | 'name' | 'symbol' | 'iconUrl' | 'chainId' | 'balance' | 'balanceUsd' | 'priceUsd' | 'priceBtc' | 'changeUsd' | 'changeBtc'>
+    & { chainAsset?: Maybe<(
+      { __typename?: 'MixinAsset' }
+      & Pick<MixinAsset, 'iconUrl'>
+    )> }
   )> }
 );
 
@@ -5529,6 +5542,67 @@ export function useOceanSnapshotConnectionLazyQuery(baseOptions?: Apollo.LazyQue
 export type OceanSnapshotConnectionQueryHookResult = ReturnType<typeof useOceanSnapshotConnectionQuery>;
 export type OceanSnapshotConnectionLazyQueryHookResult = ReturnType<typeof useOceanSnapshotConnectionLazyQuery>;
 export type OceanSnapshotConnectionQueryResult = Apollo.QueryResult<OceanSnapshotConnectionQuery, OceanSnapshotConnectionQueryVariables>;
+export const UserAssetSnapshotsDocument = gql`
+    query UserAssetSnapshots($offset: String, $asset: String!, $opponent: String) {
+  userSnapshots(offset: $offset, asset: $asset, opponent: $opponent) {
+    amount
+    traceId
+    opponentId
+    data
+    asset {
+      name
+      symbol
+      iconUrl
+      chainAsset {
+        iconUrl
+      }
+    }
+    createdAt
+  }
+  userAsset(assetId: $asset) {
+    id
+    assetId
+    name
+    symbol
+    balance
+    balanceUsd
+    iconUrl
+    chainAsset {
+      iconUrl
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserAssetSnapshotsQuery__
+ *
+ * To run a query within a React component, call `useUserAssetSnapshotsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserAssetSnapshotsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserAssetSnapshotsQuery({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *      asset: // value for 'asset'
+ *      opponent: // value for 'opponent'
+ *   },
+ * });
+ */
+export function useUserAssetSnapshotsQuery(baseOptions: Apollo.QueryHookOptions<UserAssetSnapshotsQuery, UserAssetSnapshotsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserAssetSnapshotsQuery, UserAssetSnapshotsQueryVariables>(UserAssetSnapshotsDocument, options);
+      }
+export function useUserAssetSnapshotsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserAssetSnapshotsQuery, UserAssetSnapshotsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserAssetSnapshotsQuery, UserAssetSnapshotsQueryVariables>(UserAssetSnapshotsDocument, options);
+        }
+export type UserAssetSnapshotsQueryHookResult = ReturnType<typeof useUserAssetSnapshotsQuery>;
+export type UserAssetSnapshotsLazyQueryHookResult = ReturnType<typeof useUserAssetSnapshotsLazyQuery>;
+export type UserAssetSnapshotsQueryResult = Apollo.QueryResult<UserAssetSnapshotsQuery, UserAssetSnapshotsQueryVariables>;
 export const UserAssetsDocument = gql`
     query UserAssets {
   userAssets {
@@ -5576,52 +5650,3 @@ export function useUserAssetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type UserAssetsQueryHookResult = ReturnType<typeof useUserAssetsQuery>;
 export type UserAssetsLazyQueryHookResult = ReturnType<typeof useUserAssetsLazyQuery>;
 export type UserAssetsQueryResult = Apollo.QueryResult<UserAssetsQuery, UserAssetsQueryVariables>;
-export const UserSnapshotsDocument = gql`
-    query UserSnapshots($offset: String, $asset: String, $opponent: String) {
-  userSnapshots(offset: $offset, asset: $asset, opponent: $opponent) {
-    amount
-    traceId
-    opponentId
-    data
-    asset {
-      name
-      symbol
-      iconUrl
-      chainAsset {
-        iconUrl
-      }
-    }
-    createdAt
-  }
-}
-    `;
-
-/**
- * __useUserSnapshotsQuery__
- *
- * To run a query within a React component, call `useUserSnapshotsQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserSnapshotsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUserSnapshotsQuery({
- *   variables: {
- *      offset: // value for 'offset'
- *      asset: // value for 'asset'
- *      opponent: // value for 'opponent'
- *   },
- * });
- */
-export function useUserSnapshotsQuery(baseOptions?: Apollo.QueryHookOptions<UserSnapshotsQuery, UserSnapshotsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserSnapshotsQuery, UserSnapshotsQueryVariables>(UserSnapshotsDocument, options);
-      }
-export function useUserSnapshotsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserSnapshotsQuery, UserSnapshotsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserSnapshotsQuery, UserSnapshotsQueryVariables>(UserSnapshotsDocument, options);
-        }
-export type UserSnapshotsQueryHookResult = ReturnType<typeof useUserSnapshotsQuery>;
-export type UserSnapshotsLazyQueryHookResult = ReturnType<typeof useUserSnapshotsLazyQuery>;
-export type UserSnapshotsQueryResult = Apollo.QueryResult<UserSnapshotsQuery, UserSnapshotsQueryVariables>;

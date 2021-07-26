@@ -44,6 +44,7 @@ module Types
     field :ocean_order_connection, resolver: Resolvers::OceanOrderConnectionResolver
     field :ocean_order, resolver: Resolvers::OceanOrderResolver
     field :ocean_snapshot_connection, resolver: Resolvers::OceanSnapshotConnectionResolver
+    field :user_asset, resolver: Resolvers::UserAssetResolver
     field :user_assets, resolver: Resolvers::UserAssetsResolver
     field :user_snapshots, resolver: Resolvers::UserSnapshotsResolver
     field :invitee_connection, resolver: Resolvers::InviteeConnectionResolver
