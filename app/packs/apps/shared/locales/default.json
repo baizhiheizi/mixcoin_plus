@@ -284,6 +284,7 @@
     "defaultMessage": "Refund"
   },
   "referencePrice": { "id": "reference_price", "defaultMessage": "Ref" },
+  "available": { "id": "available", "defaultMessage": "Available" },
   "notification": { "id": "notification", "defaultMessage": "Notification" },
   "notificationsUserAuthorizedNotificationMessage": {
     "id": "notifications.user_authorized_notification.message",

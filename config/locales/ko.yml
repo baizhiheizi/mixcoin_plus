@@ -103,3 +103,4 @@ ko:
     match_to_user: 거래
     refund_to_user: 환불금
   reference_price: 참조 가격
+  available: 사용 가능

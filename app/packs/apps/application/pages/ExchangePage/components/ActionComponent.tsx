@@ -409,24 +409,15 @@ export default function ActionComponent(props: {
               </Button>
             </div>
             <div className='py-2 text-xs text-gray-500'>
-              {balance.quoteAsset !== null && (
+              {Boolean(orderPrice) && (
                 <span>
-                  {t('balance')}:{' '}
-                  <span
-                    className='text-blue-500'
-                    onClick={() => {
-                      if (orderSide === 'bid' && orderPrice) {
-                        setOrderAmount(
-                          (balance.quoteAsset / parseFloat(orderPrice)).toFixed(
-                            4,
-                          ),
-                        );
-                      }
-                    }}
-                  >
-                    {balance.quoteAsset}
+                  ≈{' '}
+                  <span>
+                    {(
+                      parseFloat(orderPrice) * market.quoteAsset.priceUsd
+                    ).toFixed(2)}
                   </span>{' '}
-                  {market.quoteAsset.symbol}
+                  USD
                 </span>
               )}
             </div>
@@ -472,24 +463,140 @@ export default function ActionComponent(props: {
                 <div>+</div>
               </Button>
             </div>
-            <div className='py-2 text-xs text-gray-500'>
-              {balance.baseAsset !== null && (
-                <span>
-                  {t('balance')}:{' '}
-                  <span
-                    className='text-blue-500'
-                    onClick={() => {
-                      if (orderSide === 'ask' && orderType === 'limit') {
-                        setOrderAmount(market.baseAsset.balance);
-                      }
-                    }}
-                  >
-                    {balance.baseAsset}
-                  </span>{' '}
-                  {market.baseAsset.symbol}
-                </span>
-              )}
-            </div>
+            {orderSide === 'ask' && balance.baseAsset !== null && (
+              <>
+                <div className='py-2 text-xs text-gray-500'>
+                  <span>
+                    {t('available')}:{' '}
+                    <span className='text-blue-500'>{balance.baseAsset}</span>{' '}
+                    {market.baseAsset.symbol}
+                  </span>
+                </div>
+                {orderSide === 'ask' && orderType === 'limit' && (
+                  <div className='flex items-center justify-between'>
+                    <Button
+                      shape='rect'
+                      size='xs'
+                      onClick={() => {
+                        setOrderAmount(
+                          (market.baseAsset.balance * 0.25).toFixed(4),
+                        );
+                      }}
+                    >
+                      25%
+                    </Button>
+                    <Button
+                      shape='rect'
+                      size='xs'
+                      onClick={() => {
+                        setOrderAmount(
+                          (market.baseAsset.balance * 0.5).toFixed(4),
+                        );
+                      }}
+                    >
+                      50%
+                    </Button>
+                    <Button
+                      shape='rect'
+                      size='xs'
+                      onClick={() => {
+                        setOrderAmount(
+                          (market.baseAsset.balance * 0.75).toFixed(4),
+                        );
+                      }}
+                    >
+                      75%
+                    </Button>
+                    <Button
+                      shape='rect'
+                      size='xs'
+                      onClick={() => {
+                        setOrderAmount(
+                          (
+                            Math.floor(market.baseAsset.balance * 10000) / 10000
+                          ).toFixed(4),
+                        );
+                      }}
+                    >
+                      100%
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+            {orderSide === 'bid' && balance.quoteAsset !== null && (
+              <>
+                <div className='py-2 text-xs text-gray-500'>
+                  <span>
+                    {t('available')}:{' '}
+                    <span className='text-blue-500'>{balance.quoteAsset}</span>{' '}
+                    {market.quoteAsset.symbol}
+                  </span>
+                </div>
+                {orderSide === 'bid' &&
+                  orderType === 'limit' &&
+                  Boolean(orderPrice) && (
+                    <div className='flex items-center justify-between'>
+                      <Button
+                        shape='rect'
+                        size='xs'
+                        onClick={() => {
+                          setOrderAmount(
+                            (
+                              (market.quoteAsset.balance * 0.25) /
+                              parseFloat(orderPrice)
+                            ).toFixed(4),
+                          );
+                        }}
+                      >
+                        25%
+                      </Button>
+                      <Button
+                        shape='rect'
+                        size='xs'
+                        onClick={() => {
+                          setOrderAmount(
+                            (
+                              (market.quoteAsset.balance * 0.5) /
+                              parseFloat(orderPrice)
+                            ).toFixed(4),
+                          );
+                        }}
+                      >
+                        50%
+                      </Button>
+                      <Button
+                        shape='rect'
+                        size='xs'
+                        onClick={() => {
+                          setOrderAmount(
+                            (
+                              (market.quoteAsset.balance * 0.75) /
+                              parseFloat(orderPrice)
+                            ).toFixed(4),
+                          );
+                        }}
+                      >
+                        75%
+                      </Button>
+                      <Button
+                        shape='rect'
+                        size='xs'
+                        onClick={() => {
+                          setOrderAmount(
+                            (
+                              Math.floor(market.quoteAsset.balance * 10000) /
+                              (10000 * parseFloat(orderPrice))
+                            ).toFixed(4),
+                          );
+                        }}
+                      >
+                        100%
+                      </Button>
+                    </div>
+                  )}
+              </>
+            )}
           </div>
         </>
       ) : (

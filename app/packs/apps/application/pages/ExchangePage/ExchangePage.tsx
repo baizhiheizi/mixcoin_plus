@@ -38,6 +38,9 @@ export default function ExchangePage() {
       const res = await fetchTiker(data?.market?.oceanMarketId);
       if (res.data && res.data.data) {
         setTicker(res.data.data);
+        if (!orderPrice) {
+          setOrderPrice(res.data.data.price);
+        }
       }
     }
   }
@@ -59,6 +62,9 @@ export default function ExchangePage() {
   useEffect(() => {
     if (data?.market) {
       document.title = `${data.market.baseAsset.symbol}/${data.market.quoteAsset.symbol}`;
+      if (data.market.referencePrice && data.market.referencePrice > 0) {
+        setOrderPrice(data.market.referencePrice.toFixed(4));
+      }
     }
 
     return () => {

@@ -103,3 +103,4 @@ en:
     match_to_user: Match
     refund_to_user: Refund
   reference_price: Ref
+  available: Available
