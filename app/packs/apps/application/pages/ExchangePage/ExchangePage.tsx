@@ -38,7 +38,7 @@ export default function ExchangePage() {
       const res = await fetchTiker(data?.market?.oceanMarketId);
       if (res.data && res.data.data) {
         setTicker(res.data.data);
-        if (!orderPrice) {
+        if (!data.market.referencePrice) {
           setOrderPrice(res.data.data.price);
         }
       }
