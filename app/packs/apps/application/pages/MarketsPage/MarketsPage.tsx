@@ -1,6 +1,5 @@
 import { useDebounce } from 'ahooks';
 import MarketsComponent from 'apps/application/components/MarketsComponent/MarketsComponent';
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
 import React, { useState } from 'react';
@@ -22,7 +21,6 @@ export default function MarketsPage() {
 
   return (
     <div className='min-h-screen pb-24 bg-white dark:bg-dark'>
-      <NavbarComponent />
       <SearchBar
         placeholder={t('search_any_asset')}
         value={query}

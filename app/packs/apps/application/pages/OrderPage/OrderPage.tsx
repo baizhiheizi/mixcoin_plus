@@ -1,5 +1,4 @@
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import OrderCardComponent from 'apps/application/components/OrderCardComponent/OrderCardComponent';
 import { useOceanOrderQuery } from 'graphqlTypes';
 import React from 'react';
@@ -23,11 +22,8 @@ export default function OrderPage() {
 
   return (
     <div className='min-h-screen bg-white dark:bg-dark'>
-      <NavbarComponent back />
-      <>
-        <OrderCardComponent order={order} />
-        <OceanSnapshotsComponent oceanOrderId={order.id} />
-      </>
+      <OrderCardComponent order={order} />
+      <OceanSnapshotsComponent oceanOrderId={order.id} />
     </div>
   );
 }

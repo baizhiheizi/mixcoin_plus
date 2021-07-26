@@ -1,16 +1,15 @@
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
 import LoginComponent from 'apps/application/components/LoginComponent/LoginComponent';
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
-import { useCurrentUser } from 'apps/application/contexts';
-import { useFennec } from 'apps/shared';
-import { useUserAssetsQuery } from 'graphqlTypes';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router';
-import { Button } from 'zarm';
+import {useCurrentUser} from 'apps/application/contexts';
+import {useFennec} from 'apps/shared';
 import camelcaseKeys from 'camelcase-keys';
+import {useUserAssetsQuery} from 'graphqlTypes';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useHistory} from 'react-router';
+import {Button} from 'zarm';
 
 export default function WalletPage() {
   const { currentUser } = useCurrentUser();
@@ -86,7 +85,6 @@ function UserAssets() {
 
   return (
     <div className='pb-24'>
-      <NavbarComponent />
       <div className='py-6 mb-1 text-center bg-white dark:bg-dark'>
         <div className='flex items-start justify-center'>
           <div className='mr-1 text-gray-500 dark:text-gray-100'>$</div>

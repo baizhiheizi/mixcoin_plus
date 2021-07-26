@@ -1,3 +1,4 @@
+import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import {
   useCreateInvitationMutation,
   useCurrentConversationQuery,
@@ -70,6 +71,7 @@ export default function Routes() {
   return (
     <CurrentConversationContext.Provider value={{ currentConversation }}>
       <Router>
+        <NavbarComponent />
         <Suspense fallback={<LoaderComponent />}>
           <Switch>
             <Route path='/' exact>

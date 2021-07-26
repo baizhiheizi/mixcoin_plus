@@ -1,6 +1,5 @@
 import { Down as DownIcon } from '@icon-park/react';
 import { useDebounce } from 'ahooks';
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import {
   useCurrentConversation,
@@ -82,7 +81,6 @@ export default function GroupMarketsPage() {
 
   return (
     <>
-      <NavbarComponent back />
       <Message className='mb-2' size='lg' theme='primary'>
         {t('group_admin_notice')}
       </Message>

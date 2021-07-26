@@ -1,15 +1,19 @@
 import { Left as LeftIcon } from '@icon-park/react';
 import { imageAsset } from 'apps/application/utils';
-import React from 'react';
-import { useHistory } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { NavBar } from 'zarm';
 
-export default function NavbarComponent(props: {
-  title?: string;
-  back?: boolean;
-}) {
-  const { title, back } = props;
+export default function NavbarComponent(props: { title?: string }) {
+  const { title } = props;
   const history = useHistory();
+  const location = useLocation();
+  const [showBack, setShowBack] = useState(location.pathname !== '/');
+
+  useEffect(() => {
+    setShowBack(location.pathname !== '/');
+  }, [location.pathname]);
+
   return (
     <NavBar
       className='sticky top-0 z-50 bg-white dark:bg-dark dark:text-white'
@@ -23,7 +27,7 @@ export default function NavbarComponent(props: {
         </div>
       }
       left={
-        back && (
+        showBack && (
           <div
             onClick={() => {
               if (history.length <= 1) {

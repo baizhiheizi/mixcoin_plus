@@ -1,5 +1,4 @@
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import {
   useDeprecatedOceanOrdersQuery,
@@ -27,7 +26,6 @@ export default function DeprecatedOrdersPage() {
 
   return (
     <div className='min-h-screen bg-white dark:bg-dark'>
-      <NavbarComponent back />
       <Message className='mb-4' size='lg' theme='warning'>
         {t('deprecated_version_notice')}
       </Message>

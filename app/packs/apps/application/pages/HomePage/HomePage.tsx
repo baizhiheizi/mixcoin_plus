@@ -1,7 +1,6 @@
 import { User as UserIcon } from '@icon-park/react';
 import LoginComponent from 'apps/application/components/LoginComponent/LoginComponent';
 import MarketsComponent from 'apps/application/components/MarketsComponent/MarketsComponent';
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
 import { useCurrentConversation } from 'apps/application/contexts/CurrentConversationContext';
@@ -31,7 +30,6 @@ export default function HomePage() {
 
   return (
     <div className='min-h-screen pb-24 bg-white dark:bg-dark'>
-      <NavbarComponent />
       <div
         className='flex items-center w-full bg-white bg-right bg-no-repeat bg-contain h-36 dark:bg-dark'
         style={{ backgroundImage: `url(${imageAsset('cashback.svg')})` }}

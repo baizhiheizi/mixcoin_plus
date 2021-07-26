@@ -1,7 +1,6 @@
 import { useInterval } from 'ahooks';
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
 import LoginComponent from 'apps/application/components/LoginComponent/LoginComponent';
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import OrdersComponent from 'apps/application/components/OrdersComponent/OrdersComponent';
 import TabbarComponent from 'apps/application/components/TabbarComponent/TabbarComponent';
 import { useCurrentUser } from 'apps/application/contexts';
@@ -92,7 +91,6 @@ export default function ExchangePage() {
 
   return (
     <div className='pb-24'>
-      <NavbarComponent />
       <HeaderComponent
         market={market}
         setMarketId={setMarketId}

@@ -1,17 +1,16 @@
-import { useInterval, useWebSocket } from 'ahooks';
+import {useInterval, useWebSocket} from 'ahooks';
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
-import { orderBookMessageReducer } from 'apps/application/reducers';
-import { WS_ENDPOINT } from 'apps/application/utils';
-import { ReadyState } from 'apps/shared';
+import {orderBookMessageReducer} from 'apps/application/reducers';
+import {WS_ENDPOINT} from 'apps/application/utils';
+import {ReadyState} from 'apps/shared';
 import BigNumber from 'bignumber.js';
-import { Market, useMarketQuery } from 'graphqlTypes';
+import {Market, useMarketQuery} from 'graphqlTypes';
 import pako from 'pako';
-import React, { useEffect, useReducer, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useHistory, useParams } from 'react-router';
-import { v4 as uuid } from 'uuid';
-import { Tabs } from 'zarm';
+import React, {useEffect, useReducer, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useHistory, useParams} from 'react-router';
+import {v4 as uuid} from 'uuid';
+import {Tabs} from 'zarm';
 import ActionBarComponent from './components/ActionBarComponent';
 import BookComponent from './components/BookComponent';
 import DepthChartComponent from './components/DepthChartComponent';
@@ -118,7 +117,6 @@ export default function MarketPage() {
 
   return (
     <div className='pb-28'>
-      <NavbarComponent back />
       <HeaderComponent market={market} />
       <PriceChartComponent marketId={market.id} />
       <div className='mb-1'>

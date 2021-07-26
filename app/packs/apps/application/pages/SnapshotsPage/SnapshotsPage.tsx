@@ -1,5 +1,4 @@
 import LoaderComponent from 'apps/application/components/LoaderComponent/LoaderComponent';
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import { useMixin } from 'apps/shared';
 import { MixinNetworkSnapshot, useUserSnapshotsQuery } from 'graphqlTypes';
@@ -24,7 +23,6 @@ export default function SnapshotsPage() {
 
   return (
     <>
-      <NavbarComponent back={true} />
       <PullComponent
         hasNextPage={snapshots.length % 50 === 0}
         refetch={refetch}

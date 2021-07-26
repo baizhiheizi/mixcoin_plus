@@ -1,4 +1,3 @@
-import NavbarComponent from 'apps/application/components/NavbarComponent/NavbarComponent';
 import { imageAsset } from 'apps/application/utils';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +10,6 @@ export default function CommissionPage() {
   const { t } = useTranslation();
   return (
     <div className='min-h-screen bg-white dark:bg-dark'>
-      <NavbarComponent back />
       <div
         className='flex items-center w-full h-40 bg-white bg-right bg-no-repeat bg-contain dark:bg-dark'
         style={{ backgroundImage: `url(${imageAsset('cashback.svg')})` }}
