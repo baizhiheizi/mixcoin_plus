@@ -98,8 +98,18 @@ export default function MarketsPage() {
       render: (_, market) => (
         <Space>
           <Link to={`/markets/${market.id}`}>Detail</Link>
-
-          {market.recommended ? (
+          <a
+            onClick={() =>
+              recommendMarket({
+                variables: {
+                  input: { marketId: market.id },
+                },
+              })
+            }
+          >
+            Recommend
+          </a>
+          {market.recommended && (
             <a
               onClick={() =>
                 unrecommendMarket({
@@ -110,18 +120,6 @@ export default function MarketsPage() {
               }
             >
               Unrecommend
-            </a>
-          ) : (
-            <a
-              onClick={() =>
-                recommendMarket({
-                  variables: {
-                    input: { marketId: market.id },
-                  },
-                })
-              }
-            >
-              Recommend
             </a>
           )}
           {market.hiddenAt ? (
