@@ -54,7 +54,7 @@
     "react-feather": "^2.0.9",
     "react-i18next": "^11.11.3",
     "react-lazyload": "^3.2.0",
-    "react-on-rails": "12.2.0",
+    "react-on-rails": "12.3.0",
     "react-router-dom": "^5.2.0",
     "sass": "^1.36.0",
     "sass-loader": "^12.1.0",
