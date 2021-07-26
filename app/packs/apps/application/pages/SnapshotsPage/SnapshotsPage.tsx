@@ -25,7 +25,7 @@ export default function SnapshotsPage() {
     <>
       <div className='py-6 mb-1 text-center bg-white dark:bg-dark'>
         <div className='flex items-center'>
-          <div className='flex items-center w-1/2 px-2 truncate'>
+          <div className='flex items-center w-1/2 pl-4 truncate'>
             <div className='relative'>
               <img
                 className='w-12 h-12 mr-2 rounded-full'
@@ -40,9 +40,9 @@ export default function SnapshotsPage() {
             </div>
             <div className='text-xl'>{asset.name}</div>
           </div>
-          <div className='w-1/2 px-2'>
+          <div className='w-1/2 pr-4 text-right'>
             <div className='text-xl truncate'>{asset.balance}</div>
-            <div className='flex items-start justify-center text-sm'>
+            <div className='flex items-start justify-end text-sm'>
               <div className='mr-1 text-gray-500 dark:text-gray-100'>≈ $</div>
               <span>{asset.balanceUsd.toFixed(2)}</span>
             </div>
