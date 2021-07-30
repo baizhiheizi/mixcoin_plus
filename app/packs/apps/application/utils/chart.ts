@@ -47,7 +47,7 @@ export function priceChartOptions(data: any[]): Highcharts.Options {
       {
         type: 'area',
         name: 'Price',
-        data,
+        data: [...data],
         tooltip: {
           valueDecimals: 2,
         },
