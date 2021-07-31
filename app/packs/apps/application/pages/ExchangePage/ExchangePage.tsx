@@ -61,6 +61,7 @@ export default function ExchangePage() {
   useEffect(() => {
     if (data?.market) {
       document.title = `${data.market.baseAsset.symbol}/${data.market.quoteAsset.symbol}`;
+
       if (data.market.referencePrice && data.market.referencePrice > 0) {
         setOrderPrice(data.market.referencePrice.toFixed(4));
       }
@@ -69,7 +70,7 @@ export default function ExchangePage() {
     return () => {
       document.title = 'Mixcoin';
     };
-  }, [data?.market]);
+  }, [data?.market?.id]);
 
   useInterval(() => {
     refreshTicker();
