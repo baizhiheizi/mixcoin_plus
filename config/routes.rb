@@ -30,6 +30,9 @@ Rails.application.routes.draw do
     # sidekiq
     mount Sidekiq::Web, at: 'sidekiq', constraints: AdminConstraint.new
 
+    # exception
+    mount ExceptionTrack::Engine => '/exception-track'
+
     root to: 'home#index'
     get '*path' => 'home#index'
   end

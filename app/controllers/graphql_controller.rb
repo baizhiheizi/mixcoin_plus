@@ -18,10 +18,6 @@ class GraphqlController < ApplicationController
     }
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
-  rescue StandardError => e
-    raise e unless Rails.env.development?
-
-    handle_error_in_development e
   end
 
   private
@@ -44,12 +40,5 @@ class GraphqlController < ApplicationController
     else
       raise ArgumentError, "Unexpected parameter: #{variables_param}"
     end
-  end
-
-  def handle_error_in_development(err)
-    logger.error err.message
-    logger.error err.backtrace.join("\n")
-
-    render json: { errors: [{ message: err.message, backtrace: err.backtrace }], data: {} }, status: :internal_server_error
   end
 end

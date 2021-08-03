@@ -57,6 +57,10 @@ gem 'action-store'
 gem 'acts_as_list'
 # The simplest way to group temporal data
 gem 'groupdate'
+# Exception Notifier Plugin for Rails
+gem 'exception_notification'
+# Tracking ⚠️ exceptions for Rails application and store them in database.
+gem 'exception-track'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

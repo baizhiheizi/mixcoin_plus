@@ -14,7 +14,7 @@ require 'action_mailbox/engine'
 require 'action_text/engine'
 require 'action_view/railtie'
 require 'action_cable/engine'
-# require "sprockets/railtie"
+require 'sprockets/railtie'
 require 'rails/test_unit/railtie'
 
 # Require the gems listed in Gemfile, including any gems
@@ -44,5 +44,9 @@ module MixcoinPlus
 
     # https://github.com/exAspArk/batch-loader#caching
     config.middleware.use BatchLoader::Middleware
+
+    config.middleware.use ExceptionNotification::Rack, mixin_bot: {
+      recipient_id: Rails.application.credentials[:admin_mixin_uuid]
+    }
   end
 end
