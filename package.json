@@ -17,7 +17,7 @@
     "@rails/webpacker": "https://github.com/rails/webpacker",
     "@tailwindcss/line-clamp": "^0.2.1",
     "@types/qrcode.react": "^1.0.2",
-    "@types/react": "^17.0.15",
+    "@types/react": "^17.0.16",
     "@types/react-router-dom": "^5.1.8",
     "ahooks": "^2.10.9",
     "antd": "^4.16.10",
