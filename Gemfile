@@ -69,7 +69,7 @@ gem 'exception-track'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 # deploy
-gem 'mina', '~> 1.2.2', require: false
+gem 'mina', '~> 1.2.4', require: false
 gem 'mina-logs', '~> 1.1.0', require: false
 gem 'mina-multistage', '~> 1.0.3', require: false
 
