@@ -3,6 +3,9 @@
 module Types
   class AppStatisticType < Types::BaseModelObject
     field :users_count, Integer, null: false
+    field :daily_active_users_count, Integer, null: true
+    field :weekly_active_users_count, Integer, null: true
+    field :monthly_active_users_count, Integer, null: true
     field :valid_orders_count, Integer, null: false
     field :markets_count, Integer, null: false
     field :match_total_usd, Float, null: false

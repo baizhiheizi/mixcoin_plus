@@ -95,16 +95,19 @@ export type Administrator = {
 export type AppStatistic = {
   __typename?: 'AppStatistic';
   createdAt: Scalars['ISO8601DateTime'];
+  dailyActiveUsersCount?: Maybe<Scalars['Int']>;
   feeTotalUsd: Scalars['Float'];
   groupOwnerCommissionTotalUsd: Scalars['Float'];
   invitationCommissionTotalUsd: Scalars['Float'];
   marketsCount: Scalars['Int'];
   matchTotalUsd: Scalars['Float'];
+  monthlyActiveUsersCount?: Maybe<Scalars['Int']>;
   unprocessedSnapshotsCount: Scalars['Int'];
   unprocessedTransfersCount: Scalars['Int'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
   usersCount: Scalars['Int'];
   validOrdersCount: Scalars['Int'];
+  weeklyActiveUsersCount?: Maybe<Scalars['Int']>;
 };
 
 export type ArbitrageOrder = {
@@ -1329,103 +1332,70 @@ export type AdminArbitragerWithrawBalanceMutationVariables = Exact<{
 }>;
 
 
-export type AdminArbitragerWithrawBalanceMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'adminArbitragerWithrawBalance'>
-);
+export type AdminArbitragerWithrawBalanceMutation = { __typename?: 'Mutation', adminArbitragerWithrawBalance?: Maybe<boolean> };
 
 export type AdminBookingOrderActivityParticipantDistributeBonusMutationVariables = Exact<{
   input: AdminBookingOrderActivityParticipantDistributeBonusMutationInput;
 }>;
 
 
-export type AdminBookingOrderActivityParticipantDistributeBonusMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'adminBookingOrderActivityParticipantDistributeBonus'>
-);
+export type AdminBookingOrderActivityParticipantDistributeBonusMutation = { __typename?: 'Mutation', adminBookingOrderActivityParticipantDistributeBonus?: Maybe<boolean> };
 
 export type AdminHideMarketMutationVariables = Exact<{
   input: AdminHideMarketMutationInput;
 }>;
 
 
-export type AdminHideMarketMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'adminHideMarket'>
-);
+export type AdminHideMarketMutation = { __typename?: 'Mutation', adminHideMarket?: Maybe<boolean> };
 
 export type AdminLoginMutationVariables = Exact<{
   input: AdminLoginMutationInput;
 }>;
 
 
-export type AdminLoginMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'adminLogin'>
-);
+export type AdminLoginMutation = { __typename?: 'Mutation', adminLogin?: Maybe<boolean> };
 
 export type AdminRankMarketMutationVariables = Exact<{
   input: AdminRankMarketMutationInput;
 }>;
 
 
-export type AdminRankMarketMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'adminRankMarket'>
-);
+export type AdminRankMarketMutation = { __typename?: 'Mutation', adminRankMarket?: Maybe<boolean> };
 
 export type AdminRecommendMarketMutationVariables = Exact<{
   input: AdminRecommendMarketMutationInput;
 }>;
 
 
-export type AdminRecommendMarketMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'adminRecommendMarket'>
-);
+export type AdminRecommendMarketMutation = { __typename?: 'Mutation', adminRecommendMarket?: Maybe<boolean> };
 
 export type AdminToggleMarketBookingOrderActivityEnableMarketMutationVariables = Exact<{
   input: AdminToggleMarketBookingOrderActivityEnableMutationInput;
 }>;
 
 
-export type AdminToggleMarketBookingOrderActivityEnableMarketMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'adminToggleMarketBookingOrderActivityEnable'>
-);
+export type AdminToggleMarketBookingOrderActivityEnableMarketMutation = { __typename?: 'Mutation', adminToggleMarketBookingOrderActivityEnable?: Maybe<boolean> };
 
 export type AdminUnhideMarketMutationVariables = Exact<{
   input: AdminUnhideMarketMutationInput;
 }>;
 
 
-export type AdminUnhideMarketMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'adminUnhideMarket'>
-);
+export type AdminUnhideMarketMutation = { __typename?: 'Mutation', adminUnhideMarket?: Maybe<boolean> };
 
 export type AdminUnrecommendMarketMutationVariables = Exact<{
   input: AdminUnrecommendMarketMutationInput;
 }>;
 
 
-export type AdminUnrecommendMarketMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'adminUnrecommendMarket'>
-);
+export type AdminUnrecommendMarketMutation = { __typename?: 'Mutation', adminUnrecommendMarket?: Maybe<boolean> };
 
 export type AdminAppStatisticQueryVariables = Exact<{
   scope?: Maybe<Scalars['String']>;
 }>;
 
 
-export type AdminAppStatisticQuery = (
-  { __typename?: 'Query' }
-  & { adminAppStatistic: (
-    { __typename?: 'AppStatistic' }
-    & Pick<AppStatistic, 'usersCount' | 'validOrdersCount' | 'marketsCount' | 'matchTotalUsd' | 'feeTotalUsd' | 'invitationCommissionTotalUsd' | 'groupOwnerCommissionTotalUsd' | 'unprocessedSnapshotsCount' | 'unprocessedTransfersCount'>
-  ) }
-);
+export type AdminAppStatisticQuery = { __typename?: 'Query', adminAppStatistic: { __typename?: 'AppStatistic', usersCount: number, dailyActiveUsersCount?: Maybe<number>, weeklyActiveUsersCount?: Maybe<number>, monthlyActiveUsersCount?: Maybe<number>, validOrdersCount: number, marketsCount: number, matchTotalUsd: number, feeTotalUsd: number, invitationCommissionTotalUsd: number, groupOwnerCommissionTotalUsd: number, unprocessedSnapshotsCount: number, unprocessedTransfersCount: number } };
 
 export type AdminArbitrageOrderConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1435,58 +1405,14 @@ export type AdminArbitrageOrderConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminArbitrageOrderConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminArbitrageOrderConnection: (
-    { __typename?: 'ArbitrageOrderConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'ArbitrageOrder' }
-      & Pick<ArbitrageOrder, 'id' | 'state' | 'baseAssetProfit' | 'quoteAssetProfit' | 'raw' | 'createdAt'>
-      & { arbitrager?: Maybe<(
-        { __typename?: 'MixinNetworkUser' }
-        & Pick<MixinNetworkUser, 'name' | 'mixinUuid'>
-      )>, market: (
-        { __typename?: 'Market' }
-        & { baseAsset: (
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'assetId' | 'symbol'>
-        ), quoteAsset: (
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'assetId' | 'symbol'>
-        ) }
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminArbitrageOrderConnectionQuery = { __typename?: 'Query', adminArbitrageOrderConnection: { __typename?: 'ArbitrageOrderConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'ArbitrageOrder', id: string, state: string, baseAssetProfit?: Maybe<number>, quoteAssetProfit?: Maybe<number>, raw: string, createdAt: any, arbitrager?: Maybe<{ __typename?: 'MixinNetworkUser', name: string, mixinUuid: string }>, market: { __typename?: 'Market', baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string } } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminArbitrageOrderQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AdminArbitrageOrderQuery = (
-  { __typename?: 'Query' }
-  & { adminArbitrageOrder: (
-    { __typename?: 'ArbitrageOrder' }
-    & Pick<ArbitrageOrder, 'id' | 'state' | 'netProfitUsd' | 'baseAssetProfit' | 'quoteAssetProfit' | 'raw' | 'createdAt'>
-    & { arbitrager?: Maybe<(
-      { __typename?: 'MixinNetworkUser' }
-      & Pick<MixinNetworkUser, 'name' | 'mixinUuid'>
-    )>, market: (
-      { __typename?: 'Market' }
-      & { baseAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol'>
-      ), quoteAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol'>
-      ) }
-    ) }
-  ) }
-);
+export type AdminArbitrageOrderQuery = { __typename?: 'Query', adminArbitrageOrder: { __typename?: 'ArbitrageOrder', id: string, state: string, netProfitUsd?: Maybe<number>, baseAssetProfit?: Maybe<number>, quoteAssetProfit?: Maybe<number>, raw: string, createdAt: any, arbitrager?: Maybe<{ __typename?: 'MixinNetworkUser', name: string, mixinUuid: string }>, market: { __typename?: 'Market', baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string } } } };
 
 export type AdminBookingOrderActivityConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1494,32 +1420,7 @@ export type AdminBookingOrderActivityConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminBookingOrderActivityConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminBookingOrderActivityConnection: (
-    { __typename?: 'BookingOrderActivityConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'BookingOrderActivity' }
-      & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'participantsCount' | 'avgFunds' | 'tradedAmount' | 'tradedFunds' | 'createdAt'>
-      & { market: (
-        { __typename?: 'Market' }
-        & { baseAsset: (
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'assetId' | 'symbol'>
-        ), quoteAsset: (
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'assetId' | 'symbol'>
-        ) }
-      ), bonusAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminBookingOrderActivityConnectionQuery = { __typename?: 'Query', adminBookingOrderActivityConnection: { __typename?: 'BookingOrderActivityConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'BookingOrderActivity', id: string, startedAt: any, endedAt: any, bonusTotal?: Maybe<number>, scoresTotal: number, participantsCount?: Maybe<number>, avgFunds?: Maybe<number>, tradedAmount?: Maybe<number>, tradedFunds?: Maybe<number>, createdAt: any, market: { __typename?: 'Market', baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string } }, bonusAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminBookingOrderActivityParticipantConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1529,65 +1430,14 @@ export type AdminBookingOrderActivityParticipantConnectionQueryVariables = Exact
 }>;
 
 
-export type AdminBookingOrderActivityParticipantConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminBookingOrderActivityParticipantConnection: (
-    { __typename?: 'BookingOrderActivityParticipantConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'BookingOrderActivityParticipant' }
-      & Pick<BookingOrderActivityParticipant, 'id' | 'state' | 'bonus' | 'scores' | 'scoresRatio' | 'scoresTotal' | 'createdAt'>
-      & { bookingOrderActivity: (
-        { __typename?: 'BookingOrderActivity' }
-        & Pick<BookingOrderActivity, 'bonusTotal' | 'scoresTotal' | 'startedAt' | 'endedAt'>
-        & { market: (
-          { __typename?: 'Market' }
-          & { baseAsset: (
-            { __typename?: 'MixinAsset' }
-            & Pick<MixinAsset, 'assetId' | 'symbol'>
-          ), quoteAsset: (
-            { __typename?: 'MixinAsset' }
-            & Pick<MixinAsset, 'assetId' | 'symbol'>
-          ) }
-        ) }
-      ), bonusAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol'>
-      ), user: (
-        { __typename?: 'User' }
-        & Pick<User, 'name' | 'avatar' | 'mixinId' | 'mixinUuid'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminBookingOrderActivityParticipantConnectionQuery = { __typename?: 'Query', adminBookingOrderActivityParticipantConnection: { __typename?: 'BookingOrderActivityParticipantConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'BookingOrderActivityParticipant', id: string, state?: Maybe<string>, bonus?: Maybe<number>, scores: number, scoresRatio: number, scoresTotal: number, createdAt: any, bookingOrderActivity: { __typename?: 'BookingOrderActivity', bonusTotal?: Maybe<number>, scoresTotal: number, startedAt: any, endedAt: any, market: { __typename?: 'Market', baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string } } }, bonusAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string }, user: { __typename?: 'User', name: string, avatar: string, mixinId: string, mixinUuid: string } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminBookingOrderActivityQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AdminBookingOrderActivityQuery = (
-  { __typename?: 'Query' }
-  & { adminBookingOrderActivity: (
-    { __typename?: 'BookingOrderActivity' }
-    & Pick<BookingOrderActivity, 'id' | 'startedAt' | 'endedAt' | 'bonusTotal' | 'scoresTotal' | 'validOrderSnapshotsCount' | 'marketId' | 'participantsCount' | 'avgFunds' | 'tradedAmount' | 'tradedFunds' | 'createdAt'>
-    & { market: (
-      { __typename?: 'Market' }
-      & { baseAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol'>
-      ), quoteAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol'>
-      ) }
-    ), bonusAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol'>
-    ) }
-  ) }
-);
+export type AdminBookingOrderActivityQuery = { __typename?: 'Query', adminBookingOrderActivity: { __typename?: 'BookingOrderActivity', id: string, startedAt: any, endedAt: any, bonusTotal?: Maybe<number>, scoresTotal: number, validOrderSnapshotsCount: number, marketId: string, participantsCount?: Maybe<number>, avgFunds?: Maybe<number>, tradedAmount?: Maybe<number>, tradedFunds?: Maybe<number>, createdAt: any, market: { __typename?: 'Market', baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string } }, bonusAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string } } };
 
 export type AdminBookingOrderSnapshotConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1599,32 +1449,7 @@ export type AdminBookingOrderSnapshotConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminBookingOrderSnapshotConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminBookingOrderSnapshotConnection: (
-    { __typename?: 'BookingOrderSnapshotConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'BookingOrderSnapshot' }
-      & Pick<BookingOrderSnapshot, 'id' | 'funds' | 'orderWeight' | 'price' | 'ticker' | 'scores' | 'timestamp' | 'createdAt'>
-      & { user: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'avatar' | 'name' | 'mixinId'>
-      ), market: (
-        { __typename?: 'Market' }
-        & { baseAsset: (
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'assetId' | 'symbol'>
-        ), quoteAsset: (
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'assetId' | 'symbol'>
-        ) }
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminBookingOrderSnapshotConnectionQuery = { __typename?: 'Query', adminBookingOrderSnapshotConnection: { __typename?: 'BookingOrderSnapshotConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'BookingOrderSnapshot', id: string, funds: number, orderWeight: number, price: number, ticker: number, scores: number, timestamp: number, createdAt: any, user: { __typename?: 'User', id: string, avatar: string, name: string, mixinId: string }, market: { __typename?: 'Market', baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string } } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminInvitationConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1632,26 +1457,7 @@ export type AdminInvitationConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminInvitationConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminInvitationConnection: (
-    { __typename?: 'InvitationConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'Invitation' }
-      & Pick<Invitation, 'id' | 'createdAt'>
-      & { invitor: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid'>
-      ), invitee: (
-        { __typename?: 'User' }
-        & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminInvitationConnectionQuery = { __typename?: 'Query', adminInvitationConnection: { __typename?: 'InvitationConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Invitation', id: string, createdAt: any, invitor: { __typename?: 'User', id: string, name: string, avatar: string, mixinId: string, mixinUuid: string }, invitee: { __typename?: 'User', id: string, name: string, avatar: string, mixinId: string, mixinUuid: string } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminMarketConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1660,112 +1466,35 @@ export type AdminMarketConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminMarketConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminMarketConnection: (
-    { __typename?: 'MarketConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'Market' }
-      & Pick<Market, 'id' | 'oceanMarketId' | 'oceanOrdersCount' | 'tradesCount' | 'recommended' | 'hiddenAt' | 'rank' | 'bookingOrderActivityEnable' | 'createdAt'>
-      & { baseAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-      ), quoteAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminMarketConnectionQuery = { __typename?: 'Query', adminMarketConnection: { __typename?: 'MarketConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Market', id: string, oceanMarketId: string, oceanOrdersCount: number, tradesCount: number, recommended?: Maybe<boolean>, hiddenAt?: Maybe<any>, rank: number, bookingOrderActivityEnable?: Maybe<boolean>, createdAt: any, baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminMarketQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AdminMarketQuery = (
-  { __typename?: 'Query' }
-  & { adminMarket: (
-    { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'oceanMarketId' | 'oceanOrdersCount' | 'tradesCount' | 'hiddenAt' | 'bookingOrderActivityEnable' | 'createdAt'>
-    & { baseAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-    ), quoteAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-    ) }
-  ) }
-);
+export type AdminMarketQuery = { __typename?: 'Query', adminMarket: { __typename?: 'Market', id: string, oceanMarketId: string, oceanOrdersCount: number, tradesCount: number, hiddenAt?: Maybe<any>, bookingOrderActivityEnable?: Maybe<boolean>, createdAt: any, baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } } };
 
 export type AdminMixinConversationConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
 }>;
 
 
-export type AdminMixinConversationConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminMixinConversationConnection: (
-    { __typename?: 'MixinConversationConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'MixinConversation' }
-      & Pick<MixinConversation, 'id' | 'category' | 'name' | 'codeId' | 'conversationId' | 'participantUuids' | 'createdAt'>
-      & { creator?: Maybe<(
-        { __typename?: 'User' }
-        & Pick<User, 'name' | 'mixinId' | 'avatar'>
-      )> }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminMixinConversationConnectionQuery = { __typename?: 'Query', adminMixinConversationConnection: { __typename?: 'MixinConversationConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'MixinConversation', id: string, category: string, name?: Maybe<string>, codeId?: Maybe<string>, conversationId: string, participantUuids: Array<string>, createdAt: any, creator?: Maybe<{ __typename?: 'User', name: string, mixinId: string, avatar: string }> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminMixinConversationQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AdminMixinConversationQuery = (
-  { __typename?: 'Query' }
-  & { adminMixinConversation: (
-    { __typename?: 'MixinConversation' }
-    & Pick<MixinConversation, 'id' | 'conversationId' | 'category' | 'name' | 'codeId' | 'creatorId' | 'participantUuids' | 'createdAt'>
-    & { creator?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'name' | 'mixinId' | 'avatar'>
-    )>, participants?: Maybe<Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'name' | 'mixinId' | 'avatar'>
-    )>> }
-  ) }
-);
+export type AdminMixinConversationQuery = { __typename?: 'Query', adminMixinConversation: { __typename?: 'MixinConversation', id: string, conversationId: string, category: string, name?: Maybe<string>, codeId?: Maybe<string>, creatorId?: Maybe<string>, participantUuids: Array<string>, createdAt: any, creator?: Maybe<{ __typename?: 'User', name: string, mixinId: string, avatar: string }>, participants?: Maybe<Array<{ __typename?: 'User', name: string, mixinId: string, avatar: string }>> } };
 
 export type AdminMixinMessageConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
 }>;
 
 
-export type AdminMixinMessageConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminMixinMessageConnection: (
-    { __typename?: 'MixinMessageConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'MixinMessage' }
-      & Pick<MixinMessage, 'id' | 'action' | 'category' | 'conversationId' | 'content' | 'userId' | 'processedAt' | 'createdAt'>
-      & { user?: Maybe<(
-        { __typename?: 'User' }
-        & Pick<User, 'avatar' | 'name' | 'mixinId' | 'mixinUuid'>
-      )> }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminMixinMessageConnectionQuery = { __typename?: 'Query', adminMixinMessageConnection: { __typename?: 'MixinMessageConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'MixinMessage', id: string, action: string, category: string, conversationId: string, content: string, userId?: Maybe<string>, processedAt?: Maybe<any>, createdAt: any, user?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string, mixinUuid: string }> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminMixinNetworkSnapshotConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1775,26 +1504,7 @@ export type AdminMixinNetworkSnapshotConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminMixinNetworkSnapshotConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminMixinNetworkSnapshotConnection: (
-    { __typename?: 'MixinNetworkSnapshotConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'MixinNetworkSnapshot' }
-      & Pick<MixinNetworkSnapshot, 'id' | 'type' | 'snapshotType' | 'traceId' | 'snapshotId' | 'amount' | 'data' | 'opponentId' | 'processedAt' | 'transferredAt' | 'createdAt'>
-      & { opponent?: Maybe<(
-        { __typename?: 'User' }
-        & Pick<User, 'avatar' | 'name' | 'mixinId'>
-      )>, asset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'name' | 'iconUrl'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminMixinNetworkSnapshotConnectionQuery = { __typename?: 'Query', adminMixinNetworkSnapshotConnection: { __typename?: 'MixinNetworkSnapshotConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'MixinNetworkSnapshot', id: string, type?: Maybe<string>, snapshotType?: Maybe<string>, traceId?: Maybe<string>, snapshotId: string, amount: number, data?: Maybe<string>, opponentId?: Maybe<string>, processedAt?: Maybe<any>, transferredAt: any, createdAt: any, opponent?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string }>, asset: { __typename?: 'MixinAsset', assetId: string, symbol: string, name: string, iconUrl?: Maybe<string> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminMixinNetworkUserConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1804,40 +1514,14 @@ export type AdminMixinNetworkUserConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminMixinNetworkUserConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminMixinNetworkUserConnection: (
-    { __typename?: 'MixinNetworkUserConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'MixinNetworkUser' }
-      & Pick<MixinNetworkUser, 'id' | 'name' | 'state' | 'type' | 'hasPin' | 'mixinUuid' | 'createdAt'>
-      & { owner?: Maybe<(
-        { __typename?: 'User' }
-        & Pick<User, 'name' | 'mixinId'>
-      )> }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminMixinNetworkUserConnectionQuery = { __typename?: 'Query', adminMixinNetworkUserConnection: { __typename?: 'MixinNetworkUserConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'MixinNetworkUser', id: string, name: string, state: string, type: string, hasPin: boolean, mixinUuid: string, createdAt: any, owner?: Maybe<{ __typename?: 'User', name: string, mixinId: string }> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminMixinNetworkUserQueryVariables = Exact<{
   mixinUuid: Scalars['String'];
 }>;
 
 
-export type AdminMixinNetworkUserQuery = (
-  { __typename?: 'Query' }
-  & { adminMixinNetworkUser: (
-    { __typename?: 'MixinNetworkUser' }
-    & Pick<MixinNetworkUser, 'id' | 'name' | 'state' | 'type' | 'hasPin' | 'mixinUuid' | 'netProfit' | 'createdAt'>
-    & { owner?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'name' | 'mixinId'>
-    )> }
-  ) }
-);
+export type AdminMixinNetworkUserQuery = { __typename?: 'Query', adminMixinNetworkUser: { __typename?: 'MixinNetworkUser', id: string, name: string, state: string, type: string, hasPin: boolean, mixinUuid: string, netProfit?: Maybe<number>, createdAt: any, owner?: Maybe<{ __typename?: 'User', name: string, mixinId: string }> } };
 
 export type AdminMixinTransferConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1849,26 +1533,7 @@ export type AdminMixinTransferConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminMixinTransferConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminMixinTransferConnection: (
-    { __typename?: 'MixinTransferConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'MixinTransfer' }
-      & Pick<MixinTransfer, 'id' | 'transferType' | 'traceId' | 'snapshotId' | 'amount' | 'memo' | 'opponentId' | 'userId' | 'processedAt' | 'createdAt'>
-      & { recipient?: Maybe<(
-        { __typename?: 'User' }
-        & Pick<User, 'avatar' | 'name' | 'mixinId'>
-      )>, asset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'name' | 'iconUrl'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminMixinTransferConnectionQuery = { __typename?: 'Query', adminMixinTransferConnection: { __typename?: 'MixinTransferConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'MixinTransfer', id: string, transferType?: Maybe<string>, traceId: string, snapshotId?: Maybe<string>, amount: number, memo?: Maybe<string>, opponentId?: Maybe<string>, userId: string, processedAt?: Maybe<any>, createdAt: any, recipient?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string }>, asset: { __typename?: 'MixinAsset', assetId: string, symbol: string, name: string, iconUrl?: Maybe<string> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminOceanOrderConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1882,58 +1547,14 @@ export type AdminOceanOrderConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminOceanOrderConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminOceanOrderConnection: (
-    { __typename?: 'OceanOrderConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'OceanOrder' }
-      & Pick<OceanOrder, 'id' | 'traceId' | 'state' | 'conversationId' | 'side' | 'orderType' | 'price' | 'amount' | 'funds' | 'remainingAmount' | 'remainingFunds' | 'filledAmount' | 'filledFunds' | 'createdAt'>
-      & { user?: Maybe<(
-        { __typename?: 'User' }
-        & Pick<User, 'avatar' | 'name' | 'mixinId'>
-      )>, broker: (
-        { __typename?: 'MixinNetworkUser' }
-        & Pick<MixinNetworkUser, 'name' | 'mixinUuid'>
-      ), baseAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-      ), quoteAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminOceanOrderConnectionQuery = { __typename?: 'Query', adminOceanOrderConnection: { __typename?: 'OceanOrderConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'OceanOrder', id: string, traceId: string, state: string, conversationId?: Maybe<string>, side: string, orderType: string, price: number, amount: number, funds: number, remainingAmount: number, remainingFunds: number, filledAmount: number, filledFunds: number, createdAt: any, user?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string }>, broker: { __typename?: 'MixinNetworkUser', name: string, mixinUuid: string }, baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminOceanOrderQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AdminOceanOrderQuery = (
-  { __typename?: 'Query' }
-  & { adminOceanOrder: (
-    { __typename?: 'OceanOrder' }
-    & Pick<OceanOrder, 'id' | 'traceId' | 'state' | 'conversationId' | 'side' | 'orderType' | 'price' | 'amount' | 'funds' | 'remainingAmount' | 'remainingFunds' | 'filledAmount' | 'filledFunds' | 'createdAt'>
-    & { user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'avatar' | 'name' | 'mixinId'>
-    )>, broker: (
-      { __typename?: 'MixinNetworkUser' }
-      & Pick<MixinNetworkUser, 'mixinUuid'>
-    ), baseAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-    ), quoteAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-    ) }
-  ) }
-);
+export type AdminOceanOrderQuery = { __typename?: 'Query', adminOceanOrder: { __typename?: 'OceanOrder', id: string, traceId: string, state: string, conversationId?: Maybe<string>, side: string, orderType: string, price: number, amount: number, funds: number, remainingAmount: number, remainingFunds: number, filledAmount: number, filledFunds: number, createdAt: any, user?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string }>, broker: { __typename?: 'MixinNetworkUser', mixinUuid: string }, baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } } };
 
 export type AdminSwapOrderConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -1945,58 +1566,14 @@ export type AdminSwapOrderConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminSwapOrderConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminSwapOrderConnection: (
-    { __typename?: 'SwapOrderConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'SwapOrder' }
-      & Pick<SwapOrder, 'id' | 'traceId' | 'state' | 'payAmount' | 'fillAmount' | 'minAmount' | 'brokerId' | 'arbitrageOrderId' | 'createdAt'>
-      & { user?: Maybe<(
-        { __typename?: 'User' }
-        & Pick<User, 'avatar' | 'name' | 'mixinId'>
-      )>, broker: (
-        { __typename?: 'MixinNetworkUser' }
-        & Pick<MixinNetworkUser, 'mixinUuid' | 'name'>
-      ), payAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-      ), fillAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminSwapOrderConnectionQuery = { __typename?: 'Query', adminSwapOrderConnection: { __typename?: 'SwapOrderConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'SwapOrder', id: string, traceId: string, state: string, payAmount: number, fillAmount?: Maybe<number>, minAmount?: Maybe<number>, brokerId: string, arbitrageOrderId?: Maybe<string>, createdAt: any, user?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string }>, broker: { __typename?: 'MixinNetworkUser', mixinUuid: string, name: string }, payAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminSwapOrderQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AdminSwapOrderQuery = (
-  { __typename?: 'Query' }
-  & { adminSwapOrder: (
-    { __typename?: 'SwapOrder' }
-    & Pick<SwapOrder, 'id' | 'traceId' | 'state' | 'payAmount' | 'fillAmount' | 'minAmount' | 'arbitrageOrderId' | 'createdAt'>
-    & { user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'avatar' | 'name' | 'mixinId'>
-    )>, broker: (
-      { __typename?: 'MixinNetworkUser' }
-      & Pick<MixinNetworkUser, 'mixinUuid' | 'name'>
-    ), payAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-    ), fillAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-    ) }
-  ) }
-);
+export type AdminSwapOrderQuery = { __typename?: 'Query', adminSwapOrder: { __typename?: 'SwapOrder', id: string, traceId: string, state: string, payAmount: number, fillAmount?: Maybe<number>, minAmount?: Maybe<number>, arbitrageOrderId?: Maybe<string>, createdAt: any, user?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string }>, broker: { __typename?: 'MixinNetworkUser', mixinUuid: string, name: string }, payAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } } };
 
 export type AdminTradeConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -2004,26 +1581,7 @@ export type AdminTradeConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminTradeConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminTradeConnection: (
-    { __typename?: 'TradeConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'Trade' }
-      & Pick<Trade, 'id' | 'marketId' | 'side' | 'amount' | 'price' | 'tradeId' | 'tradedAt'>
-      & { baseAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'iconUrl' | 'symbol'>
-      ), quoteAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'iconUrl' | 'symbol'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminTradeConnectionQuery = { __typename?: 'Query', adminTradeConnection: { __typename?: 'TradeConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Trade', id: string, marketId: string, side: string, amount: number, price?: Maybe<number>, tradeId: string, tradedAt: any, baseAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminUserConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -2031,313 +1589,141 @@ export type AdminUserConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminUserConnectionQuery = (
-  { __typename?: 'Query' }
-  & { adminUserConnection: (
-    { __typename?: 'UserConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid' | 'invitationsCount' | 'createdAt'>
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type AdminUserConnectionQuery = { __typename?: 'Query', adminUserConnection: { __typename?: 'UserConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'User', id: string, name: string, avatar: string, mixinId: string, mixinUuid: string, invitationsCount: number, createdAt: any }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminUserDeprecatedOceanOrdersQueryVariables = Exact<{
   userId: Scalars['ID'];
 }>;
 
 
-export type AdminUserDeprecatedOceanOrdersQuery = (
-  { __typename?: 'Query' }
-  & { adminUserDeprecatedOceanOrders: Array<(
-    { __typename?: 'OceanOrder' }
-    & Pick<OceanOrder, 'traceId' | 'orderType' | 'side' | 'price' | 'createdAt'>
-    & { baseAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-    ), quoteAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-    ) }
-  )> }
-);
+export type AdminUserDeprecatedOceanOrdersQuery = { __typename?: 'Query', adminUserDeprecatedOceanOrders: Array<{ __typename?: 'OceanOrder', traceId: string, orderType: string, side: string, price: number, createdAt: any, baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } }> };
 
 export type AdminUserDeprecatedOceanSnapshotsQueryVariables = Exact<{
   userId: Scalars['ID'];
 }>;
 
 
-export type AdminUserDeprecatedOceanSnapshotsQuery = (
-  { __typename?: 'Query' }
-  & { adminUserDeprecatedOceanSnapshots: Array<(
-    { __typename?: 'MixinNetworkSnapshot' }
-    & Pick<MixinNetworkSnapshot, 'traceId' | 'snapshotId' | 'amount' | 'data' | 'decryptedMemo' | 'opponentId' | 'transferredAt'>
-    & { asset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'name' | 'iconUrl'>
-    ) }
-  )> }
-);
+export type AdminUserDeprecatedOceanSnapshotsQuery = { __typename?: 'Query', adminUserDeprecatedOceanSnapshots: Array<{ __typename?: 'MixinNetworkSnapshot', traceId?: Maybe<string>, snapshotId: string, amount: number, data?: Maybe<string>, decryptedMemo?: Maybe<string>, opponentId?: Maybe<string>, transferredAt: any, asset: { __typename?: 'MixinAsset', assetId: string, symbol: string, name: string, iconUrl?: Maybe<string> } }> };
 
 export type AdminUserQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AdminUserQuery = (
-  { __typename?: 'Query' }
-  & { adminUser: (
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'name' | 'avatar' | 'mixinId' | 'mixinUuid' | 'invitationsCount' | 'createdAt'>
-    & { broker?: Maybe<(
-      { __typename?: 'MixinNetworkUser' }
-      & Pick<MixinNetworkUser, 'mixinUuid'>
-    )>, invitor?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'name' | 'avatar' | 'mixinId'>
-    )> }
-  ) }
-);
+export type AdminUserQuery = { __typename?: 'Query', adminUser: { __typename?: 'User', id: string, name: string, avatar: string, mixinId: string, mixinUuid: string, invitationsCount: number, createdAt: any, broker?: Maybe<{ __typename?: 'MixinNetworkUser', mixinUuid: string }>, invitor?: Maybe<{ __typename?: 'User', name: string, avatar: string, mixinId: string }> } };
 
 export type CurrentAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentAdminQuery = (
-  { __typename?: 'Query' }
-  & { currentAdmin: (
-    { __typename?: 'Administrator' }
-    & Pick<Administrator, 'name'>
-  ) }
-);
+export type CurrentAdminQuery = { __typename?: 'Query', currentAdmin: { __typename?: 'Administrator', name: string } };
 
 export type AdminWalletBalanceQueryVariables = Exact<{
   userId?: Maybe<Scalars['String']>;
 }>;
 
 
-export type AdminWalletBalanceQuery = (
-  { __typename?: 'Query' }
-  & { adminWalletBalance: Array<(
-    { __typename?: 'UserAsset' }
-    & Pick<UserAsset, 'assetId' | 'name' | 'symbol' | 'iconUrl' | 'balance' | 'priceUsd' | 'priceBtc'>
-  )> }
-);
+export type AdminWalletBalanceQuery = { __typename?: 'Query', adminWalletBalance: Array<{ __typename?: 'UserAsset', assetId: string, name: string, symbol: string, iconUrl?: Maybe<string>, balance: number, priceUsd?: Maybe<number>, priceBtc?: Maybe<number> }> };
 
 export type CancelOceanOrderMutationVariables = Exact<{
   input: CancelOceanOrderMutationInput;
 }>;
 
 
-export type CancelOceanOrderMutation = (
-  { __typename?: 'Mutation' }
-  & { cancelOceanOrder?: Maybe<(
-    { __typename?: 'OceanOrder' }
-    & Pick<OceanOrder, 'id' | 'state'>
-  )> }
-);
+export type CancelOceanOrderMutation = { __typename?: 'Mutation', cancelOceanOrder?: Maybe<{ __typename?: 'OceanOrder', id: string, state: string }> };
 
 export type CreateGroupMarketMutationVariables = Exact<{
   input: CreateGroupMarketMutationInput;
 }>;
 
 
-export type CreateGroupMarketMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'createGroupMarket'>
-);
+export type CreateGroupMarketMutation = { __typename?: 'Mutation', createGroupMarket?: Maybe<boolean> };
 
 export type CreateInvitationMutationVariables = Exact<{
   input: CreateInvitationMutationInput;
 }>;
 
 
-export type CreateInvitationMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'createInvitation'>
-);
+export type CreateInvitationMutation = { __typename?: 'Mutation', createInvitation?: Maybe<boolean> };
 
 export type CreateOceanOrderMutationVariables = Exact<{
   input: CreateOceanOrderMutationInput;
 }>;
 
 
-export type CreateOceanOrderMutation = (
-  { __typename?: 'Mutation' }
-  & { createOceanOrder?: Maybe<(
-    { __typename?: 'OceanOrder' }
-    & Pick<OceanOrder, 'id' | 'payUrl' | 'state' | 'brokerId' | 'paymentAssetId' | 'paymentAmount' | 'paymentMemo'>
-  )> }
-);
+export type CreateOceanOrderMutation = { __typename?: 'Mutation', createOceanOrder?: Maybe<{ __typename?: 'OceanOrder', id: string, payUrl: string, state: string, brokerId: string, paymentAssetId: string, paymentAmount: string, paymentMemo: string }> };
 
 export type DeleteGroupMarketMutationVariables = Exact<{
   input: DeleteGroupMarketMutationInput;
 }>;
 
 
-export type DeleteGroupMarketMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'deleteGroupMarket'>
-);
+export type DeleteGroupMarketMutation = { __typename?: 'Mutation', deleteGroupMarket?: Maybe<boolean> };
 
 export type FavoriteMarketMutationVariables = Exact<{
   input: FavoriteMarketMutationInput;
 }>;
 
 
-export type FavoriteMarketMutation = (
-  { __typename?: 'Mutation' }
-  & { favoriteMarket?: Maybe<(
-    { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'favorited'>
-  )> }
-);
+export type FavoriteMarketMutation = { __typename?: 'Mutation', favoriteMarket?: Maybe<{ __typename?: 'Market', id: string, favorited?: Maybe<boolean> }> };
 
 export type GenerateCancelDeprecatedOceanOrderPayUrlMutationVariables = Exact<{
   input: GenerateCancelDeprecatedOceanOrderPayUrlMutationInput;
 }>;
 
 
-export type GenerateCancelDeprecatedOceanOrderPayUrlMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'generateCancelDeprecatedOceanOrderPayUrl'>
-);
+export type GenerateCancelDeprecatedOceanOrderPayUrlMutation = { __typename?: 'Mutation', generateCancelDeprecatedOceanOrderPayUrl?: Maybe<string> };
 
 export type LoginWithTokenMutationVariables = Exact<{
   input: LoginWithTokenMutationInput;
 }>;
 
 
-export type LoginWithTokenMutation = (
-  { __typename?: 'Mutation' }
-  & { loginWithToken?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'name' | 'avatar' | 'mixinUuid' | 'inviteCode' | 'mayInvited' | 'fennec'>
-    & { invitor?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'mixinId' | 'mixinUuid' | 'name'>
-    )> }
-  )> }
-);
+export type LoginWithTokenMutation = { __typename?: 'Mutation', loginWithToken?: Maybe<{ __typename?: 'User', name: string, avatar: string, mixinUuid: string, inviteCode: string, mayInvited: boolean, fennec?: Maybe<boolean>, invitor?: Maybe<{ __typename?: 'User', mixinId: string, mixinUuid: string, name: string }> }> };
 
 export type SwitchLocaleMutationVariables = Exact<{
   input: SwitchLocaleMutationInput;
 }>;
 
 
-export type SwitchLocaleMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'switchLocale'>
-);
+export type SwitchLocaleMutation = { __typename?: 'Mutation', switchLocale?: Maybe<boolean> };
 
 export type UnfavoriteMarketMutationVariables = Exact<{
   input: UnfavoriteMarketMutationInput;
 }>;
 
 
-export type UnfavoriteMarketMutation = (
-  { __typename?: 'Mutation' }
-  & { unfavoriteMarket?: Maybe<(
-    { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'favorited'>
-  )> }
-);
+export type UnfavoriteMarketMutation = { __typename?: 'Mutation', unfavoriteMarket?: Maybe<{ __typename?: 'Market', id: string, favorited?: Maybe<boolean> }> };
 
 export type CurrentConversationQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentConversationQuery = (
-  { __typename?: 'Query' }
-  & { currentConversation?: Maybe<(
-    { __typename?: 'MixinConversation' }
-    & Pick<MixinConversation, 'id' | 'conversationId' | 'category' | 'name' | 'adminUuids' | 'creatorId'>
-  )> }
-);
+export type CurrentConversationQuery = { __typename?: 'Query', currentConversation?: Maybe<{ __typename?: 'MixinConversation', id: string, conversationId: string, category: string, name?: Maybe<string>, adminUuids?: Maybe<Array<string>>, creatorId?: Maybe<string> }> };
 
 export type DeprecatedOceanOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type DeprecatedOceanOrdersQuery = (
-  { __typename?: 'Query' }
-  & { deprecatedOceanOrders: Array<(
-    { __typename?: 'OceanOrder' }
-    & Pick<OceanOrder, 'traceId' | 'orderType' | 'side' | 'price' | 'createdAt'>
-    & { baseAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-    ), quoteAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-    ) }
-  )> }
-);
+export type DeprecatedOceanOrdersQuery = { __typename?: 'Query', deprecatedOceanOrders: Array<{ __typename?: 'OceanOrder', traceId: string, orderType: string, side: string, price: number, createdAt: any, baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } }> };
 
 export type GroupOwnerCommissionConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
 }>;
 
 
-export type GroupOwnerCommissionConnectionQuery = (
-  { __typename?: 'Query' }
-  & { groupOwnerCommissionConnection: (
-    { __typename?: 'MixinTransferConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'MixinTransfer' }
-      & Pick<MixinTransfer, 'id' | 'amount' | 'transferType' | 'traceId' | 'snapshotId'>
-      & { asset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'name' | 'symbol' | 'iconUrl'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type GroupOwnerCommissionConnectionQuery = { __typename?: 'Query', groupOwnerCommissionConnection: { __typename?: 'MixinTransferConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'MixinTransfer', id: string, amount: number, transferType?: Maybe<string>, traceId: string, snapshotId?: Maybe<string>, asset: { __typename?: 'MixinAsset', name: string, symbol: string, iconUrl?: Maybe<string> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type InvitationCommissionConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
 }>;
 
 
-export type InvitationCommissionConnectionQuery = (
-  { __typename?: 'Query' }
-  & { invitationCommissionConnection: (
-    { __typename?: 'MixinTransferConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'MixinTransfer' }
-      & Pick<MixinTransfer, 'id' | 'amount' | 'transferType' | 'traceId' | 'snapshotId'>
-      & { asset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'name' | 'symbol' | 'iconUrl'>
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type InvitationCommissionConnectionQuery = { __typename?: 'Query', invitationCommissionConnection: { __typename?: 'MixinTransferConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'MixinTransfer', id: string, amount: number, transferType?: Maybe<string>, traceId: string, snapshotId?: Maybe<string>, asset: { __typename?: 'MixinAsset', name: string, symbol: string, iconUrl?: Maybe<string> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type InviteeConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
 }>;
 
 
-export type InviteeConnectionQuery = (
-  { __typename?: 'Query' }
-  & { inviteeConnection: (
-    { __typename?: 'UserConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'name' | 'avatar' | 'mixinId' | 'mixinUuid'>
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type InviteeConnectionQuery = { __typename?: 'Query', inviteeConnection: { __typename?: 'UserConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'User', name: string, avatar: string, mixinId: string, mixinUuid: string }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type MarketConnectionQueryVariables = Exact<{
   type: Scalars['String'];
@@ -2346,44 +1732,14 @@ export type MarketConnectionQueryVariables = Exact<{
 }>;
 
 
-export type MarketConnectionQuery = (
-  { __typename?: 'Query' }
-  & { marketConnection: (
-    { __typename?: 'MarketConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'Market' }
-      & Pick<Market, 'id' | 'priceCurrent' | 'change24h' | 'vol24h' | 'oceanMarketId'>
-      & { baseAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'changeUsd' | 'priceUsd'>
-        & { chainAsset?: Maybe<(
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'iconUrl'>
-        )> }
-      ), quoteAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd'>
-        & { chainAsset?: Maybe<(
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'iconUrl'>
-        )> }
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type MarketConnectionQuery = { __typename?: 'Query', marketConnection: { __typename?: 'MarketConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Market', id: string, priceCurrent?: Maybe<number>, change24h?: Maybe<number>, vol24h?: Maybe<number>, oceanMarketId: string, baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, changeUsd?: Maybe<number>, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type MarketPriceChartDataQueryVariables = Exact<{
   marketId?: Maybe<Scalars['ID']>;
 }>;
 
 
-export type MarketPriceChartDataQuery = (
-  { __typename?: 'Query' }
-  & Pick<Query, 'marketPriceChartData'>
-);
+export type MarketPriceChartDataQuery = { __typename?: 'Query', marketPriceChartData: any };
 
 export type MarketTradeConnectionQueryVariables = Exact<{
   marketId: Scalars['ID'];
@@ -2391,19 +1747,7 @@ export type MarketTradeConnectionQueryVariables = Exact<{
 }>;
 
 
-export type MarketTradeConnectionQuery = (
-  { __typename?: 'Query' }
-  & { marketTradeConnection: (
-    { __typename?: 'TradeConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'Trade' }
-      & Pick<Trade, 'id' | 'tradeId' | 'side' | 'amount' | 'price' | 'tradedAt'>
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type MarketTradeConnectionQuery = { __typename?: 'Query', marketTradeConnection: { __typename?: 'TradeConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Trade', id: string, tradeId: string, side: string, amount: number, price?: Maybe<number>, tradedAt: any }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type MarketQueryVariables = Exact<{
   id?: Maybe<Scalars['ID']>;
@@ -2412,28 +1756,7 @@ export type MarketQueryVariables = Exact<{
 }>;
 
 
-export type MarketQuery = (
-  { __typename?: 'Query' }
-  & { market: (
-    { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'favorited' | 'priceCurrent' | 'change24h' | 'vol24h' | 'highPrice24h' | 'lowPrice24h' | 'referencePrice' | 'oceanMarketId'>
-    & { baseAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd' | 'changeUsd' | 'balance'>
-      & { chainAsset?: Maybe<(
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'iconUrl'>
-      )> }
-    ), quoteAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl' | 'priceUsd' | 'balance'>
-      & { chainAsset?: Maybe<(
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'iconUrl'>
-      )> }
-    ) }
-  ) }
-);
+export type MarketQuery = { __typename?: 'Query', market: { __typename?: 'Market', id: string, favorited?: Maybe<boolean>, priceCurrent?: Maybe<number>, change24h?: Maybe<number>, vol24h?: Maybe<number>, highPrice24h?: Maybe<number>, lowPrice24h?: Maybe<number>, referencePrice?: Maybe<number>, oceanMarketId: string, baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number>, changeUsd?: Maybe<number>, balance?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number>, balance?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> } } };
 
 export type MixinAssetConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -2441,23 +1764,7 @@ export type MixinAssetConnectionQueryVariables = Exact<{
 }>;
 
 
-export type MixinAssetConnectionQuery = (
-  { __typename?: 'Query' }
-  & { mixinAssetConnection: (
-    { __typename?: 'MixinAssetConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-      & { chainAsset?: Maybe<(
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'iconUrl'>
-      )> }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type MixinAssetConnectionQuery = { __typename?: 'Query', mixinAssetConnection: { __typename?: 'MixinAssetConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type OceanOrderConnectionQueryVariables = Exact<{
   marketId?: Maybe<Scalars['ID']>;
@@ -2466,89 +1773,21 @@ export type OceanOrderConnectionQueryVariables = Exact<{
 }>;
 
 
-export type OceanOrderConnectionQuery = (
-  { __typename?: 'Query' }
-  & { oceanOrderConnection: (
-    { __typename?: 'OceanOrderConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'OceanOrder' }
-      & Pick<OceanOrder, 'id' | 'traceId' | 'orderType' | 'side' | 'amount' | 'funds' | 'filledAmount' | 'filledFunds' | 'remainingAmount' | 'remainingFunds' | 'price' | 'state' | 'marketId' | 'createdAt'>
-      & { baseAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-        & { chainAsset?: Maybe<(
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'iconUrl'>
-        )> }
-      ), quoteAsset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-        & { chainAsset?: Maybe<(
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'iconUrl'>
-        )> }
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type OceanOrderConnectionQuery = { __typename?: 'Query', oceanOrderConnection: { __typename?: 'OceanOrderConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'OceanOrder', id: string, traceId: string, orderType: string, side: string, amount: number, funds: number, filledAmount: number, filledFunds: number, remainingAmount: number, remainingFunds: number, price: number, state: string, marketId: string, createdAt: any, baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type OceanOrderQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type OceanOrderQuery = (
-  { __typename?: 'Query' }
-  & { oceanOrder: (
-    { __typename?: 'OceanOrder' }
-    & Pick<OceanOrder, 'id' | 'traceId' | 'orderType' | 'side' | 'amount' | 'funds' | 'filledAmount' | 'filledFunds' | 'remainingAmount' | 'remainingFunds' | 'price' | 'state' | 'marketId' | 'createdAt'>
-    & { baseAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-      & { chainAsset?: Maybe<(
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'iconUrl'>
-      )> }
-    ), quoteAsset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-      & { chainAsset?: Maybe<(
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'iconUrl'>
-      )> }
-    ) }
-  ) }
-);
+export type OceanOrderQuery = { __typename?: 'Query', oceanOrder: { __typename?: 'OceanOrder', id: string, traceId: string, orderType: string, side: string, amount: number, funds: number, filledAmount: number, filledFunds: number, remainingAmount: number, remainingFunds: number, price: number, state: string, marketId: string, createdAt: any, baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> } } };
 
 export type OceanSnapshotConnectionQueryVariables = Exact<{
   oceanOrderId: Scalars['ID'];
 }>;
 
 
-export type OceanSnapshotConnectionQuery = (
-  { __typename?: 'Query' }
-  & { oceanSnapshotConnection: (
-    { __typename?: 'MixinNetworkSnapshotConnection' }
-    & { nodes?: Maybe<Array<Maybe<(
-      { __typename?: 'MixinNetworkSnapshot' }
-      & Pick<MixinNetworkSnapshot, 'id' | 'traceId' | 'snapshotType' | 'snapshotId' | 'amount' | 'transferredAt' | 'createdAt'>
-      & { asset: (
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'assetId' | 'symbol' | 'iconUrl'>
-        & { chainAsset?: Maybe<(
-          { __typename?: 'MixinAsset' }
-          & Pick<MixinAsset, 'iconUrl'>
-        )> }
-      ) }
-    )>>>, pageInfo: (
-      { __typename?: 'PageInfo' }
-      & Pick<PageInfo, 'hasNextPage' | 'endCursor'>
-    ) }
-  ) }
-);
+export type OceanSnapshotConnectionQuery = { __typename?: 'Query', oceanSnapshotConnection: { __typename?: 'MixinNetworkSnapshotConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'MixinNetworkSnapshot', id: string, traceId?: Maybe<string>, snapshotType?: Maybe<string>, snapshotId: string, amount: number, transferredAt: any, createdAt: any, asset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type UserAssetSnapshotsQueryVariables = Exact<{
   offset?: Maybe<Scalars['String']>;
@@ -2557,43 +1796,12 @@ export type UserAssetSnapshotsQueryVariables = Exact<{
 }>;
 
 
-export type UserAssetSnapshotsQuery = (
-  { __typename?: 'Query' }
-  & { userSnapshots: Array<(
-    { __typename?: 'MixinNetworkSnapshot' }
-    & Pick<MixinNetworkSnapshot, 'amount' | 'traceId' | 'opponentId' | 'data' | 'createdAt'>
-    & { asset: (
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'name' | 'symbol' | 'iconUrl'>
-      & { chainAsset?: Maybe<(
-        { __typename?: 'MixinAsset' }
-        & Pick<MixinAsset, 'iconUrl'>
-      )> }
-    ) }
-  )>, userAsset: (
-    { __typename?: 'UserAsset' }
-    & Pick<UserAsset, 'id' | 'assetId' | 'name' | 'symbol' | 'balance' | 'balanceUsd' | 'iconUrl'>
-    & { chainAsset?: Maybe<(
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'iconUrl'>
-    )> }
-  ) }
-);
+export type UserAssetSnapshotsQuery = { __typename?: 'Query', userSnapshots: Array<{ __typename?: 'MixinNetworkSnapshot', amount: number, traceId?: Maybe<string>, opponentId?: Maybe<string>, data?: Maybe<string>, createdAt: any, asset: { __typename?: 'MixinAsset', name: string, symbol: string, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> } }>, userAsset: { __typename?: 'UserAsset', id: string, assetId: string, name: string, symbol: string, balance: number, balanceUsd: number, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> } };
 
 export type UserAssetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserAssetsQuery = (
-  { __typename?: 'Query' }
-  & { userAssets: Array<(
-    { __typename?: 'UserAsset' }
-    & Pick<UserAsset, 'assetId' | 'name' | 'symbol' | 'iconUrl' | 'chainId' | 'balance' | 'balanceUsd' | 'priceUsd' | 'priceBtc' | 'changeUsd' | 'changeBtc'>
-    & { chainAsset?: Maybe<(
-      { __typename?: 'MixinAsset' }
-      & Pick<MixinAsset, 'iconUrl'>
-    )> }
-  )> }
-);
+export type UserAssetsQuery = { __typename?: 'Query', userAssets: Array<{ __typename?: 'UserAsset', assetId: string, name: string, symbol: string, iconUrl?: Maybe<string>, chainId?: Maybe<string>, balance: number, balanceUsd: number, priceUsd?: Maybe<number>, priceBtc?: Maybe<number>, changeUsd?: Maybe<number>, changeBtc?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> }> };
 
 
 export const AdminArbitragerWithrawBalanceDocument = gql`
@@ -2879,6 +2087,9 @@ export const AdminAppStatisticDocument = gql`
     query AdminAppStatistic($scope: String) {
   adminAppStatistic(scope: $scope) {
     usersCount
+    dailyActiveUsersCount
+    weeklyActiveUsersCount
+    monthlyActiveUsersCount
     validOrdersCount
     marketsCount
     matchTotalUsd

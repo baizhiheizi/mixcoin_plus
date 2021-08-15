@@ -1,6 +1,9 @@
 query AdminAppStatistic($scope: String) {
   adminAppStatistic(scope: $scope) {
     usersCount
+    dailyActiveUsersCount
+    weeklyActiveUsersCount
+    monthlyActiveUsersCount
     validOrdersCount
     marketsCount
     matchTotalUsd

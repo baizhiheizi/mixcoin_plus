@@ -32,6 +32,18 @@ function StatisticAllComponent() {
       <div className='text-center grid grid-cols-1 md:grid-cols-4 gap-4'>
         <Statistic title='Users Count' value={appStatistic.usersCount} />
         <Statistic
+          title='Daily Active Users Count'
+          value={appStatistic.dailyActiveUsersCount}
+        />
+        <Statistic
+          title='Weekly Active Users Count'
+          value={appStatistic.weeklyActiveUsersCount}
+        />
+        <Statistic
+          title='Monthly Active Users Count'
+          value={appStatistic.monthlyActiveUsersCount}
+        />
+        <Statistic
           title='Valid Orders Count'
           value={appStatistic.validOrdersCount}
         />

@@ -16,6 +16,9 @@ module MixcoinPlusBot
   def self.app_statistic
     {
       users_count: User.count,
+      daily_active_users_count: User.where(last_active_at: (Time.current - 1.day)...Time.current).count,
+      weekly_active_users_count: User.where(last_active_at: (Time.current - 1.week)...Time.current).count,
+      monthly_active_users_count: User.where(last_active_at: (Time.current - 1.month)...Time.current).count,
       valid_orders_count: OceanOrder.without_drafted.count,
       markets_count: Market.count,
       match_total_usd: OceanSnapshot.with_snapshot_type(:match_from_engine).sum(:amount_usd),
