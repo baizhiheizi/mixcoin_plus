@@ -11,11 +11,7 @@ module Resolvers
       activities = BookingOrderActivity.all
 
       activities =
-        if params[:market_id].present?
-          activities.where(market_id: params[:market_id])
-        else
-          activities
-        end
+        (activities.where(market_id: params[:market_id]) if params[:market_id].present?)
 
       activities.order(created_at: :desc)
     end

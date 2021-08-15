@@ -20,25 +20,13 @@ module Resolvers
         end
 
       participants =
-        if params[:market_id].present?
-          participants.where(market_id: params[:market_id])
-        else
-          participants
-        end
+        (participants.where(market_id: params[:market_id]) if params[:market_id].present?)
 
       participants =
-        if params[:booking_order_activity_id].present?
-          participants.where(booking_order_activity_id: params[:booking_order_activity_id])
-        else
-          participants
-        end
+        (participants.where(booking_order_activity_id: params[:booking_order_activity_id]) if params[:booking_order_activity_id].present?)
 
       participants =
-        if params[:state].present?
-          participants.where(state: params[:state])
-        else
-          participants
-        end
+        (participants.where(state: params[:state]) if params[:state].present?)
 
       participants.order(created_at: :desc)
     end

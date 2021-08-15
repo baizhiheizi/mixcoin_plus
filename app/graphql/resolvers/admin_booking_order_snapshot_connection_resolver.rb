@@ -21,25 +21,13 @@ module Resolvers
         end
 
       snapshots =
-        if params[:market_id].present?
-          snapshots.where(market_id: params[:market_id])
-        else
-          snapshots
-        end
+        (snapshots.where(market_id: params[:market_id]) if params[:market_id].present?)
 
       snapshots =
-        if params[:ocean_order_id].present?
-          snapshots.where(ocean_order_id: params[:ocean_order_id])
-        else
-          snapshots
-        end
+        (snapshots.where(ocean_order_id: params[:ocean_order_id]) if params[:ocean_order_id].present?)
 
       snapshots =
-        if params[:started_at].present? && params[:ended_at].present?
-          snapshots.where(created_at: Time.zone.parse(params[:started_at])...Time.zone.parse(params[:ended_at]))
-        else
-          snapshots
-        end
+        (snapshots.where(created_at: Time.zone.parse(params[:started_at])...Time.zone.parse(params[:ended_at])) if params[:started_at].present? && params[:ended_at].present?)
 
       snapshots.order(created_at: :desc)
     end

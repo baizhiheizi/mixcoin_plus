@@ -19,11 +19,7 @@ module Resolvers
         end
 
       orders =
-        if params[:market_id].present?
-          orders.where(market_id: params[:market_id])
-        else
-          orders
-        end
+        (orders.where(market_id: params[:market_id]) if params[:market_id].present?)
 
       state = params[:state] || 'valid'
       orders =

@@ -29,11 +29,7 @@ module Resolvers
         end
 
       orders =
-        if params[:market_id].present?
-          orders.where(market_id: params[:market_id])
-        else
-          orders
-        end
+        (orders.where(market_id: params[:market_id]) if params[:market_id].present?)
 
       orders = orders.where(conversation_id: params[:conversation_id]) if params[:conversation_id].present?
 
