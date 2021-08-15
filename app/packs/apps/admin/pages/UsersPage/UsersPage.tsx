@@ -1,5 +1,5 @@
 import { useDebounce } from 'ahooks';
-import { Button, Input, PageHeader, Space, Table } from 'antd';
+import { Button, Input, PageHeader, Select, Space, Table } from 'antd';
 import Avatar from 'antd/lib/avatar/avatar';
 import { ColumnProps } from 'antd/lib/table';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
@@ -9,10 +9,11 @@ import { useHistory } from 'react-router';
 
 export default function UsersPage() {
   const [query, setQuery] = useState('');
+  const [order, setOrder] = useState('default');
   const debouncedQuery = useDebounce(query, { wait: 1000 });
   const history = useHistory();
   const { loading, data, refetch, fetchMore } = useAdminUserConnectionQuery({
-    variables: { query: debouncedQuery },
+    variables: { query: debouncedQuery, order },
   });
 
   if (loading) {
@@ -44,9 +45,20 @@ export default function UsersPage() {
       title: 'Name',
     },
     {
+      dataIndex: 'oceanOrdersCount',
+      key: 'oceanOrdersCount',
+      title: 'Ocean Orders Count',
+    },
+    {
       dataIndex: 'invitationsCount',
       key: 'invitationsCount',
       title: 'Invitations Count',
+    },
+    {
+      dataIndex: 'lastActiveAt',
+      key: 'lastActiveAt',
+      render: (lastActiveAt) => lastActiveAt || '-',
+      title: 'lastActiveAt',
     },
     {
       dataIndex: 'createdAt',
@@ -67,13 +79,25 @@ export default function UsersPage() {
     <>
       <PageHeader title='Users Manage' />
       <div className='flex justify-between mb-4'>
-        <Input
-          className='w-36'
-          placeholder='User name/mixin ID'
-          value={query}
-          onChange={(e) => setQuery(e.currentTarget.value)}
-        />
-        <Button key='refresh' type='primary' onClick={() => refetch()}>
+        <div className='flex'>
+          <Select
+            className='w-32 mr-2'
+            value={order}
+            onChange={(value) => setOrder(value)}
+          >
+            <Select.Option value='default'>Default</Select.Option>
+            <Select.Option value='active'>Active</Select.Option>
+            <Select.Option value='orders'>Orders</Select.Option>
+            <Select.Option value='invitations'>Invitations</Select.Option>
+          </Select>
+          <Input
+            className='w-36'
+            placeholder='User name/mixin ID'
+            value={query}
+            onChange={(e) => setQuery(e.currentTarget.value)}
+          />
+        </div>
+        <Button type='primary' onClick={() => refetch()}>
           Refresh
         </Button>
       </div>

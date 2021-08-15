@@ -1,5 +1,5 @@
-query AdminUserConnection($after: String, $query: String) {
-  adminUserConnection(after: $after, query: $query) {
+query AdminUserConnection($after: String, $query: String, $order: String) {
+  adminUserConnection(after: $after, query: $query, order: $order) {
     nodes {
       id
       name
@@ -7,6 +7,8 @@ query AdminUserConnection($after: String, $query: String) {
       mixinId
       mixinUuid
       invitationsCount
+      oceanOrdersCount
+      lastActiveAt
       createdAt
     }
     pageInfo {

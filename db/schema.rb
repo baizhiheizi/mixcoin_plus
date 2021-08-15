@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_15_015318) do
+ActiveRecord::Schema.define(version: 2021_08_15_020900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -365,6 +365,7 @@ ActiveRecord::Schema.define(version: 2021_08_15_015318) do
     t.integer "invitations_count", default: 0
     t.string "invite_code"
     t.datetime "last_active_at"
+    t.integer "ocean_orders_count", default: 0
     t.index ["invite_code"], name: "index_users_on_invite_code", unique: true
     t.index ["mixin_id"], name: "index_users_on_mixin_id"
     t.index ["mixin_uuid"], name: "index_users_on_mixin_uuid", unique: true

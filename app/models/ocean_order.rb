@@ -44,7 +44,7 @@ class OceanOrder < ApplicationRecord
 
   belongs_to :market, counter_cache: true
   belongs_to :arbitrage_order, optional: true
-  belongs_to :user, inverse_of: :ocean_orders, optional: true
+  belongs_to :user, inverse_of: :ocean_orders, counter_cache: true, optional: true
   belongs_to :broker, class_name: 'MixinNetworkUser', primary_key: :mixin_uuid, inverse_of: :ocean_orders, optional: true
   belongs_to :base_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
   belongs_to :quote_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false

@@ -1057,6 +1057,7 @@ export type QueryAdminUserArgs = {
 export type QueryAdminUserConnectionArgs = {
   after?: Maybe<Scalars['String']>;
   query?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
@@ -1281,10 +1282,12 @@ export type User = {
   invitationsCount: Scalars['Int'];
   inviteCode: Scalars['String'];
   invitor?: Maybe<User>;
+  lastActiveAt?: Maybe<Scalars['ISO8601DateTime']>;
   mayInvited: Scalars['Boolean'];
   mixinId: Scalars['String'];
   mixinUuid: Scalars['String'];
   name: Scalars['String'];
+  oceanOrdersCount: Scalars['Int'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
 };
 
@@ -1586,10 +1589,11 @@ export type AdminTradeConnectionQuery = { __typename?: 'Query', adminTradeConnec
 export type AdminUserConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
   query?: Maybe<Scalars['String']>;
+  order?: Maybe<Scalars['String']>;
 }>;
 
 
-export type AdminUserConnectionQuery = { __typename?: 'Query', adminUserConnection: { __typename?: 'UserConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'User', id: string, name: string, avatar: string, mixinId: string, mixinUuid: string, invitationsCount: number, createdAt: any }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
+export type AdminUserConnectionQuery = { __typename?: 'Query', adminUserConnection: { __typename?: 'UserConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'User', id: string, name: string, avatar: string, mixinId: string, mixinUuid: string, invitationsCount: number, oceanOrdersCount: number, lastActiveAt?: Maybe<any>, createdAt: any }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminUserDeprecatedOceanOrdersQueryVariables = Exact<{
   userId: Scalars['ID'];
@@ -3466,8 +3470,8 @@ export type AdminTradeConnectionQueryHookResult = ReturnType<typeof useAdminTrad
 export type AdminTradeConnectionLazyQueryHookResult = ReturnType<typeof useAdminTradeConnectionLazyQuery>;
 export type AdminTradeConnectionQueryResult = Apollo.QueryResult<AdminTradeConnectionQuery, AdminTradeConnectionQueryVariables>;
 export const AdminUserConnectionDocument = gql`
-    query AdminUserConnection($after: String, $query: String) {
-  adminUserConnection(after: $after, query: $query) {
+    query AdminUserConnection($after: String, $query: String, $order: String) {
+  adminUserConnection(after: $after, query: $query, order: $order) {
     nodes {
       id
       name
@@ -3475,6 +3479,8 @@ export const AdminUserConnectionDocument = gql`
       mixinId
       mixinUuid
       invitationsCount
+      oceanOrdersCount
+      lastActiveAt
       createdAt
     }
     pageInfo {
@@ -3499,6 +3505,7 @@ export const AdminUserConnectionDocument = gql`
  *   variables: {
  *      after: // value for 'after'
  *      query: // value for 'query'
+ *      order: // value for 'order'
  *   },
  * });
  */

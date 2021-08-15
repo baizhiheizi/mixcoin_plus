@@ -4,18 +4,19 @@
 #
 # Table name: users
 #
-#  id                :uuid             not null, primary key
-#  assets_synced_at  :datetime
-#  avatar_url        :string
-#  invitations_count :integer          default(0)
-#  invite_code       :string
-#  last_active_at    :datetime
-#  locale            :string
-#  mixin_uuid        :uuid
-#  name              :string
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  mixin_id          :string
+#  id                 :uuid             not null, primary key
+#  assets_synced_at   :datetime
+#  avatar_url         :string
+#  invitations_count  :integer          default(0)
+#  invite_code        :string
+#  last_active_at     :datetime
+#  locale             :string
+#  mixin_uuid         :uuid
+#  name               :string
+#  ocean_orders_count :integer          default(0)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  mixin_id           :string
 #
 # Indexes
 #
