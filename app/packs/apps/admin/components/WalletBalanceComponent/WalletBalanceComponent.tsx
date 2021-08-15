@@ -30,6 +30,10 @@ export default function WalletBalanceComponent(props: { userId?: string }) {
   }
   const { adminWalletBalance: assets } = data;
 
+  const totalUsd = assets.reduce((pre, cur) => {
+    return pre + cur.priceUsd * cur.balance;
+  }, 0);
+
   const columns: Array<ColumnProps<UserAsset>> = [
     { title: 'asset ID', dataIndex: 'assetId', key: 'assetId' },
     {
@@ -75,7 +79,8 @@ export default function WalletBalanceComponent(props: { userId?: string }) {
   ];
   return (
     <>
-      <div className='flex justify-end mb-4'>
+      <div className='flex items-center justify-between mb-4'>
+        <div className='text-gray-500'>Total: ${totalUsd.toFixed(4)}</div>
         <Button type='primary' onClick={() => refetch()}>
           Refresh
         </Button>
