@@ -66,6 +66,7 @@ class MixinMessage < ApplicationRecord
     end
 
     touch_proccessed_at
+    user&.log_active
   end
 
   def touch_proccessed_at

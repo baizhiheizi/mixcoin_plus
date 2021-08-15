@@ -7,6 +7,7 @@
 #  avatar_url        :string
 #  invitations_count :integer          default(0)
 #  invite_code       :string
+#  last_active_at    :datetime
 #  locale            :string
 #  mixin_uuid        :uuid
 #  name              :string

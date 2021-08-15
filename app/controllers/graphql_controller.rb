@@ -16,6 +16,7 @@ class GraphqlController < ApplicationController
       current_user: current_user,
       current_conversation_id: current_conversation_id
     }
+    current_user&.log_active
     result = GraphqlSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   end

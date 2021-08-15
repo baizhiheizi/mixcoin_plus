@@ -9,6 +9,7 @@
 #  avatar_url        :string
 #  invitations_count :integer          default(0)
 #  invite_code       :string
+#  last_active_at    :datetime
 #  locale            :string
 #  mixin_uuid        :uuid
 #  name              :string
@@ -128,6 +129,10 @@ class User < ApplicationRecord
 
   def messenger?
     !fennec? && !mixin_bot?
+  end
+
+  def log_active
+    touch :last_active_at
   end
 
   private
