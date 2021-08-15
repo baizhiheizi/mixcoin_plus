@@ -20,14 +20,11 @@ module Resolvers
           BookingOrderSnapshot.all
         end
 
-      snapshots =
-        (snapshots.where(market_id: params[:market_id]) if params[:market_id].present?)
+      snapshots = snapshots.where(market_id: params[:market_id]) if params[:market_id].present?
 
-      snapshots =
-        (snapshots.where(ocean_order_id: params[:ocean_order_id]) if params[:ocean_order_id].present?)
+      snapshots = snapshots.where(ocean_order_id: params[:ocean_order_id]) if params[:ocean_order_id].present?
 
-      snapshots =
-        (snapshots.where(created_at: Time.zone.parse(params[:started_at])...Time.zone.parse(params[:ended_at])) if params[:started_at].present? && params[:ended_at].present?)
+      snapshots = snapshots.where(created_at: Time.zone.parse(params[:started_at])...Time.zone.parse(params[:ended_at])) if params[:started_at].present? && params[:ended_at].present?
 
       snapshots.order(created_at: :desc)
     end

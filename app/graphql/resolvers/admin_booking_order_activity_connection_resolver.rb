@@ -10,8 +10,7 @@ module Resolvers
     def resolve(**params)
       activities = BookingOrderActivity.all
 
-      activities =
-        (activities.where(market_id: params[:market_id]) if params[:market_id].present?)
+      activities = activities.where(market_id: params[:market_id]) if params[:market_id].present?
 
       activities.order(created_at: :desc)
     end
