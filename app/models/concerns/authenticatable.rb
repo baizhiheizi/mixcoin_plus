@@ -4,14 +4,29 @@ module Authenticatable
   extend ActiveSupport::Concern
 
   class_methods do
-    def auth_from_mixin(code: nil, access_token: nil)
-      access_token ||= MixcoinPlusBot.api.oauth_token(code)
-      res = MixcoinPlusBot.api.read_me access_token: access_token
+    def auth_from_mixin(code: nil, access_token: nil, mixin_bot: 'MixcoinPlusBot')
+      mixin_api =
+        case mixin_bot
+        when 'MixcoinPlusBot'
+          MixcoinPlusBot.api
+        when 'IfttbBot'
+          IfttbBot.api
+        end
+      provider =
+        case mixin_bot
+        when 'MixcoinPlusBot'
+          :mixin
+        when 'IfttbBot'
+          :ifttb
+        end
+
+      access_token ||= mixin_api.oauth_token(code)
+      res = mixin_api.read_me access_token: access_token
       raise res.inspect if res['error'].present?
 
       auth = UserAuthorization.find_by(
         uid: res['data'].fetch('user_id'),
-        provider: :mixin
+        provider: provider
       )
       if auth.present?
         auth.update! access_token: access_token, raw: res['data']

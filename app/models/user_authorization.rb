@@ -23,7 +23,7 @@ class UserAuthorization < ApplicationRecord
 
   belongs_to :user, optional: true
 
-  enumerize :provider, in: %i[mixin]
+  enumerize :provider, in: %i[mixin ifttb]
 
   validates :provider, presence: true
   validates :raw, presence: true
