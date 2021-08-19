@@ -24,6 +24,14 @@ Rails.application.routes.draw do
 
   root to: 'home#index'
 
+  namespace :ifttb do
+    get 'login', to: 'sessions#new', as: :login
+    match '/auth/mixin/callback', to: 'sessions#create', via: %i[get post]
+    get 'logout', to: 'sessions#delete', as: :logout
+
+    root to: 'home#index'
+  end
+
   namespace :admin do
     get 'logout', to: 'sessions#delete', as: :logout
 

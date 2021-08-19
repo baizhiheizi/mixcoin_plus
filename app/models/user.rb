@@ -30,6 +30,7 @@ class User < ApplicationRecord
   include Authenticatable
 
   has_one :mixin_authorization, -> { where(provider: :mixin) }, class_name: 'UserAuthorization', inverse_of: :user
+  has_one :ifttb_authorization, -> { where(provider: :ifttb) }, class_name: 'UserAuthorization', inverse_of: :user
 
   has_many :notifications, as: :recipient, dependent: :destroy
 
