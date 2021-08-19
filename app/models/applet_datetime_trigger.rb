@@ -15,27 +15,27 @@
 #
 #  index_applet_triggers_on_applet_id  (applet_id)
 #
-class AppletCronTrigger < AppletTrigger
+class AppletDatetimeTrigger < AppletTrigger
   store :params, accessors: %i[
-    number
-    unit
+    minute
+    hour
+    day
+    month
+    wday
   ]
 
-  def match?
-    return true if ifttb_rule.last_active_at.blank?
+  validate :miniute, presence: true
+  validate :hour, presence: true
+  validate :day, presence: true
+  validate :month, presence: true
+  validate :wday, presence: true
 
-    interval = Time.current - ifttb_rule.last_active_at
-    case unit
-    when 'minute'
-      interval >= number.miniutes
-    when 'hour'
-      interval >= number.hours
-    when 'day'
-      interval >= number.day
-    when 'week'
-      interval >= number.week
-    when 'month'
-      interval >= number.month
+  def match?
+    case compare
+    when 'before'
+      Time.zone.parse(at) < Time.current
+    when 'after'
+      Time.zone.parse(at) > Time.current
     end
   end
 end

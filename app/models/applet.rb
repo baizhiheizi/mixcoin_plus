@@ -16,7 +16,7 @@ class Applet < ApplicationRecord
   belongs_to :user
 
   has_many :applet_triggers, dependent: :restrict_with_exception
-  has_many :applet_activities, dependent: :restrict_with_exception
+  has_many :applet_actions, dependent: :restrict_with_exception
   has_many :applet_activities, dependent: :restrict_with_exception
 
   def may_active?
@@ -25,6 +25,8 @@ class Applet < ApplicationRecord
 
   def active!
     return unless may_active?
+
+    applet_actions.map(&:trigger!)
   end
 
   def connect!
