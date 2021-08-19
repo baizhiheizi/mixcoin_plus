@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_15_020900) do
+ActiveRecord::Schema.define(version: 2021_08_19_055148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -36,6 +36,41 @@ ActiveRecord::Schema.define(version: 2021_08_15_020900) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_administrators_on_name", unique: true
+  end
+
+  create_table "applet_actions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "applet_id", null: false
+    t.string "type"
+    t.jsonb "params"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["applet_id"], name: "index_applet_actions_on_applet_id"
+  end
+
+  create_table "applet_activities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "applet_id", null: false
+    t.string "result"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["applet_id"], name: "index_applet_activities_on_applet_id"
+  end
+
+  create_table "applet_triggers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "applet_id", null: false
+    t.string "type"
+    t.jsonb "params"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["applet_id"], name: "index_applet_triggers_on_applet_id"
+  end
+
+  create_table "applets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "title"
+    t.boolean "connected", default: false
+    t.datetime "last_active_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "arbitrage_orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
