@@ -48,11 +48,11 @@ ActiveRecord::Schema.define(version: 2021_08_19_055148) do
   end
 
   create_table "applet_activities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "applet_id", null: false
+    t.uuid "applet_action_id", null: false
     t.string "result"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["applet_id"], name: "index_applet_activities_on_applet_id"
+    t.index ["applet_action_id"], name: "index_applet_activities_on_applet_action_id"
   end
 
   create_table "applet_triggers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -15,12 +15,16 @@
 #
 #  index_applet_actions_on_applet_id  (applet_id)
 #
-class AppletAction < ApplicationRecord
-  belongs_to :applet
+class AppletSwapAction < AppletAction
+  store :params, accessors: %i[
+    base_asset_id
+    quote_asset_id
+    side
+    slippage
+  ]
 
-  has_many :applet_activities, dependent: :restrict_with_exception
-
-  def trigger!
-    applet_activities.create!
-  end
+  validate :base_asset_id, presence: true
+  validate :quote_asset_id, presence: true
+  validate :side, exclusion: { in: %w[ask bid] }
+  validate :slippage, numericality: true
 end
