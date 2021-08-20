@@ -8,12 +8,7 @@ class DeliveryMethods::MixinBot < Noticed::DeliveryMethods::Base
   end
 
   def bot
-    @bot = notification.bot ||
-           if options[:bot] == 'IfttbBot' && IfttbBot.api.present?
-             'IfttbBot'
-           else
-             'MixcoinPlusBot'
-           end
+    options[:bot] || notification.bot || 'MixcoinPlusBot'
   end
 
   def bot_api

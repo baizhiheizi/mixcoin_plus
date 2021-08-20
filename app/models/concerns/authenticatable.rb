@@ -46,7 +46,7 @@ module Authenticatable
         auth.update user: user
       end
 
-      UserAuthorizedNotification.with({ bot: provider }).deliver(user) if user.present?
+      UserAuthorizedNotification.with({ bot: mixin_bot }).deliver(user) if user.present?
       user
     end
   end
