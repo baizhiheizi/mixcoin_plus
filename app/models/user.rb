@@ -48,7 +48,7 @@ class User < ApplicationRecord
   has_many :booking_order_snapshots, dependent: :restrict_with_exception
   has_many :booking_order_activity_participators, dependent: :restrict_with_exception
 
-  has_many :ifttb_rules, dependent: :restrict_with_exception
+  has_many :applets, dependent: :restrict_with_exception
 
   before_validation :set_defaults, on: :create
 

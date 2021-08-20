@@ -1,10 +1,28 @@
 # frozen_string_literal: true
 
-class DeliveryMethods::MixcoinPlusBot < Noticed::DeliveryMethods::Base
+class DeliveryMethods::MixinBot < Noticed::DeliveryMethods::Base
   around_deliver :with_locale
 
   def deliver
-    SendMixinMessageWorker.perform_async format
+    SendMixinMessageWorker.perform_async format, bot
+  end
+
+  def bot
+    @bot = notification.bot ||
+      if options[:bot] == 'IfttbBot' && IfttbBot.api.present?
+        'IfttbBot'
+      else
+        'MixcoinPlusBot'
+      end
+  end
+
+  def bot_api
+    case bot
+    when 'IfttbBot'
+      IfttbBot.api
+    else
+      MixcoinPlusBot.api
+    end
   end
 
   def category
@@ -16,11 +34,11 @@ class DeliveryMethods::MixcoinPlusBot < Noticed::DeliveryMethods::Base
   end
 
   def conversation_id
-    MixcoinPlusBot.api.unique_conversation_id(recipient.mixin_uuid)
+    bot_api.unique_conversation_id(recipient.mixin_uuid)
   end
 
   def format
-    MixcoinPlusBot.api.base_message_params(
+    bot_api.base_message_params(
       {
         category: category,
         conversation_id: conversation_id,

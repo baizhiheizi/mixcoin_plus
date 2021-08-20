@@ -110,6 +110,37 @@ export type AppStatistic = {
   weeklyActiveUsersCount?: Maybe<Scalars['Int']>;
 };
 
+export type Applet = {
+  __typename?: 'Applet';
+  connected: Scalars['Boolean'];
+  createdAt: Scalars['ISO8601DateTime'];
+  id: Scalars['ID'];
+  lastActiveAt: Scalars['ISO8601DateTime'];
+  title: Scalars['String'];
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+  user: User;
+};
+
+/** The connection type for Applet. */
+export type AppletConnection = {
+  __typename?: 'AppletConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<AppletEdge>>>;
+  /** A list of nodes. */
+  nodes?: Maybe<Array<Maybe<Applet>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type AppletEdge = {
+  __typename?: 'AppletEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node?: Maybe<Applet>;
+};
+
 export type ArbitrageOrder = {
   __typename?: 'ArbitrageOrder';
   arbitrager?: Maybe<MixinNetworkUser>;
@@ -836,6 +867,7 @@ export type Query = {
   adminUserDeprecatedOceanOrders: Array<OceanOrder>;
   adminUserDeprecatedOceanSnapshots: Array<MixinNetworkSnapshot>;
   adminWalletBalance: Array<UserAsset>;
+  appletConnection: AppletConnection;
   currentAdmin: Administrator;
   currentConversation?: Maybe<MixinConversation>;
   deprecatedOceanOrders: Array<OceanOrder>;
@@ -1076,6 +1108,14 @@ export type QueryAdminUserDeprecatedOceanSnapshotsArgs = {
 
 export type QueryAdminWalletBalanceArgs = {
   userId?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryAppletConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 
@@ -1806,6 +1846,13 @@ export type UserAssetsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type UserAssetsQuery = { __typename?: 'Query', userAssets: Array<{ __typename?: 'UserAsset', assetId: string, name: string, symbol: string, iconUrl?: Maybe<string>, chainId?: Maybe<string>, balance: number, balanceUsd: number, priceUsd?: Maybe<number>, priceBtc?: Maybe<number>, changeUsd?: Maybe<number>, changeBtc?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> }> };
+
+export type AppletConnectionQueryVariables = Exact<{
+  after?: Maybe<Scalars['String']>;
+}>;
+
+
+export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, title: string, connected: boolean, lastActiveAt: any }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 
 export const AdminArbitragerWithrawBalanceDocument = gql`
@@ -4868,3 +4915,47 @@ export function useUserAssetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type UserAssetsQueryHookResult = ReturnType<typeof useUserAssetsQuery>;
 export type UserAssetsLazyQueryHookResult = ReturnType<typeof useUserAssetsLazyQuery>;
 export type UserAssetsQueryResult = Apollo.QueryResult<UserAssetsQuery, UserAssetsQueryVariables>;
+export const AppletConnectionDocument = gql`
+    query AppletConnection($after: String) {
+  appletConnection(after: $after) {
+    nodes {
+      id
+      title
+      connected
+      lastActiveAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useAppletConnectionQuery__
+ *
+ * To run a query within a React component, call `useAppletConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAppletConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAppletConnectionQuery({
+ *   variables: {
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useAppletConnectionQuery(baseOptions?: Apollo.QueryHookOptions<AppletConnectionQuery, AppletConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AppletConnectionQuery, AppletConnectionQueryVariables>(AppletConnectionDocument, options);
+      }
+export function useAppletConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AppletConnectionQuery, AppletConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AppletConnectionQuery, AppletConnectionQueryVariables>(AppletConnectionDocument, options);
+        }
+export type AppletConnectionQueryHookResult = ReturnType<typeof useAppletConnectionQuery>;
+export type AppletConnectionLazyQueryHookResult = ReturnType<typeof useAppletConnectionLazyQuery>;
+export type AppletConnectionQueryResult = Apollo.QueryResult<AppletConnectionQuery, AppletConnectionQueryVariables>;

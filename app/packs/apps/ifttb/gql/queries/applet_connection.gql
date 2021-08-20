@@ -1,0 +1,14 @@
+query AppletConnection($after: String) {
+  appletConnection(after: $after) {
+    nodes {
+      id
+      title
+      connected
+      lastActiveAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

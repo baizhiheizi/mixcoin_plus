@@ -8,13 +8,13 @@ module Ifttb
       redirect_to format(
         'https://mixin-www.zeromesh.net/oauth/authorize?client_id=%<client_id>s&scope=%<scope>s&return_to=%<return_to>s',
         client_id: IfttbBot.api.client_id,
-        scope: 'PROFILE:READ+MESSAGES:REPRESENT+ASSETS:READ+SNAPSHOTS:READ',
+        scope: 'PROFILE:READ',
         return_to: params[:return_to] || ifttb_root_url
       )
     end
 
     def create
-      user = User.auth_from_mixin code: params[:code], access_token: params[:access_token]
+      user = User.auth_from_mixin code: params[:code], access_token: params[:access_token], mixin_bot: 'IfttbBot'
       user_sign_in(user) if user
 
       redirect_to ifttb_root_path
