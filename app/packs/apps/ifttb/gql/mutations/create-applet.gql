@@ -1,0 +1,3 @@
+mutation CreateApplet($input: CreateAppletMutationInput!) {
+  createApplet(input: $input)
+}

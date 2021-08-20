@@ -5,7 +5,7 @@ class SendMixinMessageWorker
   sidekiq_options retry: true
 
   def perform(message, bot = 'MixcoinPlusBot')
-    mixin_api = 
+    mixin_api =
       case bot
       when 'IfttbBot'
         IfttbBot.api

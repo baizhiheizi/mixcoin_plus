@@ -14,11 +14,11 @@ export default function AppletsPage() {
   return (
     <>
       <div className='pb-16'>
-        <div className='bg-dark mb-4 p-4 text-lg text-white'>IFTTB</div>
+        <div className='p-4 mb-4 text-lg text-white bg-dark'>IFTTB</div>
         {currentUser ? (
           <AppletsComponent />
         ) : (
-          <div className='mt-48 p-4 flex justify-center'>
+          <div className='flex justify-center p-4 mt-48'>
             <Button
               size='lg'
               theme='primary'
@@ -29,9 +29,9 @@ export default function AppletsPage() {
           </div>
         )}
       </div>
-      <div className='mx-auto max-w-screen-md bg-dark fixed text-white bottom-0 z-10 p-4 text-center w-full'>
+      <div className='fixed bottom-0 z-10 w-full p-4 mx-auto text-center text-white max-w-screen-md bg-dark'>
         <div
-          className='text-2xl flex items-center justify-center space-x-2'
+          className='flex items-center justify-center text-2xl cursor-pointer space-x-2'
           onClick={() => history.push('/new')}
         >
           <AddIcon size='2rem' /> <div>CREATE</div>
@@ -62,7 +62,7 @@ function AppletsComponent() {
       refetch={() => refetch({ after: endCursor })}
     >
       {applets.map((applet: Partial<Applet>) => (
-        <div className='p-4 rounded mb-4'>
+        <div className='p-4 mb-4 rounded'>
           <div className='text-white'>{applet.title}</div>
         </div>
       ))}

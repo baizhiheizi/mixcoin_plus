@@ -19,6 +19,8 @@ class Applet < ApplicationRecord
   has_many :applet_actions, dependent: :restrict_with_exception
   has_many :applet_activities, dependent: :restrict_with_exception
 
+  accepts_nested_attributes_for :applet_triggers, :applet_actions
+
   def may_active?
     applet_triggers.map(&:match?).all?(true)
   end
