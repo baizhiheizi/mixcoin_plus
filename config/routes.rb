@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     get 'logout', to: 'sessions#delete', as: :logout
 
     root to: 'home#index'
+    get '*path' => 'home#index'
   end
 
   namespace :admin do

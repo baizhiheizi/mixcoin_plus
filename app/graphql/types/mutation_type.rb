@@ -24,5 +24,8 @@ module Types
     field :create_group_market, mutation: Mutations::CreateGroupMarketMutation
     field :delete_group_market, mutation: Mutations::DeleteGroupMarketMutation
     field :login_with_token, mutation: Mutations::LoginWithTokenMutation
+
+    # IFTTB
+    field :create_applet, mutation: Mutations::CreateAppletMutation
   end
 end
