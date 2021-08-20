@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IFTTB</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+    <meta name='theme-color' content='#ffffff'>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= javascript_pack_tag 'ifttb' %>
+    <%= stylesheet_pack_tag 'ifttb'%>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

@@ -50,7 +50,8 @@ module Types
     field :invitee_connection, resolver: Resolvers::InviteeConnectionResolver
     field :invitation_commission_connection, resolver: Resolvers::InvitationCommissionConnectionResolver
     field :group_owner_commission_connection, resolver: Resolvers::GroupOwnerCommissionConnectionResolver
-
     field :deprecated_ocean_orders, resolver: Resolvers::DeprecatedOceanOrdersResolver
+
+    field :applet_connection, resolver: Resolvers::AppletConnectionResolver
   end
 end

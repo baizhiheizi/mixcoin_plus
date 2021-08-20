@@ -35,7 +35,7 @@ module Authenticatable
           access_token: access_token,
           raw: res['data'],
           uid: res['data'].fetch('user_id'),
-          provider: :mixin
+          provider: provider
         )
       end
 
@@ -46,7 +46,7 @@ module Authenticatable
         auth.update user: user
       end
 
-      UserAuthorizedNotification.with({}).deliver(user) if user.present?
+      UserAuthorizedNotification.with({ bot: provider}).deliver(user) if user.present?
       user
     end
   end

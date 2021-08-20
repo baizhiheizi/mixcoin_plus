@@ -2,7 +2,7 @@
 
 class TransferProcessedNotification < ApplicationNotification
   deliver_by :action_cable, format: :format_for_action_cable
-  deliver_by :mixcoin_plus_bot, class: 'DeliveryMethods::MixcoinPlusBot', category: 'APP_CARD', if: :should_deliver_via_bot?
+  deliver_by :mixin_bot, class: 'DeliveryMethods::MixinBot', category: 'APP_CARD', if: :should_deliver_via_bot?
 
   around_action_cable :with_locale
 
