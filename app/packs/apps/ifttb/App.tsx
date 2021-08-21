@@ -2,14 +2,14 @@ import { ApolloProvider } from '@apollo/client';
 import { MixinBotContext, MixinContext } from 'apps/shared';
 import 'apps/shared/locales/i18n';
 import consumer from 'channels/consumer';
-import { User } from 'graphqlTypes';
+import { CreateAppletMutationInput, User } from 'graphqlTypes';
 import { mixinContext, reloadTheme } from 'mixin-messenger-utils';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ConfigProvider as ZarmConfigProvider, Toast } from 'zarm';
 import enUS from 'zarm/lib/config-provider/locale/en_US';
 import zhCN from 'zarm/lib/config-provider/locale/zh_CN';
-import { CurrentUserContext } from './contexts';
+import { AppletFormContext, CurrentUserContext } from './contexts';
 import Routes from './Routes';
 import { apolloClient } from './utils/apolloClient';
 
@@ -19,6 +19,8 @@ export default function App(props: {
 }) {
   const { i18n } = useTranslation();
   const [currentUser, setCurrentUser] = useState(props.currentUser);
+  const [appletForm, setAppletForm] =
+    useState<CreateAppletMutationInput | null>(null);
   const { mixinBot } = props;
 
   useEffect(() => {
@@ -57,9 +59,13 @@ export default function App(props: {
               <ApolloProvider
                 client={apolloClient('/graphql', mixinContext.conversationId)}
               >
-                <div className='min-h-screen mx-auto max-w-screen-md bg-white font-mono'>
-                  <Routes />
-                </div>
+                <AppletFormContext.Provider
+                  value={{ appletForm, setAppletForm }}
+                >
+                  <div className='min-h-screen mx-auto font-mono bg-white max-w-screen-md'>
+                    <Routes />
+                  </div>
+                </AppletFormContext.Provider>
               </ApolloProvider>
             </ZarmConfigProvider>
           </CurrentUserContext.Provider>
