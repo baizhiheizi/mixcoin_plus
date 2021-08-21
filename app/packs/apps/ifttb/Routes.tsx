@@ -13,6 +13,9 @@ import AppletsPage from './pages/AppletsPage/AppletsPage';
 const NewAppletPage = React.lazy(
   () => import('./pages/NewAppletPage/NewAppletPage'),
 );
+const NewTriggerPage = React.lazy(
+  () => import('./pages/NewTriggerPage/NewTriggerPage'),
+);
 
 export default function Routes() {
   const { currentUser } = useCurrentUser();
@@ -52,6 +55,11 @@ export default function Routes() {
             <Route path='/new' exact>
               <LazyLoad>
                 <NewAppletPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/triggers/new/:type' exact>
+              <LazyLoad>
+                <NewTriggerPage />
               </LazyLoad>
             </Route>
           </Switch>
