@@ -38,7 +38,7 @@ module Markets::Arbitragable
 
     return if buying_amount.zero?
 
-    buying_funds = (buying_amount * buying_price).floor(8)
+    buying_funds = (buying_amount * buying_price).round(8)
 
     @buy_from_ocean = {
       price: buying_price,
@@ -75,7 +75,7 @@ module Markets::Arbitragable
 
     return if selling_amount.zero?
 
-    selling_funds = (selling_amount * selling_price).floor(8)
+    selling_funds = (selling_amount * selling_price).round(8)
 
     @sell_to_ocean = {
       price: selling_price,
