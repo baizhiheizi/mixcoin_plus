@@ -7154,6 +7154,14 @@ pako@^2.0.4:
   resolved "https://registry.yarnpkg.com/pako/-/pako-2.0.4.tgz#6cebc4bbb0b6c73b0d5b8d7e8476e2b2fbea576d"
   integrity sha512-v8tweI900AUkZN6heMU/4Uy4cXRc2AYNRggVmTR+dEncawDJgCdLMximOVA2p4qO57WMynangsfGRb5WD6L1Bg==
 
+pando-sdk-js@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/pando-sdk-js/-/pando-sdk-js-0.1.2.tgz#f5eadeb51a9d6eb1851c351d81bed0aef64969f3"
+  integrity sha512-4g/ATw7VYNVBD244zVPrUCkNkpJGhMvqQYar5QVZE9xrGb+B4eOxowXpLwXLGSVRoozZawNgbiOJVGjt4efcog==
+  dependencies:
+    axios "^0.21.1"
+    uuid "^8.3.2"
+
 param-case@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/param-case/-/param-case-3.0.4.tgz#7d17fe4aa12bde34d4a77d91acfb6219caad01c5"

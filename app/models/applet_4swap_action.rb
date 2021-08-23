@@ -15,16 +15,20 @@
 #
 #  index_applet_actions_on_applet_id  (applet_id)
 #
-class AppletSwapAction < AppletAction
+class Applet4swapAction < AppletAction
   store :params, accessors: %i[
-    base_asset_id
-    quote_asset_id
-    side
+    description
+    pay_asset_id
+    fill_asset_id
+    pay_amount
     slippage
   ]
 
-  validate :base_asset_id, presence: true
-  validate :quote_asset_id, presence: true
-  validate :side, exclusion: { in: %w[ask bid] }
-  validate :slippage, numericality: true
+  validates :pay_asset_id, presence: true
+  validates :fill_asset_id, presence: true
+  validates :pay_amount, presence: true
+  validates :slippage, numericality: true
+
+  def balance_sufficient?
+  end
 end

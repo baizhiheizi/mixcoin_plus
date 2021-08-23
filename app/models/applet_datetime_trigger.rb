@@ -17,6 +17,7 @@
 #
 class AppletDatetimeTrigger < AppletTrigger
   store :params, accessors: %i[
+    description
     minute
     hour
     day
@@ -24,11 +25,11 @@ class AppletDatetimeTrigger < AppletTrigger
     wday
   ]
 
-  validate :miniute, presence: true
-  validate :hour, presence: true
-  validate :day, presence: true
-  validate :month, presence: true
-  validate :wday, presence: true
+  validates :minute, presence: true
+  validates :hour, presence: true
+  validates :day, presence: true
+  validates :month, presence: true
+  validates :wday, presence: true
 
   def match?
     case compare

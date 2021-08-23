@@ -17,6 +17,7 @@
 #
 class AppletTargetPriceTrigger < AppletTrigger
   store :params, accessors: %i[
+    description
     base_asset_id
     quote_asset_id
     target_price
@@ -24,11 +25,11 @@ class AppletTargetPriceTrigger < AppletTrigger
     compare
   ]
 
-  validate :base_asset_id, presence: true
-  validate :quote_asset_id, presence: true
-  validate :side, exclusion: { in: %w[ask bid] }
-  validate :compare, exclusion: { in: %w[larger_than less_than] }
-  validate :target_price, numericality: true
+  validates :base_asset_id, presence: true
+  validates :quote_asset_id, presence: true
+  validates :side, exclusion: { in: %w[ask bid] }
+  validates :compare, exclusion: { in: %w[larger_than less_than] }
+  validates :target_price, numericality: true
 
   delegate :base_asset, :quote_asset, to: :swap_market
 

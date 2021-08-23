@@ -5,7 +5,7 @@ import PullComponent from 'apps/shared/components/PullComponent/PullComponent';
 import { Applet, useAppletConnectionQuery } from 'graphqlTypes';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from 'zarm';
+import { Button, Switch } from 'zarm';
 
 export default function AppletsPage() {
   const history = useHistory();
@@ -16,7 +16,9 @@ export default function AppletsPage() {
       <div className='pb-16'>
         <div className='p-4 mb-4 text-lg text-white bg-dark'>IFTTB</div>
         {currentUser ? (
-          <AppletsComponent />
+          <div className='p-4'>
+            <AppletsComponent />
+          </div>
         ) : (
           <div className='flex justify-center p-4 mt-48'>
             <Button
@@ -43,7 +45,7 @@ export default function AppletsPage() {
 }
 
 function AppletsComponent() {
-  const { loading, data, refetch } = useAppletConnectionQuery();
+  const { loading, data, refetch, fetchMore } = useAppletConnectionQuery();
 
   if (loading) {
     return <LoaderComponent />;
@@ -59,11 +61,16 @@ function AppletsComponent() {
   return (
     <PullComponent
       hasNextPage={hasNextPage}
-      refetch={() => refetch({ after: endCursor })}
+      refetch={refetch}
+      fetchMore={() => fetchMore({ variables: { after: endCursor } })}
     >
       {applets.map((applet: Partial<Applet>) => (
-        <div className='p-4 mb-4 rounded'>
-          <div className='text-white'>{applet.title}</div>
+        <div key={applet.id} className='p-4 mb-4 border rounded shadow-lg'>
+          <div className='text-base'>{applet.title}</div>
+          <div className='flex items-center justify-between'>
+            <span>Connected:</span>
+            <Switch checked={applet.connected} />
+          </div>
         </div>
       ))}
     </PullComponent>

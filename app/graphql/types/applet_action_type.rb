@@ -4,6 +4,7 @@ module Types
   class AppletActionType < Types::BaseModelObject
     field :id, ID, null: false
     field :type, String, null: false
+    field :description, String, null: true
 
     field :applet, Types::AppletType, null: false
 

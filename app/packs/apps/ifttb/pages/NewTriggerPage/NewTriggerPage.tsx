@@ -98,16 +98,15 @@ function EditingEveryMinuteTrigger(props: { onClose: () => any }) {
   const { appletForm, setAppletForm } = useAppletForm();
   const createTrigger = () => {
     const trigger = {
-      type: 'AppletDatetimeTrigger',
-      miniute: '*',
+      description: 'once every miniute',
+      minute: '*',
       hour: '*',
       day: '*',
-      week: '*',
+      month: '*',
       wday: '*',
     };
     setAppletForm({
       ...appletForm,
-      title: 'Run once every minute',
       appletDatetimeTrigger: trigger,
     });
     props.onClose();

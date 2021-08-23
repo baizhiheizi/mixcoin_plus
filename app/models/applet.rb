@@ -21,6 +21,9 @@ class Applet < ApplicationRecord
 
   accepts_nested_attributes_for :applet_triggers, :applet_actions
 
+  validate :must_has_triggers, on: :create
+  validate :must_has_actions, on: :create
+
   def may_active?
     applet_triggers.map(&:match?).all?(true)
   end
@@ -31,11 +34,25 @@ class Applet < ApplicationRecord
     applet_actions.map(&:trigger!)
   end
 
+  def may_connect?
+    applet_actions.map(&:balance_sufficient?).all?(true)
+  end
+
   def connect!
     update connected: true
   end
 
   def disconnect!
     update connected: false
+  end
+
+  private
+
+  def must_has_triggers
+    errors.add(:applet_triggers, ' must have') if applet_triggers.blank?
+  end
+
+  def must_has_actions
+    errors.add(:applet_actions, ' must have') if applet_actions.blank?
   end
 end
