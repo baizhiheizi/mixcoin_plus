@@ -169,8 +169,6 @@ GEM
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
     libv8-node (15.14.0.1)
-    libv8-node (15.14.0.1-x86_64-darwin-20)
-    libv8-node (15.14.0.1-x86_64-linux)
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -362,6 +360,7 @@ DEPENDENCIES
   enumerize
   exception-track
   exception_notification
+  fugit
   graphql
   groupdate
   jbuilder (~> 2.7)

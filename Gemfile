@@ -61,6 +61,8 @@ gem 'groupdate'
 gem 'exception_notification'
 # Tracking ⚠️ exceptions for Rails application and store them in database.
 gem 'exception-track'
+# time tools (cron, parsing, durations, ...)
+gem 'fugit'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

@@ -41,7 +41,11 @@ export default function MixinNetworkUsersPage() {
           onChange={(e) => setQuery(e.currentTarget.value)}
         />
       </div>
-      <MixinNetworkUsersComponent query={debouncedQuery} state={state} type={type} />
+      <MixinNetworkUsersComponent
+        query={debouncedQuery}
+        state={state}
+        type={type}
+      />
     </>
   );
 }

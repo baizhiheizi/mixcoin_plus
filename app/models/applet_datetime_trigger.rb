@@ -31,12 +31,24 @@ class AppletDatetimeTrigger < AppletTrigger
   validates :month, presence: true
   validates :wday, presence: true
 
+  delegate :next_time, to: :cron_instance
+  delegate :previous_time, to: :cron_instance
+
+  def cron_value
+    [minute, hour, day, month, wday].join(' ')
+  end
+
+  def cron_instance
+    @cron_instance ||= Fugit.parse_cron cron_value
+  end
+
+  def frequency
+    cron_instance.rough_frequency
+  end
+
   def match?
-    case compare
-    when 'before'
-      Time.zone.parse(at) < Time.current
-    when 'after'
-      Time.zone.parse(at) > Time.current
-    end
+    return true if applet.last_active_at.blank?
+
+    Time.curent.to_i - applet.last_active_at.to_i > frequency
   end
 end

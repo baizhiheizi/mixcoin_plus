@@ -17,13 +17,7 @@
 class AppletActivity < ApplicationRecord
   belongs_to :applet_action
 
+  has_many :transfers, class_name: 'MixinTransfer', as: :source, dependent: :restrict_with_exception
+
   delegate :applet, to: :applet_action
-
-  after_create :process_async
-
-  def process!
-  end
-
-  def process_async
-  end
 end

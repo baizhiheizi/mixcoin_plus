@@ -26,9 +26,65 @@ class Applet4swapAction < AppletAction
 
   validates :pay_asset_id, presence: true
   validates :fill_asset_id, presence: true
-  validates :pay_amount, presence: true
+  validates :pay_amount, presence: true, numericality: { greater_than_or_equal_to: 0.000_01 }
   validates :slippage, numericality: true
 
+  def pay_asset
+    @pay_asset ||= MixinAsset.find_by(asset_id: pay_asset_id)
+  end
+
+  def fill_asset
+    @fill_asset ||= MixinAsset.find_by(asset_id: fill_asset_id)
+  end
+
+  def minimum_fill
+    (pay_amount * (1 - slippage)).floor(8)
+  end
+
+  def may_active?
+    balance_sufficient?
+  end
+
   def balance_sufficient?
+    r = applet.user.ifttb_broker.mixin_api.asset pay_asset_id
+    r['balance'].to_f >= pay_amount.to_f
+  rescue StandardError
+    false
+  end
+
+  def active!
+    return unless may_active?
+
+    ActiveRecord::Base.transaction do
+      activity = applet_activities.create!
+
+      activity.transfers.create_with(
+        wallet: user.ifttb_broker,
+        transfer_type: :applet_4swap_action,
+        priority: :critical,
+        opponent_multisig: {
+          receivers: SwapOrder::FSWAP_MTG_MEMBERS,
+          threshold: SwapOrder::FSWAP_MTG_THRESHOLD
+        },
+        asset_id: pay_asset_id,
+        amount: pay_amount.to_f,
+        memo: fswap_mtg_memo(activity.id)
+      ).find_or_create_by!(
+        trace_id: activity.id
+      )
+
+      applet.log_active
+    end
+  end
+
+  def fswap_mtg_memo(trace_id)
+    r = Foxswap.api.actions(
+      user_id: user.mixin_uuid,
+      follow_id: trace_id,
+      asset_id: fill_asset_id,
+      minimum_fill: minimum_fill.present? ? format('%.8f', minimum_fill) : nil
+    )
+
+    r['data']['action']
   end
 end
