@@ -31,11 +31,12 @@ class User < ApplicationRecord
 
   has_one :mixin_authorization, -> { where(provider: :mixin) }, class_name: 'UserAuthorization', inverse_of: :user
   has_one :ifttb_authorization, -> { where(provider: :ifttb) }, class_name: 'UserAuthorization', inverse_of: :user
+  has_one :broker, as: :owner, dependent: :restrict_with_exception
+  has_one :ifttb_broker, as: :owner, dependent: :restrict_with_exception
 
   has_many :notifications, as: :recipient, dependent: :destroy
 
   has_many :wallets, class_name: 'MixinNetworkUser', as: :owner, dependent: :restrict_with_exception
-  has_one :broker, as: :owner, dependent: :restrict_with_exception
   has_many :ocean_orders, dependent: :restrict_with_exception
   has_many :assets, class_name: 'UserAsset', dependent: :restrict_with_exception
   has_many :markets, through: :assets, inverse_of: false
@@ -56,7 +57,7 @@ class User < ApplicationRecord
 
   enumerize :locale, in: I18n.available_locales, default: I18n.default_locale
 
-  after_commit :sync_assets_async, :create_broker, :create_contact_conversation, on: :create
+  after_commit :sync_assets_async, :create_brokers_async, :create_contact_conversations, on: :create
 
   delegate :access_token, to: :mixin_authorization
 
@@ -117,10 +118,11 @@ class User < ApplicationRecord
     ocean_orders.without_drafted.count.zero?
   end
 
-  def create_contact_conversation
+  def create_contact_conversations
     return if fennec?
 
     MixcoinPlusBot.api.create_contact_conversation mixin_uuid
+    IfttbBot.api.create_contact_conversation mixin_uuid
   end
 
   def fennec?
@@ -137,6 +139,10 @@ class User < ApplicationRecord
 
   def log_active
     touch :last_active_at
+  end
+
+  def create_brokers_async
+    UserCreateBrokersWorker.perform_async id
   end
 
   private

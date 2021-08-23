@@ -5,9 +5,11 @@ module Types
     field :id, ID, null: false
     field :title, String, null: false
     field :connected, Boolean, null: false
-    field :last_active_at, GraphQL::Types::ISO8601DateTime, null: false
+    field :last_active_at, GraphQL::Types::ISO8601DateTime, null: true
 
     field :user, Types::UserType, null: false
+    field :applet_triggers, [Types::AppletTriggerUnion], null: true
+    field :applet_actions, [Types::AppletActionUnion], null: true
 
     def user
       BatchLoader::GraphQL.for(object.user_id).batch do |user_ids, loader|

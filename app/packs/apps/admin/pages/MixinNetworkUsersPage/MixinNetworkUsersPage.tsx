@@ -21,6 +21,7 @@ export default function MixinNetworkUsersPage() {
           <Select.Option value=''>All</Select.Option>
           <Select.Option value='Broker'>Broker</Select.Option>
           <Select.Option value='Arbitrager'>Arbitrager</Select.Option>
+          <Select.Option value='IfttbBroker'>IfttbBroker</Select.Option>
         </Select>
         <Select
           className='w-32 mr-2'
@@ -40,7 +41,7 @@ export default function MixinNetworkUsersPage() {
           onChange={(e) => setQuery(e.currentTarget.value)}
         />
       </div>
-      <MixinNetworkUsersComponent query={query} state={state} type={type} />
+      <MixinNetworkUsersComponent query={debouncedQuery} state={state} type={type} />
     </>
   );
 }

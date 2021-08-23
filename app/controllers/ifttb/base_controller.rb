@@ -11,8 +11,7 @@ class Ifttb::BaseController < ApplicationController
         name: current_user.name,
         avatar: current_user.avatar,
         mixin_uuid: current_user.mixin_uuid,
-        invite_code: current_user.invite_code,
-        may_invited: current_user.may_invited?,
+        ifttb_broker_id: current_user&.ifttb_broker&.ready? && current_user.ifttb_broker.mixin_uuid,
         fennec: current_user.fennec?
       },
       mixin_bot: {

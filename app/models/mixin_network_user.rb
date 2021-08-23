@@ -75,14 +75,11 @@ class MixinNetworkUser < ApplicationRecord
 
   def update_pin!
     new_pin = SecureRandom.random_number.to_s.split('.').last.first(6)
-    with_lock do
-      old_pin = pin
-      self.pin = new_pin
-      r = mixin_api.update_pin(old_pin: old_pin, pin: new_pin)
-      raise 'Update pin failed' if r['data'].blank?
+    old_pin = pin
+    r = mixin_api.update_pin(old_pin: old_pin, pin: new_pin)
+    raise 'Update pin failed' if r['data'].blank?
 
-      save!
-    end
+    update! pin: new_pin
   end
 
   def sync_profile!
@@ -91,7 +88,7 @@ class MixinNetworkUser < ApplicationRecord
   end
 
   def update_avatar
-    img = File.open DEFAULT_AVATAR_FILE
+    img = File.open default_avatar_file
     r = mixin_api.update_me full_name: name, avatar_base64: Base64.strict_encode64(img.read)
     update raw: r['data'], name: r['data']['full_name'] if r['data'].present?
   ensure
@@ -104,6 +101,10 @@ class MixinNetworkUser < ApplicationRecord
 
   def default_name
     'Mixcoin'
+  end
+
+  def default_avatar_file
+    DEFAULT_AVATAR_FILE
   end
 
   private

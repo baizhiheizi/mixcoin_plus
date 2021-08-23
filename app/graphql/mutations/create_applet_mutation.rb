@@ -7,6 +7,23 @@ module Mutations
     type Boolean
 
     def resolve(**params)
+      applet = current_user.applets.new(title: params[:title])
+      if params[:applet_datetime_trigger].present?
+        applet.applet_triggers.new(
+          {
+            type: 'AppletDatetimeTrigger'
+          }.merge(params[:applet_datetime_trigger])
+        )
+      end
+      if params[:applet_4swap_action].present?
+        applet.applet_actions.new(
+          {
+            type: 'Applet4swapAction'
+          }.merge(params[:applet_4swap_action])
+        )
+      end
+
+      applet.save!
     end
   end
 end

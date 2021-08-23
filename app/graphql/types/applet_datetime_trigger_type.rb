@@ -2,7 +2,7 @@
 
 module Types
   class AppletDatetimeTriggerType < Types::AppletTriggerType
-    field :miniute, String, null: false
+    field :minute, String, null: false
     field :hour, String, null: false
     field :day, String, null: false
     field :month, String, null: false
