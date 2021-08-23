@@ -24,6 +24,8 @@ class Applet < ApplicationRecord
   validate :must_has_triggers, on: :create
   validate :must_has_actions, on: :create
 
+  scope :connected, -> { where(connected: true) }
+
   def may_active?
     applet_triggers.map(&:match?).all?(true)
   end
@@ -31,11 +33,15 @@ class Applet < ApplicationRecord
   def active!
     return unless may_active?
 
-    applet_actions.map(&:trigger!)
+    applet_actions.map(&:active!)
+  end
+
+  def active_async
+    AppletActiveWorker.perform_async id
   end
 
   def may_connect?
-    applet_actions.map(&:balance_sufficient?).all?(true)
+    applet_actions.map(&:may_active?).all?(true)
   end
 
   def connect!
@@ -44,6 +50,10 @@ class Applet < ApplicationRecord
 
   def disconnect!
     update connected: false
+  end
+
+  def log_active
+    touch :last_active_at
   end
 
   private

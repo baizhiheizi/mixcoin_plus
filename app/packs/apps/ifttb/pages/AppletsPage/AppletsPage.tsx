@@ -64,7 +64,7 @@ function AppletsComponent() {
       refetch={refetch}
       fetchMore={() => fetchMore({ variables: { after: endCursor } })}
     >
-      {applets.map((applet: Partial<Applet>) => (
+      {applets.map((applet: Partial<Applet | any>) => (
         <div key={applet.id} className='p-4 mb-4 border rounded shadow-lg'>
           <div className='text-base'>{applet.title}</div>
           <div className='flex items-center justify-between'>

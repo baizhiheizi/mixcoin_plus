@@ -16,3 +16,6 @@ booking_order_activity_generate_worker:
 batch_market_generate_price_records_worker:
   cron: '0 * * * *'
   class: 'BatchMarketGeneratePriceRecordsWorker'
+batch_applet_active_worker:
+  cron: '* * * * *'
+  class: 'BatchAppletActiveWorker'

@@ -20,7 +20,15 @@ class AppletAction < ApplicationRecord
 
   has_many :applet_activities, dependent: :restrict_with_exception
 
-  def trigger!
+  delegate :user, to: :applet
+
+  def may_active?
+    false
+  end
+
+  def active!
+    return unless may_active?
+
     applet_activities.create!
   end
 end
