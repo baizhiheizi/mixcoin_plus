@@ -53,5 +53,6 @@ module Types
     field :deprecated_ocean_orders, resolver: Resolvers::DeprecatedOceanOrdersResolver
 
     field :applet_connection, resolver: Resolvers::AppletConnectionResolver
+    field :ifttb_broker_balance, resolver: Resolvers::IfttbBrokerBalanceResolver
   end
 end

@@ -45,11 +45,21 @@ class Applet < ApplicationRecord
   end
 
   def connect!
+    return unless may_connect?
+
     update connected: true
   end
 
   def disconnect!
     update connected: false
+  end
+
+  def toggle_connected
+    if connected?
+      disconnect! 
+    else
+      connect!
+    end
   end
 
   def log_active

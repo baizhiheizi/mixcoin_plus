@@ -1,0 +1,11 @@
+query IfttbBrokerBalance {
+  ifttbBrokerBalance {
+    assetId
+    name
+    symbol
+    iconUrl
+    balance
+    priceUsd
+    priceBtc
+  }
+}

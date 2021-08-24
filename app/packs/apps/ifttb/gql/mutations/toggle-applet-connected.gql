@@ -1,0 +1,6 @@
+mutation ToggleAppletConnected($input: ToggleAppletConnectedMutationInput!) {
+  toggleAppletConnected(input: $input) {
+    id
+    connected
+  }
+}

@@ -27,5 +27,6 @@ module Types
 
     # IFTTB
     field :create_applet, mutation: Mutations::CreateAppletMutation
+    field :toggle_applet_connected, mutation: Mutations::ToggleAppletConnectedMutation
   end
 end
