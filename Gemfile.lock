@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/rails/webpacker.git
-  revision: 2ab76b3b2b7bc42cd73c33d46220a69a91f1b2dd
+  revision: 20ca372af9d99b134c10ea3e7d544eee7456fddb
   specs:
     webpacker (6.0.0.rc.1)
       activesupport (>= 5.2)
@@ -247,7 +247,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.1)
+    rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
     railties (6.1.4.1)
       actionpack (= 6.1.4.1)
