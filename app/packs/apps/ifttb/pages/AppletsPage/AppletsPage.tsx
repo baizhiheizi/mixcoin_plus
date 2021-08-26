@@ -6,6 +6,7 @@ import {
   useAppletConnectionQuery,
   useToggleAppletConnectedMutation,
 } from 'graphqlTypes';
+import moment from 'moment';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Loading, Modal, Switch } from 'zarm';
@@ -46,7 +47,7 @@ export default function AppletsPage() {
             className='px-6 py-2 text-lg text-center bg-gray-600 rounded-full cursor-pointer'
             onClick={() => history.push('/wallet')}
           >
-            Deposit
+            Wallet
           </div>
         </div>
         <div style={{ height: 'env(safe-area-inset-bottom)' }} />
@@ -56,7 +57,9 @@ export default function AppletsPage() {
 }
 
 function AppletsComponent() {
-  const { loading, data, refetch, fetchMore } = useAppletConnectionQuery();
+  const { loading, data, refetch, fetchMore } = useAppletConnectionQuery({
+    fetchPolicy: 'cache-and-network',
+  });
   const history = useHistory();
   const [toggleAppletConnected] = useToggleAppletConnectedMutation({
     update: () => Loading.hide(),
@@ -81,8 +84,13 @@ function AppletsComponent() {
     >
       {applets.map((applet: Partial<Applet | any>) => (
         <div key={applet.id} className='p-4 mb-4 border rounded shadow-lg'>
-          <div className='text-base'>{applet.title}</div>
-          <div className='flex items-center justify-between'>
+          <div
+            className='mb-2 text-base'
+            onClick={() => history.push(`/applets/${applet.id}`)}
+          >
+            {applet.title}
+          </div>
+          <div className='flex items-center justify-between mb-2'>
             <span>Connected:</span>
             <Switch
               checked={applet.connected}
@@ -107,6 +115,12 @@ function AppletsComponent() {
               }
             />
           </div>
+          {applet.lastActiveAt && (
+            <div className='flex items-center justify-between'>
+              <span>Last active:</span>
+              <span>{moment(applet.lastActiveAt).fromNow()}</span>
+            </div>
+          )}
         </div>
       ))}
     </PullComponent>

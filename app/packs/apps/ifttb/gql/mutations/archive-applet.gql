@@ -1,0 +1,6 @@
+mutation ArchiveApplet($input: ArchiveAppletMutationInput!) {
+  archiveApplet(input: $input) {
+    id
+    archivedAt
+  }
+}

@@ -6,7 +6,7 @@ module Resolvers
 
     type [Types::UserAssetType], null: false
 
-    def resolve(**params)
+    def resolve(**_params)
       r = current_user.ifttb_broker.mixin_api.read_assets
       r['data']
     end

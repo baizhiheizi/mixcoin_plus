@@ -10,12 +10,14 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ActivityIndicator } from 'zarm';
 import { CurrentConversationContext, useCurrentUser } from './contexts';
 import AppletsPage from './pages/AppletsPage/AppletsPage';
+const AppletPage = React.lazy(() => import('./pages/AppletPage/AppletPage'));
+const EditAppletPage = React.lazy(
+  () => import('./pages/EditAppletPage/EditAppletPage'),
+);
 const NewAppletPage = React.lazy(
   () => import('./pages/NewAppletPage/NewAppletPage'),
 );
-const WalletPage = React.lazy(
-  () => import('./pages/WalletPage/WalletPage'),
-);
+const WalletPage = React.lazy(() => import('./pages/WalletPage/WalletPage'));
 const NewTriggerPage = React.lazy(
   () => import('./pages/NewTriggerPage/NewTriggerPage'),
 );
@@ -57,6 +59,12 @@ export default function Routes() {
           <Switch>
             <Route path='/' exact>
               <AppletsPage />
+            </Route>
+            <Route path='/applets/:id' exact>
+              <AppletPage />
+            </Route>
+            <Route path='/applets/:id/edit' exact>
+              <EditAppletPage />
             </Route>
             <Route path='/new' exact>
               <LazyLoad>

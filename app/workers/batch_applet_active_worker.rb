@@ -5,6 +5,6 @@ class BatchAppletActiveWorker
   sidekiq_options queue: :high, retry: false
 
   def perform
-    Applet.connected.active_async
+    Applet.connected.map(&:active_async)
   end
 end
