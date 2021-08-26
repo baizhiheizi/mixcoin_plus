@@ -5,6 +5,7 @@
 # Table name: applets
 #
 #  id             :uuid             not null, primary key
+#  archived_at    :datetime
 #  connected      :boolean          default(FALSE)
 #  last_active_at :datetime
 #  title          :string

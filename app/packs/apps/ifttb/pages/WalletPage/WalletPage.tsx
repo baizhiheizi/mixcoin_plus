@@ -68,12 +68,6 @@ export default function WalletPage() {
           <div className='flex items-center space-x-4'>
             <div className='relative'>
               <img className='w-10 h-10 rounded-full' src={asset.iconUrl} />
-              {asset.chainAsset && (
-                <img
-                  className='absolute bottom-0 left-0 w-4 h-4 border border-white rounded-full'
-                  src={asset.chainAsset.iconUrl.replace(/s128/, 's32')}
-                />
-              )}
             </div>
             <span>{asset.symbol}</span>
           </div>

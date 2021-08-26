@@ -13,7 +13,6 @@ pando.assets().then((res) => {
   lakeAssets = res.data.assets.filter(
     (asset) => !asset.name.match(/^(4swap LP Token)/),
   );
-  console.log(lakeAssets);
 });
 
 export default function NewActionPage() {

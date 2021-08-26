@@ -37,12 +37,25 @@ class Applet4swapAction < AppletAction
     @fill_asset ||= MixinAsset.find_by(asset_id: fill_asset_id)
   end
 
+  def fill_amount
+    @fill_amount ||= Foxswap.api.pre_order(
+      pay_asset_id: pay_asset_id,
+      fill_asset_id: fill_asset_id,
+      funds: pay_amount
+    )&.[]('data')&.[]('fill_amount')&.to_f
+  end
+
   def minimum_fill
-    (pay_amount * (1 - slippage)).floor(8)
+    (fill_amount * (1 - slippage)).floor(8)
   end
 
   def may_active?
-    balance_sufficient?
+    if balance_sufficient?
+      true
+    else
+      applet.disconnect! if applet.connected?
+      false
+    end
   end
 
   def balance_sufficient?

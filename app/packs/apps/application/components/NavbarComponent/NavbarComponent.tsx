@@ -1,5 +1,4 @@
-import { Left as LeftIcon } from '@icon-park/react';
-import { Setting as SettingIcon } from '@icon-park/react';
+import { Left as LeftIcon, Setting as SettingIcon } from '@icon-park/react';
 import { imageAsset } from 'apps/application/utils';
 import { useMixin } from 'apps/shared';
 import React, { useEffect, useState } from 'react';

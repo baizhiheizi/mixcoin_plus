@@ -1,42 +1,13 @@
-import {
-  AlarmClock as AlarmClockIcon,
-  Down as DownIcon,
-  Left as LeftIcon,
-} from '@icon-park/react';
+import { Down as DownIcon } from '@icon-park/react';
 import { useAppletForm } from 'apps/ifttb/contexts';
 import React, { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Popup } from 'zarm';
 
-export default function NewTriggerPage() {
-  const history = useHistory();
-  const { type } = useParams<{ type: string }>();
-
-  return (
-    <>
-      <div className='relative p-4 text-xl font-bold text-white bg-dark'>
-        <LeftIcon
-          onClick={() => history.goBack()}
-          className='absolute pt-1 left-8'
-          size='1.25rem'
-        />
-        <div className='text-center'>Datetime Trigger</div>
-      </div>
-      <div className='px-4 pt-4 pb-8 mb-4 text-white bg-dark'>
-        <div className='flex justify-center mb-4'>
-          <AlarmClockIcon size='3rem' />
-        </div>
-        <div className='text-sm'>
-          Set a datetime trigger to run your Applet on every miniute / hour /
-          day / week / month.
-        </div>
-      </div>
-      {{ datetime: <AppletDatetimeTriggerForm /> }[type]}
-    </>
-  );
-}
-
-function AppletDatetimeTriggerForm() {
+export default function AppletDatetimeTriggerForm(props: {
+  onFinish?: (params: { tigger?: any }) => any;
+}) {
+  const { onFinish } = props;
   const [type, setType] = useState<
     | null
     | 'everyMinute'
@@ -83,7 +54,7 @@ function AppletDatetimeTriggerForm() {
           {
             {
               everyMinute: (
-                <EditingEveryMinuteTrigger onClose={() => setType(null)} />
+                <EditingEveryMinuteTrigger onFinish={() => setType(null)} />
               ),
             }[type]
           }
@@ -93,7 +64,7 @@ function AppletDatetimeTriggerForm() {
   );
 }
 
-function EditingEveryMinuteTrigger(props: { onClose: () => any }) {
+function EditingEveryMinuteTrigger(props: { onFinish: () => any }) {
   const history = useHistory();
   const { appletForm, setAppletForm } = useAppletForm();
   const createTrigger = () => {
@@ -109,7 +80,7 @@ function EditingEveryMinuteTrigger(props: { onClose: () => any }) {
       ...appletForm,
       appletDatetimeTrigger: trigger,
     });
-    props.onClose();
+    props.onFinish();
     history.replace('/new');
   };
 

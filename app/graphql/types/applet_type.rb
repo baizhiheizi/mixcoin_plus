@@ -6,6 +6,7 @@ module Types
     field :title, String, null: false
     field :connected, Boolean, null: false
     field :last_active_at, GraphQL::Types::ISO8601DateTime, null: true
+    field :archived_at, GraphQL::Types::ISO8601DateTime, null: true
 
     field :user, Types::UserType, null: false
     field :applet_triggers, [Types::AppletTriggerUnion], null: true

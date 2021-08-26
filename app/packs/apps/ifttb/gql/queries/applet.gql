@@ -1,0 +1,33 @@
+query Applet($id: ID!) {
+  applet(id: $id) {
+    id
+    title
+    connected
+    lastActiveAt
+    appletTriggers {
+      ... on AppletDatetimeTrigger {
+        type
+        description
+        minute
+        hour
+        day
+        month
+        wday
+      }
+      ... on AppletTargetPriceTrigger {
+        type
+        description
+      }
+    }
+    appletActions {
+      ... on Applet4swapAction {
+        type
+        description
+        payAssetId
+        fillAssetId
+        payAmount
+        slippage
+      }
+    }
+  }
+}

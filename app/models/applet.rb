@@ -5,6 +5,7 @@
 # Table name: applets
 #
 #  id             :uuid             not null, primary key
+#  archived_at    :datetime
 #  connected      :boolean          default(FALSE)
 #  last_active_at :datetime
 #  title          :string
@@ -17,7 +18,7 @@ class Applet < ApplicationRecord
 
   has_many :applet_triggers, dependent: :restrict_with_exception
   has_many :applet_actions, dependent: :restrict_with_exception
-  has_many :applet_activities, dependent: :restrict_with_exception
+  has_many :applet_activities, through: :applet_actions, dependent: :restrict_with_exception
 
   accepts_nested_attributes_for :applet_triggers, :applet_actions
 
@@ -25,6 +26,9 @@ class Applet < ApplicationRecord
   validate :must_has_actions, on: :create
 
   scope :connected, -> { where(connected: true) }
+  scope :only_archived, -> { unscope(where: :archived_at).where.not(archived_at: nil) }
+  scope :with_archived, -> { unscope(where: :archived_at) }
+  default_scope { where(archived_at: nil) }
 
   def may_active?
     applet_triggers.map(&:match?).all?(true)
@@ -56,7 +60,7 @@ class Applet < ApplicationRecord
 
   def toggle_connected
     if connected?
-      disconnect! 
+      disconnect!
     else
       connect!
     end
@@ -64,6 +68,10 @@ class Applet < ApplicationRecord
 
   def log_active
     touch :last_active_at
+  end
+
+  def archive!
+    update! archived_at: Time.current
   end
 
   private
