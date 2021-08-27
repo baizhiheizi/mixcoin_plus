@@ -1,11 +1,9 @@
-import { Left as LeftIcon, Down as DownIcon } from '@icon-park/react';
+import { Close as CloseIcon, Down as DownIcon } from '@icon-park/react';
 import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
-import { useAppletForm } from 'apps/ifttb/contexts';
-import React, { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { Popup } from 'zarm';
 import { PandoLake } from 'pando-sdk-js';
 import { IAsset } from 'pando-sdk-js/dist/lake/types';
+import React, { useState } from 'react';
+import { Popup } from 'zarm';
 
 let lakeAssets: IAsset[];
 const pando = new PandoLake();
@@ -15,40 +13,11 @@ pando.assets().then((res) => {
   );
 });
 
-export default function NewActionPage() {
-  const history = useHistory();
-  const { type } = useParams<{ type: string }>();
-
-  return (
-    <>
-      <div
-        className='relative p-4 text-xl font-bold'
-        style={{ background: FSwapActionThemeColor }}
-      >
-        <LeftIcon
-          onClick={() => history.goBack()}
-          className='absolute pt-1 left-8'
-          size='1.25rem'
-        />
-        <div className='text-center'>Create 4swap Action</div>
-      </div>
-      <div
-        className='px-4 pt-4 pb-8 mb-4'
-        style={{ background: FSwapActionThemeColor }}
-      >
-        <div className='flex justify-center mb-4'>
-          <img className='w-12 h-12' src={FSwapLogoUrl} />
-        </div>
-        <div className='text-sm'>
-          Use 4swap to swap asset or add / remove liquidity.
-        </div>
-      </div>
-      {{ '4swap': <NewSwapTriggerComponent /> }[type]}
-    </>
-  );
-}
-
-function NewSwapTriggerComponent() {
+export function Applet4swapActionFormComponent(props: {
+  onCancel: () => any;
+  onFinish: (action) => any;
+}) {
+  const { onCancel, onFinish } = props;
   const [type, setType] = useState<null | 'swap' | 'add' | 'remove'>(null);
   const FswapTriggerItem = (props: {
     className?: string;
@@ -66,6 +35,28 @@ function NewSwapTriggerComponent() {
 
   return (
     <>
+      <div
+        className='relative p-4 text-xl font-bold'
+        style={{ background: FSwapActionThemeColor }}
+      >
+        <CloseIcon
+          onClick={onCancel}
+          className='absolute pt-1 left-8'
+          size='1.25rem'
+        />
+        <div className='text-center'>Create 4swap Action</div>
+      </div>
+      <div
+        className='px-4 pt-4 pb-8 mb-4'
+        style={{ background: FSwapActionThemeColor }}
+      >
+        <div className='flex justify-center mb-4'>
+          <img className='w-12 h-12' src={FSwapLogoUrl} />
+        </div>
+        <div className='text-sm'>
+          Use 4swap to swap asset or add / remove liquidity.
+        </div>
+      </div>
       <div className='p-4 bg-white'>
         <FswapTriggerItem onClick={() => setType('swap')}>
           Swap
@@ -84,7 +75,14 @@ function NewSwapTriggerComponent() {
           </div>
           {
             {
-              swap: <SwapActionTrigger onClose={() => setType(null)} />,
+              swap: (
+                <EditSwapAction
+                  onFinish={(action) => {
+                    onFinish(action);
+                    setType(null);
+                  }}
+                />
+              ),
             }[type]
           }
         </div>
@@ -93,10 +91,7 @@ function NewSwapTriggerComponent() {
   );
 }
 
-function SwapActionTrigger(props: { onClose: () => any }) {
-  const history = useHistory();
-
-  const { appletForm, setAppletForm } = useAppletForm();
+function EditSwapAction(props: { onFinish: (action) => any }) {
   const [payAsset, setPayAsset] = useState<null | IAsset>(null);
   const [payAmount, setPayAmount] = useState<null | string>('');
   const [fillAsset, setFillAsset] = useState<null | IAsset>(null);
@@ -127,12 +122,7 @@ function SwapActionTrigger(props: { onClose: () => any }) {
         payAmount: parseFloat(payAmount),
         slippage,
       };
-      setAppletForm({
-        ...appletForm,
-        applet4swapAction: action,
-      });
-      props.onClose();
-      history.replace('/new');
+      props.onFinish(action);
     }
   };
 
@@ -209,7 +199,7 @@ function SwapActionTrigger(props: { onClose: () => any }) {
         />
       </div>
       <div className='flex items-center mb-8 space-x-4'>
-        <div className='text-gray-500'>Slipage:</div>
+        <div className='text-gray-500'>Slippage:</div>
         <div className='flex items-center justify-around flex-1 text-xs'>
           <div
             className={`py-1 px-4 border cursor-pointer rounded ${
@@ -292,6 +282,6 @@ function SwapActionTrigger(props: { onClose: () => any }) {
   );
 }
 
-function AddLiquidityActionTrigger() {}
+function EditAddLiquidityAction() {}
 
-function RemoveLiquidityActionTrigger() {}
+function EditRemoveLiquidityAction() {}

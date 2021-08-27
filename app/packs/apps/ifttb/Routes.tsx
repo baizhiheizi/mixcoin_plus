@@ -18,12 +18,6 @@ const NewAppletPage = React.lazy(
   () => import('./pages/NewAppletPage/NewAppletPage'),
 );
 const WalletPage = React.lazy(() => import('./pages/WalletPage/WalletPage'));
-const NewTriggerPage = React.lazy(
-  () => import('./pages/NewTriggerPage/NewTriggerPage'),
-);
-const NewActionPage = React.lazy(
-  () => import('./pages/NewActionPage/NewActionPage'),
-);
 
 export default function Routes() {
   const { currentUser } = useCurrentUser();
@@ -74,16 +68,6 @@ export default function Routes() {
             <Route path='/wallet' exact>
               <LazyLoad>
                 <WalletPage />
-              </LazyLoad>
-            </Route>
-            <Route path='/triggers/new/:type' exact>
-              <LazyLoad>
-                <NewTriggerPage />
-              </LazyLoad>
-            </Route>
-            <Route path='/actions/new/:type' exact>
-              <LazyLoad>
-                <NewActionPage />
               </LazyLoad>
             </Route>
           </Switch>
