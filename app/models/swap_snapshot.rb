@@ -40,6 +40,21 @@ class SwapSnapshot < MixinNetworkSnapshot
   def process!
     return if processed?
 
+    if decrypted_swap_order.present?
+      process_swap_order_snapshot
+    elsif decrypted_applet_activity.present?
+      decrypted_applet_activity.complete! if decrypted_applet_activity.may_complete?
+
+      update(
+        source: decrypted_applet_activity,
+        snapshot_type: decrypted_snapshot_type,
+        processed_at: Time.current,
+        amount_usd: asset.price_usd.to_f * amount
+      )
+    end
+  end
+
+  def process_swap_order_snapshot
     _swap_order = decrypted_swap_order
     _snapshot_type = decrypted_snapshot_type
 
@@ -94,6 +109,11 @@ class SwapSnapshot < MixinNetworkSnapshot
       processed_at: Time.current,
       amount_usd: asset.price_usd.to_f * amount
     )
+  end
+
+  def decrypted_applet_activity
+    transfer = MixinTransfer.find_by trace_id: raw['trace_id']
+    transfer&.source if transfer.source.is_a?(AppletActivity)
   end
 
   # associate to swap_order

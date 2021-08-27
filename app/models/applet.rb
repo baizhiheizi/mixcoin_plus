@@ -7,6 +7,7 @@
 #  id             :uuid             not null, primary key
 #  archived_at    :datetime
 #  connected      :boolean          default(FALSE)
+#  frequency      :integer          default(300)
 #  last_active_at :datetime
 #  title          :string
 #  created_at     :datetime         not null
@@ -21,6 +22,8 @@ class Applet < ApplicationRecord
   has_many :applet_activities, through: :applet_actions, dependent: :restrict_with_exception
 
   accepts_nested_attributes_for :applet_triggers, :applet_actions
+
+  before_validation :set_defaults
 
   validate :must_has_triggers, on: :create
   validate :must_has_actions, on: :create
@@ -75,6 +78,10 @@ class Applet < ApplicationRecord
   end
 
   private
+
+  def set_defaults
+    self.frequency = applet_triggers.map(&:frequency).min || 300
+  end
 
   def must_has_triggers
     errors.add(:applet_triggers, ' must have') if applet_triggers.blank?

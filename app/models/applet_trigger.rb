@@ -17,4 +17,8 @@
 #
 class AppletTrigger < ApplicationRecord
   belongs_to :applet
+
+  def frequency
+    300
+  end
 end
