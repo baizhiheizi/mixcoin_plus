@@ -3,20 +3,27 @@ import {
   Close as CloseIcon,
   Down as DownIcon,
 } from '@icon-park/react';
+import { ChooseAppletActionComponent } from 'apps/ifttb/components/ChooseAppletActionComponent/ChooseAppletActionComponent';
+import { ChooseAppletTriggerComponent } from 'apps/ifttb/components/ChooseAppletTriggerComponent/ChooseAppletTriggerComponent';
 import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
-import { useAppletForm } from 'apps/ifttb/contexts';
-import { useCreateAppletMutation } from 'graphqlTypes';
+import { AppletFormContext } from 'apps/ifttb/contexts';
+import {
+  CreateAppletMutationInput,
+  useCreateAppletMutation,
+} from 'graphqlTypes';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Popup } from 'zarm';
 
 export default function NewAppletPage() {
   const history = useHistory();
-  const { appletForm, setAppletForm } = useAppletForm();
+  const [appletForm, setAppletForm] =
+    useState<CreateAppletMutationInput | null>(null);
 
   const [createApplet] = useCreateAppletMutation({
     update: () => {
       setAppletForm(null);
+      history.replace('/');
     },
   });
   const [chooseTriggerPopupVisible, setChooseTriggerPopupVisible] =
@@ -30,12 +37,11 @@ export default function NewAppletPage() {
     null | 'applet4swapAction'
   >(null);
 
-  const appletFormTriggerCreated =
-    appletForm?.appletDatetimeTrigger || appletForm?.appletTargetPriceTrigger;
+  const appletFormTriggerCreated = appletForm?.appletDatetimeTrigger;
   const appletFormActionCreated = appletForm?.applet4swapAction;
 
   return (
-    <>
+    <AppletFormContext.Provider value={{ appletForm, setAppletForm }}>
       <div className='relative p-4 mb-8 text-xl font-bold bg-white'>
         <CloseIcon
           onClick={() => history.goBack()}
@@ -184,60 +190,21 @@ export default function NewAppletPage() {
         direction='bottom'
         onMaskClick={() => setChooseTriggerPopupVisible(false)}
       >
-        <ChooseTriggerComponent />
+        <ChooseAppletTriggerComponent
+          onOk={() => setChooseTriggerPopupVisible(false)}
+          onCancel={() => setChooseTriggerPopupVisible(false)}
+        />
       </Popup>
       <Popup
         visible={chooseActionPopupVisible}
         direction='bottom'
         onMaskClick={() => setChooseActionPopupVisible(false)}
       >
-        <ChooseActionComponent />
+        <ChooseAppletActionComponent
+          onOk={() => setChooseActionPopupVisible(false)}
+          onCancel={() => setChooseActionPopupVisible(false)}
+        />
       </Popup>
-    </>
-  );
-}
-
-function ChooseTriggerComponent() {
-  const history = useHistory();
-  return (
-    <div className='relative overflow-scroll bg-white rounded-t-lg max-h-screen-3/4 min-h-screen-1/2'>
-      <div className='sticky flex justify-center p-2'>
-        <DownIcon size='2rem' />
-      </div>
-      <div className='p-4 grid grid-cols-2 gap-2'>
-        <div
-          className='p-4 text-white rounded-lg bg-dark'
-          onClick={() => history.push('/triggers/new/datetime')}
-        >
-          <div className='flex justify-center mb-2 text-lg'>
-            <AlarmClockIcon size='1.5rem' />
-          </div>
-          <div className='text-lg text-center'>Datetime</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ChooseActionComponent() {
-  const history = useHistory();
-  return (
-    <div className='relative overflow-scroll bg-white rounded-t-lg max-h-screen-3/4 min-h-screen-1/2'>
-      <div className='sticky flex justify-center p-2'>
-        <DownIcon size='2rem' />
-      </div>
-      <div className='p-4 grid grid-cols-2 gap-2'>
-        <div
-          className='p-4 rounded-lg'
-          style={{ background: FSwapActionThemeColor }}
-          onClick={() => history.push('/actions/new/4swap')}
-        >
-          <div className='flex justify-center mb-2'>
-            <img className='w-10 h-10' src={FSwapLogoUrl} />
-          </div>
-          <div className='text-lg text-center'>4Swap</div>
-        </div>
-      </div>
-    </div>
+    </AppletFormContext.Provider>
   );
 }
