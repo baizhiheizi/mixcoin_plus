@@ -3,7 +3,7 @@
 # Table name: applet_activities
 #
 #  id               :uuid             not null, primary key
-#  result           :string
+#  state            :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  applet_action_id :uuid             not null

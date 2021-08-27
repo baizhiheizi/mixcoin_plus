@@ -5,6 +5,7 @@ class CreateApplets < ActiveRecord::Migration[6.1]
       t.string :title
       t.boolean :connected, default: false
       t.datetime :last_active_at
+      t.integer :frequency, default: 300
 
       t.timestamps
     end

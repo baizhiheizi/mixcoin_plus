@@ -2,7 +2,7 @@ class CreateAppletActivities < ActiveRecord::Migration[6.1]
   def change
     create_table :applet_activities, id: :uuid do |t|
       t.uuid :applet_action_id, null: false
-      t.string :result
+      t.string :state
 
       t.timestamps
     end

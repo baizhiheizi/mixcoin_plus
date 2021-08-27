@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 2021_08_26_074357) do
 
   create_table "applet_activities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "applet_action_id", null: false
-    t.string "result"
+    t.string "state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["applet_action_id"], name: "index_applet_activities_on_applet_action_id"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 2021_08_26_074357) do
     t.string "title"
     t.boolean "connected", default: false
     t.datetime "last_active_at"
+    t.integer "frequency", default: 300
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "archived_at"
