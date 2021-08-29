@@ -1,0 +1,18 @@
+query IfttbBrokerSnapshots($offset: String, $asset: String, $opponent: String) {
+  ifttbBrokerSnapshots(offset: $offset, asset: $asset, opponent: $opponent) {
+    amount
+    snapshotId
+    traceId
+    opponentId
+    data
+    asset {
+      name
+      symbol
+      iconUrl
+      chainAsset {
+        iconUrl
+      }
+    }
+    createdAt
+  }
+}
