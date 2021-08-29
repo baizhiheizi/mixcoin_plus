@@ -53,14 +53,16 @@ export default function NewAppletPage() {
       <div className='p-4 mb-36'>
         {appletForm?.appletDatetimeTrigger ? (
           <div
-            className='flex items-center p-4 mb-8 text-lg font-bold text-white rounded-lg cursor-pointer space-x-2 bg-dark'
+            className='flex items-start p-4 mb-8 text-lg font-bold text-white rounded-lg cursor-pointer space-x-2 bg-dark'
             onClick={() => setEditingTrigger('appletDatetimeTrigger')}
           >
             <span className='text-xl'>If</span>
             <span>
-              <AlarmClockIcon size='1.5rem' />
+              <AlarmClockIcon size='1.75rem' />
             </span>
-            <span>{appletForm?.appletDatetimeTrigger?.description}</span>
+            <span className='leading-7'>
+              {appletForm?.appletDatetimeTrigger?.description}
+            </span>
           </div>
         ) : (
           <div
@@ -74,13 +76,15 @@ export default function NewAppletPage() {
 
         {appletForm?.applet4swapAction ? (
           <div
-            className='flex items-center p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer space-x-2'
+            className='flex items-start p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer space-x-2'
             onClick={() => setEditingAction('applet4swapAction')}
             style={{ background: FSwapActionThemeColor }}
           >
             <span className='text-xl'>Then</span>
-            <img className='w-6 h-6 rounded-full' src={FSwapLogoUrl} />
-            <span>{appletForm?.applet4swapAction?.description}</span>
+            <img className='rounded-full w-7 h-7' src={FSwapLogoUrl} />
+            <span className='leading-7'>
+              {appletForm?.applet4swapAction?.description}
+            </span>
           </div>
         ) : (
           <div

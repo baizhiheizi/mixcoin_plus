@@ -98,7 +98,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
   const [selectingAsset, setSelectingAsset] = useState<
     null | 'payAsset' | 'fillAsset'
   >(null);
-  const [slippage, setSlippage] = useState<0.001 | 0.003 | 0.005>(0.001);
+  const [slippage, setSlippage] = useState<0.001 | 0.005 | 0.01>(0.001);
 
   const validateParams = () => {
     if (
@@ -211,17 +211,17 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
           </div>
           <div
             className={`py-1 px-4 border cursor-pointer rounded ${
-              slippage === 0.003 ? 'bg-dark text-white' : 'bg-white'
+              slippage === 0.005 ? 'bg-dark text-white' : 'bg-white'
             }`}
-            onClick={() => setSlippage(0.003)}
+            onClick={() => setSlippage(0.005)}
           >
             0.3%
           </div>
           <div
             className={`py-1 px-4 border cursor-pointer rounded ${
-              slippage === 0.005 ? 'bg-dark text-white' : 'bg-white'
+              slippage === 0.01 ? 'bg-dark text-white' : 'bg-white'
             }`}
-            onClick={() => setSlippage(0.005)}
+            onClick={() => setSlippage(0.01)}
           >
             0.5%
           </div>
