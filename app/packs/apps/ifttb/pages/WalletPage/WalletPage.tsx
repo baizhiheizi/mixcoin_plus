@@ -1,13 +1,20 @@
-import { Left as LeftIcon } from '@icon-park/react';
+import { Close as CloseIcon, Left as LeftIcon } from '@icon-park/react';
+import PullComponent from 'apps/application/components/PullComponent/PullComponent';
 import { useCurrentUser } from 'apps/ifttb/contexts';
 import LoaderComponent from 'apps/shared/components/LoaderComponent/LoaderComponent';
-import { useIfttbBrokerBalanceQuery } from 'graphqlTypes';
-import React from 'react';
+import {
+  useIfttbBrokerBalanceQuery,
+  useIfttbBrokerSnapshotsQuery,
+} from 'graphqlTypes';
+import moment from 'moment';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Popup } from 'zarm';
 
 export default function WalletPage() {
   const history = useHistory();
   const { currentUser } = useCurrentUser();
+  const [snapshotPopupVisible, setSnapshotsPopupVisible] = useState(false);
   const { loading, data } = useIfttbBrokerBalanceQuery({ skip: !currentUser });
 
   if (loading) {
@@ -50,7 +57,7 @@ export default function WalletPage() {
           <div className='text-gray-500 dark:text-gray-100'>BTC</div>
         </div>
       </div>
-      <div className='flex items-center justify-center mb-4'>
+      <div className='flex items-center justify-around mb-4'>
         <div
           onClick={() =>
             location.replace(`mixin://transfer/${currentUser.ifttbBrokerId}`)
@@ -58,6 +65,12 @@ export default function WalletPage() {
           className='px-4 py-2 text-white rounded-full bg-dark'
         >
           Deposit
+        </div>
+        <div
+          className='px-4 py-2 border rounded-full'
+          onClick={() => setSnapshotsPopupVisible(true)}
+        >
+          Snapshots
         </div>
       </div>
       {assets.map((asset) => (
@@ -74,6 +87,77 @@ export default function WalletPage() {
           <div className=''>{asset.balance}</div>
         </div>
       ))}
+      <Popup
+        visible={snapshotPopupVisible}
+        direction='bottom'
+        onMaskClick={() => setSnapshotsPopupVisible(false)}
+      >
+        <div className='h-screen overflow-scroll bg-white'>
+          <div className='relative sticky top-0 z-10 p-4 text-xl font-bold text-white bg-dark'>
+            <CloseIcon
+              onClick={() => setSnapshotsPopupVisible(false)}
+              className='absolute pt-1 left-8'
+              size='1.25rem'
+            />
+            <div className='text-center'>Snapshots</div>
+          </div>
+          <IfttbBrokerSnapshotsComponent />
+        </div>
+      </Popup>
     </>
+  );
+}
+
+function IfttbBrokerSnapshotsComponent() {
+  const { loading, data, refetch, fetchMore } = useIfttbBrokerSnapshotsQuery();
+
+  if (loading) {
+    return <LoaderComponent />;
+  }
+
+  const { ifttbBrokerSnapshots: snapshots } = data;
+
+  return (
+    <PullComponent
+      hasNextPage={snapshots.length % 50 === 0}
+      refetch={refetch}
+      fetchMore={() =>
+        fetchMore({
+          variables: { offset: snapshots[snapshots.length - 1].createdAt },
+        })
+      }
+    >
+      {snapshots.map((snapshot) => (
+        <div
+          key={snapshot.snapshotId}
+          className='flex items-center px-4 py-2 bg-white dark:bg-dark'
+        >
+          <div className='relative'>
+            <img
+              className='w-8 h-8 rounded-full'
+              src={snapshot.asset.iconUrl.replace(/s128$/, 's64')}
+            />
+            {snapshot.asset.chainAsset && (
+              <img
+                className='absolute bottom-0 left-0 w-2.5 h-2.5 border border-white rounded-full'
+                src={snapshot.asset.chainAsset.iconUrl.replace(/s128/, 's32')}
+              />
+            )}
+          </div>
+          <div
+            className={`text-bold text-lg ml-2 ${
+              snapshot.amount < 0 ? 'text-red-500' : 'text-green-500'
+            }`}
+          >
+            {snapshot.amount > 0 && '+'}
+            {snapshot.amount.toFixed(8)}
+          </div>
+          <div className='ml-1 text-xs font-light'>{snapshot.asset.symbol}</div>
+          <div className='ml-auto text-xs text-gray-500 dark:text-gray-300'>
+            {moment(snapshot.createdAt).format('YYYY-MM-DD HH:mm:ss')}
+          </div>
+        </div>
+      ))}
+    </PullComponent>
   );
 }

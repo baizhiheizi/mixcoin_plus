@@ -1017,6 +1017,7 @@ export type Query = {
   deprecatedOceanOrders: Array<OceanOrder>;
   groupOwnerCommissionConnection: MixinTransferConnection;
   ifttbBrokerBalance: Array<UserAsset>;
+  ifttbBrokerSnapshots: Array<MixinNetworkSnapshot>;
   invitationCommissionConnection: MixinTransferConnection;
   inviteeConnection: UserConnection;
   market: Market;
@@ -1288,6 +1289,13 @@ export type QueryGroupOwnerCommissionConnectionArgs = {
 
 export type QueryIfttbBrokerBalanceArgs = {
   userId?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryIfttbBrokerSnapshotsArgs = {
+  offset?: Maybe<Scalars['String']>;
+  asset?: Maybe<Scalars['String']>;
+  opponent?: Maybe<Scalars['String']>;
 };
 
 
@@ -2065,6 +2073,15 @@ export type IfttbBrokerBalanceQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type IfttbBrokerBalanceQuery = { __typename?: 'Query', ifttbBrokerBalance: Array<{ __typename?: 'UserAsset', assetId: string, name: string, symbol: string, iconUrl?: Maybe<string>, balance: number, priceUsd?: Maybe<number>, priceBtc?: Maybe<number> }> };
+
+export type IfttbBrokerSnapshotsQueryVariables = Exact<{
+  offset?: Maybe<Scalars['String']>;
+  asset?: Maybe<Scalars['String']>;
+  opponent?: Maybe<Scalars['String']>;
+}>;
+
+
+export type IfttbBrokerSnapshotsQuery = { __typename?: 'Query', ifttbBrokerSnapshots: Array<{ __typename?: 'MixinNetworkSnapshot', amount: number, snapshotId: string, traceId?: Maybe<string>, opponentId?: Maybe<string>, data?: Maybe<string>, createdAt: any, asset: { __typename?: 'MixinAsset', name: string, symbol: string, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> } }> };
 
 
 export const AdminArbitragerWithrawBalanceDocument = gql`
@@ -5437,3 +5454,53 @@ export function useIfttbBrokerBalanceLazyQuery(baseOptions?: Apollo.LazyQueryHoo
 export type IfttbBrokerBalanceQueryHookResult = ReturnType<typeof useIfttbBrokerBalanceQuery>;
 export type IfttbBrokerBalanceLazyQueryHookResult = ReturnType<typeof useIfttbBrokerBalanceLazyQuery>;
 export type IfttbBrokerBalanceQueryResult = Apollo.QueryResult<IfttbBrokerBalanceQuery, IfttbBrokerBalanceQueryVariables>;
+export const IfttbBrokerSnapshotsDocument = gql`
+    query IfttbBrokerSnapshots($offset: String, $asset: String, $opponent: String) {
+  ifttbBrokerSnapshots(offset: $offset, asset: $asset, opponent: $opponent) {
+    amount
+    snapshotId
+    traceId
+    opponentId
+    data
+    asset {
+      name
+      symbol
+      iconUrl
+      chainAsset {
+        iconUrl
+      }
+    }
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useIfttbBrokerSnapshotsQuery__
+ *
+ * To run a query within a React component, call `useIfttbBrokerSnapshotsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIfttbBrokerSnapshotsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIfttbBrokerSnapshotsQuery({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *      asset: // value for 'asset'
+ *      opponent: // value for 'opponent'
+ *   },
+ * });
+ */
+export function useIfttbBrokerSnapshotsQuery(baseOptions?: Apollo.QueryHookOptions<IfttbBrokerSnapshotsQuery, IfttbBrokerSnapshotsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IfttbBrokerSnapshotsQuery, IfttbBrokerSnapshotsQueryVariables>(IfttbBrokerSnapshotsDocument, options);
+      }
+export function useIfttbBrokerSnapshotsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IfttbBrokerSnapshotsQuery, IfttbBrokerSnapshotsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IfttbBrokerSnapshotsQuery, IfttbBrokerSnapshotsQueryVariables>(IfttbBrokerSnapshotsDocument, options);
+        }
+export type IfttbBrokerSnapshotsQueryHookResult = ReturnType<typeof useIfttbBrokerSnapshotsQuery>;
+export type IfttbBrokerSnapshotsLazyQueryHookResult = ReturnType<typeof useIfttbBrokerSnapshotsLazyQuery>;
+export type IfttbBrokerSnapshotsQueryResult = Apollo.QueryResult<IfttbBrokerSnapshotsQuery, IfttbBrokerSnapshotsQueryVariables>;
