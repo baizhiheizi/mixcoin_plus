@@ -7,6 +7,7 @@
 #  id             :uuid             not null, primary key
 #  archived_at    :datetime
 #  connected      :boolean          default(FALSE)
+#  cron           :string
 #  frequency      :integer          default(300)
 #  last_active_at :datetime
 #  title          :string

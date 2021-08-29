@@ -31,14 +31,6 @@ EM.run {
     Market.recommended.map(&:patrol_async)
   }
 
-  EM.add_periodic_timer(30) {
-    Applet.connected.where('frequency <= ?', 60).map(&:active_async)
-  }
-
-  EM.add_periodic_timer(60) {
-    Applet.connected.where('frequency > ?', 60).map(&:active_async)
-  }
-
   Thread.new {
     MixinNetworkSnapshot.poll
   }

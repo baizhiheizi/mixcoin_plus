@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
-import {Picker} from 'zarm';
+import React, { useState } from 'react';
+import { Picker } from 'zarm';
 
-export default function EditingEveryDayTriggerComponent(props: { onFinish: (trigger) => any }) {
+export default function EditingEveryDayTriggerComponent(props: {
+  onFinish: (trigger) => any;
+}) {
   const [hour, setHour] = useState<number>(0);
   const [minute, setMinute] = useState<number>(0);
   const [choosingMinute, setChoosingMinute] = useState(false);
