@@ -28,11 +28,11 @@ class User < ApplicationRecord
   extend Enumerize
 
   include Authenticatable
+  include Users::Ifttbable
 
   has_one :mixin_authorization, -> { where(provider: :mixin) }, class_name: 'UserAuthorization', inverse_of: :user
   has_one :ifttb_authorization, -> { where(provider: :ifttb) }, class_name: 'UserAuthorization', inverse_of: :user
   has_one :broker, as: :owner, dependent: :restrict_with_exception
-  has_one :ifttb_broker, as: :owner, dependent: :restrict_with_exception
 
   has_many :notifications, as: :recipient, dependent: :destroy
 
