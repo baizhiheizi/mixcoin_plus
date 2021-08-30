@@ -30,7 +30,7 @@ module Types
     end
 
     def ifttb_broker_id
-      object.ifttb_broker&.ready? && object.ifttb_broker.mixin_uuid
+      object.ifttb_broker&.ready? && object.ifttb_broker&.mixin_uuid
     end
 
     def may_create_applet
