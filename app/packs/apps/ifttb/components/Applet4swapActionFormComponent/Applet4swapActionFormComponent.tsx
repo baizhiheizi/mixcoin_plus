@@ -118,7 +118,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
   const createAction = () => {
     if (validateParams()) {
       const action = {
-        description: `Swap ${payAmount} ${payAsset.symbol} to ${fillAsset.symbol}`,
+        description: `swap ${payAmount} ${payAsset.symbol} to ${fillAsset.symbol}`,
         payAssetId: payAsset.id,
         fillAssetId: fillAsset.id,
         payAmount: parseFloat(payAmount),

@@ -15,21 +15,21 @@
 #
 #  index_applet_triggers_on_applet_id  (applet_id)
 #
-class AppletTargetPriceTrigger < AppletTrigger
+class Applet4swapTrigger < AppletTrigger
   store :params, accessors: %i[
     description
     base_asset_id
     quote_asset_id
-    target_price
-    side
-    compare
+    target_index
+    target_value
+    compare_action
   ]
 
   validates :base_asset_id, presence: true
   validates :quote_asset_id, presence: true
-  validates :side, exclusion: { in: %w[ask bid] }
-  validates :compare, exclusion: { in: %w[larger_than less_than] }
-  validates :target_price, numericality: true
+  validates :target_index, inclusion: { in: %w[ask_price bid_price] }
+  validates :compare_action, inclusion: { in: %w[larger_than less_than] }
+  validates :target_value, numericality: true
 
   delegate :base_asset, :quote_asset, to: :swap_market
 
@@ -38,20 +38,23 @@ class AppletTargetPriceTrigger < AppletTrigger
   end
 
   def match?
-    case compare
+    return false if current_value.blank?
+
+    case compare_action
     when 'larger_than'
-      target_price >= swap_market.current_price
+      current_value >= target_value
     when 'less_than'
-      target_price <= swap_market.current_price
+      current_value <= target_value
     end
   end
 
-  def current_price
-    case side
-    when 'ask'
-      swap_market.ask_price
-    when 'bid'
-      swap_market.bid_price
-    end
+  def current_value
+    @current_value ||=
+      case target_index
+      when 'ask_price'
+        swap_market.ask_price
+      when 'bid_price'
+        swap_market.bid_price
+      end
   end
 end

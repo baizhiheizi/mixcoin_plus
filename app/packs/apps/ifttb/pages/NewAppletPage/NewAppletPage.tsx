@@ -31,13 +31,14 @@ export default function NewAppletPage() {
   const [chooseActionPopupVisible, setChooseActionPopupVisible] =
     useState(false);
   const [editingTrigger, setEditingTrigger] = useState<
-    null | 'appletDatetimeTrigger'
+    null | 'appletDatetimeTrigger' | 'applet4swapTrigger'
   >(null);
   const [editingAction, setEditingAction] = useState<
     null | 'applet4swapAction'
   >(null);
 
-  const appletFormTriggerCreated = appletForm?.appletDatetimeTrigger;
+  const appletFormTriggerCreated =
+    appletForm?.appletDatetimeTrigger || appletForm?.applet4swapTrigger;
   const appletFormActionCreated = appletForm?.applet4swapAction;
 
   return (
@@ -51,9 +52,9 @@ export default function NewAppletPage() {
         <div className='text-center'>Create Applet</div>
       </div>
       <div className='p-4'>
-        {appletForm?.appletDatetimeTrigger ? (
+        {appletForm?.appletDatetimeTrigger && (
           <div
-            className='flex items-start p-4 mb-8 text-lg font-bold text-white rounded-lg cursor-pointer space-x-2 bg-gray-800'
+            className='flex items-start p-4 mb-8 text-lg font-bold text-white bg-gray-800 rounded-lg cursor-pointer space-x-2'
             onClick={() => setEditingTrigger('appletDatetimeTrigger')}
           >
             <span className='text-xl'>If</span>
@@ -64,7 +65,21 @@ export default function NewAppletPage() {
               {appletForm?.appletDatetimeTrigger?.description}
             </span>
           </div>
-        ) : (
+        )}
+        {appletForm?.applet4swapTrigger && (
+          <div
+            className='flex items-start p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer space-x-2'
+            style={{ background: FSwapActionThemeColor }}
+            onClick={() => setEditingTrigger('applet4swapTrigger')}
+          >
+            <span className='text-xl'>If</span>
+            <img className='rounded-full w-7 h-7' src={FSwapLogoUrl} />
+            <span className='leading-7'>
+              {appletForm?.applet4swapTrigger?.description}
+            </span>
+          </div>
+        )}
+        {!appletFormTriggerCreated && (
           <div
             className='flex items-center justify-around p-4 mb-8 text-3xl font-bold rounded-lg cursor-pointer bg-dark'
             onClick={() => setChooseTriggerPopupVisible(true)}
@@ -115,9 +130,12 @@ export default function NewAppletPage() {
                     title: [
                       'If',
                       appletForm.appletDatetimeTrigger?.description,
+                      appletForm.applet4swapTrigger?.description,
                       'then',
                       appletForm.applet4swapAction?.description,
-                    ].join(', '),
+                    ]
+                      .filter((item) => !!item)
+                      .join(', '),
                   },
                 },
               });

@@ -24,7 +24,7 @@ export function ChooseAppletActionComponent(props: {
             onClick={() => setActionType('4swap')}
           >
             <div className='flex justify-center mb-2'>
-              <img className='w-10 h-10' src={FSwapLogoUrl} />
+              <img className='w-7 h-7' src={FSwapLogoUrl} />
             </div>
             <div className='text-lg text-center'>4Swap</div>
           </div>

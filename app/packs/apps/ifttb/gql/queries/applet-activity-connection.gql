@@ -2,6 +2,7 @@ query AppletActivityConnection($appletId: ID!, $after: String) {
   appletActivityConnection(appletId: $appletId, after: $after) {
     nodes {
       id
+      state
       createdAt
     }
     pageInfo {

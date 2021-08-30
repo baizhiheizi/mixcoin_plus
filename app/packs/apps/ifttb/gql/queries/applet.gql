@@ -14,7 +14,7 @@ query Applet($id: ID!) {
         month
         wday
       }
-      ... on AppletTargetPriceTrigger {
+      ... on Applet4swapTrigger {
         type
         description
       }

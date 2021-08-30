@@ -3,7 +3,7 @@
 module Types
   class AppletActivityType < Types::BaseModelObject
     field :id, ID, null: false
-    field :type, String, null: false
+    field :state, String, null: false
 
     field :applet, Types::AppletType, null: false
     field :applet_action, Types::AppletActionType, null: false

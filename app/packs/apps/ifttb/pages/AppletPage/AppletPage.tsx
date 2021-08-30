@@ -36,7 +36,7 @@ export default function AppletPage() {
 
   return (
     <>
-      <div className='pb-16'>
+      <div className='pb-28'>
         <div className='relative p-4 mb-4 text-xl font-bold bg-white'>
           <CloseIcon
             onClick={() => history.goBack()}
@@ -126,9 +126,11 @@ function AppletActivitiesComponent(props: { appletId: string }) {
         {appletActivities.map((appletActivity) => (
           <div
             key={appletActivity.id}
-            className='py-1 text-center text-gray-500'
+            className={`py-1 text-sm text-center text-gray-500 ${
+              appletActivity.state === 'failed' ? 'text-red-500' : ''
+            }`}
           >
-            Applet ran at{' '}
+            Applet {appletActivity.state} at{' '}
             {moment(appletActivity.createdAt).format('YYYY-MM-DD HH:mm')}
           </div>
         ))}

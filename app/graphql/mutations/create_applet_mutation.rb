@@ -7,12 +7,21 @@ module Mutations
     type Boolean
 
     def resolve(**params)
+      return unless current_user.may_create_applet?
+
       applet = current_user.applets.new(title: params[:title])
       if params[:applet_datetime_trigger].present?
         applet.applet_triggers.new(
           {
             type: 'AppletDatetimeTrigger'
           }.merge(params[:applet_datetime_trigger])
+        )
+      end
+      if params[:applet_4swap_trigger].present?
+        applet.applet_triggers.new(
+          {
+            type: 'Applet4swapTrigger'
+          }.merge(params[:applet_4swap_trigger])
         )
       end
       if params[:applet_4swap_action].present?
