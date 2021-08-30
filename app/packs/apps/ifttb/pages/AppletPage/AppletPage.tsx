@@ -1,17 +1,17 @@
 import { Close as CloseIcon } from '@icon-park/react';
 import { useCurrentUser } from 'apps/ifttb/contexts';
 import LoaderComponent from 'apps/shared/components/LoaderComponent/LoaderComponent';
+import PullComponent from 'apps/shared/components/PullComponent/PullComponent';
 import {
   useAppletActivityConnectionQuery,
   useAppletQuery,
   useArchiveAppletMutation,
   useToggleAppletConnectedMutation,
 } from 'graphqlTypes';
-import React from 'react';
+import moment from 'moment';
+import React, { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Loading, Modal, Switch } from 'zarm';
-import moment from 'moment';
-import PullComponent from 'apps/shared/components/PullComponent/PullComponent';
 
 export default function AppletPage() {
   const history = useHistory();
@@ -20,6 +20,9 @@ export default function AppletPage() {
   const [toggleAppletConnected] = useToggleAppletConnectedMutation({
     update: () => Loading.hide(),
   });
+  const [confirming, setConfirming] = useState<null | 'connected' | 'archive'>(
+    null,
+  );
   const [archiveApplet] = useArchiveAppletMutation({
     update: () => {
       Loading.hide();
@@ -51,25 +54,7 @@ export default function AppletPage() {
             <span>Connected:</span>
             <Switch
               checked={applet.connected}
-              onChange={() =>
-                Modal.confirm({
-                  title: 'Confirm',
-                  content: applet.connected ? (
-                    'Are you sure to disconnect this applet?'
-                  ) : (
-                    <div className='text-base text-left'>
-                      Please make sure you have <b>enough balance</b> in your
-                      IFTTB wallet to active before connect an applet.
-                    </div>
-                  ),
-                  onOk: () => {
-                    Loading.show();
-                    toggleAppletConnected({
-                      variables: { input: { appletId: applet.id } },
-                    });
-                  },
-                })
-              }
+              onChange={() => setConfirming('connected')}
             />
           </div>
         </div>
@@ -81,16 +66,51 @@ export default function AppletPage() {
         <div className='flex items-center justify-around'>
           <div
             className='px-6 py-2 text-lg text-center text-red-500 bg-gray-600 rounded-full cursor-pointer'
-            onClick={() => {
-              Loading.show();
-              archiveApplet({ variables: { input: { appletId: applet.id } } });
-            }}
+            onClick={() => setConfirming('archive')}
           >
             Archive
           </div>
         </div>
         <div style={{ height: 'env(safe-area-inset-bottom)' }} />
       </div>
+      <Modal
+        visible={Boolean(confirming)}
+        onCancel={() => setConfirming(null)}
+        maskClosable
+        closable
+        title='Confirm'
+      >
+        <div className='mb-6 text-lg'>
+          {confirming === 'connected' &&
+            (applet?.connected ? (
+              'Are you sure to disconnect this applet?'
+            ) : (
+              <span>
+                Please make sure you have <b>enough balance</b> in your IFTTB
+                wallet to active before connect an applet.
+              </span>
+            ))}
+          {confirming === 'archive' && (
+            <span>Are you sure to archive this applet?</span>
+          )}
+        </div>
+        <div
+          className='px-4 py-2 text-xl text-center text-white rounded-full bg-dark'
+          onClick={() => {
+            Loading.show();
+            if (confirming === 'connected') {
+              toggleAppletConnected({
+                variables: { input: { appletId: applet.id } },
+              });
+            } else if (confirming === 'archive') {
+              archiveApplet({ variables: { input: { appletId: applet.id } } });
+            }
+            setConfirming(null);
+          }}
+        >
+          Confirm
+        </div>
+      </Modal>
     </>
   );
 }

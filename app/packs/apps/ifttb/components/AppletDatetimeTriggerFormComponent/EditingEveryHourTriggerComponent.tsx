@@ -16,7 +16,7 @@ export default function EditingEveryHourTriggerComponent(props: {
   const createTrigger = () => {
     const trigger = {
       description: `once every hour at miniute ${minute}`,
-      minute,
+      minute: minute.toString(),
       hour: '*',
       day: '*',
       month: '*',

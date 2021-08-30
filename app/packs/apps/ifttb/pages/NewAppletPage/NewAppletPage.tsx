@@ -2,6 +2,7 @@ import {
   AlarmClock as AlarmClockIcon,
   Close as CloseIcon,
   Down as DownIcon,
+  Add as AddIcon,
 } from '@icon-park/react';
 import { ChooseAppletActionComponent } from 'apps/ifttb/components/ChooseAppletActionComponent/ChooseAppletActionComponent';
 import { ChooseAppletTriggerComponent } from 'apps/ifttb/components/ChooseAppletTriggerComponent/ChooseAppletTriggerComponent';
@@ -39,6 +40,9 @@ export default function NewAppletPage() {
 
   const appletFormTriggerCreated =
     appletForm?.appletDatetimeTrigger || appletForm?.applet4swapTrigger;
+  const mayAddTrigger = !(
+    appletForm?.appletDatetimeTrigger && appletForm?.applet4swapTrigger
+  );
   const appletFormActionCreated = appletForm?.applet4swapAction;
 
   return (
@@ -79,15 +83,23 @@ export default function NewAppletPage() {
             </span>
           </div>
         )}
-        {!appletFormTriggerCreated && (
-          <div
-            className='flex items-center justify-around p-4 mb-8 text-3xl font-bold rounded-lg cursor-pointer bg-dark'
-            onClick={() => setChooseTriggerPopupVisible(true)}
-          >
-            <span className='text-white'>If This</span>
-            <span className='px-2 py-1 text-lg bg-white rounded-xl'>Add</span>
-          </div>
-        )}
+        {mayAddTrigger &&
+          (appletFormTriggerCreated ? (
+            <div
+              className='flex justify-center mb-8'
+              onClick={() => setChooseTriggerPopupVisible(true)}
+            >
+              <AddIcon size='2rem' />
+            </div>
+          ) : (
+            <div
+              className='flex items-center justify-around p-4 mb-8 text-3xl font-bold rounded-lg cursor-pointer bg-dark'
+              onClick={() => setChooseTriggerPopupVisible(true)}
+            >
+              <span className='text-white'>If This</span>
+              <span className='px-2 py-1 text-lg bg-white rounded-xl'>Add</span>
+            </div>
+          ))}
 
         {appletForm?.applet4swapAction ? (
           <div

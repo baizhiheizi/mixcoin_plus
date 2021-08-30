@@ -50,10 +50,7 @@ export default function App(props: {
       <MixinContext.Provider value={mixinContext}>
         <MixinBotContext.Provider value={mixinBot}>
           <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
-            <ZarmConfigProvider
-              locale={i18n?.language?.includes('en') ? enUS : zhCN}
-              primaryColor='#1b1c1e'
-            >
+            <ZarmConfigProvider locale={enUS} primaryColor='#1b1c1e'>
               <ApolloProvider
                 client={apolloClient('/graphql', mixinContext.conversationId)}
               >

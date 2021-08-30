@@ -52,12 +52,6 @@ export function Applet4swapTriggerFormComponent(props: {
         <FswapTriggerItem onClick={() => setType('price')}>
           Price
         </FswapTriggerItem>
-        <FswapTriggerItem className='opacity-50'>
-          Add liquidity
-        </FswapTriggerItem>
-        <FswapTriggerItem className='opacity-50'>
-          Remove liquidity
-        </FswapTriggerItem>
       </div>
       <Popup visible={Boolean(type)} onMaskClick={() => setType(null)}>
         <div className='relative overflow-scroll bg-white rounded-t-lg max-h-screen-3/4 min-h-screen-1/2'>
