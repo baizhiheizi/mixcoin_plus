@@ -7,7 +7,7 @@ class Ifttb::BaseController < ApplicationController
 
   def react_base_props
     {
-      current_user: current_user && {
+      current_user: current_user&.ifttb_authorization && {
         name: current_user.name,
         avatar: current_user.avatar,
         mixin_uuid: current_user.mixin_uuid,
