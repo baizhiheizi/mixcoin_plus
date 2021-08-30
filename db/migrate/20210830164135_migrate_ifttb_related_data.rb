@@ -5,7 +5,7 @@ class MigrateIfttbRelatedData < ActiveRecord::Migration[6.1]
     end
 
     User.find_each do |user|
-      IfttbBot.api.create_contact_conversation user.mixin_uuid
+      # IfttbBot.api.create_contact_conversation user.mixin_uuid
       user.create_ifttb_profile if user.ifttb_profile.blank?
       user.create_brokers_async
     end
