@@ -57,7 +57,7 @@ export default function WalletPage() {
           <div className='text-gray-500 dark:text-gray-100'>BTC</div>
         </div>
       </div>
-      <div className='flex items-center justify-around mb-4'>
+      <div className='flex items-center justify-center space-x-6 mb-4'>
         <div
           onClick={() =>
             location.replace(`mixin://transfer/${currentUser.ifttbBrokerId}`)

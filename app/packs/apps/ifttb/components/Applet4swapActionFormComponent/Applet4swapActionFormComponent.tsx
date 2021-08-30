@@ -1,4 +1,5 @@
 import { Close as CloseIcon, Down as DownIcon } from '@icon-park/react';
+import { useDebounce } from 'ahooks';
 import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
 import { PandoLake } from 'pando-sdk-js';
 import { IAsset } from 'pando-sdk-js/dist/lake/types';
@@ -105,6 +106,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
       !payAsset?.id ||
       !fillAsset?.id ||
       !parseFloat(payAmount) ||
+      parseFloat(payAmount) < 0.00001 ||
       !slippage
     ) {
       return false;
@@ -215,7 +217,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
             }`}
             onClick={() => setSlippage(0.005)}
           >
-            0.3%
+            0.5%
           </div>
           <div
             className={`py-1 px-4 border cursor-pointer rounded ${
@@ -223,7 +225,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
             }`}
             onClick={() => setSlippage(0.01)}
           >
-            0.5%
+            1%
           </div>
         </div>
       </div>
@@ -240,44 +242,69 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
         visible={Boolean(selectingAsset)}
         onMaskClick={() => setSelectingAsset(null)}
       >
-        <div className='relative pt-12 overflow-y-scroll bg-white min-h-screen-1/2 max-h-screen-3/4'>
-          <div className='fixed top-0 z-10 flex justify-center w-full p-2 bg-white'>
-            <DownIcon size='2rem' />
-          </div>
-          {(lakeAssets || []).map((asset) => (
-            <div
-              key={asset.id}
-              className='flex items-center p-4 space-x-4'
-              onClick={() => {
-                switch (selectingAsset) {
-                  case 'payAsset':
-                    if (asset.id != fillAsset?.id) {
-                      setPayAsset(asset);
-                      setPayAmount('1');
-                      setSelectingAsset(null);
-                    }
-                    break;
-                  case 'fillAsset':
-                    if (asset.id != payAsset?.id) {
-                      setFillAsset(asset);
-                      setSelectingAsset(null);
-                    }
-                    break;
+        <LakeAssetsList
+          onClick={(asset) => {
+            switch (selectingAsset) {
+              case 'payAsset':
+                if (asset.id != fillAsset?.id) {
+                  setPayAsset(asset);
+                  setPayAmount('1');
+                  setSelectingAsset(null);
                 }
-              }}
-            >
-              <div className='relative'>
-                <img className='w-8 h-8 rounded-full' src={asset.logo} />
-                <img
-                  className='absolute bottom-0 right-0 w-4 h-4 rounded-full'
-                  src={asset.chain.logo}
-                />
-              </div>
-              <span>{asset.symbol}</span>
-            </div>
-          ))}
-        </div>
+                break;
+              case 'fillAsset':
+                if (asset.id != payAsset?.id) {
+                  setFillAsset(asset);
+                  setSelectingAsset(null);
+                }
+                break;
+            }
+          }}
+        />
       </Popup>
+    </div>
+  );
+}
+
+function LakeAssetsList(props: { onClick: (asset) => any }) {
+  const [query, setQuery] = useState('');
+  const deboundedQuery = useDebounce(query, { wait: 500 });
+  const assets = deboundedQuery
+    ? lakeAssets.filter(
+        (asset) =>
+          asset.symbol.match(new RegExp(deboundedQuery, 'i')) ||
+          asset.name.match(new RegExp(deboundedQuery, 'i')),
+      )
+    : lakeAssets;
+  return (
+    <div className='relative pt-12 overflow-y-scroll bg-white min-h-screen-1/2 max-h-screen-3/4'>
+      <div className='fixed top-0 z-10 flex justify-center w-full p-2 bg-white'>
+        <DownIcon size='2rem' />
+      </div>
+      <div className='px-4'>
+        <input
+          className='block w-full p-4 mb-4 bg-gray-100 rounded'
+          placeholder='Search'
+          value={query}
+          onChange={(e) => setQuery(e.currentTarget.value)}
+        />
+      </div>
+      {(assets || []).map((asset) => (
+        <div
+          key={asset.id}
+          className='flex items-center p-4 space-x-4'
+          onClick={() => props.onClick(asset)}
+        >
+          <div className='relative'>
+            <img className='w-8 h-8 rounded-full' src={asset.logo} />
+            <img
+              className='absolute bottom-0 right-0 w-4 h-4 rounded-full'
+              src={asset.chain.logo}
+            />
+          </div>
+          <span>{asset.symbol}</span>
+        </div>
+      ))}
     </div>
   );
 }
