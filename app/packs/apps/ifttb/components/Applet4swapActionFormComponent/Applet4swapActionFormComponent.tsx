@@ -10,7 +10,7 @@ let lakeAssets: IAsset[];
 const pando = new PandoLake();
 pando.assets().then((res) => {
   lakeAssets = res.data.assets.filter(
-    (asset) => !asset.name.match(/^(4swap LP Token)/),
+    (asset) => !asset.symbol.match(/^s(\S+-\S+)/),
   );
 });
 
