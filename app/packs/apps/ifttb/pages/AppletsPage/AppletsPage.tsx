@@ -7,9 +7,9 @@ import {
   useToggleAppletConnectedMutation,
 } from 'graphqlTypes';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Loading, Modal, Switch } from 'zarm';
+import { Button, Loading, Modal, Switch, Toast } from 'zarm';
 
 export default function AppletsPage() {
   const history = useHistory();
@@ -28,20 +28,21 @@ export default function AppletsPage() {
             </div>
             <div className='fixed bottom-0 z-10 w-full p-4 mx-auto text-center text-white max-w-screen-md bg-dark'>
               <div className='flex items-center justify-around'>
-                <div
-                  className={`px-6 py-2 text-lg text-center bg-gray-600 rounded-full cursor-pointer ${
-                    currentUser.mayCreateApplet
-                      ? 'cursor-pointer'
-                      : 'cursor-not-allowed opacity-50'
-                  }`}
-                  onClick={() => {
-                    if (currentUser.mayCreateApplet) {
-                      history.push('/new');
-                    }
-                  }}
-                >
-                  Create
-                </div>
+                {currentUser.mayCreateApplet ? (
+                  <div
+                    className='px-6 py-2 text-lg text-center bg-gray-600 rounded-full cursor-pointer'
+                    onClick={() => history.push('/new')}
+                  >
+                    Create
+                  </div>
+                ) : (
+                  <div
+                    className='px-6 py-2 text-lg text-center bg-gray-600 rounded-full cursor-pointer'
+                    onClick={() => Toast.show('Not ready yet')}
+                  >
+                    Upgrade Pro
+                  </div>
+                )}
                 <div
                   className='px-6 py-2 text-lg text-center bg-gray-600 rounded-full cursor-pointer'
                   onClick={() => history.push('/wallet')}
@@ -73,11 +74,17 @@ function AppletsComponent() {
     fetchPolicy: 'cache-and-network',
   });
   const history = useHistory();
-  const { currentUser } = useCurrentUser();
+  const { currentUser, setCurrentUser } = useCurrentUser();
   const [selectedApplet, setSelectedApplet] = useState(null);
   const [toggleAppletConnected] = useToggleAppletConnectedMutation({
     update: () => Loading.hide(),
   });
+
+  useEffect(() => {
+    if (data?.currentUser) {
+      setCurrentUser(Object.assign({}, currentUser, data.currentUser));
+    }
+  }, [data?.currentUser]);
 
   if (loading) {
     return <LoaderComponent />;
