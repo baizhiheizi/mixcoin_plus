@@ -29,6 +29,9 @@ export default function Routes() {
     if (!currentUser) {
       return;
     }
+    if (i18n.language !== 'en') {
+      i18n.changeLanguage('en');
+    }
     if (currentUser.locale !== i18n.language) {
       switchLocale({ variables: { input: { locale: i18n.language } } });
     }

@@ -27,8 +27,8 @@ export default function EditingEveryDayTriggerComponent(props: {
       description: `once every day at ${hour < 10 ? `0${hour}` : hour}:${
         minute < 10 ? `0${minute}` : minute
       }`,
-      minute,
-      hour,
+      minute: minute.toString(),
+      hour: hour.toString(),
       day: '*',
       month: '*',
       wday: '*',

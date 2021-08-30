@@ -7,7 +7,7 @@ import {
   useToggleAppletConnectedMutation,
 } from 'graphqlTypes';
 import moment from 'moment';
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, Loading, Modal, Switch } from 'zarm';
 
@@ -74,6 +74,7 @@ function AppletsComponent() {
   });
   const history = useHistory();
   const { currentUser } = useCurrentUser();
+  const [selectedApplet, setSelectedApplet] = useState(null);
   const [toggleAppletConnected] = useToggleAppletConnectedMutation({
     update: () => Loading.hide(),
   });
@@ -113,25 +114,7 @@ function AppletsComponent() {
               <span>Connected:</span>
               <Switch
                 checked={applet.connected}
-                onChange={() =>
-                  Modal.confirm({
-                    title: 'Confirm',
-                    content: applet.connected ? (
-                      'Are you sure to disconnect this applet?'
-                    ) : (
-                      <div className='text-base text-left'>
-                        Please make sure you have <b>enough balance</b> in your
-                        IFTTB wallet to active before connect an applet.
-                      </div>
-                    ),
-                    onOk: () => {
-                      Loading.show();
-                      toggleAppletConnected({
-                        variables: { input: { appletId: applet.id } },
-                      });
-                    },
-                  })
-                }
+                onChange={() => setSelectedApplet(applet)}
               />
             </div>
             {applet.lastActiveAt && (
@@ -143,6 +126,36 @@ function AppletsComponent() {
           </div>
         ))}
       </PullComponent>
+      <Modal
+        visible={Boolean(selectedApplet)}
+        onCancel={() => setSelectedApplet(null)}
+        maskClosable
+        closable
+        title='Confirm'
+      >
+        <div className='mb-6 text-lg'>
+          {selectedApplet?.connected ? (
+            'Are you sure to disconnect this applet?'
+          ) : (
+            <span>
+              Please make sure you have <b>enough balance</b> in your IFTTB
+              wallet to active before connect an applet.
+            </span>
+          )}
+        </div>
+        <div
+          className='px-4 py-2 text-xl text-center text-white rounded-full bg-dark'
+          onClick={() => {
+            Loading.show();
+            toggleAppletConnected({
+              variables: { input: { appletId: selectedApplet?.id } },
+            });
+            setSelectedApplet(null);
+          }}
+        >
+          Confirm
+        </div>
+      </Modal>
     </>
   );
 }

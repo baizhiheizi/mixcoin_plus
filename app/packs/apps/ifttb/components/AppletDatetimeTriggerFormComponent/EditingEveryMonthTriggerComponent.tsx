@@ -36,9 +36,9 @@ export default function EditingEveryMonthTriggerComponent(props: {
       description: `once at ${hour < 10 ? `0${hour}` : hour}:${
         minute < 10 ? `0${minute}` : minute
       } on day-of-month ${day}`,
-      minute,
-      hour,
-      day,
+      minute: minute.toString(),
+      hour: hour.toString(),
+      day: day.toString(),
       month: '*',
       wday: '*',
     };

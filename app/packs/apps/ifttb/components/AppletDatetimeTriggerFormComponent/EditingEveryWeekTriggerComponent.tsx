@@ -38,11 +38,11 @@ export default function EditingEveryWeekTriggerComponent(props: {
       description: `once every week at ${weekdays[wday]} ${
         hour < 10 ? `0${hour}` : hour
       }:${minute < 10 ? `0${minute}` : minute}`,
-      minute,
-      hour,
+      minute: minute.toString(),
+      hour: hour.toString(),
       day: '*',
       month: '*',
-      wday: wday,
+      wday: wday.toString(),
     };
     props.onFinish(trigger);
   };

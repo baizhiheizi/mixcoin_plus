@@ -25,8 +25,16 @@ export function ChooseAppletTriggerComponent(props: {
         </div>
         <div className='p-4 grid grid-cols-2 gap-2'>
           <div
-            className='p-4 text-white bg-gray-800 rounded-lg'
-            onClick={() => setTriggerType('datetime')}
+            className={`p-4 text-white bg-gray-800 rounded-lg ${
+              appletForm?.appletDatetimeTrigger
+                ? 'cursor-not-allowed opacity-50'
+                : 'cursor-pointer'
+            }`}
+            onClick={() => {
+              if (!appletForm?.appletDatetimeTrigger) {
+                setTriggerType('datetime');
+              }
+            }}
           >
             <div className='flex justify-center mb-2 text-lg'>
               <AlarmClockIcon size='1.75rem' />
@@ -34,14 +42,22 @@ export function ChooseAppletTriggerComponent(props: {
             <div className='text-lg text-center'>Datetime</div>
           </div>
           <div
-            className='p-4 rounded-lg'
+            className={`p-4 rounded-lg ${
+              appletForm?.applet4swapTrigger
+                ? 'cursor-not-allowed opacity-50'
+                : 'cursor-pointer'
+            }`}
             style={{ background: FSwapActionThemeColor }}
-            onClick={() => setTriggerType('4swap')}
+            onClick={() => {
+              if (!appletForm?.applet4swapTrigger) {
+                setTriggerType('4swap');
+              }
+            }}
           >
             <div className='flex justify-center mb-2'>
               <img className='w-7 h-7' src={FSwapLogoUrl} />
             </div>
-            <div className='text-lg text-center'>4Swap</div>
+            <div className='text-lg text-center'>4swap</div>
           </div>
         </div>
       </div>
