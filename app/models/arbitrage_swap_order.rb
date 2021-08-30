@@ -31,10 +31,28 @@
 #  index_swap_orders_on_trace_id            (trace_id)
 #  index_swap_orders_on_user_id             (user_id)
 #
-require 'test_helper'
+class ArbitrageSwapOrder < SwapOrder
+  belongs_to :arbitrage_order
 
-class SwapOrderTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  after_commit on: :create do
+    pay!
+  end
+
+  def arbitrage?
+    arbitrage_order.present?
+  end
+
+  def check_arbitrage_order
+    return unless arbitrage?
+
+    if arbitrage_order.may_complete?
+      arbitrage_order.complete!
+    else
+      arbitrage_order.calculate_net_profit
+    end
+  end
+
+  def after_trade
+    check_arbitrage_order
+  end
 end

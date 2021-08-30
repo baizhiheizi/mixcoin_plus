@@ -31,10 +31,18 @@
 #  index_swap_orders_on_trace_id            (trace_id)
 #  index_swap_orders_on_user_id             (user_id)
 #
-require 'test_helper'
+class AppletActivitySwapOrder < SwapOrder
+  belongs_to :applet_activity
 
-class SwapOrderTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  delegate :applet, to: :applet_activity
+
+  after_commit on: :create do
+    pay!
+  end
+
+  def after_trade
+    sync_order
+    applet_activity.complete! if applet_activity.may_complete?
+    AppletActivitySwapOrderTradedNotification.with(swap_order: self).deliver(user)
+  end
 end

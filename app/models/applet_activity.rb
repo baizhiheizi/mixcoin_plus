@@ -19,7 +19,7 @@ class AppletActivity < ApplicationRecord
 
   belongs_to :applet_action
 
-  has_many :transfers, class_name: 'MixinTransfer', as: :source, dependent: :restrict_with_exception
+  has_many :swap_orders, class_name: 'AppletActivitySwapOrder', dependent: :restrict_with_exception
 
   after_create :log_applet_active
 

@@ -8,8 +8,10 @@
 #  pay_amount         :decimal(, )
 #  raw                :json
 #  state              :string
+#  type               :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  applet_activity_id :uuid
 #  arbitrage_order_id :uuid
 #  broker_id          :uuid
 #  fill_asset_id      :uuid
@@ -19,6 +21,7 @@
 #
 # Indexes
 #
+#  index_swap_orders_on_applet_activity_id  (applet_activity_id)
 #  index_swap_orders_on_arbitrage_order_id  (arbitrage_order_id)
 #  index_swap_orders_on_broker_id           (broker_id)
 #  index_swap_orders_on_fill_asset_id       (fill_asset_id)

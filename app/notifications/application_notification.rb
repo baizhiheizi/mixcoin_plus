@@ -5,6 +5,10 @@ class ApplicationNotification < Noticed::Base
 
   private
 
+  def bot
+    'MixcoinPlusBot'
+  end
+
   def message
   end
 

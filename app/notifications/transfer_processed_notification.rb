@@ -18,6 +18,14 @@ class TransferProcessedNotification < ApplicationNotification
     }
   end
 
+  def bot
+    if params[:transfer].source.is_a?(AppletActivitySwapOrder)
+      'IfttbBot'
+    else
+      'MixcoinPlusBot'
+    end
+  end
+
   def format_for_action_cable
     message
   end

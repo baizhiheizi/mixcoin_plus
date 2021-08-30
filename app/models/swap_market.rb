@@ -17,18 +17,20 @@ class SwapMarket
   end
 
   def ask_price
-    get_ask_price.present? ? get_ask_price.to_f : set_ask_price
+    _get_ask_price.present? ? _get_ask_price.to_f : _set_ask_price
   end
 
   def bid_price
-    get_bid_price.present? ? get_bid_price.to_f : set_bid_price
+    _get_bid_price.present? ? _get_bid_price.to_f : _set_bid_price
   end
 
-  def get_ask_price
+  private
+
+  def _get_ask_price
     Global.redis.get(_ask_price_cache_id)
   end
 
-  def set_ask_price
+  def _set_ask_price
     _ask_price ||= Foxswap.api.pre_order(
       pay_asset_id: base_asset_id,
       fill_asset_id: quote_asset_id,
@@ -44,11 +46,11 @@ class SwapMarket
     "ask_price_#{base_asset_id}_#{quote_asset_id}"
   end
 
-  def get_bid_price
+  def _get_bid_price
     Global.redis.get(_bid_price_cache_id)
   end
 
-  def set_bid_price
+  def _set_bid_price
     _bid_price ||= (1 / Foxswap.api.pre_order(
       pay_asset_id: quote_asset_id,
       fill_asset_id: base_asset_id,

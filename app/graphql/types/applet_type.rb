@@ -3,6 +3,7 @@
 module Types
   class AppletType < Types::BaseModelObject
     field :id, ID, null: false
+    field :number, String, null: false
     field :title, String, null: false
     field :connected, Boolean, null: false
     field :last_active_at, GraphQL::Types::ISO8601DateTime, null: true

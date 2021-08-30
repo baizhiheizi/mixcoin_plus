@@ -3,8 +3,10 @@
 module Types
   class SwapOrderType < Types::BaseModelObject
     field :id, ID, null: false
+    field :type, String, null: false
     field :trace_id, String, null: false
     field :arbitrage_order_id, String, null: true
+    field :applet_activity_id, String, null: true
     field :state, String, null: false
     field :pay_amount, Float, null: false
     field :fill_amount, Float, null: true

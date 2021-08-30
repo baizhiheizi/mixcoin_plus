@@ -33,7 +33,7 @@ class ArbitrageOrder < ApplicationRecord
   belongs_to :profit_asset, class_name: 'MixinAsset', primary_key: :asset_id
 
   has_many :ocean_orders, dependent: :restrict_with_exception
-  has_many :swap_orders, dependent: :restrict_with_exception
+  has_many :swap_orders, class_name: 'ArbitrageSwapOrder', dependent: :restrict_with_exception
 
   delegate :base_asset, :quote_asset, to: :market
 
