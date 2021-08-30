@@ -42,7 +42,7 @@ export default function NewAppletPage() {
 
   return (
     <AppletFormContext.Provider value={{ appletForm, setAppletForm }}>
-      <div className='relative p-4 mb-8 text-xl font-bold bg-white'>
+      <div className='relative sticky top-0 z-10 p-4 mb-8 text-xl font-bold bg-white'>
         <CloseIcon
           onClick={() => history.goBack()}
           className='absolute pt-1 left-8'
@@ -50,10 +50,10 @@ export default function NewAppletPage() {
         />
         <div className='text-center'>Create Applet</div>
       </div>
-      <div className='p-4 mb-36'>
+      <div className='p-4'>
         {appletForm?.appletDatetimeTrigger ? (
           <div
-            className='flex items-start p-4 mb-8 text-lg font-bold text-white rounded-lg cursor-pointer space-x-2 bg-dark'
+            className='flex items-start p-4 mb-8 text-lg font-bold text-white rounded-lg cursor-pointer space-x-2 bg-gray-800'
             onClick={() => setEditingTrigger('appletDatetimeTrigger')}
           >
             <span className='text-xl'>If</span>

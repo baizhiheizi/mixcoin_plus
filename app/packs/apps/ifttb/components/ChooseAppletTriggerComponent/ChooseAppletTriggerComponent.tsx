@@ -21,7 +21,7 @@ export function ChooseAppletTriggerComponent(props: {
         </div>
         <div className='p-4 grid grid-cols-2 gap-2'>
           <div
-            className='p-4 text-white rounded-lg bg-dark'
+            className='p-4 text-white rounded-lg bg-gray-800'
             onClick={() => setTriggerType('datetime')}
           >
             <div className='flex justify-center mb-2 text-lg'>

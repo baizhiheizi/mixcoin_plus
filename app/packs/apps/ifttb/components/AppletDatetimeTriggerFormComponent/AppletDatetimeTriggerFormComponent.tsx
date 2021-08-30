@@ -31,14 +31,14 @@ export default function AppletDatetimeTriggerFormComponent(props: {
   }) => (
     <div
       onClick={props.onClick}
-      className='p-4 mb-4 text-center text-white rounded bg-dark'
+      className='p-4 mb-4 text-center text-white bg-gray-800 rounded'
     >
       {props.children}
     </div>
   );
   return (
     <>
-      <div className='relative p-4 text-xl font-bold text-white bg-dark'>
+      <div className='relative p-4 text-xl font-bold text-white bg-gray-800'>
         <CloseIcon
           onClick={onCancel}
           className='absolute pt-1 left-8'
@@ -46,7 +46,7 @@ export default function AppletDatetimeTriggerFormComponent(props: {
         />
         <div className='text-center'>Datetime Trigger</div>
       </div>
-      <div className='px-4 pt-4 pb-8 mb-4 text-white bg-dark'>
+      <div className='px-4 pt-4 pb-8 mb-4 text-white bg-gray-800'>
         <div className='flex justify-center mb-4'>
           <AlarmClockIcon size='3rem' />
         </div>
