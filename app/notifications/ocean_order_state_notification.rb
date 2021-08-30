@@ -2,7 +2,7 @@
 
 class OceanOrderStateNotification < ApplicationNotification
   deliver_by :action_cable, format: :format_for_action_cable
-  deliver_by :mixin_bot, class: 'DeliveryMethods::MixinBot', category: 'PLAIN_TEXT', if: :recipient_messenger?
+  deliver_by :mixin_bot, class: 'DeliveryMethods::MixinBot', bot: 'MixcoinPlusBot', category: 'PLAIN_TEXT', if: :recipient_messenger?
 
   around_action_cable :with_locale
 

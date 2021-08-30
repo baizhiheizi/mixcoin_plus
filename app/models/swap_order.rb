@@ -10,8 +10,10 @@
 #  pay_amount         :decimal(, )
 #  raw                :json
 #  state              :string
+#  type               :string
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  applet_activity_id :uuid
 #  arbitrage_order_id :uuid
 #  broker_id          :uuid
 #  fill_asset_id      :uuid
@@ -21,6 +23,7 @@
 #
 # Indexes
 #
+#  index_swap_orders_on_applet_activity_id  (applet_activity_id)
 #  index_swap_orders_on_arbitrage_order_id  (arbitrage_order_id)
 #  index_swap_orders_on_broker_id           (broker_id)
 #  index_swap_orders_on_fill_asset_id       (fill_asset_id)
@@ -37,6 +40,7 @@ class SwapOrder < ApplicationRecord
 
   belongs_to :user, optional: true
   belongs_to :arbitrage_order, optional: true
+  belongs_to :applet_activity, optional: true
   belongs_to :broker, class_name: 'MixinNetworkUser', primary_key: :mixin_uuid, inverse_of: :swap_orders
   belongs_to :pay_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
   belongs_to :fill_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
@@ -48,10 +52,6 @@ class SwapOrder < ApplicationRecord
 
   validates :trace_id, presence: true, uniqueness: true
   validate :pay_and_fill_asset_not_the_same
-
-  after_commit on: :create do
-    pay! if arbitrage?
-  end
 
   scope :without_drafted, -> { where.not(state: :drafted) }
   scope :without_finished, -> { where.not(state: %i[rejected traded]) }
@@ -71,29 +71,13 @@ class SwapOrder < ApplicationRecord
       transitions from: :paid, to: :swapping
     end
 
-    event :trade, after: %i[sync_order check_arbitrage_order] do
+    event :trade, after: :after_trade do
       transitions from: :swapping, to: :traded
     end
 
     event :reject do
       transitions from: :swapping, to: :rejected
     end
-  end
-
-  def arbitrage?
-    arbitrage_order.present?
-  end
-
-  # SWAP|Action|Fill Asset ID|Min Amount
-  def pay_url
-    format(
-      'mixin://pay?recipient=%<recipient>s&asset=%<asset>s&amount=%<amount>s&memo=%<memo>s&trace=%<trace>s',
-      recipient: broker_id,
-      asset: pay_asset_id,
-      amount: pay_amount,
-      memo: Base64.strict_encode64("SWAP|CREATE|#{fill_asset_id}|#{min_amount.to_f.round(8)}"),
-      trace: id
-    )
   end
 
   def create_swap_transfer!
@@ -115,7 +99,7 @@ class SwapOrder < ApplicationRecord
 
   def fswap_mtg_memo
     r = Foxswap.api.actions(
-      user_id: broker.mixin_uuid,
+      user_id: receiver_id,
       follow_id: trace_id,
       asset_id: fill_asset_id,
       minimum_fill: min_amount.present? ? format('%.8f', min_amount) : nil
@@ -125,7 +109,7 @@ class SwapOrder < ApplicationRecord
   end
 
   def sync_order
-    r = Foxswap.api.order(trace_id, authorization: broker.mixin_api.access_token('GET', '/me'))
+    r = foxswap_order_detail
     return if r['data'].blank?
 
     update(
@@ -134,14 +118,36 @@ class SwapOrder < ApplicationRecord
     )
   end
 
-  def check_arbitrage_order
-    return unless arbitrage?
+  def after_trade
+    sync_order
+  end
 
-    if arbitrage_order.may_complete?
-      arbitrage_order.complete!
-    else
-      arbitrage_order.calculate_net_profit
-    end
+  def foxswap_order_detail
+    @foxswap_order_detail ||= Foxswap.api.order(trace_id, authorization: broker.mixin_api.access_token('GET', '/me'))
+  end
+
+  def refresh_state!
+    r = foxswap_order_detail
+    return if r['data'].blank?
+
+    trade! if r['data']['state'] == 'Done' && may_trade?
+    reject! if r['data']['state'] == 'Rejected' && may_reject?
+  end
+
+  def receiver_id
+    broker.mixin_uuid
+  end
+
+  # SWAP|Action|Fill Asset ID|Min Amount
+  def pay_url
+    format(
+      'mixin://pay?recipient=%<recipient>s&asset=%<asset>s&amount=%<amount>s&memo=%<memo>s&trace=%<trace>s',
+      recipient: broker_id,
+      asset: pay_asset_id,
+      amount: pay_amount,
+      memo: Base64.strict_encode64("SWAP|CREATE|#{fill_asset_id}|#{min_amount.to_f.round(8)}"),
+      trace: id
+    )
   end
 
   private

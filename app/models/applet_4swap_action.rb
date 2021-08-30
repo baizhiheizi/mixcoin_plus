@@ -71,31 +71,17 @@ class Applet4swapAction < AppletAction
     ActiveRecord::Base.transaction do
       activity = applet_activities.create!
 
-      activity.transfers.create_with(
-        wallet: user.ifttb_broker,
-        transfer_type: :applet_4swap_action,
-        priority: :critical,
-        opponent_multisig: {
-          receivers: SwapOrder::FSWAP_MTG_MEMBERS,
-          threshold: SwapOrder::FSWAP_MTG_THRESHOLD
-        },
-        asset_id: pay_asset_id,
-        amount: pay_amount.to_f,
-        memo: fswap_mtg_memo(activity.id)
-      ).find_or_create_by!(
+      activity.swap_orders.create_with(
+        user_id: user.id,
+        applet_activity_id: activity.id,
+        broker: user.ifttb_broker,
+        pay_asset_id: pay_asset_id,
+        pay_amount: pay_amount.to_f,
+        fill_asset_id: fill_asset_id,
+        min_amount: minimum_fill.present? ? format('%.8f', minimum_fill) : nil
+      ).find_or_create_by(
         trace_id: activity.id
       )
     end
-  end
-
-  def fswap_mtg_memo(trace_id)
-    r = Foxswap.api.actions(
-      user_id: user.mixin_uuid,
-      follow_id: trace_id,
-      asset_id: fill_asset_id,
-      minimum_fill: minimum_fill.present? ? format('%.8f', minimum_fill) : nil
-    )
-
-    r['data']['action']
   end
 end

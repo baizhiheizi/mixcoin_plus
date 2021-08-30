@@ -63,6 +63,7 @@ class Applet < ApplicationRecord
   def disconnect!
     update connected: false
     destroy_cron_job
+    notify_disconnected
   end
 
   def toggle_connected
@@ -100,6 +101,14 @@ class Applet < ApplicationRecord
 
   def destroy_cron_job
     Sidekiq::Cron::Job.destroy cron_job_name
+  end
+
+  def notify_disconnected
+    AppletDisconnectedNotification.with(applet: self).deliver(user)
+  end
+
+  def number
+    id.split('-').second.upcase
   end
 
   private

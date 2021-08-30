@@ -2,6 +2,7 @@ query AppletConnection($after: String) {
   appletConnection(after: $after) {
     nodes {
       id
+      number
       title
       connected
       lastActiveAt

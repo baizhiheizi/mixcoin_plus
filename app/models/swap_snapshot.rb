@@ -66,9 +66,10 @@ class SwapSnapshot < MixinNetworkSnapshot
     when :swap_to_fox
       _swap_order.swap! if _swap_order.may_swap?
     when :trade_from_fox
-      if _swap_order.arbitrage?
+      case _swap_order
+      when ArbitrageSwapOrder
         _swap_order.trade! if _swap_order.may_trade?
-      else
+      when AppletActivitySwapOrder
         MixinTransfer.create_with(
           source: _swap_order,
           user_id: _swap_order.broker.mixin_uuid,
@@ -78,13 +79,14 @@ class SwapSnapshot < MixinNetworkSnapshot
           amount: amount,
           memo: Base64.strict_encode64("SWAP|TRADE|#{_swap_order.trace_id}")
         ).find_or_create_by!(
-          trace_id: OceanSwapBot.api.unique_uuid(trace_id, _swap_order.trace_id)
+          trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _swap_order.trace_id)
         )
       end
     when :trade_to_user
       _swap_order.trade!
     when :reject_from_fox
-      if _swap_order.arbitrage?
+      case _swap_order
+      when ArbitrageSwapOrder, AppletActivitySwapOrder
         _swap_order.reject!
       else
         MixinTransfer.create_with(
@@ -96,7 +98,7 @@ class SwapSnapshot < MixinNetworkSnapshot
           amount: amount,
           memo: Base64.strict_encode64("SWAP|REJECT|#{_swap_order.trace_id}")
         ).find_or_create_by!(
-          trace_id: OceanSwapBot.api.unique_uuid(trace_id, _swap_order.trace_id)
+          trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _swap_order.trace_id)
         )
       end
     when :reject_to_user

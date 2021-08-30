@@ -104,6 +104,7 @@ function AppletsComponent() {
       >
         {applets.map((applet: Partial<Applet | any>) => (
           <div key={applet.id} className='p-4 mb-4 border rounded shadow-lg'>
+            <div className='mb-2 text-gray-500'>#{applet.number}</div>
             <div
               className='mb-2 text-base'
               onClick={() => history.push(`/applets/${applet.id}`)}
