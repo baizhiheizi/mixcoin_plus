@@ -28,7 +28,7 @@ class Applet < ApplicationRecord
 
   validate :must_has_triggers, on: :create
   validate :must_has_actions, on: :create
-  validate :cron_can_be_parsed
+  validate :must_be_cron_format
 
   scope :connected, -> { where(connected: true) }
   scope :only_archived, -> { unscope(where: :archived_at).where.not(archived_at: nil) }
@@ -94,12 +94,12 @@ class Applet < ApplicationRecord
       name: cron_job_name,
       class: 'AppletActiveWorker',
       cron: cron,
-      args: "[#{id}]"
+      args: id
     )
   end
 
   def destroy_cron_job
-    Sidekiq::Cron::JOb.destroy cron_job_name
+    Sidekiq::Cron::Job.destroy cron_job_name
   end
 
   private
@@ -125,7 +125,7 @@ class Applet < ApplicationRecord
     errors.add(:applet_actions, ' must have') if applet_actions.blank?
   end
 
-  def cron_can_be_parsed
-    errors.add(:cron, ' wrong format') unless cron_instance.present?
+  def must_be_cron_format
+    errors.add(:cron, ' wrong format') if cron_instance.blank?
   end
 end

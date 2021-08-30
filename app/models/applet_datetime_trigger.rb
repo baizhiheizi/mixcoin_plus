@@ -47,8 +47,8 @@ class AppletDatetimeTrigger < AppletTrigger
   end
 
   def match?
-    return true if applet.last_active_at.blank?
+    return true if applet.last_active_at.blank? && (Time.current.to_i - previous_time.to_i) < 60
 
-    Time.current.to_i - applet.last_active_at.to_i > frequency
+    Time.current.to_i - applet.last_active_at.to_i > frequency / 2
   end
 end
