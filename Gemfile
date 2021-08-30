@@ -61,6 +61,8 @@ gem 'groupdate'
 gem 'exception_notification'
 # Tracking ⚠️ exceptions for Rails application and store them in database.
 gem 'exception-track'
+# time tools (cron, parsing, durations, ...)
+gem 'fugit'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -84,7 +86,7 @@ group :development do
   # Display performance information such as SQL time and flame graphs for each request in your browser.
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem 'listen', '~> 3.3'
-  gem 'rack-mini-profiler', '~> 2.0'
+  gem 'rack-mini-profiler', '~> 2.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   # Annotate Rails classes with schema and routes info
