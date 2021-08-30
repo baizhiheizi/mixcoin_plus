@@ -12,6 +12,4 @@ Sidekiq.configure_client do |config|
   config.redis = { namespace: 'mixcoin_plus_sidekiq' }
 end
 
-if Sidekiq.server?
-  Applet.connected.map(&:create_cron_job)
-end
+Applet.connected.map(&:create_cron_job) if Sidekiq.server?

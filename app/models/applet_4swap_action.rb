@@ -85,8 +85,6 @@ class Applet4swapAction < AppletAction
       ).find_or_create_by!(
         trace_id: activity.id
       )
-
-      applet.log_active
     end
   end
 

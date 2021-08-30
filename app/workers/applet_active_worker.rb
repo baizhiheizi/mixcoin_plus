@@ -5,6 +5,6 @@ class AppletActiveWorker
   sidekiq_options queue: :high, retry: false
 
   def perform(id)
-    Applet.find(id).active!
+    Applet.connected.find(id).active!
   end
 end

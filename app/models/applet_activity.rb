@@ -21,6 +21,8 @@ class AppletActivity < ApplicationRecord
 
   has_many :transfers, class_name: 'MixinTransfer', as: :source, dependent: :restrict_with_exception
 
+  after_create :log_applet_active
+
   delegate :applet, to: :applet_action
 
   aasm column: :state do
@@ -35,5 +37,9 @@ class AppletActivity < ApplicationRecord
     event :complete do
       transitions from: :drafted, to: :completed
     end
+  end
+
+  def log_applet_active
+    applet.log_active
   end
 end
