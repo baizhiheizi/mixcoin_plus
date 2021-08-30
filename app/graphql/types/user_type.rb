@@ -14,6 +14,10 @@ module Types
     field :fennec, Boolean, null: true
     field :last_active_at, GraphQL::Types::ISO8601DateTime, null: true
 
+    field :ifttb_broker_id, String, null: false
+    field :ifttb_role, String, null: false
+    field :may_create_applet, Boolean, null: false
+
     field :invitor, Types::UserType, null: true
     field :broker, MixinNetworkUserType, null: true
 
@@ -23,6 +27,14 @@ module Types
 
     def fennec
       object&.fennec?
+    end
+
+    def ifttb_broker_id
+      object.ifttb_broker&.ready? && object.ifttb_broker.mixin_uuid
+    end
+
+    def may_create_applet
+      object&.may_create_applet?
     end
   end
 end

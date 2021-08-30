@@ -33,4 +33,9 @@ query AppletConnection($after: String) {
       endCursor
     }
   }
+  currentUser {
+    ifttbBrokerId
+    ifttbRole
+    mayCreateApplet
+  }
 }

@@ -119,7 +119,7 @@ export type Applet = {
   createdAt: Scalars['ISO8601DateTime'];
   id: Scalars['ID'];
   lastActiveAt?: Maybe<Scalars['ISO8601DateTime']>;
-  number: Scalars['String'];
+  number?: Maybe<Scalars['String']>;
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
   user: User;
@@ -1025,6 +1025,7 @@ export type Query = {
   appletConnection: AppletConnection;
   currentAdmin: Administrator;
   currentConversation?: Maybe<MixinConversation>;
+  currentUser?: Maybe<User>;
   deprecatedOceanOrders: Array<OceanOrder>;
   groupOwnerCommissionConnection: MixinTransferConnection;
   ifttbBrokerBalance: Array<UserAsset>;
@@ -1511,10 +1512,13 @@ export type User = {
   createdAt: Scalars['ISO8601DateTime'];
   fennec?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
+  ifttbBrokerId: Scalars['String'];
+  ifttbRole: Scalars['String'];
   invitationsCount: Scalars['Int'];
   inviteCode: Scalars['String'];
   invitor?: Maybe<User>;
   lastActiveAt?: Maybe<Scalars['ISO8601DateTime']>;
+  mayCreateApplet: Scalars['Boolean'];
   mayInvited: Scalars['Boolean'];
   mixinId: Scalars['String'];
   mixinUuid: Scalars['String'];
@@ -2073,7 +2077,7 @@ export type AppletConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number: string, title: string, connected: boolean, lastActiveAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger' } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
+export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger' } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } }, currentUser?: Maybe<{ __typename?: 'User', ifttbBrokerId: string, ifttbRole: string, mayCreateApplet: boolean }> };
 
 export type AppletQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -5335,6 +5339,11 @@ export const AppletConnectionDocument = gql`
       hasNextPage
       endCursor
     }
+  }
+  currentUser {
+    ifttbBrokerId
+    ifttbRole
+    mayCreateApplet
   }
 }
     `;
