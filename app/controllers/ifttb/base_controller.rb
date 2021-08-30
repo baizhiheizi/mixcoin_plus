@@ -12,6 +12,8 @@ class Ifttb::BaseController < ApplicationController
         avatar: current_user.avatar,
         mixin_uuid: current_user.mixin_uuid,
         ifttb_broker_id: current_user&.ifttb_broker&.ready? && current_user.ifttb_broker.mixin_uuid,
+        ifttb_role: current_user&.ifttb_role,
+        may_create_applet: current_user&.may_create_applet?,
         fennec: current_user.fennec?
       },
       mixin_bot: {

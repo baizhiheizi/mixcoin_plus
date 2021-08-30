@@ -29,6 +29,9 @@ const cache = new InMemoryCache({
     Query: {
       fields: {
         appletConnection: customizedConnectionMergeFunction(),
+        appletActivityConnection: customizedConnectionMergeFunction([
+          'appletId',
+        ]),
       },
     },
   },

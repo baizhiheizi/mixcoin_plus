@@ -4,6 +4,7 @@ module Types
   class AppletInputType < Types::BaseInputObject
     argument :title, String, required: true
     argument :applet_datetime_trigger, Types::AppletDatetimeTriggerInputType, required: false
+    argument :applet_4swap_trigger, Types::Applet4swapTriggerInputType, required: false
     argument :applet_4swap_action, Types::Applet4swapActionInputType, required: false
   end
 end

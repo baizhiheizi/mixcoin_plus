@@ -10,6 +10,10 @@ module Users::Ifttbable
     after_create :create_ifttb_profile
   end
 
+  def ifttb_role
+    ifttb_profile.role
+  end
+
   def ifttb_upgrade_pro(period = 1.year)
     ifttb_profile.upgrade_pro(period)
   end
@@ -18,16 +22,15 @@ module Users::Ifttbable
     ifttb_profile.expire_pro
   end
 
-  def ifftb_free?
+  def ifttb_free?
     ifttb_profile.free?
   end
 
-  def ifftb_pro?
+  def ifttb_pro?
     ifttb_profile.pro?
   end
 
   def may_create_applet?
-    applets.count < 3 if ifftb_free?
-    true if ifttb_pro?
+    ifttb_pro? || applets.count < 3
   end
 end

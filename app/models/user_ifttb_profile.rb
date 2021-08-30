@@ -18,7 +18,7 @@
 class UserIfttbProfile < ApplicationRecord
   extend Enumerize
 
-  enumerize :role, in: %i[free pro], default: :free
+  enumerize :role, in: %i[free pro], default: :free, predicates: true
 
   belongs_to :user, inverse_of: :ifttb_profile
 
