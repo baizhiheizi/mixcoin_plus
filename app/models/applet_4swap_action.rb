@@ -66,8 +66,6 @@ class Applet4swapAction < AppletAction
   end
 
   def active!
-    return unless may_active?
-
     ActiveRecord::Base.transaction do
       activity = applet_activities.create!
 

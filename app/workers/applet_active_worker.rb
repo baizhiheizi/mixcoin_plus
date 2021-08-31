@@ -2,9 +2,9 @@
 
 class AppletActiveWorker
   include Sidekiq::Worker
-  sidekiq_options queue: :high, retry: false
+  sidekiq_options queue: :high, retry: 3
 
   def perform(id)
-    Applet.connected.find(id).active!
+    Applet.connected.find_by(id: id)&.active!
   end
 end
