@@ -43,6 +43,5 @@ class AppletActivitySwapOrder < SwapOrder
   def after_trade
     sync_order
     applet_activity.complete! if applet_activity.may_complete?
-    AppletActivitySwapOrderTradedNotification.with(swap_order: self).deliver(user)
   end
 end

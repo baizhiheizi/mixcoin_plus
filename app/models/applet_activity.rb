@@ -30,13 +30,17 @@ class AppletActivity < ApplicationRecord
     state :failed
     state :completed
 
-    event :fail do
+    event :fail, after: :notify_state do
       transitions from: :drafted, to: :failed
     end
 
-    event :complete do
+    event :complete, after: :notify_state do
       transitions from: :drafted, to: :completed
     end
+  end
+
+  def notify_state
+    AppletActivityStateNotification.with(applet_activity: self).deliver(applet.user)
   end
 
   def log_applet_active
