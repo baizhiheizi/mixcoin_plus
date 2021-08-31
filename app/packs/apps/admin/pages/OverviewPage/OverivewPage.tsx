@@ -44,8 +44,20 @@ function StatisticAllComponent() {
           value={appStatistic.monthlyActiveUsersCount}
         />
         <Statistic
-          title='Valid Orders Count'
-          value={appStatistic.validOrdersCount}
+          title='Connected Applets Count'
+          value={appStatistic.connectedAppletsCount}
+        />
+        <Statistic
+          title='Applet Activities Count'
+          value={appStatistic.appletActivitiesCount}
+        />
+        <Statistic
+          title='Applet Activity Swap Orders Count'
+          value={appStatistic.appletActivitySwapOrdersCount}
+        />
+        <Statistic
+          title='Ocean Orders Count'
+          value={appStatistic.validOceanOrdersCount}
         />
         <Statistic title='Markets Count' value={appStatistic.marketsCount} />
         <Statistic
@@ -110,12 +122,46 @@ function Statistic24hComponent() {
           prefix={appStatistic.usersCount > 0 && <ArrowUpOutlined />}
         />
         <Statistic
-          title='Valid Orders Count'
-          value={appStatistic.validOrdersCount}
+          title='Connected Applets Count'
+          value={appStatistic.connectedAppletsCount}
           valueStyle={{
-            color: appStatistic.validOrdersCount > 0 ? '#3f8600' : '#cf1322',
+            color:
+              appStatistic.connectedAppletsCount > 0 ? '#3f8600' : '#cf1322',
           }}
-          prefix={appStatistic.validOrdersCount > 0 && <ArrowUpOutlined />}
+          prefix={appStatistic.connectedAppletsCount > 0 && <ArrowUpOutlined />}
+        />
+        <Statistic
+          title='Applet Activities Count'
+          value={appStatistic.appletActivitiesCount}
+          valueStyle={{
+            color:
+              appStatistic.appletActivitiesCount > 0 ? '#3f8600' : '#cf1322',
+          }}
+          prefix={appStatistic.appletActivitiesCount > 0 && <ArrowUpOutlined />}
+        />
+        <Statistic
+          title='Applet Activity Swap Orders Count'
+          value={appStatistic.appletActivitySwapOrdersCount}
+          valueStyle={{
+            color:
+              appStatistic.appletActivitySwapOrdersCount > 0
+                ? '#3f8600'
+                : '#cf1322',
+          }}
+          prefix={
+            appStatistic.appletActivitySwapOrdersCount > 0 && (
+              <ArrowUpOutlined />
+            )
+          }
+        />
+        <Statistic
+          title='Valid Orders Count'
+          value={appStatistic.validOceanOrdersCount}
+          valueStyle={{
+            color:
+              appStatistic.validOceanOrdersCount > 0 ? '#3f8600' : '#cf1322',
+          }}
+          prefix={appStatistic.validOceanOrdersCount > 0 && <ArrowUpOutlined />}
         />
         <Statistic
           title='Markets Count'

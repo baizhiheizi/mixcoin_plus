@@ -53,6 +53,7 @@ class SwapOrder < ApplicationRecord
   validates :trace_id, presence: true, uniqueness: true
   validate :pay_and_fill_asset_not_the_same
 
+  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
   scope :without_drafted, -> { where.not(state: :drafted) }
   scope :without_finished, -> { where.not(state: %i[rejected traded]) }
 

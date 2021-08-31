@@ -4,7 +4,10 @@ query AdminAppStatistic($scope: String) {
     dailyActiveUsersCount
     weeklyActiveUsersCount
     monthlyActiveUsersCount
-    validOrdersCount
+    connectedAppletsCount
+    appletActivitiesCount
+    appletActivitySwapOrdersCount
+    validOceanOrdersCount
     marketsCount
     matchTotalUsd
     feeTotalUsd

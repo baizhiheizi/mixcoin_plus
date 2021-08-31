@@ -23,6 +23,9 @@ class AppletActivity < ApplicationRecord
 
   after_create :log_applet_active
 
+  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
+  scope :without_drafted, -> { where.not(state: :drafted) }
+
   delegate :applet, to: :applet_action
 
   aasm column: :state do

@@ -68,6 +68,7 @@ export const apolloClient = (uri: string) => {
           adminMixinNetworkSnapshotConnection:
             customizedConnectionMergeFunction([
               'oceanOrderId',
+              'swapOrderId',
               'snapshotType',
               'type',
             ]),

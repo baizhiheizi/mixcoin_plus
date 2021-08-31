@@ -94,6 +94,9 @@ export type Administrator = {
 
 export type AppStatistic = {
   __typename?: 'AppStatistic';
+  appletActivitiesCount: Scalars['Int'];
+  appletActivitySwapOrdersCount: Scalars['Int'];
+  connectedAppletsCount: Scalars['Int'];
   createdAt: Scalars['ISO8601DateTime'];
   dailyActiveUsersCount?: Maybe<Scalars['Int']>;
   feeTotalUsd: Scalars['Float'];
@@ -106,7 +109,7 @@ export type AppStatistic = {
   unprocessedTransfersCount: Scalars['Int'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
   usersCount: Scalars['Int'];
-  validOrdersCount: Scalars['Int'];
+  validOceanOrdersCount: Scalars['Int'];
   weeklyActiveUsersCount?: Maybe<Scalars['Int']>;
 };
 
@@ -1645,7 +1648,7 @@ export type AdminAppStatisticQueryVariables = Exact<{
 }>;
 
 
-export type AdminAppStatisticQuery = { __typename?: 'Query', adminAppStatistic: { __typename?: 'AppStatistic', usersCount: number, dailyActiveUsersCount?: Maybe<number>, weeklyActiveUsersCount?: Maybe<number>, monthlyActiveUsersCount?: Maybe<number>, validOrdersCount: number, marketsCount: number, matchTotalUsd: number, feeTotalUsd: number, invitationCommissionTotalUsd: number, groupOwnerCommissionTotalUsd: number, unprocessedSnapshotsCount: number, unprocessedTransfersCount: number } };
+export type AdminAppStatisticQuery = { __typename?: 'Query', adminAppStatistic: { __typename?: 'AppStatistic', usersCount: number, dailyActiveUsersCount?: Maybe<number>, weeklyActiveUsersCount?: Maybe<number>, monthlyActiveUsersCount?: Maybe<number>, connectedAppletsCount: number, appletActivitiesCount: number, appletActivitySwapOrdersCount: number, validOceanOrdersCount: number, marketsCount: number, matchTotalUsd: number, feeTotalUsd: number, invitationCommissionTotalUsd: number, groupOwnerCommissionTotalUsd: number, unprocessedSnapshotsCount: number, unprocessedTransfersCount: number } };
 
 export type AdminAppletConnectionQueryVariables = Exact<{
   filter?: Maybe<Scalars['String']>;
@@ -2407,7 +2410,10 @@ export const AdminAppStatisticDocument = gql`
     dailyActiveUsersCount
     weeklyActiveUsersCount
     monthlyActiveUsersCount
-    validOrdersCount
+    connectedAppletsCount
+    appletActivitiesCount
+    appletActivitySwapOrdersCount
+    validOceanOrdersCount
     marketsCount
     matchTotalUsd
     feeTotalUsd

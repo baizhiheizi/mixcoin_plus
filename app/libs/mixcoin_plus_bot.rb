@@ -19,7 +19,10 @@ module MixcoinPlusBot
       daily_active_users_count: User.where(last_active_at: (Time.current - 1.day)...Time.current).count,
       weekly_active_users_count: User.where(last_active_at: (Time.current - 1.week)...Time.current).count,
       monthly_active_users_count: User.where(last_active_at: (Time.current - 1.month)...Time.current).count,
-      valid_orders_count: OceanOrder.without_drafted.count,
+      connected_applets_count: Applet.connected.count,
+      applet_activities_count: AppletActivity.without_drafted.count,
+      applet_activity_swap_orders_count: AppletActivitySwapOrder.without_drafted.count,
+      valid_ocean_orders_count: OceanOrder.without_drafted.count,
       markets_count: Market.count,
       match_total_usd: OceanSnapshot.with_snapshot_type(:match_from_engine).sum(:amount_usd),
       fee_total_usd: MixinTransfer.with_transfer_type(:ocean_order_mixcoin_fee).sum(:amount_usd),
@@ -33,7 +36,10 @@ module MixcoinPlusBot
   def self.app_statistic_24h
     {
       users_count: User.within_24h.count,
-      valid_orders_count: OceanOrder.within_24h.without_drafted.count,
+      connected_applets_count: Applet.within_24h.connected.count,
+      applet_activities_count: AppletActivity.within_24h.without_drafted.count,
+      applet_activity_swap_orders_count: AppletActivitySwapOrder.within_24h.without_drafted.count,
+      valid_ocean_orders_count: OceanOrder.within_24h.without_drafted.count,
       markets_count: Market.within_24h.count,
       match_total_usd: OceanSnapshot.within_24h.with_snapshot_type(:match_from_engine).sum(:amount_usd),
       fee_total_usd: MixinTransfer.within_24h.with_transfer_type(:ocean_order_mixcoin_fee).sum(:amount_usd),

@@ -4,6 +4,7 @@ import InvitationsComponent from 'apps/admin/components/InvitationsComponent/Inv
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import MixinTransfersComponent from 'apps/admin/components/MixinTransfersComponent/MixinTransfersComponent';
 import OceanOrdersComponent from 'apps/admin/components/OceanOrdersComponent/OceanOrdersComponent';
+import SwapOrdersComponent from 'apps/admin/components/SwapOrdersComponent/SwapOrdersComponent';
 import UserDeprecatedOceanOrdersComponent from 'apps/admin/components/UserDeprecatedOceanOrdersComponent/UserDeprecatedOceanOrdersComponent';
 import UserDeprecatedOceanSnapshotsComponent from 'apps/admin/components/UserDeprecatedOceanSnapshotsComponent/UserDeprecatedOceanSnapshotsComponent';
 import WalletBalanceComponent from 'apps/admin/components/WalletBalanceComponent/WalletBalanceComponent';
@@ -65,7 +66,10 @@ export default function UserPage() {
         <Tabs.TabPane tab='Applets' key='applets'>
           <AppletsComponent userId={user.id} />
         </Tabs.TabPane>
-        <Tabs.TabPane tab='Orders' key='orders'>
+        <Tabs.TabPane tab='Swap Orders' key='swap_orders'>
+          <SwapOrdersComponent userId={user.id} />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab='Ocean Orders' key='ocean_orders'>
           <OceanOrdersComponent userId={user.id} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Received' key='received'>
