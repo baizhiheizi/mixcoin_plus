@@ -25,7 +25,7 @@ export default function EditingEveryMonthTriggerComponent(props: {
     });
   }
   const days = [];
-  for (let step = 0; step < 31; step++) {
+  for (let step = 1; step < 31; step++) {
     days.push({
       value: step,
       label: step.toString(),
