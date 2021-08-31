@@ -34,6 +34,7 @@ module Types
     field :admin_booking_order_activity, resolver: Resolvers::AdminBookingOrderActivityResolver
     field :admin_booking_order_activity_connection, resolver: Resolvers::AdminBookingOrderActivityConnectionResolver
     field :admin_booking_order_activity_participant_connection, resolver: Resolvers::AdminBookingOrderActivityParticipantConnectionResolver
+    field :admin_applet_connection, resolver: Resolvers::AdminAppletConnectionResolver
 
     field :current_user, resolver: Resolvers::CurrentUserResolver
     field :current_conversation, resolver: Resolvers::CurrentConversationResolver

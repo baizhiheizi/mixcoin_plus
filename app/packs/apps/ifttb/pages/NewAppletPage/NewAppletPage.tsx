@@ -185,7 +185,7 @@ export default function NewAppletPage() {
                 setEditingTrigger(null);
               }}
             >
-              Remove Ttrigger
+              Remove trigger
             </div>
           </div>
         </div>

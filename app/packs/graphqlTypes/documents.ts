@@ -994,6 +994,7 @@ export type PageInfo = {
 export type Query = {
   __typename?: 'Query';
   adminAppStatistic: AppStatistic;
+  adminAppletConnection: AppletConnection;
   adminArbitrageOrder: ArbitrageOrder;
   adminArbitrageOrderConnection: ArbitrageOrderConnection;
   adminBookingOrderActivity: BookingOrderActivity;
@@ -1048,6 +1049,16 @@ export type Query = {
 
 export type QueryAdminAppStatisticArgs = {
   scope?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryAdminAppletConnectionArgs = {
+  filter?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 
@@ -1635,6 +1646,15 @@ export type AdminAppStatisticQueryVariables = Exact<{
 
 
 export type AdminAppStatisticQuery = { __typename?: 'Query', adminAppStatistic: { __typename?: 'AppStatistic', usersCount: number, dailyActiveUsersCount?: Maybe<number>, weeklyActiveUsersCount?: Maybe<number>, monthlyActiveUsersCount?: Maybe<number>, validOrdersCount: number, marketsCount: number, matchTotalUsd: number, feeTotalUsd: number, invitationCommissionTotalUsd: number, groupOwnerCommissionTotalUsd: number, unprocessedSnapshotsCount: number, unprocessedTransfersCount: number } };
+
+export type AdminAppletConnectionQueryVariables = Exact<{
+  filter?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['String']>;
+}>;
+
+
+export type AdminAppletConnectionQuery = { __typename?: 'Query', adminAppletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, archivedAt?: Maybe<any>, createdAt: any, user: { __typename?: 'User', id: string, mixinUuid: string, mixinId: string, name: string, avatar: string } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminArbitrageOrderConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -2426,6 +2446,62 @@ export function useAdminAppStatisticLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type AdminAppStatisticQueryHookResult = ReturnType<typeof useAdminAppStatisticQuery>;
 export type AdminAppStatisticLazyQueryHookResult = ReturnType<typeof useAdminAppStatisticLazyQuery>;
 export type AdminAppStatisticQueryResult = Apollo.QueryResult<AdminAppStatisticQuery, AdminAppStatisticQueryVariables>;
+export const AdminAppletConnectionDocument = gql`
+    query AdminAppletConnection($filter: String, $userId: ID, $after: String) {
+  adminAppletConnection(filter: $filter, userId: $userId, after: $after) {
+    nodes {
+      id
+      number
+      title
+      connected
+      lastActiveAt
+      user {
+        id
+        mixinUuid
+        mixinId
+        name
+        avatar
+      }
+      archivedAt
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminAppletConnectionQuery__
+ *
+ * To run a query within a React component, call `useAdminAppletConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminAppletConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminAppletConnectionQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      userId: // value for 'userId'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useAdminAppletConnectionQuery(baseOptions?: Apollo.QueryHookOptions<AdminAppletConnectionQuery, AdminAppletConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminAppletConnectionQuery, AdminAppletConnectionQueryVariables>(AdminAppletConnectionDocument, options);
+      }
+export function useAdminAppletConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminAppletConnectionQuery, AdminAppletConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminAppletConnectionQuery, AdminAppletConnectionQueryVariables>(AdminAppletConnectionDocument, options);
+        }
+export type AdminAppletConnectionQueryHookResult = ReturnType<typeof useAdminAppletConnectionQuery>;
+export type AdminAppletConnectionLazyQueryHookResult = ReturnType<typeof useAdminAppletConnectionLazyQuery>;
+export type AdminAppletConnectionQueryResult = Apollo.QueryResult<AdminAppletConnectionQuery, AdminAppletConnectionQueryVariables>;
 export const AdminArbitrageOrderConnectionDocument = gql`
     query AdminArbitrageOrderConnection($after: String, $state: String, $marketId: ID, $arbitragerId: ID) {
   adminArbitrageOrderConnection(

@@ -60,7 +60,7 @@ export default function AppletsPage() {
               theme='primary'
               onClick={() => location.replace('/ifttb/login')}
             >
-              Please Login First
+              Click to login
             </Button>
           </div>
         )}

@@ -1,4 +1,5 @@
 import {
+  AndroidOutlined,
   BarsOutlined,
   DashboardOutlined,
   DollarOutlined,
@@ -26,6 +27,12 @@ export default function Menus() {
         <Link to='/'>
           <DashboardOutlined />
           <span>Dashboard</span>
+        </Link>
+      </Menu.Item>
+      <Menu.Item key='applets'>
+        <Link to='/applets'>
+          <AndroidOutlined />
+          <span>Applets</span>
         </Link>
       </Menu.Item>
       <Menu.Item key='users'>

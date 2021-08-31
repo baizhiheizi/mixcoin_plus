@@ -1,4 +1,5 @@
 import { Avatar, Button, Descriptions, PageHeader, Space, Tabs } from 'antd';
+import AppletsComponent from 'apps/admin/components/AppletsComponent/AppletsComponent';
 import InvitationsComponent from 'apps/admin/components/InvitationsComponent/InvitationsComponent';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
 import MixinTransfersComponent from 'apps/admin/components/MixinTransfersComponent/MixinTransfersComponent';
@@ -60,7 +61,10 @@ export default function UserPage() {
           {user.createdAt}
         </Descriptions.Item>
       </Descriptions>
-      <Tabs defaultActiveKey='orders'>
+      <Tabs defaultActiveKey='applets'>
+        <Tabs.TabPane tab='Applets' key='applets'>
+          <AppletsComponent userId={user.id} />
+        </Tabs.TabPane>
         <Tabs.TabPane tab='Orders' key='orders'>
           <OceanOrdersComponent userId={user.id} />
         </Tabs.TabPane>
