@@ -79,6 +79,7 @@ class Applet < ApplicationRecord
   end
 
   def archive!
+    disconnect! if connected?
     update! archived_at: Time.current
   end
 
