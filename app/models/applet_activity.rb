@@ -40,6 +40,8 @@ class AppletActivity < ApplicationRecord
   end
 
   def notify_state
+    return if applet&.user.blank?
+
     AppletActivityStateNotification.with(applet_activity: self).deliver(applet.user)
   end
 

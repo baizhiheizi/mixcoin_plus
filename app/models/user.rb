@@ -59,11 +59,13 @@ class User < ApplicationRecord
 
   after_commit :sync_assets_async, :create_brokers_async, :create_contact_conversations, on: :create
 
-  delegate :access_token, to: :mixin_authorization
-
   scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
 
   action_store :favorite, :market
+
+  def access_token
+    mixin_authorization&.access_token
+  end
 
   def mixin_assets
     return [] if fennec?
