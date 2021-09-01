@@ -53,6 +53,7 @@ class ArbitrageSwapOrder < SwapOrder
   end
 
   def after_trade
+    sync_order
     check_arbitrage_order
   end
 end
