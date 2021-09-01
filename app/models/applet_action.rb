@@ -16,7 +16,7 @@
 #  index_applet_actions_on_applet_id  (applet_id)
 #
 class AppletAction < ApplicationRecord
-  belongs_to :applet, -> { unscope(where: :archived_at) }, inverse_of: :applet_actions
+  belongs_to :applet
 
   has_many :applet_activities, dependent: :restrict_with_exception
 
