@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 export default function AppletsComponent(props: { userId?: string }) {
   const { userId } = props;
-  const [filter, setFilter] = useState('default');
+  const [filter, setFilter] = useState('connected');
   const { loading, data, refetch, fetchMore } = useAdminAppletConnectionQuery({
     variables: {
       userId,
