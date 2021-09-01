@@ -1,18 +1,8 @@
-import { Down as DownIcon } from '@icon-park/react';
-import { useDebounce } from 'ahooks';
+import LakeAssetsComponent from 'apps/ifttb/components/LakeAssetsComponent/LakeAssetsComponent';
 import { FSwapActionThemeColor } from 'apps/ifttb/constants';
-import { PandoLake } from 'pando-sdk-js';
 import { IAsset } from 'pando-sdk-js/dist/lake/types';
 import React, { useState } from 'react';
 import { Picker, Popup } from 'zarm';
-
-let lakeAssets: IAsset[];
-const pando = new PandoLake();
-pando.assets().then((res) => {
-  lakeAssets = res.data.assets.filter(
-    (asset) => !asset.symbol.match(/^s(\S+-\S+)/),
-  );
-});
 
 export default function Editing4swapPriceTriggerComponent(props: {
   onFinish: (trigger) => any;
@@ -199,7 +189,7 @@ export default function Editing4swapPriceTriggerComponent(props: {
         visible={Boolean(selectingAsset)}
         onMaskClick={() => setSelectingAsset(null)}
       >
-        <LakeAssetsList
+        <LakeAssetsComponent
           onClick={(asset) => {
             switch (selectingAsset) {
               case 'baseAsset':
@@ -218,49 +208,6 @@ export default function Editing4swapPriceTriggerComponent(props: {
           }}
         />
       </Popup>
-    </div>
-  );
-}
-
-function LakeAssetsList(props: { onClick: (asset) => any }) {
-  const [query, setQuery] = useState('');
-  const deboundedQuery = useDebounce(query, { wait: 500 });
-  const assets = deboundedQuery
-    ? lakeAssets.filter(
-        (asset) =>
-          asset.symbol.match(new RegExp(deboundedQuery, 'i')) ||
-          asset.name.match(new RegExp(deboundedQuery, 'i')),
-      )
-    : lakeAssets;
-  return (
-    <div className='relative pt-12 overflow-y-scroll bg-white min-h-screen-1/2 max-h-screen-3/4'>
-      <div className='fixed top-0 z-10 flex justify-center w-full p-2 bg-white'>
-        <DownIcon size='2rem' />
-      </div>
-      <div className='px-4'>
-        <input
-          className='block w-full p-4 mb-4 bg-gray-100 rounded'
-          placeholder='Search'
-          value={query}
-          onChange={(e) => setQuery(e.currentTarget.value)}
-        />
-      </div>
-      {(assets || []).map((asset) => (
-        <div
-          key={asset.id}
-          className='flex items-center p-4 space-x-4'
-          onClick={() => props.onClick(asset)}
-        >
-          <div className='relative'>
-            <img className='w-8 h-8 rounded-full' src={asset.logo} />
-            <img
-              className='absolute bottom-0 right-0 w-4 h-4 rounded-full'
-              src={asset.chain.logo}
-            />
-          </div>
-          <span>{asset.symbol}</span>
-        </div>
-      ))}
     </div>
   );
 }

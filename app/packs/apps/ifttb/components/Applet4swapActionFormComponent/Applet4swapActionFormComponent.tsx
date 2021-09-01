@@ -1,18 +1,9 @@
 import { Close as CloseIcon, Down as DownIcon } from '@icon-park/react';
-import { useDebounce } from 'ahooks';
 import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
-import { PandoLake } from 'pando-sdk-js';
 import { IAsset } from 'pando-sdk-js/dist/lake/types';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
-
-let lakeAssets: IAsset[];
-const pando = new PandoLake();
-pando.assets().then((res) => {
-  lakeAssets = res.data.assets.filter(
-    (asset) => !asset.symbol.match(/^s(\S+-\S+)/),
-  );
-});
+import LakeAssetsComponent from '../LakeAssetsComponent/LakeAssetsComponent';
 
 export function Applet4swapActionFormComponent(props: {
   onCancel: () => any;
@@ -100,13 +91,14 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
     null | 'payAsset' | 'fillAsset'
   >(null);
   const [slippage, setSlippage] = useState<0.001 | 0.005 | 0.01>(0.001);
+  const payValue = payAsset?.price * parseFloat(payAmount);
 
   const validateParams = () => {
     if (
       !payAsset?.id ||
       !fillAsset?.id ||
       !parseFloat(payAmount) ||
-      parseFloat(payAmount) < 0.00001 ||
+      payValue < 0.1 ||
       !slippage
     ) {
       return false;
@@ -165,7 +157,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
         </div>
         {payAsset && (
           <div className='text-sm text-right text-gray-500'>
-            ≈ ${(payAsset.price * parseFloat(payAmount))?.toFixed(2)}
+            (At least $0.1) ≈ ${payValue?.toFixed(2)}
           </div>
         )}
       </div>
@@ -242,7 +234,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
         visible={Boolean(selectingAsset)}
         onMaskClick={() => setSelectingAsset(null)}
       >
-        <LakeAssetsList
+        <LakeAssetsComponent
           onClick={(asset) => {
             switch (selectingAsset) {
               case 'payAsset':
@@ -262,49 +254,6 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
           }}
         />
       </Popup>
-    </div>
-  );
-}
-
-function LakeAssetsList(props: { onClick: (asset) => any }) {
-  const [query, setQuery] = useState('');
-  const deboundedQuery = useDebounce(query, { wait: 500 });
-  const assets = deboundedQuery
-    ? lakeAssets.filter(
-        (asset) =>
-          asset.symbol.match(new RegExp(deboundedQuery, 'i')) ||
-          asset.name.match(new RegExp(deboundedQuery, 'i')),
-      )
-    : lakeAssets;
-  return (
-    <div className='relative pt-12 overflow-y-scroll bg-white min-h-screen-1/2 max-h-screen-3/4'>
-      <div className='fixed top-0 z-10 flex justify-center w-full p-2 bg-white'>
-        <DownIcon size='2rem' />
-      </div>
-      <div className='px-4'>
-        <input
-          className='block w-full p-4 mb-4 bg-gray-100 rounded'
-          placeholder='Search'
-          value={query}
-          onChange={(e) => setQuery(e.currentTarget.value)}
-        />
-      </div>
-      {(assets || []).map((asset) => (
-        <div
-          key={asset.id}
-          className='flex items-center p-4 space-x-4'
-          onClick={() => props.onClick(asset)}
-        >
-          <div className='relative'>
-            <img className='w-8 h-8 rounded-full' src={asset.logo} />
-            <img
-              className='absolute bottom-0 right-0 w-4 h-4 rounded-full'
-              src={asset.chain.logo}
-            />
-          </div>
-          <span>{asset.symbol}</span>
-        </div>
-      ))}
     </div>
   );
 }

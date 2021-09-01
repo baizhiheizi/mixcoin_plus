@@ -2,7 +2,7 @@ import {
   AlarmClock as AlarmClockIcon,
   Close as CloseIcon,
   Down as DownIcon,
-  Add as AddIcon,
+  AddOne as AddIcon,
 } from '@icon-park/react';
 import { ChooseAppletActionComponent } from 'apps/ifttb/components/ChooseAppletActionComponent/ChooseAppletActionComponent';
 import { ChooseAppletTriggerComponent } from 'apps/ifttb/components/ChooseAppletTriggerComponent/ChooseAppletTriggerComponent';
@@ -86,10 +86,10 @@ export default function NewAppletPage() {
         {mayAddTrigger &&
           (appletFormTriggerCreated ? (
             <div
-              className='flex justify-center mb-8'
+              className='flex items-center justify-center mb-8 text-lg space-x-2'
               onClick={() => setChooseTriggerPopupVisible(true)}
             >
-              <AddIcon size='2rem' />
+              <span>and</span> <AddIcon size='2rem' />
             </div>
           ) : (
             <div
