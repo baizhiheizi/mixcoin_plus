@@ -4,7 +4,7 @@ import { Picker } from 'zarm';
 export default function EditingEveryMonthTriggerComponent(props: {
   onFinish: (trigger) => any;
 }) {
-  const [day, setDay] = useState<number>(0);
+  const [day, setDay] = useState<number>(1);
   const [hour, setHour] = useState<number>(0);
   const [minute, setMinute] = useState<number>(0);
   const [choosingMinute, setChoosingMinute] = useState(false);
