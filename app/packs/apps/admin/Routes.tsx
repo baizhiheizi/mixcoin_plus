@@ -1,6 +1,8 @@
 import { Button, Result } from 'antd';
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
+import AppletActivitiesPage from './pages/AppletActivitiesPage/AppletActivitiesPage';
+import AppletPage from './pages/AppletPage/AppletPage';
 import AppletsPage from './pages/AppletsPage/AppletsPage';
 import ArbitrageOrderPage from './pages/ArbitrageOrderPage/ArbitrageOrderPage';
 import ArbitrageOrdersPage from './pages/ArbitrageOrdersPage/ArbitrageOrdersPage';
@@ -34,6 +36,12 @@ export default function Routes() {
       </Route>
       <Route path='/applets' exact>
         <AppletsPage />
+      </Route>
+      <Route path='/applets/:id' exact>
+        <AppletPage />
+      </Route>
+      <Route path='/applet_activities' exact>
+        <AppletActivitiesPage />
       </Route>
       <Route path='/markets' exact>
         <MarketsPage />

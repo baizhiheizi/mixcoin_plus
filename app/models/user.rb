@@ -51,6 +51,7 @@ class User < ApplicationRecord
   has_many :booking_order_activity_participators, dependent: :restrict_with_exception
 
   has_many :applets, dependent: :restrict_with_exception
+  has_many :applet_activities, through: :applets
 
   before_validation :set_defaults, on: :create
 

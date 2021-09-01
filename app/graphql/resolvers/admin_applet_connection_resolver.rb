@@ -23,7 +23,7 @@ module Resolvers
 
       applets = applets.where(user_id: params[:user_id]) if params[:user_id].present?
 
-      applets
+      applets.order(created_at: :desc)
     end
   end
 end

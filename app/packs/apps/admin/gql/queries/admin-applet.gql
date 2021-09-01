@@ -1,0 +1,18 @@
+query AdminApplet($id: ID!) {
+  adminApplet(id: $id) {
+    id
+    number
+    title
+    connected
+    lastActiveAt
+    user {
+      id
+      mixinUuid
+      mixinId
+      name
+      avatar
+    }
+    archivedAt
+    createdAt
+  }
+}

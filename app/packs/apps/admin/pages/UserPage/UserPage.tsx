@@ -1,4 +1,5 @@
 import { Avatar, Button, Descriptions, PageHeader, Space, Tabs } from 'antd';
+import AppletActivitiesComponent from 'apps/admin/components/AppletActivitiesComponent/AppletActivitiesComponent';
 import AppletsComponent from 'apps/admin/components/AppletsComponent/AppletsComponent';
 import InvitationsComponent from 'apps/admin/components/InvitationsComponent/InvitationsComponent';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
@@ -65,6 +66,9 @@ export default function UserPage() {
       <Tabs defaultActiveKey='applets'>
         <Tabs.TabPane tab='Applets' key='applets'>
           <AppletsComponent userId={user.id} />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab='Applet Activities' key='applet_activities'>
+          <AppletActivitiesComponent userId={user.id} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Swap Orders' key='swap_orders'>
           <SwapOrdersComponent userId={user.id} />

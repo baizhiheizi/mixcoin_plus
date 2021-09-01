@@ -1,0 +1,30 @@
+query AdminAppletActivityConnection(
+  $state: String
+  $userId: ID
+  $appletId: ID
+  $after: String
+) {
+  adminAppletActivityConnection(
+    state: $state
+    userId: $userId
+    appletId: $appletId
+    after: $after
+  ) {
+    nodes {
+      id
+      state
+      appletAction {
+        type
+        applet {
+          id
+          title
+        }
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

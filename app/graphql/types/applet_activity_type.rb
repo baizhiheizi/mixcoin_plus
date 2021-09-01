@@ -10,7 +10,7 @@ module Types
 
     def applet_action
       BatchLoader::GraphQL.for(object.applet_action_id).batch do |applet_action_ids, loader|
-        AppletAction.includes(:applet).where(applet_action_id: applet_action_ids).each { |applet_action| loader.call(applet_action.id, applet_action) }
+        AppletAction.where(id: applet_action_ids).each { |applet_action| loader.call(applet_action.id, applet_action) }
       end
     end
   end

@@ -21,6 +21,7 @@ class Applet < ApplicationRecord
   has_many :applet_triggers, dependent: :restrict_with_exception
   has_many :applet_actions, dependent: :restrict_with_exception
   has_many :applet_activities, through: :applet_actions, dependent: :restrict_with_exception
+  has_many :swap_orders, through: :applet_activities, dependent: :restrict_with_exception
 
   accepts_nested_attributes_for :applet_triggers, :applet_actions
 

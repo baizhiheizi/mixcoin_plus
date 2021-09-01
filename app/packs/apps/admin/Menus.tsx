@@ -29,12 +29,18 @@ export default function Menus() {
           <span>Dashboard</span>
         </Link>
       </Menu.Item>
-      <Menu.Item key='applets'>
-        <Link to='/applets'>
-          <AndroidOutlined />
-          <span>Applets</span>
-        </Link>
-      </Menu.Item>
+      <Menu.SubMenu icon={<AndroidOutlined />} key='ifttb' title='IFTTB'>
+        <Menu.Item key='applets'>
+          <Link to='/applets'>
+            <span>Applets</span>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key='applet_activities'>
+          <Link to='/applet_activities'>
+            <span>Applet Activities</span>
+          </Link>
+        </Menu.Item>
+      </Menu.SubMenu>
       <Menu.Item key='users'>
         <Link to='/users'>
           <UserOutlined />

@@ -10,14 +10,16 @@ export default function SwapOrdersComponent(props: {
   brokerId?: string;
   userId?: string;
   arbitrageOrderId?: string;
+  appletId?: string;
 }) {
-  const { brokerId, userId, arbitrageOrderId } = props;
+  const { brokerId, userId, arbitrageOrderId, appletId } = props;
   const [state, setState] = useState('valid');
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, { wait: 1000 });
   const { loading, data, refetch, fetchMore } =
     useAdminSwapOrderConnectionQuery({
       variables: {
+        appletId,
         arbitrageOrderId,
         state,
         brokerId,

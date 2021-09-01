@@ -8,6 +8,7 @@ module Resolvers
     argument :user_id, ID, required: false
     argument :broker_id, ID, required: false
     argument :arbitrage_order_id, ID, required: false
+    argument :applet_id, ID, required: false
 
     type Types::SwapOrderType.connection_type, null: false
 
@@ -15,6 +16,7 @@ module Resolvers
       user = User.find_by(id: params[:user_id])
       broker = MixinNetworkUser.find_by(mixin_uuid: params[:broker_id])
       arbitrage_order = ArbitrageOrder.find_by(id: params[:arbitrage_order_id])
+      applet = Applet.with_archived.find_by(id: params[:applet_id])
       orders =
         if user.present?
           user.swap_orders
@@ -22,6 +24,8 @@ module Resolvers
           broker.swap_orders
         elsif arbitrage_order.present?
           arbitrage_order.swap_orders
+        elsif applet.present?
+          applet.swap_orders
         else
           SwapOrder.all
         end

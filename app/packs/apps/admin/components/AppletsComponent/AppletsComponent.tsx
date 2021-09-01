@@ -68,6 +68,16 @@ export default function AppletsComponent(props: { userId?: string }) {
       key: 'createdAt',
       title: 'createdAt',
     },
+    {
+      dataIndex: 'actions',
+      key: 'actions',
+      render: (_, applet) => (
+        <>
+          <Link to={`/applets/${applet.id}`}>Detail</Link>
+        </>
+      ),
+      title: 'actions',
+    },
   ];
 
   return (
