@@ -7,7 +7,7 @@ module Types
     field :admin_recommend_market, mutation: Mutations::AdminRecommendMarketMutation
     field :admin_unrecommend_market, mutation: Mutations::AdminUnrecommendMarketMutation
     field :admin_rank_market, mutation: Mutations::AdminRankMarketMutation
-    field :admin_arbitrager_withraw_balance, mutation: Mutations::AdminArbitragerWithrawBalanceMutation
+    field :admin_arbitrager_withdraw_balance, mutation: Mutations::AdminArbitragerWithdrawBalanceMutation
     field :admin_booking_order_activity_participant_distribute_bonus, mutation: Mutations::AdminBookingOrderActivityParticipantDistributeBonusMutation
     field :admin_toggle_market_booking_order_activity_enable, mutation: Mutations::AdminToggleMarketBookingOrderActivityEnableMutation
     field :admin_hide_market, mutation: Mutations::AdminHideMarketMutation

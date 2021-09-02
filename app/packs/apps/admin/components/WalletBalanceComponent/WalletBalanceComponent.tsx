@@ -1,7 +1,7 @@
 import {
   UserAsset,
   useAdminWalletBalanceQuery,
-  useAdminArbitragerWithrawBalanceMutation,
+  useAdminArbitragerWithdrawBalanceMutation,
 } from 'graphqlTypes';
 import { Avatar, Button, Table, Popconfirm, message } from 'antd';
 import { ColumnProps } from 'antd/es/table';
@@ -14,10 +14,10 @@ export default function WalletBalanceComponent(props: { userId?: string }) {
     fetchPolicy: 'network-only',
     variables: { userId },
   });
-  const [withdrawBalance, { loading: withrawing }] =
-    useAdminArbitragerWithrawBalanceMutation({
-      update: (_, { data: { adminArbitragerWithrawBalance } }) => {
-        if (adminArbitragerWithrawBalance) {
+  const [withdrawBalance, { loading: withdrawing }] =
+    useAdminArbitragerWithdrawBalanceMutation({
+      update: (_, { data: { adminArbitragerWithdrawBalance } }) => {
+        if (adminArbitragerWithdrawBalance) {
           message.success('success');
           refetch();
         } else {
@@ -57,7 +57,7 @@ export default function WalletBalanceComponent(props: { userId?: string }) {
       key: 'actions',
       render: (_, asset) => (
         <Popconfirm
-          title='Are you sure to withraw?'
+          title='Are you sure to withdraw?'
           onConfirm={() =>
             withdrawBalance({
               variables: {
@@ -69,8 +69,8 @@ export default function WalletBalanceComponent(props: { userId?: string }) {
             })
           }
         >
-          <Button type='link' disabled={withrawing}>
-            Withraw
+          <Button type='link' disabled={withdrawing}>
+            Withdraw
           </Button>
         </Popconfirm>
       ),

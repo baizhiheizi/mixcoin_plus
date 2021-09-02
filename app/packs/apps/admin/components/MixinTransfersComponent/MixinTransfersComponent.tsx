@@ -126,8 +126,8 @@ export default function MixinTransfersComponent(props: {
           <Select.Option value='ocean_order_cancel'>Order Cancel</Select.Option>
           <Select.Option value='ocean_order_match'>Order Match</Select.Option>
           <Select.Option value='ocean_order_refund'>Order Refund</Select.Option>
-          <Select.Option value='withraw_to_admin'>
-            Withraw to Admin
+          <Select.Option value='withdraw_to_admin'>
+            Withdraw to Admin
           </Select.Option>
         </Select>
         <Button type='primary' onClick={() => refetch()}>
