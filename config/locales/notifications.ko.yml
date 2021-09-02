@@ -15,3 +15,6 @@ zh-CN:
         '거래 완료': %<filled>s %<filled_symbol>s
         '거래 대기': %<remaining>s %<remaining_symbol>s
       cable_tpl: 注文 %<base_asset_symbol>s/%<quote_asset_symbol>s %<state>s
+    transfer_failed_notification:
+      insufficient_balance: 'Transfer failed because of insufficient balance'
+      transfer_failed: 'Transfer failed'

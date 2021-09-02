@@ -40,6 +40,8 @@ class MixinTransfer < ApplicationRecord
   belongs_to :recipient, class_name: 'User', primary_key: :mixin_uuid, foreign_key: :opponent_id, inverse_of: :transfers, optional: true
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false, optional: true
 
+  before_validation :set_defaults, on: :create
+
   validates :trace_id, presence: true, uniqueness: true
   validates :asset_id, presence: true
   validates :amount, numericality: { greater_than_or_equal_to: MINIMUM_AMOUNT }
@@ -49,7 +51,7 @@ class MixinTransfer < ApplicationRecord
 
   enumerize :priority, in: %i[default critical high low], default: :default, predicates: true
   enumerize :transfer_type,
-            in: %i[default ocean_broker_balance ocean_broker_register ocean_order_create ocean_order_cancel ocean_order_match ocean_order_refund ocean_order_group_owner_commission ocean_order_invitation_commission ocean_order_mixcoin_fee swap_order_create swap_order_trade swap_order_reject withraw_to_admin booking_order_activity_bonus],
+            in: %i[default ocean_broker_balance ocean_broker_register ocean_order_create ocean_order_cancel ocean_order_match ocean_order_refund ocean_order_group_owner_commission ocean_order_invitation_commission ocean_order_mixcoin_fee swap_order_create swap_order_trade swap_order_reject withraw_to_admin booking_order_activity_bonus withdraw_to_user],
             default: :default,
             scope: true,
             predicates: true
@@ -131,6 +133,10 @@ class MixinTransfer < ApplicationRecord
   end
 
   private
+
+  def set_defaults
+    self.trace_id = SecureRandom.uuid if trace_id.blank?
+  end
 
   def ensure_opponent_presence
     errors.add(:opponent_id, ' must cannot be blank') if opponent_id.blank? && opponent_multisig.blank?

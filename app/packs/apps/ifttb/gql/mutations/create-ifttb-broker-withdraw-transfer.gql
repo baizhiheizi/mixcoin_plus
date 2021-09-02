@@ -1,0 +1,7 @@
+mutation CreateIfttbBrokerWithdrawTransfer(
+  $input: CreateIfttbBrokerWithdrawTransferMutationInput!
+) {
+  createIfttbBrokerWithdrawTransfer(input: $input) {
+    traceId
+  }
+}

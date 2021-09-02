@@ -3,6 +3,7 @@ import PullComponent from 'apps/application/components/PullComponent/PullCompone
 import { useCurrentUser } from 'apps/ifttb/contexts';
 import LoaderComponent from 'apps/shared/components/LoaderComponent/LoaderComponent';
 import {
+  MixinAsset,
   useIfttbBrokerBalanceQuery,
   useIfttbBrokerSnapshotsQuery,
 } from 'graphqlTypes';
@@ -14,7 +15,7 @@ import { Popup } from 'zarm';
 export default function WalletPage() {
   const history = useHistory();
   const { currentUser } = useCurrentUser();
-  const [snapshotPopupVisible, setSnapshotsPopupVisible] = useState(false);
+  const [selectedAsset, setSelectedAsset] = useState(null);
   const { loading, data } = useIfttbBrokerBalanceQuery({ skip: !currentUser });
 
   if (loading) {
@@ -29,7 +30,10 @@ export default function WalletPage() {
   const { ifttbBrokerBalance: assets } = data;
 
   const total = assets
-    .map((asset: any) => parseFloat(asset.balance) * parseFloat(asset.priceUsd))
+    .map(
+      (asset: Partial<MixinAsset> | any) =>
+        parseFloat(asset.balance) * parseFloat(asset.priceUsd),
+    )
     .reduce((prev, cur) => prev + cur, 0);
   const totalBtc = assets.reduce(
     (prev: any, cur: any) =>
@@ -68,15 +72,16 @@ export default function WalletPage() {
         </div>
         <div
           className='px-4 py-2 border rounded-full'
-          onClick={() => setSnapshotsPopupVisible(true)}
+          onClick={() => history.push('/withdraw')}
         >
-          Snapshots
+          Withdraw
         </div>
       </div>
       {assets.map((asset) => (
         <div
           className='flex items-center justify-between px-4 py-2'
           key={asset.assetId}
+          onClick={() => setSelectedAsset(asset)}
         >
           <div className='flex items-center space-x-4'>
             <div className='relative'>
@@ -88,28 +93,61 @@ export default function WalletPage() {
         </div>
       ))}
       <Popup
-        visible={snapshotPopupVisible}
+        visible={Boolean(selectedAsset)}
         direction='bottom'
-        onMaskClick={() => setSnapshotsPopupVisible(false)}
+        onMaskClick={() => {
+          setSelectedAsset(null);
+        }}
       >
         <div className='h-screen overflow-scroll bg-white'>
           <div className='relative sticky top-0 z-10 p-4 text-xl font-bold text-white bg-dark'>
             <CloseIcon
-              onClick={() => setSnapshotsPopupVisible(false)}
+              onClick={() => {
+                setSelectedAsset(null);
+              }}
               className='absolute pt-1 left-8'
               size='1.25rem'
             />
             <div className='text-center'>Snapshots</div>
           </div>
-          <IfttbBrokerSnapshotsComponent />
+          {selectedAsset && <IfttbBrokerAssetComponent asset={selectedAsset} />}
+          <IfttbBrokerSnapshotsComponent assetId={selectedAsset?.assetId} />
         </div>
       </Popup>
     </>
   );
 }
 
-function IfttbBrokerSnapshotsComponent() {
-  const { loading, data, refetch, fetchMore } = useIfttbBrokerSnapshotsQuery();
+function IfttbBrokerAssetComponent(props: { asset: Partial<MixinAsset> }) {
+  const { asset } = props;
+  return (
+    <>
+      <div className='py-6 mb-1 text-center bg-white dark:bg-dark'>
+        <div className='flex items-center justify-center'>
+          <img src={asset.iconUrl} className='w-10 h-10 mr-2 rounded-full' />
+          <div className='text-3xl'>{asset.balance.toFixed(2)}</div>
+        </div>
+        <div className='flex items-start justify-center text-xs'>
+          <div className='mr-1 text-gray-500 dark:text-gray-100'>≈ $</div>
+          <div className=''>{(asset.priceUsd * asset.balance).toFixed(2)}</div>
+        </div>
+      </div>
+      <div className='flex items-center justify-center mb-4 space-x-6'>
+        <div
+          onClick={() => {}}
+          className='px-4 py-2 text-white rounded-full bg-dark'
+        >
+          Withdraw
+        </div>
+      </div>
+    </>
+  );
+}
+
+function IfttbBrokerSnapshotsComponent(props: { assetId?: string }) {
+  const { loading, data, refetch, fetchMore } = useIfttbBrokerSnapshotsQuery({
+    variables: { asset: props.assetId },
+  });
 
   if (loading) {
     return <LoaderComponent />;

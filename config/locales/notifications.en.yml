@@ -15,3 +15,6 @@ en:
         Filled: %<filled>s %<filled_symbol>s
         Remaining: %<remaining>s %<remaining_symbol>s
       cable_tpl: Order %<base_asset_symbol>s/%<quote_asset_symbol>s %<state>s
+    transfer_failed_notification:
+      insufficient_balance: 'Transfer failed because of insufficient balance'
+      transfer_failed: 'Transfer failed'
