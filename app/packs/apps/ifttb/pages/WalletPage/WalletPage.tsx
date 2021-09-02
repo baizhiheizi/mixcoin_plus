@@ -132,14 +132,6 @@ function IfttbBrokerAssetComponent(props: { asset: Partial<MixinAsset> }) {
           <div className=''>{(asset.priceUsd * asset.balance).toFixed(2)}</div>
         </div>
       </div>
-      <div className='flex items-center justify-center mb-4 space-x-6'>
-        <div
-          onClick={() => {}}
-          className='px-4 py-2 text-white rounded-full bg-dark'
-        >
-          Withdraw
-        </div>
-      </div>
     </>
   );
 }
