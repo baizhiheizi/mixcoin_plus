@@ -11,7 +11,7 @@ class TransferProcessedNotification < ApplicationNotification
   def data
     {
       icon_url: params[:transfer].asset.icon_url,
-      title: format('%.8f', params[:transfer].amount),
+      title: format('%.8f', params[:transfer].amount).sub(/(0)+\z/, ''),
       description: params[:transfer].asset.symbol,
       action: "mixin://snapshots?trace=#{params[:transfer].trace_id}",
       shareable: false
