@@ -19,7 +19,7 @@ class TransferProcessedNotification < ApplicationNotification
   end
 
   def bot
-    if params[:transfer].source.is_a?(AppletActivitySwapOrder) || params[:transfer].wallet.is_a?(IfttbBroker)
+    if params[:transfer].wallet.is_a?(IfttbBroker)
       'IfttbBot'
     else
       'MixcoinPlusBot'
