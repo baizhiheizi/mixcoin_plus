@@ -26,7 +26,7 @@ class Applet < ApplicationRecord
 
   accepts_nested_attributes_for :applet_triggers, :applet_actions
 
-  before_validation :set_defaults
+  before_validation :set_defaults, on: :create
 
   validate :must_has_triggers, on: :create
   validate :must_has_actions, on: :create
