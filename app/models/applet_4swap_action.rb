@@ -67,7 +67,7 @@ class Applet4swapAction < AppletAction
 
   def active!
     ActiveRecord::Base.transaction do
-      activity = applet_activities.create!
+      activity = applet_activities.create!(applet_id: applet_id)
 
       activity.swap_orders.create_with(
         user_id: user.id,

@@ -6,6 +6,7 @@ module Types
     field :number, String, null: true
     field :title, String, null: false
     field :connected, Boolean, null: false
+    field :applet_activities_count, Int, null: false
     field :last_active_at, GraphQL::Types::ISO8601DateTime, null: true
     field :archived_at, GraphQL::Types::ISO8601DateTime, null: true
 

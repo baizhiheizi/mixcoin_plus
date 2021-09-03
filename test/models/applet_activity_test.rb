@@ -9,10 +9,12 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  applet_action_id :uuid             not null
+#  applet_id        :uuid
 #
 # Indexes
 #
 #  index_applet_activities_on_applet_action_id  (applet_action_id)
+#  index_applet_activities_on_applet_id         (applet_id)
 #
 require 'test_helper'
 

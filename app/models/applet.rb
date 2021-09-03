@@ -4,23 +4,24 @@
 #
 # Table name: applets
 #
-#  id             :uuid             not null, primary key
-#  archived_at    :datetime
-#  connected      :boolean          default(FALSE)
-#  cron           :string
-#  frequency      :integer          default(300)
-#  last_active_at :datetime
-#  title          :string
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  user_id        :uuid             not null
+#  id                      :uuid             not null, primary key
+#  applet_activities_count :integer          default(0)
+#  archived_at             :datetime
+#  connected               :boolean          default(FALSE)
+#  cron                    :string
+#  frequency               :integer          default(300)
+#  last_active_at          :datetime
+#  title                   :string
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  user_id                 :uuid             not null
 #
 class Applet < ApplicationRecord
   belongs_to :user
 
   has_many :applet_triggers, dependent: :restrict_with_exception
   has_many :applet_actions, dependent: :restrict_with_exception
-  has_many :applet_activities, through: :applet_actions, dependent: :restrict_with_exception
+  has_many :applet_activities, dependent: :restrict_with_exception
   has_many :swap_orders, through: :applet_activities, dependent: :restrict_with_exception
 
   accepts_nested_attributes_for :applet_triggers, :applet_actions

@@ -58,10 +58,21 @@ export default function AppletsComponent(props: { userId?: string }) {
       title: 'Connected',
     },
     {
+      dataIndex: 'appletActivitiesCount',
+      key: 'appletActivitiesCount',
+      title: 'Activities',
+    },
+    {
       dataIndex: 'archivedAt',
       key: 'archivedAt',
       render: (text) => text || '-',
       title: 'archivedAt',
+    },
+    {
+      dataIndex: 'lastActiveAt',
+      key: 'lastActiveAt',
+      render: (text) => text || '-',
+      title: 'lastActiveAt',
     },
     {
       dataIndex: 'createdAt',

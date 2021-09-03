@@ -5,6 +5,7 @@ query AdminAppletConnection($filter: String, $userId: ID, $after: String) {
       number
       title
       connected
+      appletActivitiesCount
       lastActiveAt
       user {
         id

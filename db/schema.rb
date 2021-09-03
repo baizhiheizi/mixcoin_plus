@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_03_064246) do
+ActiveRecord::Schema.define(version: 2021_09_03_072143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -52,7 +52,9 @@ ActiveRecord::Schema.define(version: 2021_09_03_064246) do
     t.string "state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "applet_id"
     t.index ["applet_action_id"], name: "index_applet_activities_on_applet_action_id"
+    t.index ["applet_id"], name: "index_applet_activities_on_applet_id"
   end
 
   create_table "applet_triggers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -74,6 +76,7 @@ ActiveRecord::Schema.define(version: 2021_09_03_064246) do
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "archived_at"
     t.string "cron"
+    t.integer "applet_activities_count", default: 0
   end
 
   create_table "arbitrage_orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

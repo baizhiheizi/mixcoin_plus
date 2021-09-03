@@ -9,14 +9,17 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  applet_action_id :uuid             not null
+#  applet_id        :uuid
 #
 # Indexes
 #
 #  index_applet_activities_on_applet_action_id  (applet_action_id)
+#  index_applet_activities_on_applet_id         (applet_id)
 #
 class AppletActivity < ApplicationRecord
   include AASM
 
+  belongs_to :applet, counter_cache: true
   belongs_to :applet_action
 
   has_many :swap_orders, class_name: 'AppletActivitySwapOrder', dependent: :restrict_with_exception
@@ -25,8 +28,6 @@ class AppletActivity < ApplicationRecord
 
   scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
   scope :without_drafted, -> { where.not(state: :drafted) }
-
-  delegate :applet, to: :applet_action
 
   aasm column: :state do
     state :drafted, initial: true

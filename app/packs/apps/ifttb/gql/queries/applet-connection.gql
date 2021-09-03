@@ -5,6 +5,7 @@ query AppletConnection($after: String) {
       number
       title
       connected
+      appletActivitiesCount
       lastActiveAt
       appletTriggers {
         ... on AppletDatetimeTrigger {
