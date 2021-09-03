@@ -8,6 +8,7 @@
 #  fill_amount        :decimal(, )
 #  min_amount         :decimal(, )
 #  pay_amount         :decimal(, )
+#  pay_amount_usd     :decimal(, )
 #  raw                :json
 #  state              :string
 #  type               :string

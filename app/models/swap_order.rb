@@ -8,6 +8,7 @@
 #  fill_amount        :decimal(, )
 #  min_amount         :decimal(, )
 #  pay_amount         :decimal(, )
+#  pay_amount_usd     :decimal(, )
 #  raw                :json
 #  state              :string
 #  type               :string
@@ -32,6 +33,7 @@
 #  index_swap_orders_on_user_id             (user_id)
 #
 class SwapOrder < ApplicationRecord
+  MINIMUM_AMOUNT = 0.000_000_01
   FSWAP_MTG_MEMBERS = Rails.application.credentials.dig(:foxswap, :mtg_members)
   FSWAP_MTG_THRESHOLD = Rails.application.credentials.dig(:foxswap, :mtg_threshold)
   FSWAP_MTG_PUBLIC_KEY = Rails.application.credentials.dig(:foxswap, :mtg_public_key)
@@ -50,6 +52,7 @@ class SwapOrder < ApplicationRecord
 
   before_validation :set_defaults, on: :create
 
+  validates :pay_amount, numericality: { greater_than_or_equal_to: MINIMUM_AMOUNT }
   validates :trace_id, presence: true, uniqueness: true
   validate :pay_and_fill_asset_not_the_same
 
@@ -157,6 +160,7 @@ class SwapOrder < ApplicationRecord
     return unless new_record?
 
     self.trace_id = SecureRandom.uuid if trace_id.blank?
+    self.pay_amount_usd = pay_asset.price_usd * pay_amount
   end
 
   def pay_and_fill_asset_not_the_same

@@ -9,6 +9,7 @@ module Types
     field :connected_applets_count, Integer, null: false
     field :applet_activities_count, Integer, null: false
     field :applet_activity_swap_orders_count, Integer, null: false
+    field :applet_activity_swap_orders_traded_total_usd, Float, null: false
     field :valid_ocean_orders_count, Integer, null: false
     field :markets_count, Integer, null: false
     field :match_total_usd, Float, null: false

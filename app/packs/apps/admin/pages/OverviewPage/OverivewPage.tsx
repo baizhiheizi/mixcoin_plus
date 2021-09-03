@@ -56,6 +56,10 @@ function StatisticAllComponent() {
           value={appStatistic.appletActivitySwapOrdersCount}
         />
         <Statistic
+          title='Applet Activity Swap Orders Traded Total(USD)'
+          value={appStatistic.appletActivitySwapOrdersTradedTotalUsd}
+        />
+        <Statistic
           title='Ocean Orders Count'
           value={appStatistic.validOceanOrdersCount}
         />
@@ -150,6 +154,21 @@ function Statistic24hComponent() {
           }}
           prefix={
             appStatistic.appletActivitySwapOrdersCount > 0 && (
+              <ArrowUpOutlined />
+            )
+          }
+        />
+        <Statistic
+          title='Applet Activity Swap Orders Traded Total(USD)'
+          value={appStatistic.appletActivitySwapOrdersTradedTotalUsd}
+          valueStyle={{
+            color:
+              appStatistic.appletActivitySwapOrdersTradedTotalUsd > 0
+                ? '#3f8600'
+                : '#cf1322',
+          }}
+          prefix={
+            appStatistic.appletActivitySwapOrdersTradedTotalUsd > 0 && (
               <ArrowUpOutlined />
             )
           }

@@ -96,6 +96,7 @@ export type AppStatistic = {
   __typename?: 'AppStatistic';
   appletActivitiesCount: Scalars['Int'];
   appletActivitySwapOrdersCount: Scalars['Int'];
+  appletActivitySwapOrdersTradedTotalUsd: Scalars['Float'];
   connectedAppletsCount: Scalars['Int'];
   createdAt: Scalars['ISO8601DateTime'];
   dailyActiveUsersCount?: Maybe<Scalars['Int']>;
@@ -1681,7 +1682,7 @@ export type AdminAppStatisticQueryVariables = Exact<{
 }>;
 
 
-export type AdminAppStatisticQuery = { __typename?: 'Query', adminAppStatistic: { __typename?: 'AppStatistic', usersCount: number, dailyActiveUsersCount?: Maybe<number>, weeklyActiveUsersCount?: Maybe<number>, monthlyActiveUsersCount?: Maybe<number>, connectedAppletsCount: number, appletActivitiesCount: number, appletActivitySwapOrdersCount: number, validOceanOrdersCount: number, marketsCount: number, matchTotalUsd: number, feeTotalUsd: number, invitationCommissionTotalUsd: number, groupOwnerCommissionTotalUsd: number, unprocessedSnapshotsCount: number, unprocessedTransfersCount: number } };
+export type AdminAppStatisticQuery = { __typename?: 'Query', adminAppStatistic: { __typename?: 'AppStatistic', usersCount: number, dailyActiveUsersCount?: Maybe<number>, weeklyActiveUsersCount?: Maybe<number>, monthlyActiveUsersCount?: Maybe<number>, connectedAppletsCount: number, appletActivitiesCount: number, appletActivitySwapOrdersCount: number, appletActivitySwapOrdersTradedTotalUsd: number, validOceanOrdersCount: number, marketsCount: number, matchTotalUsd: number, feeTotalUsd: number, invitationCommissionTotalUsd: number, groupOwnerCommissionTotalUsd: number, unprocessedSnapshotsCount: number, unprocessedTransfersCount: number } };
 
 export type AdminAppletActivityConnectionQueryVariables = Exact<{
   state?: Maybe<Scalars['String']>;
@@ -2471,6 +2472,7 @@ export const AdminAppStatisticDocument = gql`
     connectedAppletsCount
     appletActivitiesCount
     appletActivitySwapOrdersCount
+    appletActivitySwapOrdersTradedTotalUsd
     validOceanOrdersCount
     marketsCount
     matchTotalUsd
