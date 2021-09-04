@@ -15,7 +15,7 @@
 #
 #  index_applet_actions_on_applet_id  (applet_id)
 #
-class Applet4swapAction < AppletAction
+class AppletMixSwapAction < AppletAction
   store :params, accessors: %i[
     description
     pay_asset_id
@@ -38,15 +38,17 @@ class Applet4swapAction < AppletAction
   end
 
   def fill_amount
-    @fill_amount ||= Foxswap.api.pre_order(
+    @fill_amount ||= MixSwap.api.pre_order(
       pay_asset_id: pay_asset_id,
       fill_asset_id: fill_asset_id,
-      funds: pay_amount
-    )&.[]('data')&.[]('fill_amount')&.to_f
+      pay_amount: pay_amount
+    )&.[]('data')&.[]('estimateReceiveAmount')
   end
 
   def minimum_fill
-    (fill_amount * (1 - slippage)).floor(8)
+    return if fill_amount.blank?
+
+    (fill_amount.to_f * (1 - slippage)).floor(8)
   end
 
   def may_active?
@@ -70,7 +72,7 @@ class Applet4swapAction < AppletAction
       activity = applet_activities.create!(applet_id: applet_id)
 
       activity.swap_orders.create_with(
-        type: 'AppletActivitySwapOrder',
+        type: 'AppletActivityMixSwapOrder',
         user_id: user.id,
         applet_activity_id: activity.id,
         broker: user.ifttb_broker,

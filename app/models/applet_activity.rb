@@ -22,7 +22,7 @@ class AppletActivity < ApplicationRecord
   belongs_to :applet, counter_cache: true
   belongs_to :applet_action
 
-  has_many :swap_orders, class_name: 'AppletActivitySwapOrder', dependent: :restrict_with_exception
+  has_many :swap_orders, -> { where(type: %i[AppletActivitySwapOrder AppletActivityMixSwapOrder]) }, dependent: :restrict_with_exception, inverse_of: :applet_activity
 
   after_create :log_applet_active
 
