@@ -172,7 +172,7 @@ class Applet < ApplicationRecord
   end
 
   def set_defaults
-    self.cron = applet_triggers.where(type: 'AppletDatetimeTrigger').first&.cron_value || default_cron
+    self.cron = applet_triggers.where(type: 'AppletDatetimeTrigger').first&.cron_value || default_cron if cron.blank?
     self.frequency = cron_instance.rough_frequency
   end
 

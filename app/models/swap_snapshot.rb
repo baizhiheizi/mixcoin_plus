@@ -33,7 +33,7 @@ class SwapSnapshot < MixinNetworkSnapshot
   extend Enumerize
 
   enumerize :snapshot_type,
-            in: %i[default swap_from_user swap_to_fox trade_from_fox trade_to_user reject_from_fox reject_to_user]
+            in: %i[default swap_from_user swap_to_fox trade_from_fox trade_to_user reject_from_fox reject_to_user swap_to_mix_swap trade_from_mix_swap refund_from_mix_swap]
 
   alias swap_order source
 
@@ -101,8 +101,20 @@ class SwapSnapshot < MixinNetworkSnapshot
           trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _swap_order.trace_id)
         )
       end
-    when :reject_to_user
+    when :reject_to_user, :refund_from_mix_swap
       _swap_order.reject!
+    when :trade_from_mix_swap
+      MixinTransfer.create_with(
+        source: _swap_order,
+        user_id: _swap_order.broker.mixin_uuid,
+        transfer_type: :swap_order_trade,
+        opponent_id: _swap_order.user.mixin_uuid,
+        asset_id: asset_id,
+        amount: amount,
+        memo: Base64.strict_encode64("SWAP|TRADE|#{_swap_order.trace_id}")
+      ).find_or_create_by!(
+        trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _swap_order.trace_id)
+      )
     end
 
     update!(
@@ -134,6 +146,9 @@ class SwapSnapshot < MixinNetworkSnapshot
     # from fox to broker
     _swap_order ||= SwapOrder.find_by(trace_id: decrypted_json_memo['t']) if decrypted_json_memo.present?
 
+    # from MixSwap to broker
+    _swap_order ||= SwapOrder.find_by(trace_id: base64_decoded_memo.split('|')[1]) if base64_decoded_memo.match?(/^(0|1)/)
+
     _swap_order
   end
 
@@ -144,6 +159,17 @@ class SwapSnapshot < MixinNetworkSnapshot
         TRADE: 'trade_to_user',
         REJECT: 'reject_to_user'
       }[base64_decoded_memo.split('|')[1]&.to_sym]
+    elsif base64_decoded_memo.match?(/^(0|1)/)
+      _type = base64_decoded_memo.split('|')[3]&.to_sym
+
+      case _type
+      when :RF
+        'refund_from_mix_swap'
+      when :RL
+        'trade_from_mix_swap'
+      else
+        'swap_to_mix_swap'
+      end
     elsif decrypted_json_memo['t'] == 'swap' || (opponent_id.blank? && amount.negative?)
       'swap_to_fox'
     elsif decrypted_json_memo.present?

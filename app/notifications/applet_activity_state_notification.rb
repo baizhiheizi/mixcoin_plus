@@ -16,10 +16,20 @@ class AppletActivityStateNotification < ApplicationNotification
 
   def swap_order_detail
     swap_orders.map do |swap_order|
+      _provider =
+        case swap_order
+        when AppletActivitySwapOrder
+          '4swap'
+        when AppletActivityMixSwapOrder
+          'MixSwap'
+        end
+
+      _pay_amount = swap_order.pay_amount - swap_order.refund_amount
       <<~DATA
-        - ↔️: #{swap_order.pay_amount} #{swap_order.pay_asset.symbol} -> #{swap_order.fill_amount} #{swap_order.fill_asset.symbol}
-        - 💰: 1 #{swap_order.fill_asset.symbol} / #{(swap_order.pay_amount / swap_order.fill_amount).round(8)} #{swap_order.pay_asset.symbol}
-        - 💰: 1 #{swap_order.pay_asset.symbol} / #{(swap_order.fill_amount / swap_order.pay_amount).round(8)} #{swap_order.fill_asset.symbol}
+        - #{_provider}
+        - ↔️: #{_pay_amount} #{swap_order.pay_asset.symbol} -> #{swap_order.fill_amount} #{swap_order.fill_asset.symbol}
+        - 💰: 1 #{swap_order.fill_asset.symbol} / #{(_pay_amount / swap_order.fill_amount).round(8)} #{swap_order.pay_asset.symbol}
+        - 💰: 1 #{swap_order.pay_asset.symbol} / #{(swap_order.fill_amount / _pay_amount).round(8)} #{swap_order.fill_asset.symbol}
       DATA
     end.join("\n\n")
   end

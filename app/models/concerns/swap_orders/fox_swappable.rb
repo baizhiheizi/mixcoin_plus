@@ -10,7 +10,6 @@ module SwapOrders::FoxSwappable
 
   included do
     belongs_to :user, optional: true
-    belongs_to :arbitrage_order, optional: true
 
     aasm column: :state do
       state :drafted, initial: true

@@ -6,6 +6,7 @@ module Types
 
     def self.resolve_type(object, _context)
       Types::Applet4swapActionType if object.is_a?(Applet4swapAction)
+      Types::AppletMixSwapActionType if object.is_a?(AppletMixSwapAction)
     end
   end
 end
