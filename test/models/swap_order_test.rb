@@ -10,6 +10,7 @@
 #  pay_amount         :decimal(, )
 #  pay_amount_usd     :decimal(, )
 #  raw                :json
+#  refund_amount      :decimal(, )      default(0.0)
 #  state              :string
 #  type               :string
 #  created_at         :datetime         not null

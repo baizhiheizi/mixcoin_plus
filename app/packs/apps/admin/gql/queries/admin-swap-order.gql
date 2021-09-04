@@ -1,6 +1,7 @@
 query AdminSwapOrder($id: ID!) {
   adminSwapOrder(id: $id) {
     id
+    type
     traceId
     state
     payAmount

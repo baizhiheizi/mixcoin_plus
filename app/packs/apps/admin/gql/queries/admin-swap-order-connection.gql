@@ -18,6 +18,7 @@ query AdminSwapOrderConnection(
   ) {
     nodes {
       id
+      type
       traceId
       state
       payAmount

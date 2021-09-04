@@ -1888,14 +1888,14 @@ export type AdminSwapOrderConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminSwapOrderConnectionQuery = { __typename?: 'Query', adminSwapOrderConnection: { __typename?: 'SwapOrderConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'SwapOrder', id: string, traceId: string, state: string, payAmount: number, fillAmount?: Maybe<number>, minAmount?: Maybe<number>, brokerId: string, arbitrageOrderId?: Maybe<string>, createdAt: any, user?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string }>, broker: { __typename?: 'MixinNetworkUser', mixinUuid: string, name: string }, payAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
+export type AdminSwapOrderConnectionQuery = { __typename?: 'Query', adminSwapOrderConnection: { __typename?: 'SwapOrderConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'SwapOrder', id: string, type: string, traceId: string, state: string, payAmount: number, fillAmount?: Maybe<number>, minAmount?: Maybe<number>, brokerId: string, arbitrageOrderId?: Maybe<string>, createdAt: any, user?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string }>, broker: { __typename?: 'MixinNetworkUser', mixinUuid: string, name: string }, payAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminSwapOrderQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AdminSwapOrderQuery = { __typename?: 'Query', adminSwapOrder: { __typename?: 'SwapOrder', id: string, traceId: string, state: string, payAmount: number, fillAmount?: Maybe<number>, minAmount?: Maybe<number>, arbitrageOrderId?: Maybe<string>, createdAt: any, user?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string }>, broker: { __typename?: 'MixinNetworkUser', mixinUuid: string, name: string }, payAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } } };
+export type AdminSwapOrderQuery = { __typename?: 'Query', adminSwapOrder: { __typename?: 'SwapOrder', id: string, type: string, traceId: string, state: string, payAmount: number, fillAmount?: Maybe<number>, minAmount?: Maybe<number>, arbitrageOrderId?: Maybe<string>, createdAt: any, user?: Maybe<{ __typename?: 'User', avatar: string, name: string, mixinId: string }>, broker: { __typename?: 'MixinNetworkUser', mixinUuid: string, name: string }, payAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string> } } };
 
 export type AdminTradeConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -3846,6 +3846,7 @@ export const AdminSwapOrderConnectionDocument = gql`
   ) {
     nodes {
       id
+      type
       traceId
       state
       payAmount
@@ -3920,6 +3921,7 @@ export const AdminSwapOrderDocument = gql`
     query AdminSwapOrder($id: ID!) {
   adminSwapOrder(id: $id) {
     id
+    type
     traceId
     state
     payAmount

@@ -46,6 +46,11 @@ export default function SwapOrdersComponent(props: {
       title: 'traceId',
     },
     {
+      dataIndex: 'type',
+      key: 'type',
+      title: 'type',
+    },
+    {
       dataIndex: 'broker',
       key: 'broker',
       render: (_, order) => (

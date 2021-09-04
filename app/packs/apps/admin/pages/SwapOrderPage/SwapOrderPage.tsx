@@ -44,6 +44,7 @@ export default function SwapOrderPage() {
             '-'
           )}
         </Descriptions.Item>
+        <Descriptions.Item label='Type'>{order.type}</Descriptions.Item>
         <Descriptions.Item label='State'>{order.state}</Descriptions.Item>
         <Descriptions.Item label='payAmount'>
           {order.payAmount} {order.payAsset.symbol}
