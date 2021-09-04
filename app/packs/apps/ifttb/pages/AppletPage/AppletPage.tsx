@@ -49,6 +49,19 @@ export default function AppletPage() {
           <div className='text-center'>Applet Detail</div>
         </div>
         <div className='p-4'>
+          <div className='flex justify-between mb-2 text-gray-500'>
+            <span>#{applet.number}</span>
+            {applet.profit !== null &&
+              (applet.profit >= 0 ? (
+                <span className='text-green-500'>
+                  +{(applet.profit * 100).toFixed(2)}%
+                </span>
+              ) : (
+                <span className='text-red-500'>
+                  {(applet.profit * 100).toFixed(2)}
+                </span>
+              ))}
+          </div>
           <div className='mb-2 text-base'>{applet.title}</div>
           <div className='flex items-center justify-between mb-2'>
             <span>Connected:</span>

@@ -5,6 +5,21 @@ query AdminApplet($id: ID!) {
     title
     connected
     lastActiveAt
+    profit
+    payTotal
+    fillTotal
+    payAsset {
+      assetId
+      symbol
+      iconUrl
+      priceUsd
+    }
+    fillAsset {
+      assetId
+      symbol
+      iconUrl
+      priceUsd
+    }
     user {
       id
       mixinUuid

@@ -115,6 +115,52 @@ class Applet < ApplicationRecord
     id.split('-').second.upcase
   end
 
+  def traded_swap_orders
+    @traded_swap_orders ||= swap_orders.traded
+  end
+
+  def pay_asset
+    return if traded_swap_orders.blank?
+
+    @pay_asset ||= traded_swap_orders.first.pay_asset
+  end
+
+  def pay_total
+    return if traded_swap_orders.blank?
+
+    @pay_total ||= traded_swap_orders.sum(:pay_amount)
+  end
+
+  def pay_total_usd
+    return if traded_swap_orders.blank?
+
+    @pay_total_usd ||= traded_swap_orders.sum(:pay_amount_usd)
+  end
+
+  def fill_asset
+    return if traded_swap_orders.blank?
+
+    @fill_asset ||= traded_swap_orders.first.fill_asset
+  end
+
+  def fill_total
+    return if traded_swap_orders.blank?
+
+    @fill_total ||= traded_swap_orders.sum(:fill_amount)
+  end
+
+  def fill_total_usd
+    return if traded_swap_orders.blank?
+
+    @fill_total_usd ||= fill_total * fill_asset.price_usd
+  end
+
+  def profit
+    return if traded_swap_orders.blank?
+
+    @profit ||= (fill_total_usd / pay_total_usd - 1).to_f
+  end
+
   private
 
   def cron_job_name

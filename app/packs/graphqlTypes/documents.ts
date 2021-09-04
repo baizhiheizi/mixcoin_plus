@@ -122,9 +122,16 @@ export type Applet = {
   archivedAt?: Maybe<Scalars['ISO8601DateTime']>;
   connected: Scalars['Boolean'];
   createdAt: Scalars['ISO8601DateTime'];
+  fillAsset?: Maybe<MixinAsset>;
+  fillTotal?: Maybe<Scalars['Float']>;
+  fillTotalUsd?: Maybe<Scalars['Float']>;
   id: Scalars['ID'];
   lastActiveAt?: Maybe<Scalars['ISO8601DateTime']>;
   number?: Maybe<Scalars['String']>;
+  payAsset?: Maybe<MixinAsset>;
+  payTotal?: Maybe<Scalars['Float']>;
+  payTotalUsd?: Maybe<Scalars['Float']>;
+  profit?: Maybe<Scalars['Float']>;
   title: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
   user: User;
@@ -1709,7 +1716,7 @@ export type AdminAppletQueryVariables = Exact<{
 }>;
 
 
-export type AdminAppletQuery = { __typename?: 'Query', adminApplet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, archivedAt?: Maybe<any>, createdAt: any, user: { __typename?: 'User', id: string, mixinUuid: string, mixinId: string, name: string, avatar: string } } };
+export type AdminAppletQuery = { __typename?: 'Query', adminApplet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, archivedAt?: Maybe<any>, createdAt: any, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, user: { __typename?: 'User', id: string, mixinUuid: string, mixinId: string, name: string, avatar: string } } };
 
 export type AdminArbitrageOrderConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -2167,7 +2174,7 @@ export type AppletQueryVariables = Exact<{
 }>;
 
 
-export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, title: string, connected: boolean, lastActiveAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', type: string, description?: Maybe<string> } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> } };
+export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', type: string, description?: Maybe<string> } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> } };
 
 export type IfttbBrokerBalanceQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2636,6 +2643,21 @@ export const AdminAppletDocument = gql`
     title
     connected
     lastActiveAt
+    profit
+    payTotal
+    fillTotal
+    payAsset {
+      assetId
+      symbol
+      iconUrl
+      priceUsd
+    }
+    fillAsset {
+      assetId
+      symbol
+      iconUrl
+      priceUsd
+    }
     user {
       id
       mixinUuid
@@ -5665,9 +5687,25 @@ export const AppletDocument = gql`
     query Applet($id: ID!) {
   applet(id: $id) {
     id
+    number
     title
     connected
     lastActiveAt
+    profit
+    payTotal
+    fillTotal
+    payAsset {
+      assetId
+      symbol
+      iconUrl
+      priceUsd
+    }
+    fillAsset {
+      assetId
+      symbol
+      iconUrl
+      priceUsd
+    }
     appletTriggers {
       ... on AppletDatetimeTrigger {
         type

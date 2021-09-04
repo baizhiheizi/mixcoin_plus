@@ -1,9 +1,25 @@
 query Applet($id: ID!) {
   applet(id: $id) {
     id
+    number
     title
     connected
     lastActiveAt
+    profit
+    payTotal
+    fillTotal
+    payAsset {
+      assetId
+      symbol
+      iconUrl
+      priceUsd
+    }
+    fillAsset {
+      assetId
+      symbol
+      iconUrl
+      priceUsd
+    }
     appletTriggers {
       ... on AppletDatetimeTrigger {
         type

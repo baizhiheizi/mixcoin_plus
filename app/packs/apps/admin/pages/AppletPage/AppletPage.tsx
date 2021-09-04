@@ -48,6 +48,15 @@ export default function AppletPage() {
         <Descriptions.Item label='Connected'>
           {applet.connected ? 'true' : 'false'}
         </Descriptions.Item>
+        <Descriptions.Item label='payTotal'>
+          {applet.payTotal || '-'} {applet.payAsset?.symbol}
+        </Descriptions.Item>
+        <Descriptions.Item label='fillTotal'>
+          {applet.fillTotal || '-'} {applet.fillAsset?.symbol}
+        </Descriptions.Item>
+        <Descriptions.Item label='profit'>
+          {applet.profit ? `${(applet.profit * 100).toFixed(2)}%` : '0%'}
+        </Descriptions.Item>
         <Descriptions.Item label='lastActiveAt'>
           {applet.lastActiveAt || '-'}
         </Descriptions.Item>

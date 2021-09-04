@@ -10,6 +10,15 @@ module Types
     field :last_active_at, GraphQL::Types::ISO8601DateTime, null: true
     field :archived_at, GraphQL::Types::ISO8601DateTime, null: true
 
+    field :profit, Float, null: true
+    field :pay_asset, Types::MixinAssetType, null: true
+    field :pay_total, Float, null: true
+    field :pay_total_usd, Float, null: true
+    field :fill_asset, Types::MixinAssetType, null: true
+    field :fill_total, Float, null: true
+    field :fill_total_usd, Float, null: true
+    field :profit, Float, null: true
+
     field :user, Types::UserType, null: false
     field :applet_triggers, [Types::AppletTriggerUnion], null: true
     field :applet_actions, [Types::AppletActionUnion], null: true
