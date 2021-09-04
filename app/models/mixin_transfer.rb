@@ -47,7 +47,7 @@ class MixinTransfer < ApplicationRecord
   validates :amount, numericality: { greater_than_or_equal_to: MINIMUM_AMOUNT }
   validate :ensure_opponent_presence
 
-  after_commit :process_async, on: :create
+  after_create :process_async
 
   enumerize :priority, in: %i[default critical high low], default: :default, predicates: true
   enumerize :transfer_type,
