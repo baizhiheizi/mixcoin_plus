@@ -58,7 +58,7 @@ export default function AppletPage() {
                 </span>
               ) : (
                 <span className='text-red-500'>
-                  {(applet.profit * 100).toFixed(2)}
+                  {(applet.profit * 100).toFixed(2)}%
                 </span>
               ))}
           </div>
