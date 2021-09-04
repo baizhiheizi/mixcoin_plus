@@ -79,7 +79,7 @@ class SwapOrder < ApplicationRecord
       transitions from: :swapping, to: :traded
     end
 
-    event :reject do
+    event :reject, after: :after_reject do
       transitions from: :swapping, to: :rejected
     end
   end
@@ -123,6 +123,10 @@ class SwapOrder < ApplicationRecord
   end
 
   def after_trade
+    sync_order
+  end
+
+  def after_reject
     sync_order
   end
 

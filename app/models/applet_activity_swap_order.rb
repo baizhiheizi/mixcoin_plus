@@ -45,4 +45,9 @@ class AppletActivitySwapOrder < SwapOrder
     sync_order
     applet_activity.complete! if applet_activity.may_complete?
   end
+
+  def after_reject
+    sync_order
+    applet_activity.fail! if applet_activity.may_fail?
+  end
 end
