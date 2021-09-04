@@ -76,7 +76,7 @@ module SwapOrders::MixSwappable
   end
 
   def refresh_state!
-    r = foxswap_order_detail
+    r = order_detail
     return if r['data'].blank?
 
     trade! if r['data']['orderStatus'] == 'done' && may_trade?
