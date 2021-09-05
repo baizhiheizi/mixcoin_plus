@@ -3,7 +3,7 @@ import {
   Down as DownIcon,
 } from '@icon-park/react';
 import AppletDatetimeTriggerFormComponent from 'apps/ifttb/components/AppletDatetimeTriggerFormComponent/AppletDatetimeTriggerFormComponent';
-import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
+import { FoxSwapActionThemeColor, FoxSwapLogoUrl } from 'apps/ifttb/constants';
 import { useAppletForm } from 'apps/ifttb/contexts';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
@@ -47,7 +47,7 @@ export function ChooseAppletTriggerComponent(props: {
                 ? 'cursor-not-allowed opacity-50'
                 : 'cursor-pointer'
             }`}
-            style={{ background: FSwapActionThemeColor }}
+            style={{ background: FoxSwapActionThemeColor }}
             onClick={() => {
               if (!appletForm?.applet4swapTrigger) {
                 setTriggerType('4swap');
@@ -55,7 +55,7 @@ export function ChooseAppletTriggerComponent(props: {
             }}
           >
             <div className='flex justify-center mb-2'>
-              <img className='w-7 h-7' src={FSwapLogoUrl} />
+              <img className='w-7 h-7' src={FoxSwapLogoUrl} />
             </div>
             <div className='text-lg text-center'>4swap</div>
           </div>

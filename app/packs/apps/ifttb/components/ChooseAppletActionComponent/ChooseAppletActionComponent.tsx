@@ -1,8 +1,8 @@
 import { Down as DownIcon } from '@icon-park/react';
 import {
-  FSwapActionThemeColor,
+  FoxSwapActionThemeColor,
+  FoxSwapLogoUrl,
   MixSwapActionThemeColor,
-  FSwapLogoUrl,
   MixSwapLogoUrl,
 } from 'apps/ifttb/constants';
 import { useAppletForm } from 'apps/ifttb/contexts';
@@ -28,11 +28,11 @@ export function ChooseAppletActionComponent(props: {
         <div className='p-4 grid grid-cols-2 gap-2'>
           <div
             className='p-4 rounded-lg'
-            style={{ background: FSwapActionThemeColor }}
+            style={{ background: FoxSwapActionThemeColor }}
             onClick={() => setActionType('4swap')}
           >
             <div className='flex justify-center mb-2'>
-              <img className='w-7 h-7' src={FSwapLogoUrl} />
+              <img className='w-7 h-7' src={FoxSwapLogoUrl} />
             </div>
             <div className='text-lg text-center'>4Swap</div>
           </div>

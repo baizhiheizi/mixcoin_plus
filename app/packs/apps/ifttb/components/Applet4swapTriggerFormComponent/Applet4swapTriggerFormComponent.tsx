@@ -1,5 +1,5 @@
 import { Close as CloseIcon, Down as DownIcon } from '@icon-park/react';
-import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
+import { FoxSwapActionThemeColor, FoxSwapLogoUrl } from 'apps/ifttb/constants';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
 import Editing4swapPriceTriggerComponent from './Editing4swapPriceTriggerComponent';
@@ -18,7 +18,7 @@ export function Applet4swapTriggerFormComponent(props: {
     <div
       onClick={props.onClick}
       className={`p-4 mb-4 text-center rounded ${props.className}`}
-      style={{ background: FSwapActionThemeColor }}
+      style={{ background: FoxSwapActionThemeColor }}
     >
       {props.children}
     </div>
@@ -28,7 +28,7 @@ export function Applet4swapTriggerFormComponent(props: {
     <>
       <div
         className='relative p-4 text-xl font-bold'
-        style={{ background: FSwapActionThemeColor }}
+        style={{ background: FoxSwapActionThemeColor }}
       >
         <CloseIcon
           onClick={onCancel}
@@ -39,10 +39,10 @@ export function Applet4swapTriggerFormComponent(props: {
       </div>
       <div
         className='px-4 pt-4 pb-8 mb-4'
-        style={{ background: FSwapActionThemeColor }}
+        style={{ background: FoxSwapActionThemeColor }}
       >
         <div className='flex justify-center mb-4'>
-          <img className='w-12 h-12' src={FSwapLogoUrl} />
+          <img className='w-12 h-12' src={FoxSwapLogoUrl} />
         </div>
         <div className='text-sm'>
           Run your applet when 4swap Index(like price) match a target value.

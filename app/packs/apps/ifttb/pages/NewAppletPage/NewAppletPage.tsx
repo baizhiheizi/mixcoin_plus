@@ -7,8 +7,8 @@ import {
 import { ChooseAppletActionComponent } from 'apps/ifttb/components/ChooseAppletActionComponent/ChooseAppletActionComponent';
 import { ChooseAppletTriggerComponent } from 'apps/ifttb/components/ChooseAppletTriggerComponent/ChooseAppletTriggerComponent';
 import {
-  FSwapActionThemeColor,
-  FSwapLogoUrl,
+  FoxSwapActionThemeColor,
+  FoxSwapLogoUrl,
   MixSwapActionThemeColor,
   MixSwapLogoUrl,
 } from 'apps/ifttb/constants';
@@ -79,11 +79,11 @@ export default function NewAppletPage() {
         {appletForm?.applet4swapTrigger && (
           <div
             className='flex items-start p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer space-x-2'
-            style={{ background: FSwapActionThemeColor }}
+            style={{ background: FoxSwapActionThemeColor }}
             onClick={() => setEditingTrigger('applet4swapTrigger')}
           >
             <span className='text-xl'>If</span>
-            <img className='rounded-full w-7 h-7' src={FSwapLogoUrl} />
+            <img className='rounded-full w-7 h-7' src={FoxSwapLogoUrl} />
             <span className='leading-7'>
               {appletForm?.applet4swapTrigger?.description}
             </span>
@@ -111,10 +111,10 @@ export default function NewAppletPage() {
           <div
             className='flex items-start p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer space-x-2'
             onClick={() => setEditingAction('applet4swapAction')}
-            style={{ background: FSwapActionThemeColor }}
+            style={{ background: FoxSwapActionThemeColor }}
           >
             <span className='text-xl'>Then</span>
-            <img className='rounded-full w-7 h-7' src={FSwapLogoUrl} />
+            <img className='rounded-full w-7 h-7' src={FoxSwapLogoUrl} />
             <span className='leading-7'>
               {appletForm?.applet4swapAction?.description}
             </span>

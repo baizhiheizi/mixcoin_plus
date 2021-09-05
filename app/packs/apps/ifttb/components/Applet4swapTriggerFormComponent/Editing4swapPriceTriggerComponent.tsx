@@ -1,5 +1,5 @@
 import MixinAssetsComponent from 'apps/ifttb/components/MixinAssetsComponent/MixinAssetsComponent';
-import { FSwapActionThemeColor } from 'apps/ifttb/constants';
+import { FoxSwapActionThemeColor } from 'apps/ifttb/constants';
 import { MixinAsset } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { Picker, Popup } from 'zarm';
@@ -180,7 +180,7 @@ export default function Editing4swapPriceTriggerComponent(props: {
         className={`w-full p-4 text-xl text-center rounded-full cursor-pointer ${
           validateParams() ? 'opacity-100' : 'opacity-50'
         }`}
-        style={{ background: FSwapActionThemeColor }}
+        style={{ background: FoxSwapActionThemeColor }}
         onClick={() => createTrigger()}
       >
         Create Trigger

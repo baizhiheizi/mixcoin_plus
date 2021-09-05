@@ -1,5 +1,5 @@
 import { Close as CloseIcon, Down as DownIcon } from '@icon-park/react';
-import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
+import { FoxSwapActionThemeColor, FoxSwapLogoUrl } from 'apps/ifttb/constants';
 import { MixinAsset } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
@@ -19,7 +19,7 @@ export function Applet4swapActionFormComponent(props: {
     <div
       onClick={props.onClick}
       className={`p-4 mb-4 text-center rounded ${props.className}`}
-      style={{ background: FSwapActionThemeColor }}
+      style={{ background: FoxSwapActionThemeColor }}
     >
       {props.children}
     </div>
@@ -29,7 +29,7 @@ export function Applet4swapActionFormComponent(props: {
     <>
       <div
         className='relative p-4 text-xl font-bold'
-        style={{ background: FSwapActionThemeColor }}
+        style={{ background: FoxSwapActionThemeColor }}
       >
         <CloseIcon
           onClick={onCancel}
@@ -40,10 +40,10 @@ export function Applet4swapActionFormComponent(props: {
       </div>
       <div
         className='px-4 pt-4 pb-8 mb-4'
-        style={{ background: FSwapActionThemeColor }}
+        style={{ background: FoxSwapActionThemeColor }}
       >
         <div className='flex justify-center mb-4'>
-          <img className='w-12 h-12' src={FSwapLogoUrl} />
+          <img className='w-12 h-12' src={FoxSwapLogoUrl} />
         </div>
         <div className='text-sm'>
           Use 4swap to swap asset or add / remove liquidity.
@@ -225,7 +225,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
         className={`w-full p-4 text-xl text-center rounded-full cursor-pointer ${
           validateParams() ? 'opacity-100' : 'opacity-50'
         }`}
-        style={{ background: FSwapActionThemeColor }}
+        style={{ background: FoxSwapActionThemeColor }}
         onClick={() => createAction()}
       >
         Create Action

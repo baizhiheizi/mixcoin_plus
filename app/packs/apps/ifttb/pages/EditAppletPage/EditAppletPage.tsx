@@ -2,7 +2,7 @@ import {
   AlarmClock as AlarmClockIcon,
   Close as CloseIcon,
 } from '@icon-park/react';
-import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
+import { FoxSwapActionThemeColor, FoxSwapLogoUrl } from 'apps/ifttb/constants';
 import { useAppletForm, useCurrentUser } from 'apps/ifttb/contexts';
 import LoaderComponent from 'apps/shared/components/LoaderComponent/LoaderComponent';
 import {
@@ -100,10 +100,10 @@ function Applet4swapActionItem(props: {
   return (
     <div
       className='flex items-center p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer space-x-2'
-      style={{ background: FSwapActionThemeColor }}
+      style={{ background: FoxSwapActionThemeColor }}
     >
       <span className='text-xl'>Then</span>
-      <img className='w-6 h-6 rounded-full' src={FSwapLogoUrl} />
+      <img className='w-6 h-6 rounded-full' src={FoxSwapLogoUrl} />
       <span>{props.action.description}</span>
     </div>
   );
