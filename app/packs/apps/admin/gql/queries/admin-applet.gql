@@ -5,6 +5,8 @@ query AdminApplet($id: ID!) {
     title
     connected
     lastActiveAt
+    cron
+    frequency
     profit
     payTotal
     fillTotal

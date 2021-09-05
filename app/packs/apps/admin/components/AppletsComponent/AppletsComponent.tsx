@@ -58,6 +58,16 @@ export default function AppletsComponent(props: { userId?: string }) {
       title: 'Connected',
     },
     {
+      dataIndex: 'cron',
+      key: 'cron',
+      title: 'cron',
+    },
+    {
+      dataIndex: 'frequency',
+      key: 'frequency',
+      title: 'frequency',
+    },
+    {
       dataIndex: 'appletActivitiesCount',
       key: 'appletActivitiesCount',
       title: 'Activities',

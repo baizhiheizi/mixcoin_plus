@@ -160,6 +160,12 @@ class Applet < ApplicationRecord
     @profit ||= (fill_total_usd / pay_total_usd - 1).to_f
   end
 
+  def refresh_cron
+    _cron = applet_triggers.where(type: 'AppletDatetimeTrigger').first&.cron_value || default_cron
+    _frequency = Fugit.parse_cron _cron 
+    update cron: _cron, frequency: _frequency
+  end
+
   private
 
   def cron_job_name
