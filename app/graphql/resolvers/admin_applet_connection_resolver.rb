@@ -12,13 +12,13 @@ module Resolvers
       applets =
         case params[:filter]
         when 'all'
-          Applet.with_archived
+          Applet.all
         when 'archived'
           Applet.only_archived
         when 'connected'
           Applet.connected
         else
-          Applet.all
+          Applet.without_archived
         end
 
       applets = applets.where(user_id: params[:user_id]) if params[:user_id].present?

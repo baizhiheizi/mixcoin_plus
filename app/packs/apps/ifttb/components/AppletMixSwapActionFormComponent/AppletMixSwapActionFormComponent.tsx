@@ -1,17 +1,17 @@
 import { Close as CloseIcon, Down as DownIcon } from '@icon-park/react';
-import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
+import { MixSwapActionThemeColor, MixSwapLogoUrl } from 'apps/ifttb/constants';
 import { IAsset } from 'pando-sdk-js/dist/lake/types';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
 import LakeAssetsComponent from '../LakeAssetsComponent/LakeAssetsComponent';
 
-export function Applet4swapActionFormComponent(props: {
+export function AppletMixSwapActionFormComponent(props: {
   onCancel: () => any;
   onFinish: (action) => any;
 }) {
   const { onCancel, onFinish } = props;
   const [type, setType] = useState<null | 'swap' | 'add' | 'remove'>(null);
-  const FswapTriggerItem = (props: {
+  const MixSwapTriggerItem = (props: {
     className?: string;
     children: JSX.Element | string;
     onClick?: () => any;
@@ -19,7 +19,7 @@ export function Applet4swapActionFormComponent(props: {
     <div
       onClick={props.onClick}
       className={`p-4 mb-4 text-center rounded ${props.className}`}
-      style={{ background: FSwapActionThemeColor }}
+      style={{ background: MixSwapActionThemeColor }}
     >
       {props.children}
     </div>
@@ -29,7 +29,7 @@ export function Applet4swapActionFormComponent(props: {
     <>
       <div
         className='relative p-4 text-xl font-bold'
-        style={{ background: FSwapActionThemeColor }}
+        style={{ background: MixSwapActionThemeColor }}
       >
         <CloseIcon
           onClick={onCancel}
@@ -40,25 +40,20 @@ export function Applet4swapActionFormComponent(props: {
       </div>
       <div
         className='px-4 pt-4 pb-8 mb-4'
-        style={{ background: FSwapActionThemeColor }}
+        style={{ background: MixSwapActionThemeColor }}
       >
         <div className='flex justify-center mb-4'>
-          <img className='w-12 h-12' src={FSwapLogoUrl} />
+          <img className='w-12 h-12' src={MixSwapLogoUrl} />
         </div>
         <div className='text-sm'>
-          Use 4swap to swap asset or add / remove liquidity.
+          MixSwap is the MiFi DEX aggregation trading platform of Exin. Use
+          MixSwap to swap asset.
         </div>
       </div>
       <div className='p-4 bg-white'>
-        <FswapTriggerItem onClick={() => setType('swap')}>
+        <MixSwapTriggerItem onClick={() => setType('swap')}>
           Swap
-        </FswapTriggerItem>
-        <FswapTriggerItem className='opacity-50'>
-          Add liquidity
-        </FswapTriggerItem>
-        <FswapTriggerItem className='opacity-50'>
-          Remove liquidity
-        </FswapTriggerItem>
+        </MixSwapTriggerItem>
       </div>
       <Popup visible={Boolean(type)} onMaskClick={() => setType(null)}>
         <div className='relative overflow-scroll bg-white rounded-t-lg max-h-screen-3/4 min-h-screen-1/2'>
@@ -110,7 +105,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
   const createAction = () => {
     if (validateParams()) {
       const action = {
-        description: `swap ${payAmount} ${payAsset.symbol} to ${fillAsset.symbol} using 4swap`,
+        description: `swap ${payAmount} ${payAsset.symbol} to ${fillAsset.symbol} using MixSwap`,
         payAssetId: payAsset.id,
         fillAssetId: fillAsset.id,
         payAmount: parseFloat(payAmount),
@@ -225,7 +220,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
         className={`w-full p-4 text-xl text-center rounded-full cursor-pointer ${
           validateParams() ? 'opacity-100' : 'opacity-50'
         }`}
-        style={{ background: FSwapActionThemeColor }}
+        style={{ background: MixSwapActionThemeColor }}
         onClick={() => createAction()}
       >
         Create Action
@@ -257,7 +252,3 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
     </div>
   );
 }
-
-function EditAddLiquidityAction() {}
-
-function EditRemoveLiquidityAction() {}

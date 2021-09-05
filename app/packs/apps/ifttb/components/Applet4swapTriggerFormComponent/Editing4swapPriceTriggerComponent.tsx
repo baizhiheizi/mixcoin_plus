@@ -38,7 +38,7 @@ export default function Editing4swapPriceTriggerComponent(props: {
 
   const createTrigger = () => {
     const trigger = {
-      description: `price of ${
+      description: `price(from 4swap) of ${
         targetIndex === 'ask_price' ? 'selling' : 'buying'
       } ${baseAsset.symbol} ${
         compareAction === 'larger_than' ? '>=' : '<='

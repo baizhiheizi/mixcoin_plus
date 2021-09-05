@@ -8,7 +8,7 @@ class MigrateSwapOrderUsdAndAppletCount < ActiveRecord::Migration[6.1]
       activity.update applet_id: activity.applet_action.applet_id
     end
 
-    Applet.with_archived.find_each do |applet|
+    Applet.find_each do |applet|
       applet.update applet_activities_count: applet.applet_activities.count
     end
   end

@@ -16,7 +16,7 @@ module Resolvers
       user = User.find_by(id: params[:user_id])
       broker = MixinNetworkUser.find_by(mixin_uuid: params[:broker_id])
       arbitrage_order = ArbitrageOrder.find_by(id: params[:arbitrage_order_id])
-      applet = Applet.with_archived.find_by(id: params[:applet_id])
+      applet = Applet.find_by(id: params[:applet_id])
       orders =
         if user.present?
           user.swap_orders

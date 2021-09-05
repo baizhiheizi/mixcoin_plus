@@ -89,7 +89,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   def process!
     return if processed?
 
-    raise 'No Processor Implemented!' unless data.to_s.downcase.match?(/fee|commission|withdraw|arbitrage/) || data.blank? || user_id == MixcoinPlusBot.api.client_id
+    raise 'No Processor Implemented!' unless data.to_s.downcase.match?(/fee|commission|withdraw|arbitrage|deposit/) || data.blank? || user_id == MixcoinPlusBot.api.client_id
 
     process_booking_order_activit_bonus_snapshot
 
@@ -220,6 +220,6 @@ class MixinNetworkSnapshot < ApplicationRecord
     )
 
     self.type = 'OceanSnapshot' if decrypted_msgpack_memo.present? || base64_decoded_memo.match?(/^OCEAN/)
-    self.type = 'SwapSnapshot' if decrypted_json_memo.present? || base64_decoded_memo.match?(/^SWAP/) || (amount.negative? && opponent_id.blank?) || (amount.negative? && opponent_id == SwapOrders::MixSwappable::MIX_SWAP_CLIENT_ID)
+    self.type = 'SwapSnapshot' if decrypted_json_memo.present? || base64_decoded_memo.split('|')[0].in?(%w[SWAP 0 1]) || (amount.negative? && opponent_id.blank?)
   end
 end

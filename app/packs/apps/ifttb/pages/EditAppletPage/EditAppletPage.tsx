@@ -55,11 +55,11 @@ export default function EditAppletPage() {
             </div>
           ))}
           {applet.appletActions.map((action) => (
-            <div key={action.type}>
+            <div key={action.__typename}>
               {
                 {
                   Applet4swapAction: <Applet4swapActionItem action={action} />,
-                }[action.type]
+                }[action.__typename]
               }
             </div>
           ))}

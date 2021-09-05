@@ -11,7 +11,7 @@ module Resolvers
 
     def resolve(**params)
       user = User.find_by(id: params[:id])
-      applet = Applet.with_archived.find_by(id: params[:applet_id])
+      applet = Applet.find_by(id: params[:applet_id])
 
       applet_activities =
         if user.present?

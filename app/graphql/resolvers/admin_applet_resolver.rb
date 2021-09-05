@@ -7,7 +7,7 @@ module Resolvers
     type Types::AppletType, null: false
 
     def resolve(**params)
-      Applet.with_archived.find(params[:id])
+      Applet.find(params[:id])
     end
   end
 end
