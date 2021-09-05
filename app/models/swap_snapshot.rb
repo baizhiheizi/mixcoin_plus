@@ -101,8 +101,11 @@ class SwapSnapshot < MixinNetworkSnapshot
           trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _swap_order.trace_id)
         )
       end
-    when :reject_to_user, :refund_from_mix_swap
-      _swap_order.reject!
+    when :refund_from_mix_swap
+      _swap_order.refresh_state!
+      _swap_order.reject! if _swap_order.may_reject?
+    when :reject_to_user
+      _swap_order.reject! if _swap_order.may_reject?
     when :trade_from_mix_swap
       MixinTransfer.create_with(
         source: _swap_order,
