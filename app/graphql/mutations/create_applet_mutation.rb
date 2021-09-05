@@ -32,6 +32,13 @@ module Mutations
           }.merge(params[:applet_4swap_action])
         )
       end
+      if params[:applet_mix_swap_action].present?
+        applet.applet_actions.new(
+          {
+            type: 'AppletMixSwapAction'
+          }.merge(params[:applet_mix_swap_action])
+        )
+      end
 
       applet.save!
     end

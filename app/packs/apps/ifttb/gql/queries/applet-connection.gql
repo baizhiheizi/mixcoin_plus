@@ -27,6 +27,14 @@ query AppletConnection($after: String) {
           payAmount
           slippage
         }
+        ... on AppletMixSwapAction {
+          type
+          description
+          payAssetId
+          fillAssetId
+          payAmount
+          slippage
+        }
       }
     }
     pageInfo {

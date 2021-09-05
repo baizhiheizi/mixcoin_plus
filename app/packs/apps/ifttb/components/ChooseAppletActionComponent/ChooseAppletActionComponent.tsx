@@ -1,15 +1,23 @@
 import { Down as DownIcon } from '@icon-park/react';
-import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
+import {
+  FSwapActionThemeColor,
+  MixSwapActionThemeColor,
+  FSwapLogoUrl,
+  MixSwapLogoUrl,
+} from 'apps/ifttb/constants';
 import { useAppletForm } from 'apps/ifttb/contexts';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
 import { Applet4swapActionFormComponent } from '../Applet4swapActionFormComponent/Applet4swapActionFormComponent';
+import { AppletMixSwapActionFormComponent } from '../AppletMixSwapActionFormComponent/AppletMixSwapActionFormComponent';
 
 export function ChooseAppletActionComponent(props: {
   onCancel?: () => any;
   onOk?: () => any;
 }) {
-  const [actionType, setActionType] = useState<null | '4swap'>(null);
+  const [actionType, setActionType] = useState<null | '4swap' | 'mixSwap'>(
+    null,
+  );
   const { appletForm, setAppletForm } = useAppletForm();
   return (
     <>
@@ -27,6 +35,16 @@ export function ChooseAppletActionComponent(props: {
               <img className='w-7 h-7' src={FSwapLogoUrl} />
             </div>
             <div className='text-lg text-center'>4Swap</div>
+          </div>
+          <div
+            className='p-4 rounded-lg'
+            style={{ background: MixSwapActionThemeColor }}
+            onClick={() => setActionType('mixSwap')}
+          >
+            <div className='flex justify-center mb-2'>
+              <img className='w-7 h-7' src={MixSwapLogoUrl} />
+            </div>
+            <div className='text-lg text-center'>MixSwap</div>
           </div>
         </div>
       </div>
@@ -46,6 +64,20 @@ export function ChooseAppletActionComponent(props: {
                     setAppletForm({
                       ...appletForm,
                       applet4swapAction: action,
+                    });
+                    setActionType(null);
+                    props.onOk();
+                  }}
+                />
+              ),
+              mixSwap: (
+                <AppletMixSwapActionFormComponent
+                  onCancel={() => setActionType(null)}
+                  onFinish={(action) => {
+                    console.log(action);
+                    setAppletForm({
+                      ...appletForm,
+                      appletMixSwapAction: action,
                     });
                     setActionType(null);
                     props.onOk();

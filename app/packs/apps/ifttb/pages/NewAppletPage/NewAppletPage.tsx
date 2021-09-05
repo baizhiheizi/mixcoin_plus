@@ -6,7 +6,12 @@ import {
 } from '@icon-park/react';
 import { ChooseAppletActionComponent } from 'apps/ifttb/components/ChooseAppletActionComponent/ChooseAppletActionComponent';
 import { ChooseAppletTriggerComponent } from 'apps/ifttb/components/ChooseAppletTriggerComponent/ChooseAppletTriggerComponent';
-import { FSwapActionThemeColor, FSwapLogoUrl } from 'apps/ifttb/constants';
+import {
+  FSwapActionThemeColor,
+  FSwapLogoUrl,
+  MixSwapActionThemeColor,
+  MixSwapLogoUrl,
+} from 'apps/ifttb/constants';
 import { AppletFormContext } from 'apps/ifttb/contexts';
 import {
   CreateAppletMutationInput,
@@ -35,7 +40,7 @@ export default function NewAppletPage() {
     null | 'appletDatetimeTrigger' | 'applet4swapTrigger'
   >(null);
   const [editingAction, setEditingAction] = useState<
-    null | 'applet4swapAction'
+    null | 'applet4swapAction' | 'appletMixSwapAction'
   >(null);
 
   const appletFormTriggerCreated =
@@ -43,7 +48,8 @@ export default function NewAppletPage() {
   const mayAddTrigger = !(
     appletForm?.appletDatetimeTrigger && appletForm?.applet4swapTrigger
   );
-  const appletFormActionCreated = appletForm?.applet4swapAction;
+  const appletFormActionCreated =
+    appletForm?.applet4swapAction || appletForm?.appletMixSwapAction;
 
   return (
     <AppletFormContext.Provider value={{ appletForm, setAppletForm }}>
@@ -113,6 +119,18 @@ export default function NewAppletPage() {
               {appletForm?.applet4swapAction?.description}
             </span>
           </div>
+        ) : appletForm?.appletMixSwapAction ? (
+          <div
+            className='flex items-start p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer space-x-2'
+            onClick={() => setEditingAction('appletMixSwapAction')}
+            style={{ background: MixSwapActionThemeColor }}
+          >
+            <span className='text-xl'>Then</span>
+            <img className='rounded-full w-7 h-7' src={MixSwapLogoUrl} />
+            <span className='leading-7'>
+              {appletForm?.appletMixSwapAction?.description}
+            </span>
+          </div>
         ) : (
           <div
             className={`flex items-center justify-around p-4 mb-8 text-3xl font-bold rounded-lg bg-dark ${
@@ -145,6 +163,7 @@ export default function NewAppletPage() {
                       appletForm.applet4swapTrigger?.description,
                       'then',
                       appletForm.applet4swapAction?.description,
+                      appletForm.appletMixSwapAction?.description,
                     ]
                       .filter((item) => !!item)
                       .join(', '),
@@ -206,6 +225,14 @@ export default function NewAppletPage() {
                   case 'applet4swapAction':
                     setAppletForm(
                       Object.assign({ ...appletForm, applet4swapAction: null }),
+                    );
+                    break;
+                  case 'appletMixSwapAction':
+                    setAppletForm(
+                      Object.assign({
+                        ...appletForm,
+                        appletMixSwapAction: null,
+                      }),
                     );
                     break;
                   default:

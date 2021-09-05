@@ -10,7 +10,7 @@ module Types
 
     def applet
       BatchLoader::GraphQL.for(object.applet_id).batch do |applet_ids, loader|
-        Applet.with_archived.where(id: applet_ids).each { |applet| loader.call(applet.id, applet) }
+        Applet.where(id: applet_ids).each { |applet| loader.call(applet.id, applet) }
       end
     end
   end

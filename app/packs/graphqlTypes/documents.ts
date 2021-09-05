@@ -193,7 +193,7 @@ export type AppletAction = {
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
 };
 
-export type AppletActionUnion = Applet4swapAction;
+export type AppletActionUnion = Applet4swapAction | AppletMixSwapAction;
 
 export type AppletActivity = {
   __typename?: 'AppletActivity';
@@ -267,6 +267,28 @@ export type AppletEdge = {
   cursor: Scalars['String'];
   /** The item at the end of the edge. */
   node?: Maybe<Applet>;
+};
+
+export type AppletMixSwapAction = {
+  __typename?: 'AppletMixSwapAction';
+  applet: Applet;
+  createdAt: Scalars['ISO8601DateTime'];
+  description?: Maybe<Scalars['String']>;
+  fillAssetId: Scalars['String'];
+  id: Scalars['ID'];
+  payAmount: Scalars['Float'];
+  payAssetId: Scalars['String'];
+  slippage: Scalars['Float'];
+  type: Scalars['String'];
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
+export type AppletMixSwapActionInput = {
+  description?: Maybe<Scalars['String']>;
+  payAssetId: Scalars['String'];
+  fillAssetId: Scalars['String'];
+  payAmount: Scalars['Float'];
+  slippage: Scalars['Float'];
 };
 
 export type AppletTriggerUnion = Applet4swapTrigger | AppletDatetimeTrigger;
@@ -445,6 +467,7 @@ export type CreateAppletMutationInput = {
   appletDatetimeTrigger?: Maybe<AppletDatetimeTriggerInput>;
   applet4swapTrigger?: Maybe<Applet4swapTriggerInput>;
   applet4swapAction?: Maybe<Applet4swapActionInput>;
+  appletMixSwapAction?: Maybe<AppletMixSwapActionInput>;
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: Maybe<Scalars['String']>;
 };
@@ -2167,14 +2190,14 @@ export type AppletConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger' } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } }, currentUser?: Maybe<{ __typename?: 'User', ifttbBrokerId: string, ifttbRole: string, mayCreateApplet: boolean }> };
+export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger' } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } | { __typename?: 'AppletMixSwapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } }, currentUser?: Maybe<{ __typename?: 'User', ifttbBrokerId: string, ifttbRole: string, mayCreateApplet: boolean }> };
 
 export type AppletQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', type: string, description?: Maybe<string> } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> } };
+export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', type: string, description?: Maybe<string> } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } | { __typename?: 'AppletMixSwapAction' }>> } };
 
 export type IfttbBrokerBalanceQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5636,6 +5659,14 @@ export const AppletConnectionDocument = gql`
       }
       appletActions {
         ... on Applet4swapAction {
+          type
+          description
+          payAssetId
+          fillAssetId
+          payAmount
+          slippage
+        }
+        ... on AppletMixSwapAction {
           type
           description
           payAssetId

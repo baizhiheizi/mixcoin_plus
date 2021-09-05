@@ -63,7 +63,7 @@ class SwapSnapshot < MixinNetworkSnapshot
       raise 'Invalid Payment' unless (amount - _swap_order.pay_amount).zero? && asset_id == _swap_order.pay_asset_id
 
       _swap_order.pay!
-    when :swap_to_fox
+    when :swap_to_fox, :swap_to_mix_swap
       _swap_order.swap! if _swap_order.may_swap?
     when :trade_from_fox
       case _swap_order
@@ -83,7 +83,7 @@ class SwapSnapshot < MixinNetworkSnapshot
         )
       end
     when :trade_to_user
-      _swap_order.trade!
+      _swap_order.trade! if _swap_order.may_trade?
     when :reject_from_fox
       case _swap_order
       when ArbitrageSwapOrder, AppletActivitySwapOrder

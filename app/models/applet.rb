@@ -34,9 +34,8 @@ class Applet < ApplicationRecord
 
   scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
   scope :connected, -> { where(connected: true) }
-  scope :only_archived, -> { unscope(where: :archived_at).where.not(archived_at: nil) }
-  scope :with_archived, -> { unscope(where: :archived_at) }
-  default_scope { where(archived_at: nil) }
+  scope :only_archived, -> { where.not(archived_at: nil) }
+  scope :without_archived, -> { where(archived_at: nil) }
 
   def may_active?
     applet_triggers.map(&:match?).all?(true)
@@ -116,7 +115,7 @@ class Applet < ApplicationRecord
   end
 
   def traded_swap_orders
-    @traded_swap_orders ||= swap_orders.traded
+    @traded_swap_orders ||= swap_orders.where(state: :traded)
   end
 
   def pay_asset

@@ -16,7 +16,7 @@ class AppletActivityStateNotification < ApplicationNotification
 
   def swap_order_detail
     swap_orders.map do |swap_order|
-      _provider =
+      _service =
         case swap_order
         when AppletActivitySwapOrder
           '4swap'
@@ -26,10 +26,10 @@ class AppletActivityStateNotification < ApplicationNotification
 
       _pay_amount = swap_order.pay_amount - swap_order.refund_amount
       <<~DATA
-        - #{_provider}
-        - ↔️: #{_pay_amount} #{swap_order.pay_asset.symbol} -> #{swap_order.fill_amount} #{swap_order.fill_asset.symbol}
-        - 💰: 1 #{swap_order.fill_asset.symbol} / #{(_pay_amount / swap_order.fill_amount).round(8)} #{swap_order.pay_asset.symbol}
-        - 💰: 1 #{swap_order.pay_asset.symbol} / #{(swap_order.fill_amount / _pay_amount).round(8)} #{swap_order.fill_asset.symbol}
+        - 🤖: #{_service}
+        - 🔁: #{_pay_amount} #{swap_order.pay_asset.symbol} -> #{swap_order.fill_amount} #{swap_order.fill_asset.symbol}
+        - 🏷️: 1 #{swap_order.fill_asset.symbol} ≈ #{(_pay_amount / swap_order.fill_amount).round(8)} #{swap_order.pay_asset.symbol}
+        - 🏷️: 1 #{swap_order.pay_asset.symbol} ≈ #{(swap_order.fill_amount / _pay_amount).round(8)} #{swap_order.fill_asset.symbol}
       DATA
     end.join("\n\n")
   end
@@ -48,7 +48,10 @@ class AppletActivityStateNotification < ApplicationNotification
   end
 
   def message
-    "Applet ##{applet_activity&.applet&.number} activity #{applet_activity.state}"
+    <<~MSG
+      Applet ##{applet_activity.applet.number} activity #{applet_activity.state}.
+      (#{applet_activity.applet.applet_actions.map(&:description).join(';')})
+    MSG
   end
 
   def should_deliver_via_bot?
@@ -56,6 +59,6 @@ class AppletActivityStateNotification < ApplicationNotification
   end
 
   def not_from_mixcoin_bot?
-    applet_activity&.applet&.user_id != MixcoinPlusBot.api.client_id
+    applet_activity.applet&.user_id != MixcoinPlusBot.api.client_id
   end
 end
