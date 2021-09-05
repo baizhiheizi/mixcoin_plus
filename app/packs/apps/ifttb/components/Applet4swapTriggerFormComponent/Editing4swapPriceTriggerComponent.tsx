@@ -1,14 +1,14 @@
-import LakeAssetsComponent from 'apps/ifttb/components/LakeAssetsComponent/LakeAssetsComponent';
+import MixinAssetsComponent from 'apps/ifttb/components/MixinAssetsComponent/MixinAssetsComponent';
 import { FSwapActionThemeColor } from 'apps/ifttb/constants';
-import { IAsset } from 'pando-sdk-js/dist/lake/types';
+import { MixinAsset } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { Picker, Popup } from 'zarm';
 
 export default function Editing4swapPriceTriggerComponent(props: {
   onFinish: (trigger) => any;
 }) {
-  const [baseAsset, setBaseAsset] = useState<null | IAsset>(null);
-  const [quoteAsset, setQuoteAsset] = useState<null | IAsset>(null);
+  const [baseAsset, setBaseAsset] = useState<null | MixinAsset>(null);
+  const [quoteAsset, setQuoteAsset] = useState<null | MixinAsset>(null);
   const [selectingAsset, setSelectingAsset] = useState<
     null | 'baseAsset' | 'quoteAsset'
   >(null);
@@ -43,8 +43,8 @@ export default function Editing4swapPriceTriggerComponent(props: {
       } ${baseAsset.symbol} ${
         compareAction === 'larger_than' ? '>=' : '<='
       } ${targetValue} ${quoteAsset.symbol}`,
-      baseAssetId: baseAsset.id,
-      quoteAssetId: quoteAsset.id,
+      baseAssetId: baseAsset.assetId,
+      quoteAssetId: quoteAsset.assetId,
       targetIndex,
       targetValue: parseFloat(targetValue),
       compareAction,
@@ -65,11 +65,11 @@ export default function Editing4swapPriceTriggerComponent(props: {
                 <div className='relative'>
                   <img
                     className='w-12 h-12 p-1 rounded-full'
-                    src={baseAsset.logo}
+                    src={baseAsset.iconUrl}
                   />
                   <img
                     className='absolute bottom-0 right-0 w-4 h-4 rounded'
-                    src={baseAsset.chain.logo}
+                    src={baseAsset.chainAsset.iconUrl}
                   />
                 </div>
                 <span>{baseAsset.symbol}</span>
@@ -90,11 +90,11 @@ export default function Editing4swapPriceTriggerComponent(props: {
                 <div className='relative'>
                   <img
                     className='w-12 h-12 p-1 rounded-full'
-                    src={quoteAsset.logo}
+                    src={quoteAsset.iconUrl}
                   />
                   <img
                     className='absolute bottom-0 right-0 w-4 h-4 rounded'
-                    src={quoteAsset.chain.logo}
+                    src={quoteAsset.chainAsset.iconUrl}
                   />
                 </div>
                 <span>{quoteAsset.symbol}</span>
@@ -189,17 +189,18 @@ export default function Editing4swapPriceTriggerComponent(props: {
         visible={Boolean(selectingAsset)}
         onMaskClick={() => setSelectingAsset(null)}
       >
-        <LakeAssetsComponent
+        <MixinAssetsComponent
+          source='4swap'
           onClick={(asset) => {
             switch (selectingAsset) {
               case 'baseAsset':
-                if (asset.id != quoteAsset?.id) {
+                if (asset.assetId != quoteAsset?.assetId) {
                   setBaseAsset(asset);
                   setSelectingAsset(null);
                 }
                 break;
               case 'quoteAsset':
-                if (asset.id != baseAsset?.id) {
+                if (asset.assetId != baseAsset?.assetId) {
                   setQuoteAsset(asset);
                   setSelectingAsset(null);
                 }

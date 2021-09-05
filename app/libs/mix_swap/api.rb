@@ -30,5 +30,26 @@ module MixSwap
       path = "/api/v1/order/#{order_id}"
       client.get path
     end
+
+    def assets
+      path = '/api/v1/assets'
+      client.get path
+    end
+
+    def tradable_asset_ids
+      _cache = Global.redis.get('mix_swap_tradable_asset_ids')
+      _cache = refresh_traddable_asset_ids if _cache.blank?
+
+      JSON.parse _cache
+    rescue JSON::ParserError
+      []
+    end
+
+    def refresh_traddable_asset_ids
+      _ids = assets['data'].map(&->(asset) {asset['uuid']})
+      _ids.uniq!
+      Global.redis.set 'mix_swap_tradable_asset_ids', _ids, ex: 1.day
+      _ids.to_json
+    end
   end
 end

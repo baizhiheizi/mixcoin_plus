@@ -1,9 +1,10 @@
 import { Close as CloseIcon, Down as DownIcon } from '@icon-park/react';
 import { MixSwapActionThemeColor, MixSwapLogoUrl } from 'apps/ifttb/constants';
+import { MixinAsset } from 'graphqlTypes';
 import { IAsset } from 'pando-sdk-js/dist/lake/types';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
-import LakeAssetsComponent from '../LakeAssetsComponent/LakeAssetsComponent';
+import MixinAssetsComponent from '../MixinAssetsComponent/MixinAssetsComponent';
 
 export function AppletMixSwapActionFormComponent(props: {
   onCancel: () => any;
@@ -79,19 +80,19 @@ export function AppletMixSwapActionFormComponent(props: {
 }
 
 function EditSwapAction(props: { onFinish: (action) => any }) {
-  const [payAsset, setPayAsset] = useState<null | IAsset>(null);
+  const [payAsset, setPayAsset] = useState<null | MixinAsset>(null);
   const [payAmount, setPayAmount] = useState<null | string>('');
-  const [fillAsset, setFillAsset] = useState<null | IAsset>(null);
+  const [fillAsset, setFillAsset] = useState<null | MixinAsset>(null);
   const [selectingAsset, setSelectingAsset] = useState<
     null | 'payAsset' | 'fillAsset'
   >(null);
   const [slippage, setSlippage] = useState<0.001 | 0.005 | 0.01>(0.001);
-  const payValue = payAsset?.price * parseFloat(payAmount);
+  const payValue = payAsset?.priceUsd * parseFloat(payAmount);
 
   const validateParams = () => {
     if (
-      !payAsset?.id ||
-      !fillAsset?.id ||
+      !payAsset?.assetId ||
+      !fillAsset?.assetId ||
       !parseFloat(payAmount) ||
       payValue < 0.1 ||
       !slippage
@@ -106,8 +107,8 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
     if (validateParams()) {
       const action = {
         description: `swap ${payAmount} ${payAsset.symbol} to ${fillAsset.symbol} using MixSwap`,
-        payAssetId: payAsset.id,
-        fillAssetId: fillAsset.id,
+        payAssetId: payAsset.assetId,
+        fillAssetId: fillAsset.assetId,
         payAmount: parseFloat(payAmount),
         slippage,
       };
@@ -128,11 +129,11 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
                 <div className='relative'>
                   <img
                     className='p-1 rounded-full w-14 h-14'
-                    src={payAsset.logo}
+                    src={payAsset.iconUrl}
                   />
                   <img
                     className='absolute bottom-0 right-0 w-6 h-6 rounded'
-                    src={payAsset.chain.logo}
+                    src={payAsset.chainAsset.iconUrl}
                   />
                 </div>
                 <span>{payAsset.symbol}</span>
@@ -166,11 +167,11 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
               <div className='relative'>
                 <img
                   className='p-1 rounded-full w-14 h-14'
-                  src={fillAsset.logo}
+                  src={fillAsset.iconUrl}
                 />
                 <img
                   className='absolute bottom-0 right-0 w-6 h-6 rounded'
-                  src={fillAsset.chain.logo}
+                  src={fillAsset.chainAsset.iconUrl}
                 />
               </div>
               <span>{fillAsset.symbol}</span>
@@ -229,18 +230,19 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
         visible={Boolean(selectingAsset)}
         onMaskClick={() => setSelectingAsset(null)}
       >
-        <LakeAssetsComponent
+        <MixinAssetsComponent
+          source='MixSwap'
           onClick={(asset) => {
             switch (selectingAsset) {
               case 'payAsset':
-                if (asset.id != fillAsset?.id) {
+                if (asset.assetId != fillAsset?.assetId) {
                   setPayAsset(asset);
                   setPayAmount('1');
                   setSelectingAsset(null);
                 }
                 break;
               case 'fillAsset':
-                if (asset.id != payAsset?.id) {
+                if (asset.assetId != payAsset?.assetId) {
                   setFillAsset(asset);
                   setSelectingAsset(null);
                 }

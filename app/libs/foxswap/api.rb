@@ -26,6 +26,32 @@ module Foxswap
       client.get path, headers: { Authorization: authorization }
     end
 
+    def pairs
+      path = '/api/pairs'
+      client.get path
+    end
+
+    def tradable_asset_ids
+      _cache = Global.redis.get('4swap_tradable_asset_ids')
+      _cache = refresh_traddable_asset_ids if _cache.blank?
+
+      JSON.parse _cache
+    rescue JSON::ParserError
+      []
+    end
+
+    def refresh_traddable_asset_ids
+      _pairs = pairs['data']['pairs']
+      _ids = []
+      _pairs.each do |pair|
+        _ids.push(pair['base_asset_id'])
+        _ids.push(pair['quote_asset_id'])
+      end
+      _ids.uniq!
+      Global.redis.set '4swap_tradable_asset_ids', _ids, ex: 1.day
+      _ids.to_json
+    end
+
     def actions(**options)
       path = '/api/actions'
       payload = {

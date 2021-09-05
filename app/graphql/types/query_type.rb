@@ -61,5 +61,6 @@ module Types
     field :applet_activity_connection, resolver: Resolvers::AppletActivityConnectionResolver
     field :ifttb_broker_balance, resolver: Resolvers::IfttbBrokerBalanceResolver
     field :ifttb_broker_snapshots, resolver: Resolvers::IfttbBrokerSnapshotsResolver
+    field :mixin_assets, resolver: Resolvers::MixinAssetsResolver
   end
 end
