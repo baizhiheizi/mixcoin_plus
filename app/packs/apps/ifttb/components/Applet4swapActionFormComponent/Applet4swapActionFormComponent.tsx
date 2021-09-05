@@ -175,7 +175,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
                 />
                 <img
                   className='absolute bottom-0 right-0 w-6 h-6 rounded'
-                  src={fillAsset.chainAsset.logo}
+                  src={fillAsset.chainAsset.iconUrl}
                 />
               </div>
               <span>{fillAsset.symbol}</span>
