@@ -1,6 +1,9 @@
 sync_mixin_asset_price_worker:
-  cron: '*/10 * * * *'
+  cron: '*/15 * * * *'
   class: 'MixinAssetSyncPriceWorker'
+batch_mixin_transfer_process_worker:
+  cron: '*/2 * * * *'
+  class: 'BatchMixinTransferProcessWorker'
 recommended_markets_sync_trades_from_engine_worker:
   cron: '* * * * *'
   class: 'RecommendedMarketsSyncTradesFromEngineWorker'
