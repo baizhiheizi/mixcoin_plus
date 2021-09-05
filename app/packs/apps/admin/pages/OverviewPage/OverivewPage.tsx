@@ -57,7 +57,7 @@ function StatisticAllComponent() {
         />
         <Statistic
           title='Applet Activity Swap Orders Traded Total(USD)'
-          value={appStatistic.appletActivitySwapOrdersTradedTotalUsd}
+          value={appStatistic.appletActivitySwapOrdersTradedTotalUsd.toFixed(2)}
         />
         <Statistic
           title='Ocean Orders Count'
@@ -67,21 +67,21 @@ function StatisticAllComponent() {
         <Statistic
           title='Match Total(USD)'
           precision={2}
-          value={appStatistic.matchTotalUsd}
+          value={appStatistic.matchTotalUsd.toFixed(2)}
         />
         <Statistic
           title='Fee Total(USD)'
-          value={appStatistic.feeTotalUsd}
+          value={appStatistic.feeTotalUsd.toFixed(2)}
           precision={2}
         />
         <Statistic
           title='Invitation Commission Total(USD)'
-          value={appStatistic.invitationCommissionTotalUsd}
+          value={appStatistic.invitationCommissionTotalUsd.toFixed(2)}
           precision={2}
         />
         <Statistic
           title='Group Owner Commission Total(USD)'
-          value={appStatistic.groupOwnerCommissionTotalUsd}
+          value={appStatistic.groupOwnerCommissionTotalUsd.toFixed(2)}
           precision={2}
         />
         <Statistic
@@ -160,7 +160,7 @@ function Statistic24hComponent() {
         />
         <Statistic
           title='Applet Activity Swap Orders Traded Total(USD)'
-          value={appStatistic.appletActivitySwapOrdersTradedTotalUsd}
+          value={appStatistic.appletActivitySwapOrdersTradedTotalUsd.toFixed(2)}
           valueStyle={{
             color:
               appStatistic.appletActivitySwapOrdersTradedTotalUsd > 0
@@ -192,7 +192,7 @@ function Statistic24hComponent() {
         />
         <Statistic
           title='Match Total(USD)'
-          value={appStatistic.matchTotalUsd}
+          value={appStatistic.matchTotalUsd.toFixed(2)}
           precision={4}
           valueStyle={{
             color: appStatistic.matchTotalUsd > 0 ? '#3f8600' : '#cf1322',
@@ -201,7 +201,7 @@ function Statistic24hComponent() {
         />
         <Statistic
           title='Fee Total(USD)'
-          value={appStatistic.feeTotalUsd}
+          value={appStatistic.feeTotalUsd.toFixed(2)}
           precision={4}
           valueStyle={{
             color: appStatistic.feeTotalUsd > 0 ? '#3f8600' : '#cf1322',
@@ -210,7 +210,7 @@ function Statistic24hComponent() {
         />
         <Statistic
           title='Invitation Commission Total(USD)'
-          value={appStatistic.invitationCommissionTotalUsd}
+          value={appStatistic.invitationCommissionTotalUsd.toFixed(2)}
           precision={4}
           valueStyle={{
             color:
@@ -224,7 +224,7 @@ function Statistic24hComponent() {
         />
         <Statistic
           title='Group Owner Commission Total(USD)'
-          value={appStatistic.groupOwnerCommissionTotalUsd}
+          value={appStatistic.groupOwnerCommissionTotalUsd.toFixed(2)}
           precision={4}
           valueStyle={{
             color:
