@@ -37,12 +37,20 @@ class AppletMixSwapAction < AppletAction
     @fill_asset ||= MixinAsset.find_by(asset_id: fill_asset_id)
   end
 
-  def fill_amount
-    @fill_amount ||= MixSwap.api.pre_order(
+  def route
+    @route ||= MixSwap.api.route(
       pay_asset_id: pay_asset_id,
       fill_asset_id: fill_asset_id,
       pay_amount: pay_amount
-    )&.[]('data')&.[]('estimateReceiveAmount')
+    )&.[]('data')
+  end
+
+  def fill_amount
+    @fill_amount ||= route&.[]('estimateReceiveAmount')
+  end
+
+  def route_id
+    @route_id ||= route&.[]('id')
   end
 
   def minimum_fill
@@ -79,7 +87,8 @@ class AppletMixSwapAction < AppletAction
         pay_asset_id: pay_asset_id,
         pay_amount: pay_amount.to_f,
         fill_asset_id: fill_asset_id,
-        min_amount: minimum_fill
+        min_amount: minimum_fill,
+        route_id: route_id
       ).find_or_create_by(
         trace_id: activity.id
       )

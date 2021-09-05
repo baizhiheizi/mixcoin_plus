@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_04_034924) do
+ActiveRecord::Schema.define(version: 2021_09_05_144742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -348,6 +348,7 @@ ActiveRecord::Schema.define(version: 2021_09_04_034924) do
     t.string "type"
     t.decimal "pay_amount_usd"
     t.decimal "refund_amount", default: "0.0"
+    t.string "route_id"
     t.index ["applet_activity_id"], name: "index_swap_orders_on_applet_activity_id"
     t.index ["arbitrage_order_id"], name: "index_swap_orders_on_arbitrage_order_id"
     t.index ["broker_id"], name: "index_swap_orders_on_broker_id"
