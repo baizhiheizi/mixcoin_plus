@@ -31,6 +31,6 @@ module Users::Ifttbable
   end
 
   def may_create_applet?
-    ifttb_pro? || applets.count < 3
+    ifttb_pro? || applets.without_archived.count < 3
   end
 end
