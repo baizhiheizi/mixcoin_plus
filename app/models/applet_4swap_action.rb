@@ -42,11 +42,13 @@ class Applet4swapAction < AppletAction
       pay_asset_id: pay_asset_id,
       fill_asset_id: fill_asset_id,
       funds: pay_amount
-    )&.[]('data')&.[]('fill_amount')&.to_f
+    )&.[]('data')&.[]('fill_amount')
   end
 
   def minimum_fill
-    (fill_amount * (1 - slippage)).floor(8)
+    return if fill_amount.blank?
+
+    (fill_amount.to_f * (1 - slippage)).floor(8)
   end
 
   def may_active?
@@ -77,7 +79,7 @@ class Applet4swapAction < AppletAction
         pay_asset_id: pay_asset_id,
         pay_amount: pay_amount.to_f,
         fill_asset_id: fill_asset_id,
-        min_amount: minimum_fill.present? ? format('%.8f', minimum_fill) : nil
+        min_amount: minimum_fill
       ).find_or_create_by(
         trace_id: activity.id
       )

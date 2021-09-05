@@ -79,7 +79,7 @@ class AppletMixSwapAction < AppletAction
         pay_asset_id: pay_asset_id,
         pay_amount: pay_amount.to_f,
         fill_asset_id: fill_asset_id,
-        min_amount: minimum_fill.present? ? format('%.8f', minimum_fill) : nil
+        min_amount: minimum_fill
       ).find_or_create_by(
         trace_id: activity.id
       )

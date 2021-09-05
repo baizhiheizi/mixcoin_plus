@@ -49,7 +49,7 @@ module SwapOrders::MixSwappable
   end
 
   def memo
-    Base64.strict_encode64("0|#{fill_asset_id}||#{min_amount}")
+    Base64.strict_encode64("0|#{fill_asset_id}||#{min_amount || format('%.8f', min_amount)}")
   end
 
   def sync_order
