@@ -9,8 +9,9 @@ module Types
     field :applet_activities_count, Int, null: false
     field :last_active_at, GraphQL::Types::ISO8601DateTime, null: true
     field :archived_at, GraphQL::Types::ISO8601DateTime, null: true
+    field :cron, String, null: false
+    field :frequency, Int, null: false
 
-    field :profit, Float, null: true
     field :pay_asset, Types::MixinAssetType, null: true
     field :pay_total, Float, null: true
     field :pay_total_usd, Float, null: true

@@ -122,9 +122,11 @@ export type Applet = {
   archivedAt?: Maybe<Scalars['ISO8601DateTime']>;
   connected: Scalars['Boolean'];
   createdAt: Scalars['ISO8601DateTime'];
+  cron: Scalars['String'];
   fillAsset?: Maybe<MixinAsset>;
   fillTotal?: Maybe<Scalars['Float']>;
   fillTotalUsd?: Maybe<Scalars['Float']>;
+  frequency: Scalars['Int'];
   id: Scalars['ID'];
   lastActiveAt?: Maybe<Scalars['ISO8601DateTime']>;
   number?: Maybe<Scalars['String']>;
@@ -1738,14 +1740,14 @@ export type AdminAppletConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AdminAppletConnectionQuery = { __typename?: 'Query', adminAppletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: Maybe<any>, archivedAt?: Maybe<any>, createdAt: any, user: { __typename?: 'User', id: string, mixinUuid: string, mixinId: string, name: string, avatar: string } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
+export type AdminAppletConnectionQuery = { __typename?: 'Query', adminAppletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: Maybe<any>, cron: string, frequency: number, archivedAt?: Maybe<any>, createdAt: any, user: { __typename?: 'User', id: string, mixinUuid: string, mixinId: string, name: string, avatar: string } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AdminAppletQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AdminAppletQuery = { __typename?: 'Query', adminApplet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, archivedAt?: Maybe<any>, createdAt: any, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, user: { __typename?: 'User', id: string, mixinUuid: string, mixinId: string, name: string, avatar: string } } };
+export type AdminAppletQuery = { __typename?: 'Query', adminApplet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, cron: string, frequency: number, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, archivedAt?: Maybe<any>, createdAt: any, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, user: { __typename?: 'User', id: string, mixinUuid: string, mixinId: string, name: string, avatar: string } } };
 
 export type AdminArbitrageOrderConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
@@ -2624,6 +2626,8 @@ export const AdminAppletConnectionDocument = gql`
       connected
       appletActivitiesCount
       lastActiveAt
+      cron
+      frequency
       user {
         id
         mixinUuid
@@ -2679,6 +2683,8 @@ export const AdminAppletDocument = gql`
     title
     connected
     lastActiveAt
+    cron
+    frequency
     profit
     payTotal
     fillTotal

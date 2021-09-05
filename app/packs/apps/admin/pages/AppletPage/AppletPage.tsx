@@ -57,6 +57,10 @@ export default function AppletPage() {
         <Descriptions.Item label='profit'>
           {applet.profit ? `${(applet.profit * 100).toFixed(2)}%` : '0%'}
         </Descriptions.Item>
+        <Descriptions.Item label='cron'>{applet.cron || '-'}</Descriptions.Item>
+        <Descriptions.Item label='frequency'>
+          {applet.frequency || '-'}
+        </Descriptions.Item>
         <Descriptions.Item label='lastActiveAt'>
           {applet.lastActiveAt || '-'}
         </Descriptions.Item>
