@@ -1,0 +1,12 @@
+query MixinAssets($source: String) {
+  mixinAssets(source: $source) {
+    name
+    assetId
+    symbol
+    iconUrl
+    priceUsd
+    chainAsset {
+      iconUrl
+    }
+  }
+}

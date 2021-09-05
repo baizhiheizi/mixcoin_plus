@@ -198,6 +198,14 @@ export default function NewAppletPage() {
                       }),
                     );
                     break;
+                  case 'applet4swapTrigger':
+                    setAppletForm(
+                      Object.assign({
+                        ...appletForm,
+                        applet4swapTrigger: null,
+                      }),
+                    );
+                    break;
                   default:
                     break;
                 }

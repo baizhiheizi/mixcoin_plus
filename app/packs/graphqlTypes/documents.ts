@@ -1089,6 +1089,7 @@ export type Query = {
   marketPriceChartData: Scalars['JSON'];
   marketTradeConnection: TradeConnection;
   mixinAssetConnection: MixinAssetConnection;
+  mixinAssets: Array<MixinAsset>;
   oceanOrder: OceanOrder;
   oceanOrderConnection: OceanOrderConnection;
   oceanSnapshotConnection: MixinNetworkSnapshotConnection;
@@ -1444,6 +1445,11 @@ export type QueryMixinAssetConnectionArgs = {
   before?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryMixinAssetsArgs = {
+  source?: Maybe<Scalars['String']>;
 };
 
 
@@ -2212,6 +2218,13 @@ export type IfttbBrokerSnapshotsQueryVariables = Exact<{
 
 
 export type IfttbBrokerSnapshotsQuery = { __typename?: 'Query', ifttbBrokerSnapshots: Array<{ __typename?: 'MixinNetworkSnapshot', amount: number, snapshotId: string, traceId?: Maybe<string>, opponentId?: Maybe<string>, data?: Maybe<string>, createdAt: any, asset: { __typename?: 'MixinAsset', name: string, symbol: string, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> } }> };
+
+export type MixinAssetsQueryVariables = Exact<{
+  source?: Maybe<Scalars['String']>;
+}>;
+
+
+export type MixinAssetsQuery = { __typename?: 'Query', mixinAssets: Array<{ __typename?: 'MixinAsset', name: string, assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> }> };
 
 
 export const AdminArbitragerWithdrawBalanceDocument = gql`
@@ -5885,3 +5898,45 @@ export function useIfttbBrokerSnapshotsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type IfttbBrokerSnapshotsQueryHookResult = ReturnType<typeof useIfttbBrokerSnapshotsQuery>;
 export type IfttbBrokerSnapshotsLazyQueryHookResult = ReturnType<typeof useIfttbBrokerSnapshotsLazyQuery>;
 export type IfttbBrokerSnapshotsQueryResult = Apollo.QueryResult<IfttbBrokerSnapshotsQuery, IfttbBrokerSnapshotsQueryVariables>;
+export const MixinAssetsDocument = gql`
+    query MixinAssets($source: String) {
+  mixinAssets(source: $source) {
+    name
+    assetId
+    symbol
+    iconUrl
+    priceUsd
+    chainAsset {
+      iconUrl
+    }
+  }
+}
+    `;
+
+/**
+ * __useMixinAssetsQuery__
+ *
+ * To run a query within a React component, call `useMixinAssetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMixinAssetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMixinAssetsQuery({
+ *   variables: {
+ *      source: // value for 'source'
+ *   },
+ * });
+ */
+export function useMixinAssetsQuery(baseOptions?: Apollo.QueryHookOptions<MixinAssetsQuery, MixinAssetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MixinAssetsQuery, MixinAssetsQueryVariables>(MixinAssetsDocument, options);
+      }
+export function useMixinAssetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MixinAssetsQuery, MixinAssetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MixinAssetsQuery, MixinAssetsQueryVariables>(MixinAssetsDocument, options);
+        }
+export type MixinAssetsQueryHookResult = ReturnType<typeof useMixinAssetsQuery>;
+export type MixinAssetsLazyQueryHookResult = ReturnType<typeof useMixinAssetsLazyQuery>;
+export type MixinAssetsQueryResult = Apollo.QueryResult<MixinAssetsQuery, MixinAssetsQueryVariables>;
