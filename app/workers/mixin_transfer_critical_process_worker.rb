@@ -8,7 +8,7 @@ class MixinTransferCriticalProcessWorker
     transfer = MixinTransfer.find_by(id: id)
     transfer&.process!
   rescue MixinBot::InsufficientBalanceError, MixinBot::InsufficientPoolError
-    if transfer.source.is_a?(AppletActivitySwapOrder)
+    if transfer.source.type.in? %w[AppletActivitySwapOrder AppletActivityMixSwapOrder]
       swap_order = transfer.source
       swap_order.applet_activity.fail! if swap_order.applet_activity.may_fail?
 

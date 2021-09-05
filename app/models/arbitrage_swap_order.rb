@@ -20,6 +20,7 @@
 #  broker_id          :uuid
 #  fill_asset_id      :uuid
 #  pay_asset_id       :uuid
+#  route_id           :string
 #  trace_id           :uuid
 #  user_id            :uuid
 #

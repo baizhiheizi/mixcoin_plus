@@ -14,7 +14,7 @@ module MixSwap
       client.get path
     end
 
-    def pre_order(params)
+    def route(params)
       path = '/api/v1/trade/routes'
 
       payload = {
