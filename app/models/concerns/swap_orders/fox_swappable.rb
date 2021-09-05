@@ -58,7 +58,7 @@ module SwapOrders::FoxSwappable
       user_id: receiver_id,
       follow_id: trace_id,
       asset_id: fill_asset_id,
-      minimum_fill: min_amount.present? ? format('%.8f', min_amount) : nil
+      minimum_fill: min_amount && format('%.8f', min_amount)
     )
 
     r['data']['action']

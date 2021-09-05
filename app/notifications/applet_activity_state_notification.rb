@@ -31,7 +31,7 @@ class AppletActivityStateNotification < ApplicationNotification
         - 🏷️: 1 #{swap_order.fill_asset.symbol} ≈ #{(_pay_amount / swap_order.fill_amount).round(8)} #{swap_order.pay_asset.symbol}
         - 🏷️: 1 #{swap_order.pay_asset.symbol} ≈ #{(swap_order.fill_amount / _pay_amount).round(8)} #{swap_order.fill_asset.symbol}
       DATA
-    end.join("\n\n")
+    end.join("\n")
   end
 
   def data
@@ -39,7 +39,7 @@ class AppletActivityStateNotification < ApplicationNotification
     when :failed
       message
     when :completed
-      [message, swap_order_detail].join("\n\n")
+      [message, swap_order_detail].join("\n")
     end
   end
 

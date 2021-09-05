@@ -163,12 +163,13 @@ class SwapSnapshot < MixinNetworkSnapshot
         REJECT: 'reject_to_user'
       }[base64_decoded_memo.split('|')[1]&.to_sym]
     elsif base64_decoded_memo.match?(/^(0|1)/)
-      _type = base64_decoded_memo.split('|')[3]&.to_sym
+      _source = base64_decoded_memo.split('|')[2]
+      _type = base64_decoded_memo.split('|')[3]
 
-      case _type
-      when :RF
+      case [_source, _type].join.to_sym
+      when :SNRF, :ATRF
         'refund_from_mix_swap'
-      when :RL
+      when :ATRL
         'trade_from_mix_swap'
       else
         'swap_to_mix_swap'
