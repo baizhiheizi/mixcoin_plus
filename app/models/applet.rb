@@ -163,7 +163,7 @@ class Applet < ApplicationRecord
   def refresh_cron
     _cron = applet_triggers.where(type: 'AppletDatetimeTrigger').first&.cron_value || default_cron
     _frequency = Fugit.parse_cron _cron
-    update cron: _cron, frequency: _frequency
+    update cron: _cron, frequency: _frequency&.rough_frequency
   end
 
   private
