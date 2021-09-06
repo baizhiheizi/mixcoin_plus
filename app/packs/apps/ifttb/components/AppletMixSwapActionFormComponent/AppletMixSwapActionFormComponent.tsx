@@ -1,7 +1,10 @@
 import { Close as CloseIcon, Down as DownIcon } from '@icon-park/react';
-import { MixSwapActionThemeColor, MixSwapLogoUrl } from 'apps/ifttb/constants';
+import {
+  MixSwapActionThemeColor,
+  MixSwapAppId,
+  MixSwapLogoUrl,
+} from 'apps/ifttb/constants';
 import { MixinAsset } from 'graphqlTypes';
-import { IAsset } from 'pando-sdk-js/dist/lake/types';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
 import MixinAssetsComponent from '../MixinAssetsComponent/MixinAssetsComponent';
@@ -46,9 +49,12 @@ export function AppletMixSwapActionFormComponent(props: {
         <div className='flex justify-center mb-4'>
           <img className='w-12 h-12' src={MixSwapLogoUrl} />
         </div>
-        <div className='text-sm'>
-          MixSwap is the MiFi DEX aggregation trading platform of Exin. Use
-          MixSwap to swap asset.
+        <div className='mb-2 text-base'>Use MixSwap to swap asset.</div>
+        <div className='text-base'>
+          <a className='text-white' href={`mixin://users/${MixSwapAppId}`}>
+            MixSwap
+          </a>{' '}
+          is the MiFi DEX aggregation trading platform of Exin.
         </div>
       </div>
       <div className='p-4 bg-white'>
