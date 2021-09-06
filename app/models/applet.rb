@@ -20,11 +20,13 @@ class Applet < ApplicationRecord
   belongs_to :user
 
   has_many :applet_triggers, dependent: :restrict_with_exception
+  has_one :applet_action, dependent: :restrict_with_exception
   has_many :applet_actions, dependent: :restrict_with_exception
   has_many :applet_activities, dependent: :restrict_with_exception
   has_many :swap_orders, through: :applet_activities, dependent: :restrict_with_exception
 
-  accepts_nested_attributes_for :applet_triggers, :applet_actions
+  accepts_nested_attributes_for :applet_actions, update_only: true
+  accepts_nested_attributes_for :applet_triggers, allow_destroy: true
 
   before_validation :set_defaults, on: :create
 

@@ -2,6 +2,7 @@
 
 module Types
   class AppletDatetimeTriggerInputType < Types::BaseInputObject
+    argument :id, ID, required: false
     argument :description, String, required: false
     argument :minute, String, required: true
     argument :hour, String, required: true

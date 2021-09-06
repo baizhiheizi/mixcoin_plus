@@ -83,6 +83,12 @@ export default function AppletPage() {
           >
             Archive
           </div>
+          <div
+            className='px-6 py-2 text-lg text-center text-white bg-gray-600 rounded-full cursor-pointer'
+            onClick={() => history.push(`/applets/${applet.id}/edit`)}
+          >
+            Edit
+          </div>
         </div>
         <div style={{ height: 'env(safe-area-inset-bottom)' }} />
       </div>
