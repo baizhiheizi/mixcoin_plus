@@ -5,6 +5,7 @@ module Types
     field :id, ID, null: false
     field :type, String, null: false
     field :description, String, null: true
+    field :params, GraphQL::Types::JSON, null: false
 
     field :applet, Types::AppletType, null: false
 

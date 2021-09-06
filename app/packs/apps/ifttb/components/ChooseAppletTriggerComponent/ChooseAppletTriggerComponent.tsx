@@ -2,23 +2,31 @@ import {
   AlarmClock as AlarmClockIcon,
   Down as DownIcon,
 } from '@icon-park/react';
-import AppletDatetimeTriggerFormComponent from 'apps/ifttb/components/AppletDatetimeTriggerFormComponent/AppletDatetimeTriggerFormComponent';
 import { FoxSwapActionThemeColor, FoxSwapLogoUrl } from 'apps/ifttb/constants';
 import { useAppletForm } from 'apps/ifttb/contexts';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
-import { Applet4swapTriggerFormComponent } from '../Applet4swapTriggerFormComponent/Applet4swapTriggerFormComponent';
+import EditingAppletTriggerComponent from '../EditingAppletTriggerComponent/EditingAppletTriggerComponent';
 
-export function ChooseAppletTriggerComponent(props: {
+export default function ChooseAppletTriggerComponent(props: {
   onOk?: () => any;
+  visible: boolean;
   onCancel?: () => any;
 }) {
-  const [tiggerType, setTriggerType] = useState<null | 'datetime' | '4swap'>(
-    null,
-  );
-  const { appletForm, setAppletForm } = useAppletForm();
+  const { visible, onOk, onCancel } = props;
+  const [trigger, setTriggerType] = useState<null | 'datetime' | '4swap'>(null);
+  const { appletForm } = useAppletForm();
+  const appletDatetimeTriggerCreated = () =>
+    (appletForm?.appletTriggersAttributes || []).find(
+      (trigger) =>
+        trigger.type === 'AppletDatetimeTrigger' && !trigger._destroy,
+    );
+  const applet4swapTriggerCreated = () =>
+    (appletForm?.appletTriggersAttributes || []).find(
+      (trigger) => trigger.type === 'Applet4swapTrigger' && !trigger._destroy,
+    );
   return (
-    <>
+    <Popup visible={visible} direction='bottom' onMaskClick={onCancel}>
       <div className='relative overflow-scroll bg-white rounded-t-lg max-h-screen-3/4 min-h-screen-1/2'>
         <div className='sticky flex justify-center p-2'>
           <DownIcon size='2rem' onClick={() => props.onCancel()} />
@@ -26,12 +34,12 @@ export function ChooseAppletTriggerComponent(props: {
         <div className='p-4 grid grid-cols-2 gap-2'>
           <div
             className={`p-4 text-white bg-gray-800 rounded-lg ${
-              appletForm?.appletDatetimeTrigger
+              appletDatetimeTriggerCreated()
                 ? 'cursor-not-allowed opacity-50'
                 : 'cursor-pointer'
             }`}
             onClick={() => {
-              if (!appletForm?.appletDatetimeTrigger) {
+              if (!appletDatetimeTriggerCreated()) {
                 setTriggerType('datetime');
               }
             }}
@@ -43,13 +51,13 @@ export function ChooseAppletTriggerComponent(props: {
           </div>
           <div
             className={`p-4 rounded-lg ${
-              appletForm?.applet4swapTrigger
+              applet4swapTriggerCreated()
                 ? 'cursor-not-allowed opacity-50'
                 : 'cursor-pointer'
             }`}
             style={{ background: FoxSwapActionThemeColor }}
             onClick={() => {
-              if (!appletForm?.applet4swapTrigger) {
+              if (!applet4swapTriggerCreated()) {
                 setTriggerType('4swap');
               }
             }}
@@ -61,46 +69,17 @@ export function ChooseAppletTriggerComponent(props: {
           </div>
         </div>
       </div>
-      <Popup
-        visible={Boolean(tiggerType)}
-        direction='bottom'
-        onMaskClick={() => setTriggerType(null)}
-      >
-        <div className='h-screen bg-white'>
-          {
-            {
-              datetime: (
-                <AppletDatetimeTriggerFormComponent
-                  onCancel={() => setTriggerType(null)}
-                  onFinish={(trigger) => {
-                    console.log(trigger);
-                    setAppletForm({
-                      ...appletForm,
-                      appletDatetimeTrigger: trigger,
-                    });
-                    setTriggerType(null);
-                    props.onOk();
-                  }}
-                />
-              ),
-              '4swap': (
-                <Applet4swapTriggerFormComponent
-                  onCancel={() => setTriggerType(null)}
-                  onFinish={(trigger) => {
-                    console.log(trigger);
-                    setAppletForm({
-                      ...appletForm,
-                      applet4swapTrigger: trigger,
-                    });
-                    setTriggerType(null);
-                    props.onOk();
-                  }}
-                />
-              ),
-            }[tiggerType]
-          }
-        </div>
-      </Popup>
-    </>
+      <EditingAppletTriggerComponent
+        triggerType={trigger}
+        onOk={() => {
+          setTriggerType(null);
+          onOk();
+        }}
+        onCancel={() => {
+          setTriggerType(null);
+          onCancel();
+        }}
+      />
+    </Popup>
   );
 }

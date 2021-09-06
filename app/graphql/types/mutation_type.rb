@@ -27,6 +27,7 @@ module Types
 
     # IFTTB
     field :create_applet, mutation: Mutations::CreateAppletMutation
+    field :update_applet, mutation: Mutations::UpdateAppletMutation
     field :toggle_applet_connected, mutation: Mutations::ToggleAppletConnectedMutation
     field :archive_applet, mutation: Mutations::ArchiveAppletMutation
     field :create_ifttb_broker_withdraw_transfer, mutation: Mutations::CreateIfttbBrokerWithdrawTransferMutation

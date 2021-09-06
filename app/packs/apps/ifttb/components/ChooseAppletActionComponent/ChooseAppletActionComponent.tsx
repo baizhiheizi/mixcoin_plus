@@ -8,10 +8,10 @@ import {
 import { useAppletForm } from 'apps/ifttb/contexts';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
-import { Applet4swapActionFormComponent } from '../Applet4swapActionFormComponent/Applet4swapActionFormComponent';
-import { AppletMixSwapActionFormComponent } from '../AppletMixSwapActionFormComponent/AppletMixSwapActionFormComponent';
+import Applet4swapActionFormComponent from '../Applet4swapActionFormComponent/Applet4swapActionFormComponent';
+import AppletMixSwapActionFormComponent from '../AppletMixSwapActionFormComponent/AppletMixSwapActionFormComponent';
 
-export function ChooseAppletActionComponent(props: {
+export default function ChooseAppletActionComponent(props: {
   onCancel?: () => any;
   onOk?: () => any;
 }) {

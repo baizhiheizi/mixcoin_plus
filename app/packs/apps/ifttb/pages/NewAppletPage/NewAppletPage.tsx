@@ -1,17 +1,14 @@
 import {
-  AlarmClock as AlarmClockIcon,
+  AddOne as AddIcon,
   Close as CloseIcon,
   Down as DownIcon,
-  AddOne as AddIcon,
 } from '@icon-park/react';
-import { ChooseAppletActionComponent } from 'apps/ifttb/components/ChooseAppletActionComponent/ChooseAppletActionComponent';
-import { ChooseAppletTriggerComponent } from 'apps/ifttb/components/ChooseAppletTriggerComponent/ChooseAppletTriggerComponent';
-import {
-  FoxSwapActionThemeColor,
-  FoxSwapLogoUrl,
-  MixSwapActionThemeColor,
-  MixSwapLogoUrl,
-} from 'apps/ifttb/constants';
+import Applet4swapActionItemComponent from 'apps/ifttb/components/Applet4swapActionItemComponent/Applet4swapActionItemComponent';
+import Applet4swapTriggerItemComponent from 'apps/ifttb/components/Applet4swapTriggerItemComponent/Applet4swapTriggerItemComponent';
+import AppletDatetimeTriggerItemComponent from 'apps/ifttb/components/AppletDatetimeTriggerItemComponent/AppletDatetimeTriggerItemComponent';
+import AppletMixSwapActionItemComponent from 'apps/ifttb/components/AppletMixSwapActionItemComponent/AppletMixSwapActionItemComponent';
+import ChooseAppletActionComponent from 'apps/ifttb/components/ChooseAppletActionComponent/ChooseAppletActionComponent';
+import ChooseAppletTriggerComponent from 'apps/ifttb/components/ChooseAppletTriggerComponent/ChooseAppletTriggerComponent';
 import { AppletFormContext } from 'apps/ifttb/contexts';
 import {
   CreateAppletMutationInput,
@@ -63,31 +60,16 @@ export default function NewAppletPage() {
       </div>
       <div className='p-4'>
         {appletForm?.appletDatetimeTrigger && (
-          <div
-            className='flex items-start p-4 mb-8 text-lg font-bold text-white bg-gray-800 rounded-lg cursor-pointer space-x-2'
+          <AppletDatetimeTriggerItemComponent
+            trigger={appletForm?.appletDatetimeTrigger}
             onClick={() => setEditingTrigger('appletDatetimeTrigger')}
-          >
-            <span className='text-xl'>If</span>
-            <span>
-              <AlarmClockIcon size='1.75rem' />
-            </span>
-            <span className='leading-7'>
-              {appletForm?.appletDatetimeTrigger?.description}
-            </span>
-          </div>
+          />
         )}
         {appletForm?.applet4swapTrigger && (
-          <div
-            className='flex items-start p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer space-x-2'
-            style={{ background: FoxSwapActionThemeColor }}
+          <Applet4swapTriggerItemComponent
+            trigger={appletForm?.applet4swapTrigger}
             onClick={() => setEditingTrigger('applet4swapTrigger')}
-          >
-            <span className='text-xl'>If</span>
-            <img className='rounded-full w-7 h-7' src={FoxSwapLogoUrl} />
-            <span className='leading-7'>
-              {appletForm?.applet4swapTrigger?.description}
-            </span>
-          </div>
+          />
         )}
         {mayAddTrigger &&
           (appletFormTriggerCreated ? (
@@ -108,29 +90,15 @@ export default function NewAppletPage() {
           ))}
 
         {appletForm?.applet4swapAction ? (
-          <div
-            className='flex items-start p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer space-x-2'
+          <Applet4swapActionItemComponent
+            action={appletForm.applet4swapAction}
             onClick={() => setEditingAction('applet4swapAction')}
-            style={{ background: FoxSwapActionThemeColor }}
-          >
-            <span className='text-xl'>Then</span>
-            <img className='rounded-full w-7 h-7' src={FoxSwapLogoUrl} />
-            <span className='leading-7'>
-              {appletForm?.applet4swapAction?.description}
-            </span>
-          </div>
+          />
         ) : appletForm?.appletMixSwapAction ? (
-          <div
-            className='flex items-start p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer space-x-2'
+          <AppletMixSwapActionItemComponent
+            action={appletForm.appletMixSwapAction}
             onClick={() => setEditingAction('appletMixSwapAction')}
-            style={{ background: MixSwapActionThemeColor }}
-          >
-            <span className='text-xl'>Then</span>
-            <img className='rounded-full w-7 h-7' src={MixSwapLogoUrl} />
-            <span className='leading-7'>
-              {appletForm?.appletMixSwapAction?.description}
-            </span>
-          </div>
+          />
         ) : (
           <div
             className={`flex items-center justify-around p-4 mb-8 text-3xl font-bold rounded-lg bg-dark ${
@@ -254,16 +222,11 @@ export default function NewAppletPage() {
           </div>
         </div>
       </Popup>
-      <Popup
+      <ChooseAppletTriggerComponent
         visible={chooseTriggerPopupVisible}
-        direction='bottom'
-        onMaskClick={() => setChooseTriggerPopupVisible(false)}
-      >
-        <ChooseAppletTriggerComponent
-          onOk={() => setChooseTriggerPopupVisible(false)}
-          onCancel={() => setChooseTriggerPopupVisible(false)}
-        />
-      </Popup>
+        onOk={() => setChooseTriggerPopupVisible(false)}
+        onCancel={() => setChooseTriggerPopupVisible(false)}
+      />
       <Popup
         visible={chooseActionPopupVisible}
         direction='bottom'

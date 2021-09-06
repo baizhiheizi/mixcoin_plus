@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { Popup } from 'zarm';
 import MixinAssetsComponent from '../MixinAssetsComponent/MixinAssetsComponent';
 
-export function Applet4swapActionFormComponent(props: {
+export default function Applet4swapActionFormComponent(props: {
   onCancel: () => any;
   onFinish: (action) => any;
 }) {

@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import { Popup } from 'zarm';
 import Editing4swapPriceTriggerComponent from './Editing4swapPriceTriggerComponent';
 
-export function Applet4swapTriggerFormComponent(props: {
+export default function Applet4swapTriggerFormComponent(props: {
   onCancel: () => any;
   onFinish: (trigger) => any;
 }) {

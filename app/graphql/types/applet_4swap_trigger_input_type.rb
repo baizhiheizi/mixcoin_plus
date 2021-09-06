@@ -2,6 +2,7 @@
 
 module Types
   class Applet4swapTriggerInputType < Types::BaseInputObject
+    argument :id, ID, required: false
     argument :description, String, required: false
     argument :base_asset_id, String, required: true
     argument :quote_asset_id, String, required: true

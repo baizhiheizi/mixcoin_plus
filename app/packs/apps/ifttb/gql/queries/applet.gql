@@ -22,8 +22,10 @@ query Applet($id: ID!) {
     }
     appletTriggers {
       ... on AppletDatetimeTrigger {
+        id
         type
         description
+        params
         minute
         hour
         day
@@ -31,14 +33,33 @@ query Applet($id: ID!) {
         wday
       }
       ... on Applet4swapTrigger {
+        id
         type
         description
+        params
+        baseAssetId
+        quoteAssetId
+        targetValue
+        targetIndex
+        compareAction
       }
     }
     appletActions {
       ... on Applet4swapAction {
+        id
         type
         description
+        params
+        payAssetId
+        fillAssetId
+        payAmount
+        slippage
+      }
+      ... on AppletMixSwapAction {
+        id
+        type
+        description
+        params
         payAssetId
         fillAssetId
         payAmount
