@@ -1,5 +1,9 @@
 import { Close as CloseIcon, Down as DownIcon } from '@icon-park/react';
-import { FoxSwapActionThemeColor, FoxSwapLogoUrl } from 'apps/ifttb/constants';
+import {
+  FoxSwapActionThemeColor,
+  FoxSwapAppId,
+  FoxSwapLogoUrl,
+} from 'apps/ifttb/constants';
 import { MixinAsset } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
@@ -45,8 +49,19 @@ export function Applet4swapActionFormComponent(props: {
         <div className='flex justify-center mb-4'>
           <img className='w-12 h-12' src={FoxSwapLogoUrl} />
         </div>
-        <div className='text-sm'>
+        <div className='mb-2 text-base'>
           Use 4swap to swap asset or add / remove liquidity.
+        </div>
+        <div className='text-base'>
+          <a
+            className='text-blue-500'
+            href={`mixin://users/${FoxSwapAppId}`}
+            target='_blank'
+          >
+            4swap
+          </a>{' '}
+          is a decentralized protocal implement for automated liquidity
+          provision on Mixin Network.
         </div>
       </div>
       <div className='p-4 bg-white'>
