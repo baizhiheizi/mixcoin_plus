@@ -92,7 +92,7 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
   const [selectingAsset, setSelectingAsset] = useState<
     null | 'payAsset' | 'fillAsset'
   >(null);
-  const [slippage, setSlippage] = useState<0.001 | 0.005 | 0.01>(0.001);
+  const [slippage, setSlippage] = useState<0.002 | 0.005 | 0.01>(0.002);
   const payValue = payAsset?.priceUsd * parseFloat(payAmount);
 
   const validateParams = () => {
@@ -199,9 +199,9 @@ function EditSwapAction(props: { onFinish: (action) => any }) {
         <div className='flex items-center justify-around flex-1 text-xs'>
           <div
             className={`py-1 px-4 border cursor-pointer rounded ${
-              slippage === 0.001 ? 'bg-dark text-white' : 'bg-white'
+              slippage === 0.002 ? 'bg-dark text-white' : 'bg-white'
             }`}
-            onClick={() => setSlippage(0.001)}
+            onClick={() => setSlippage(0.002)}
           >
             0.1%
           </div>
