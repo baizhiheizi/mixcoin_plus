@@ -39,7 +39,7 @@
     "less": "^4.1.1",
     "less-loader": "^10.0.1",
     "mini-css-extract-plugin": "^2.2.2",
-    "mixin-messenger-utils": "^0.1.2",
+    "mixin-messenger-utils": "^0.1.5",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "pako": "^2.0.4",
