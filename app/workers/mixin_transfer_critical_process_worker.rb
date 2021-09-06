@@ -11,6 +11,7 @@ class MixinTransferCriticalProcessWorker
     if transfer.source.type.in? %w[AppletActivitySwapOrder AppletActivityMixSwapOrder]
       swap_order = transfer.source
       swap_order.applet_activity.fail! if swap_order.applet_activity.may_fail?
+      swap_order.applet_activity.applet.may_connect?
 
       transfer.destroy!
       swap_order.destroy!
