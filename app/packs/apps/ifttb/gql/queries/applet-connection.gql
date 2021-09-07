@@ -10,30 +10,47 @@ query AppletConnection($after: String) {
       appletTriggers {
         ... on AppletDatetimeTrigger {
           type
-          description
-          minute
-          hour
-          day
-          month
-          wday
+          params {
+            description
+            minute
+            hour
+            day
+            month
+            wday
+          }
+        }
+        ... on Applet4swapTrigger {
+          type
+          params {
+            description
+            baseAssetId
+            quoteAssetId
+            targetValue
+            targetIndex
+            compareAction
+          }
         }
       }
       appletActions {
         ... on Applet4swapAction {
           type
-          description
-          payAssetId
-          fillAssetId
-          payAmount
-          slippage
+          params {
+            description
+            payAssetId
+            fillAssetId
+            payAmount
+            slippage
+          }
         }
         ... on AppletMixSwapAction {
           type
-          description
-          payAssetId
-          fillAssetId
-          payAmount
-          slippage
+          params {
+            description
+            payAssetId
+            fillAssetId
+            payAmount
+            slippage
+          }
         }
       }
     }

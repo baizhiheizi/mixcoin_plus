@@ -2,9 +2,8 @@
 
 module Types
   class AppletMixSwapActionType < Types::AppletActionType
-    field :pay_asset_id, String, null: false
-    field :fill_asset_id, String, null: false
-    field :pay_amount, Float, null: false
-    field :slippage, Float, null: false
+    field :params, Types::Applet4swapActionParamsType, null: false
+    field :pay_asset, Types::MixinAssetType, null: false
+    field :fill_asset, Types::MixinAssetType, null: false
   end
 end

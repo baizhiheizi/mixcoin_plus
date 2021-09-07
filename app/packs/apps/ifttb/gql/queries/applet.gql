@@ -24,24 +24,90 @@ query Applet($id: ID!) {
       ... on AppletDatetimeTrigger {
         id
         type
-        params
+        params {
+          description
+          minute
+          hour
+          day
+          month
+          wday
+        }
       }
       ... on Applet4swapTrigger {
         id
         type
-        params
+        params {
+          description
+          baseAssetId
+          quoteAssetId
+          targetValue
+          targetIndex
+          compareAction
+        }
       }
     }
     appletActions {
       ... on Applet4swapAction {
         id
         type
-        params
+        params {
+          description
+          payAssetId
+          fillAssetId
+          payAmount
+          slippage
+        }
+        payAsset {
+          assetId
+          iconUrl
+          symbol
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
+        fillAsset {
+          assetId
+          iconUrl
+          symbol
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
       }
       ... on AppletMixSwapAction {
         id
         type
-        params
+        params {
+          description
+          payAssetId
+          fillAssetId
+          payAmount
+          slippage
+        }
+        payAsset {
+          assetId
+          iconUrl
+          symbol
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
+        fillAsset {
+          assetId
+          iconUrl
+          symbol
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
       }
     }
   }
