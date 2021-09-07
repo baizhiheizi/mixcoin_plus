@@ -8,16 +8,20 @@ module Mutations
 
     def resolve(**params)
       applet = current_user.applets.find_by id: params[:id]
-      return unless applet&.disconnect?
+      return if applet.blank?
+      return if applet.connected?
 
-      applet_triggers_attributes = []
-      applet_actions_attributes = []
-      applet.title = params[:title]
+      applet_actions_attributes =
+        params[:applet_actions_attributes]
+        .map do |action|
+          action.to_hash.deep_transform_keys! { |key| key.to_s.underscore }
+        end
 
-      applet_triggers_attributes.push(params[:applet_datetime_trigger]) if params[:applet_datetime_trigger].present?
-      applet_triggers_attributes.push(params[:applet_4swap_trigger]) if params[:applet_4swap_trigger].present?
-      applet_actions_attributes.push(params[:applet_4swap_action]) if params[:applet_4swap_action].present?
-      applet_actions_attributes.push(params[:applet_mix_swap_action]) if params[:applet_mix_swap_action].present?
+      applet_triggers_attributes =
+        params[:applet_triggers_attributes]
+        .map do |trigger|
+          trigger.to_hash.deep_transform_keys! { |key| key.to_s.underscore }
+        end
 
       applet.update!(
         title: params[:title],
