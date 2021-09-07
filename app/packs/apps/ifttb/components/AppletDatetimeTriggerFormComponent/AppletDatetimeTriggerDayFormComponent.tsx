@@ -1,15 +1,14 @@
+import { AppletTriggerInput } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { Picker } from 'zarm';
 
-export default function EditingEveryMonthTriggerComponent(props: {
-  onFinish: (trigger) => any;
+export default function AppletDatetimeTriggerDayFormComponent(props: {
+  onFinish: (trigger: AppletTriggerInput) => any;
 }) {
-  const [day, setDay] = useState<number>(1);
   const [hour, setHour] = useState<number>(0);
   const [minute, setMinute] = useState<number>(0);
   const [choosingMinute, setChoosingMinute] = useState(false);
   const [choosingHour, setChoosingHour] = useState(false);
-  const [choosingDay, setChoosingDay] = useState(false);
   const minutes = [];
   for (let step = 0; step < 60; step++) {
     minutes.push({
@@ -24,31 +23,27 @@ export default function EditingEveryMonthTriggerComponent(props: {
       label: step.toString(),
     });
   }
-  const days = [];
-  for (let step = 1; step < 31; step++) {
-    days.push({
-      value: step,
-      label: step.toString(),
-    });
-  }
   const createTrigger = () => {
     const trigger = {
-      description: `once at ${hour < 10 ? `0${hour}` : hour}:${
-        minute < 10 ? `0${minute}` : minute
-      } on day-of-month ${day}`,
-      minute: minute.toString(),
-      hour: hour.toString(),
-      day: day.toString(),
-      month: '*',
-      wday: '*',
+      type: 'AppletDatetimeTrigger',
+      params: {
+        description: `once every day at ${hour < 10 ? `0${hour}` : hour}:${
+          minute < 10 ? `0${minute}` : minute
+        }`,
+        minute: minute.toString(),
+        hour: hour.toString(),
+        day: '*',
+        month: '*',
+        wday: '*',
+      },
     };
     props.onFinish(trigger);
   };
   return (
     <div className='p-4'>
       <div className='mb-8 text-lg'>
-        <div className='mb-4'>Run your applet once every month at</div>
-        <div className='flex items-center justify-center mb-4 font-bold space-x-4'>
+        <div className='mb-4'>Run your applet once every day at</div>
+        <div className='flex items-center justify-center font-bold space-x-4'>
           <span onClick={() => setChoosingHour(true)}>
             {hour < 10 ? `0${hour}` : hour}
           </span>
@@ -56,10 +51,6 @@ export default function EditingEveryMonthTriggerComponent(props: {
           <span onClick={() => setChoosingMinute(true)}>
             {minute < 10 ? `0${minute}` : minute}
           </span>
-        </div>
-        <div className='mb-4'>on day-of-month</div>
-        <div className='flex justify-center font-bold space-x-4'>
-          <span onClick={() => setChoosingDay(true)}>{day}</span>
         </div>
         <Picker
           visible={choosingMinute}
@@ -81,17 +72,6 @@ export default function EditingEveryMonthTriggerComponent(props: {
             setChoosingHour(false);
           }}
           onCancel={() => setChoosingHour(false)}
-          itemRender={(data) => data.label}
-        />
-        <Picker
-          visible={choosingDay}
-          value={day}
-          dataSource={days}
-          onOk={(selected: any) => {
-            setDay(selected[0].value);
-            setChoosingDay(false);
-          }}
-          onCancel={() => setChoosingDay(false)}
           itemRender={(data) => data.label}
         />
       </div>

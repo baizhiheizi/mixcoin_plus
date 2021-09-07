@@ -1,13 +1,17 @@
+import { AppletTriggerInput } from 'graphqlTypes';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { Picker } from 'zarm';
 
-export default function EditingEveryDayTriggerComponent(props: {
-  onFinish: (trigger) => any;
+export default function EditingEveryWeekTriggerComponent(props: {
+  onFinish: (trigger: AppletTriggerInput) => any;
 }) {
+  const [wday, setDay] = useState<number>(0);
   const [hour, setHour] = useState<number>(0);
   const [minute, setMinute] = useState<number>(0);
   const [choosingMinute, setChoosingMinute] = useState(false);
   const [choosingHour, setChoosingHour] = useState(false);
+  const [choosingWday, setChoosingWday] = useState(false);
   const minutes = [];
   for (let step = 0; step < 60; step++) {
     minutes.push({
@@ -22,24 +26,36 @@ export default function EditingEveryDayTriggerComponent(props: {
       label: step.toString(),
     });
   }
+  const weekdays = moment.weekdays();
+  const wdays = [];
+  for (let step = 0; step < 7; step++) {
+    wdays.push({
+      value: step,
+      label: weekdays[step],
+    });
+  }
   const createTrigger = () => {
     const trigger = {
-      description: `once every day at ${hour < 10 ? `0${hour}` : hour}:${
-        minute < 10 ? `0${minute}` : minute
-      }`,
-      minute: minute.toString(),
-      hour: hour.toString(),
-      day: '*',
-      month: '*',
-      wday: '*',
+      type: 'AppletDatetimeTrigger',
+      params: {
+        description: `once every week at ${weekdays[wday]} ${
+          hour < 10 ? `0${hour}` : hour
+        }:${minute < 10 ? `0${minute}` : minute}`,
+        minute: minute.toString(),
+        hour: hour.toString(),
+        day: '*',
+        month: '*',
+        wday: wday.toString(),
+      },
     };
     props.onFinish(trigger);
   };
   return (
     <div className='p-4'>
       <div className='mb-8 text-lg'>
-        <div className='mb-4'>Run your applet once every day at</div>
+        <div className='mb-4'>Run your applet once every week at</div>
         <div className='flex items-center justify-center font-bold space-x-4'>
+          <span onClick={() => setChoosingWday(true)}>{weekdays[wday]}</span>
           <span onClick={() => setChoosingHour(true)}>
             {hour < 10 ? `0${hour}` : hour}
           </span>
@@ -68,6 +84,17 @@ export default function EditingEveryDayTriggerComponent(props: {
             setChoosingHour(false);
           }}
           onCancel={() => setChoosingHour(false)}
+          itemRender={(data) => data.label}
+        />
+        <Picker
+          visible={choosingWday}
+          value={wday}
+          dataSource={wdays}
+          onOk={(selected: any) => {
+            setDay(selected[0].value);
+            setChoosingWday(false);
+          }}
+          onCancel={() => setChoosingWday(false)}
           itemRender={(data) => data.label}
         />
       </div>

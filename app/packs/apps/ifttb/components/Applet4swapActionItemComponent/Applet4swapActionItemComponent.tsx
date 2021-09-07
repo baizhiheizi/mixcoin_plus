@@ -15,7 +15,7 @@ export default function Applet4swapActionItemComponent(props: {
     >
       <span className='text-xl'>Then</span>
       <img className='rounded-full w-7 h-7' src={FoxSwapLogoUrl} />
-      <span className='leading-7'>{action.description}</span>
+      <span className='leading-7'>{action.params.description}</span>
     </div>
   );
 }

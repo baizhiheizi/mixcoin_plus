@@ -9,38 +9,25 @@ module Mutations
     def resolve(**params)
       return unless current_user.may_create_applet?
 
-      applet = current_user.applets.new(title: params[:title])
-      if params[:applet_datetime_trigger].present?
-        trigger = applet.applet_triggers.new(
-          {
-            type: 'AppletDatetimeTrigger'
-          }.merge(params[:applet_datetime_trigger])
-        )
-        applet.cron = trigger.cron_value
-      end
-      if params[:applet_4swap_trigger].present?
-        applet.applet_triggers.new(
-          {
-            type: 'Applet4swapTrigger'
-          }.merge(params[:applet_4swap_trigger])
-        )
-      end
-      if params[:applet_4swap_action].present?
-        applet.applet_actions.new(
-          {
-            type: 'Applet4swapAction'
-          }.merge(params[:applet_4swap_action])
-        )
-      end
-      if params[:applet_mix_swap_action].present?
-        applet.applet_actions.new(
-          {
-            type: 'AppletMixSwapAction'
-          }.merge(params[:applet_mix_swap_action])
-        )
-      end
+      applet_actions_attributes =
+        params[:applet_actions_attributes]
+        .map do |action|
+          action.to_hash.deep_transform_keys! { |key| key.to_s.underscore }
+        end
 
-      applet.save!
+      applet_triggers_attributes =
+        params[:applet_triggers_attributes]
+        .map do |trigger|
+          trigger.to_hash.deep_transform_keys! { |key| key.to_s.underscore }
+        end
+
+      current_user
+        .applets
+        .create!(
+          title: params[:title],
+          applet_actions_attributes: applet_actions_attributes,
+          applet_triggers_attributes: applet_triggers_attributes
+        )
     end
   end
 end

@@ -15,7 +15,7 @@ export default function Applet4swapTriggerItemComponent(props: {
     >
       <span className='text-xl'>If</span>
       <img className='rounded-full w-7 h-7' src={FoxSwapLogoUrl} />
-      <span className='leading-7'>{trigger.description}</span>
+      <span className='leading-7'>{trigger.params.description}</span>
     </div>
   );
 }

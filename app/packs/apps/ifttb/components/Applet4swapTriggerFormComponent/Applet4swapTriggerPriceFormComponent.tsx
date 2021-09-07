@@ -1,11 +1,15 @@
 import MixinAssetsComponent from 'apps/ifttb/components/MixinAssetsComponent/MixinAssetsComponent';
 import { FoxSwapActionThemeColor } from 'apps/ifttb/constants';
-import { MixinAsset } from 'graphqlTypes';
+import {
+  Applet4swapTrigger,
+  AppletTriggerInput,
+  MixinAsset,
+} from 'graphqlTypes';
 import React, { useState } from 'react';
 import { Picker, Popup } from 'zarm';
 
-export default function Editing4swapPriceTriggerComponent(props: {
-  onFinish: (trigger) => any;
+export default function Applet4swapTriggerPriceFormComponent(props: {
+  onFinish: (trigger: AppletTriggerInput) => any;
 }) {
   const [baseAsset, setBaseAsset] = useState<null | MixinAsset>(null);
   const [quoteAsset, setQuoteAsset] = useState<null | MixinAsset>(null);
@@ -38,16 +42,19 @@ export default function Editing4swapPriceTriggerComponent(props: {
 
   const createTrigger = () => {
     const trigger = {
-      description: `price(from 4swap) of ${
-        targetIndex === 'ask_price' ? 'selling' : 'buying'
-      } ${baseAsset.symbol} ${
-        compareAction === 'larger_than' ? '>=' : '<='
-      } ${targetValue} ${quoteAsset.symbol}`,
-      baseAssetId: baseAsset.assetId,
-      quoteAssetId: quoteAsset.assetId,
-      targetIndex,
-      targetValue: parseFloat(targetValue),
-      compareAction,
+      type: 'Applet4swapTrigger',
+      params: {
+        description: `price(from 4swap) of ${
+          targetIndex === 'ask_price' ? 'selling' : 'buying'
+        } ${baseAsset.symbol} ${
+          compareAction === 'larger_than' ? '>=' : '<='
+        } ${targetValue} ${quoteAsset.symbol}`,
+        baseAssetId: baseAsset.assetId,
+        quoteAssetId: quoteAsset.assetId,
+        targetIndex,
+        targetValue: parseFloat(targetValue),
+        compareAction,
+      },
     };
     props.onFinish(trigger);
   };
