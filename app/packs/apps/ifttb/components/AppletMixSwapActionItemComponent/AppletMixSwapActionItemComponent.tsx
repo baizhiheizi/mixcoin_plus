@@ -15,7 +15,7 @@ export default function AppletMixSwapActionItemComponent(props: {
     >
       <span className='text-xl'>Then</span>
       <img className='rounded-full w-7 h-7' src={MixSwapLogoUrl} />
-      <span className='leading-7'>{action.description}</span>
+      <span className='leading-7'>{action.params.description}</span>
     </div>
   );
 }

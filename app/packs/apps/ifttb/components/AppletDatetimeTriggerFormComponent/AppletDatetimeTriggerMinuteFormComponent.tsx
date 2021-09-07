@@ -1,19 +1,23 @@
+import { AppletTriggerInput } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { Picker } from 'zarm';
 
-export default function EditingEveryMinuteTriggerComponent(props: {
-  onFinish: (trigger) => any;
+export default function AppletDatetimeTriggerMinuteFormComponent(props: {
+  onFinish: (trigger: AppletTriggerInput) => any;
 }) {
   const [minute, setMinute] = useState<'1' | '5' | '10' | '15' | '30'>('1');
   const [choosingMinute, setChoosingMinute] = useState(false);
   const createTrigger = () => {
     const trigger = {
-      description: `once every ${minute} miniutes`,
-      minute: minute === '1' ? '*' : `*/${minute}`,
-      hour: '*',
-      day: '*',
-      month: '*',
-      wday: '*',
+      type: 'AppletDatetimeTrigger',
+      params: {
+        description: `once every ${minute} miniutes`,
+        minute: minute === '1' ? '*' : `*/${minute}`,
+        hour: '*',
+        day: '*',
+        month: '*',
+        wday: '*',
+      },
     };
     props.onFinish(trigger);
   };

@@ -4,25 +4,26 @@ import {
 } from '@icon-park/react';
 import { FoxSwapActionThemeColor, FoxSwapLogoUrl } from 'apps/ifttb/constants';
 import { useAppletForm } from 'apps/ifttb/contexts';
-import React, { useState } from 'react';
+import { AppletTriggerInput } from 'graphqlTypes';
+import React from 'react';
 import { Popup } from 'zarm';
 
-export default function ChooseAppletTriggerComponent(props: {
-  onOk?: () => any;
+export default function AppletTriggerServicesComponent(props: {
   visible: boolean;
-  onCancel?: () => any;
+  onCancel: () => any;
+  onSelected: (selected: 'AppletDatetimeTrigger' | 'Applet4swapTrigger') => any;
 }) {
-  const { visible, onOk, onCancel } = props;
-  const [trigger, setTriggerType] = useState<null | 'datetime' | '4swap'>(null);
+  const { visible, onCancel, onSelected } = props;
   const { appletForm } = useAppletForm();
   const appletDatetimeTriggerCreated = () =>
     (appletForm?.appletTriggersAttributes || []).find(
-      (trigger) =>
+      (trigger: AppletTriggerInput) =>
         trigger.type === 'AppletDatetimeTrigger' && !trigger._destroy,
     );
   const applet4swapTriggerCreated = () =>
     (appletForm?.appletTriggersAttributes || []).find(
-      (trigger) => trigger.type === 'Applet4swapTrigger' && !trigger._destroy,
+      (trigger: AppletTriggerInput) =>
+        trigger.type === 'Applet4swapTrigger' && !trigger._destroy,
     );
   return (
     <Popup visible={visible} direction='bottom' onMaskClick={onCancel}>
@@ -39,7 +40,7 @@ export default function ChooseAppletTriggerComponent(props: {
             }`}
             onClick={() => {
               if (!appletDatetimeTriggerCreated()) {
-                setTriggerType('datetime');
+                onSelected('AppletDatetimeTrigger');
               }
             }}
           >
@@ -57,7 +58,7 @@ export default function ChooseAppletTriggerComponent(props: {
             style={{ background: FoxSwapActionThemeColor }}
             onClick={() => {
               if (!applet4swapTriggerCreated()) {
-                setTriggerType('4swap');
+                onSelected('Applet4swapTrigger');
               }
             }}
           >

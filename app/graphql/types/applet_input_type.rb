@@ -6,9 +6,5 @@ module Types
     argument :title, String, required: true
     argument :applet_triggers_attributes, [Types::AppletTriggerInputType], required: false
     argument :applet_actions_attributes, [Types::AppletActionInputType], required: false
-    argument :applet_datetime_trigger, Types::AppletDatetimeTriggerInputType, required: false
-    argument :applet_4swap_trigger, Types::Applet4swapTriggerInputType, required: false
-    argument :applet_4swap_action, Types::Applet4swapActionInputType, required: false
-    argument :applet_mix_swap_action, Types::AppletMixSwapActionInputType, required: false
   end
 end

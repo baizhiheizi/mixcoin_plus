@@ -154,15 +154,6 @@ export type Applet4swapAction = {
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
 };
 
-export type Applet4swapActionInput = {
-  id?: Maybe<Scalars['ID']>;
-  description?: Maybe<Scalars['String']>;
-  payAssetId: Scalars['String'];
-  fillAssetId: Scalars['String'];
-  payAmount: Scalars['Float'];
-  slippage: Scalars['Float'];
-};
-
 export type Applet4swapTrigger = {
   __typename?: 'Applet4swapTrigger';
   applet: Applet;
@@ -177,16 +168,6 @@ export type Applet4swapTrigger = {
   targetValue: Scalars['Float'];
   type: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
-};
-
-export type Applet4swapTriggerInput = {
-  id?: Maybe<Scalars['ID']>;
-  description?: Maybe<Scalars['String']>;
-  baseAssetId: Scalars['String'];
-  quoteAssetId: Scalars['String'];
-  targetValue: Scalars['Float'];
-  targetIndex: Scalars['String'];
-  compareAction: Scalars['String'];
 };
 
 export type AppletAction = {
@@ -267,16 +248,6 @@ export type AppletDatetimeTrigger = {
   wday: Scalars['String'];
 };
 
-export type AppletDatetimeTriggerInput = {
-  id?: Maybe<Scalars['ID']>;
-  description?: Maybe<Scalars['String']>;
-  minute: Scalars['String'];
-  hour: Scalars['String'];
-  day: Scalars['String'];
-  month: Scalars['String'];
-  wday: Scalars['String'];
-};
-
 /** An edge in a connection. */
 export type AppletEdge = {
   __typename?: 'AppletEdge';
@@ -299,15 +270,6 @@ export type AppletMixSwapAction = {
   slippage: Scalars['Float'];
   type: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
-};
-
-export type AppletMixSwapActionInput = {
-  id?: Maybe<Scalars['ID']>;
-  description?: Maybe<Scalars['String']>;
-  payAssetId: Scalars['String'];
-  fillAssetId: Scalars['String'];
-  payAmount: Scalars['Float'];
-  slippage: Scalars['Float'];
 };
 
 export type AppletTriggerInput = {
@@ -494,10 +456,6 @@ export type CreateAppletMutationInput = {
   title: Scalars['String'];
   appletTriggersAttributes?: Maybe<Array<AppletTriggerInput>>;
   appletActionsAttributes?: Maybe<Array<AppletActionInput>>;
-  appletDatetimeTrigger?: Maybe<AppletDatetimeTriggerInput>;
-  applet4swapTrigger?: Maybe<Applet4swapTriggerInput>;
-  applet4swapAction?: Maybe<Applet4swapActionInput>;
-  appletMixSwapAction?: Maybe<AppletMixSwapActionInput>;
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: Maybe<Scalars['String']>;
 };
@@ -1632,10 +1590,6 @@ export type UpdateAppletMutationInput = {
   title: Scalars['String'];
   appletTriggersAttributes?: Maybe<Array<AppletTriggerInput>>;
   appletActionsAttributes?: Maybe<Array<AppletActionInput>>;
-  appletDatetimeTrigger?: Maybe<AppletDatetimeTriggerInput>;
-  applet4swapTrigger?: Maybe<Applet4swapTriggerInput>;
-  applet4swapAction?: Maybe<Applet4swapActionInput>;
-  appletMixSwapAction?: Maybe<AppletMixSwapActionInput>;
   /** A unique identifier for the client performing the mutation. */
   clientMutationId?: Maybe<Scalars['String']>;
 };
@@ -1647,7 +1601,7 @@ export type User = {
   createdAt: Scalars['ISO8601DateTime'];
   fennec?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
-  ifttbBrokerId: Scalars['String'];
+  ifttbBrokerId?: Maybe<Scalars['String']>;
   ifttbRole: Scalars['String'];
   invitationsCount: Scalars['Int'];
   inviteCode: Scalars['String'];
@@ -2253,7 +2207,7 @@ export type AppletConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger' } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } | { __typename?: 'AppletMixSwapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } }, currentUser?: Maybe<{ __typename?: 'User', ifttbBrokerId: string, ifttbRole: string, mayCreateApplet: boolean }> };
+export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger' } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } | { __typename?: 'AppletMixSwapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } }, currentUser?: Maybe<{ __typename?: 'User', ifttbBrokerId?: Maybe<string>, ifttbRole: string, mayCreateApplet: boolean }> };
 
 export type AppletQueryVariables = Exact<{
   id: Scalars['ID'];

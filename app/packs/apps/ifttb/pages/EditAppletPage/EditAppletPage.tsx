@@ -7,8 +7,6 @@ import Applet4swapActionItemComponent from 'apps/ifttb/components/Applet4swapAct
 import Applet4swapTriggerItemComponent from 'apps/ifttb/components/Applet4swapTriggerItemComponent/Applet4swapTriggerItemComponent';
 import AppletDatetimeTriggerItemComponent from 'apps/ifttb/components/AppletDatetimeTriggerItemComponent/AppletDatetimeTriggerItemComponent';
 import AppletMixSwapActionItemComponent from 'apps/ifttb/components/AppletMixSwapActionItemComponent/AppletMixSwapActionItemComponent';
-import ChooseAppletTriggerComponent from 'apps/ifttb/components/ChooseAppletTriggerComponent/ChooseAppletTriggerComponent';
-import EditingAppletTriggerComponent from 'apps/ifttb/components/EditingAppletTriggerComponent/EditingAppletTriggerComponent';
 import { AppletFormContext, useCurrentUser } from 'apps/ifttb/contexts';
 import LoaderComponent from 'apps/shared/components/LoaderComponent/LoaderComponent';
 import {
@@ -26,12 +24,14 @@ export default function EditAppletPage() {
   const { id } = useParams<{ id: string }>();
   const [appletForm, setAppletForm] =
     useState<UpdateAppletMutationInput | null>(null);
+
   const [editingTrigger, setEditingTrigger] =
     useState<null | AppletTriggerInput>(null);
   const [selectedTrigger, setSelectedTrigger] =
     useState<null | AppletTriggerInput>(null);
   const [chooseTriggerPopupVisible, setChooseTriggerPopupVisible] =
     useState(false);
+
   const { loading, data } = useAppletQuery({ variables: { id } });
 
   useEffect(() => {
@@ -187,20 +187,6 @@ export default function EditAppletPage() {
           </div>
         </div>
       </Popup>
-      <ChooseAppletTriggerComponent
-        visible={chooseTriggerPopupVisible}
-        onOk={() => setChooseTriggerPopupVisible(false)}
-        onCancel={() => setChooseTriggerPopupVisible(false)}
-      />
-      <EditingAppletTriggerComponent
-        triggerType={editingTrigger?.type}
-        onOk={() => {
-          setEditingTrigger(null);
-        }}
-        onCancel={() => {
-          setEditingTrigger(null);
-        }}
-      />
     </AppletFormContext.Provider>
   );
 }

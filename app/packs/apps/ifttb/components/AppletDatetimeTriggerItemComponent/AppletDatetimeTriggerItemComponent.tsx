@@ -16,7 +16,7 @@ export default function AppletDatetimeTriggerItemComponent(props: {
       <span>
         <AlarmClockIcon size='1.75rem' />
       </span>
-      <span className='leading-7'>{trigger.description}</span>
+      <span className='leading-7'>{trigger.params.description}</span>
     </div>
   );
 }

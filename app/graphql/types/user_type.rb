@@ -14,7 +14,7 @@ module Types
     field :fennec, Boolean, null: true
     field :last_active_at, GraphQL::Types::ISO8601DateTime, null: true
 
-    field :ifttb_broker_id, String, null: false
+    field :ifttb_broker_id, String, null: true
     field :ifttb_role, String, null: false
     field :may_create_applet, Boolean, null: false
 
