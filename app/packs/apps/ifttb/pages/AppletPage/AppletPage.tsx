@@ -29,7 +29,10 @@ export default function AppletPage() {
       history.replace('/');
     },
   });
-  const { loading, data } = useAppletQuery({ variables: { id } });
+  const { loading, data } = useAppletQuery({
+    variables: { id },
+    fetchPolicy: 'cache-and-network',
+  });
 
   if (loading) {
     return <LoaderComponent />;

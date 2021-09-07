@@ -24,46 +24,24 @@ query Applet($id: ID!) {
       ... on AppletDatetimeTrigger {
         id
         type
-        description
         params
-        minute
-        hour
-        day
-        month
-        wday
       }
       ... on Applet4swapTrigger {
         id
         type
-        description
         params
-        baseAssetId
-        quoteAssetId
-        targetValue
-        targetIndex
-        compareAction
       }
     }
     appletActions {
       ... on Applet4swapAction {
         id
         type
-        description
         params
-        payAssetId
-        fillAssetId
-        payAmount
-        slippage
       }
       ... on AppletMixSwapAction {
         id
         type
-        description
         params
-        payAssetId
-        fillAssetId
-        payAmount
-        slippage
       }
     }
   }

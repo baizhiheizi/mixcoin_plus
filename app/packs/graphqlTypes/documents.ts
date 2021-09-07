@@ -2214,7 +2214,7 @@ export type AppletQueryVariables = Exact<{
 }>;
 
 
-export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', id: string, type: string, description?: Maybe<string>, params: any, baseAssetId: string, quoteAssetId: string, targetValue: number, targetIndex: string, compareAction: string } | { __typename?: 'AppletDatetimeTrigger', id: string, type: string, description?: Maybe<string>, params: any, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', id: string, type: string, description?: Maybe<string>, params: any, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } | { __typename?: 'AppletMixSwapAction', id: string, type: string, description?: Maybe<string>, params: any, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> } };
+export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', id: string, type: string, params: any } | { __typename?: 'AppletDatetimeTrigger', id: string, type: string, params: any }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', id: string, type: string, params: any } | { __typename?: 'AppletMixSwapAction', id: string, type: string, params: any }>> } };
 
 export type IfttbBrokerBalanceQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5802,46 +5802,24 @@ export const AppletDocument = gql`
       ... on AppletDatetimeTrigger {
         id
         type
-        description
         params
-        minute
-        hour
-        day
-        month
-        wday
       }
       ... on Applet4swapTrigger {
         id
         type
-        description
         params
-        baseAssetId
-        quoteAssetId
-        targetValue
-        targetIndex
-        compareAction
       }
     }
     appletActions {
       ... on Applet4swapAction {
         id
         type
-        description
         params
-        payAssetId
-        fillAssetId
-        payAmount
-        slippage
       }
       ... on AppletMixSwapAction {
         id
         type
-        description
         params
-        payAssetId
-        fillAssetId
-        payAmount
-        slippage
       }
     }
   }
