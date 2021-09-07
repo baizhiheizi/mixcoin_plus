@@ -62,7 +62,7 @@ export default function EditAppletPage() {
     setAppletActionServicesPopupVisible,
   ] = useState(false);
   const [editingAppletAction, setEditingAppletAction] = useState<
-    null | 'Applet4swapAction' | 'AppletMixSwapAction'
+    null | 'Applet4swapAction' | 'AppletMixSwapAction' | string
   >(null);
   const [editingApplet4swapAction, setEditingApplet4swapAction] = useState<
     null | 'Applet4swapTradeAction'
@@ -86,12 +86,8 @@ export default function EditAppletPage() {
       setAppletForm({
         id: applet.id,
         title: applet.title,
-        appletTriggersAttributes: applet.appletTriggers.map((trigger) => {
-          return { id: trigger.id, type: trigger.type, params: trigger.params };
-        }),
-        appletActionsAttributes: applet.appletActions.map((action) => {
-          return { id: action.id, type: action.type, params: action.params };
-        }),
+        appletTriggersAttributes: applet.appletTriggers,
+        appletActionsAttributes: applet.appletActions,
       });
     }
   }, [data?.applet]);
@@ -147,7 +143,23 @@ export default function EditAppletPage() {
     setAppletForm(Object.assign({}, appletForm, { appletTriggersAttributes }));
   };
 
-  const saveAction = (action: AppletActionInput) => {};
+  const saveAction = (action: AppletActionInput) => {
+    console.log(action);
+    const index = appletForm.appletActionsAttributes.findIndex(
+      (_action) => _action.type === action.type,
+    );
+    let appletActionsAttributes = [...appletForm.appletActionsAttributes];
+
+    if (index > -1) {
+      appletActionsAttributes[index] = Object.assign(
+        {},
+        appletActionsAttributes[index],
+        { ...action, _destroy: false },
+      );
+    }
+
+    setAppletForm(Object.assign({}, appletForm, { appletActionsAttributes }));
+  };
 
   if (loading) {
     return <LoaderComponent />;
@@ -210,13 +222,13 @@ export default function EditAppletPage() {
                   Applet4swapAction: (
                     <Applet4swapActionItemComponent
                       action={action}
-                      onClick={() => {}}
+                      onClick={() => setSelectedAction(action)}
                     />
                   ),
                   AppletMixSwapAction: (
                     <AppletMixSwapActionItemComponent
                       action={action}
-                      onClick={() => {}}
+                      onClick={() => setSelectedAction(action)}
                     />
                   ),
                 }[action.type]
@@ -238,10 +250,12 @@ export default function EditAppletPage() {
                     title: [
                       'If',
                       appletForm.appletTriggersAttributes
+                        .filter((trigger) => !trigger._destroy)
                         .map((trigger) => trigger.params.description)
                         .join(', '),
                       'then',
                       appletForm.appletActionsAttributes
+                        .filter((action) => !action._destroy)
                         .map((action) => action.params.description)
                         .join(', '),
                     ]
@@ -257,6 +271,7 @@ export default function EditAppletPage() {
         </div>
         <div style={{ paddingBottom: 'env(safe-area-inset-bottom)' }} />
       </div>
+
       <Popup
         visible={Boolean(selectedTrigger)}
         onMaskClick={() => setSelectedTrigger(null)}
@@ -285,6 +300,31 @@ export default function EditAppletPage() {
               }}
             >
               Edit trigger
+            </div>
+          </div>
+        </div>
+      </Popup>
+
+      <Popup
+        visible={Boolean(selectedAction)}
+        onMaskClick={() => setSelectedAction(null)}
+      >
+        <div className='bg-white rounded-t-lg min-h-screen-1/3'>
+          <div className='sticky flex justify-center p-2'>
+            <DownIcon size='2rem' />
+          </div>
+          <div className='p-4'>
+            <div
+              className='p-4 text-xl font-bold text-center text-white rounded-full cursor-pointer bg-dark'
+              onClick={() => {
+                setEditingAppletAction(selectedAction.type);
+                setSelectedAction(null);
+                if (selectedAction.type === 'Applet4swapAction') {
+                  setEditingApplet4swapAction('Applet4swapTradeAction');
+                }
+              }}
+            >
+              Edit action
             </div>
           </div>
         </div>
@@ -357,7 +397,7 @@ export default function EditAppletPage() {
       />
 
       {/**
-       * 4swap action form
+       * MixSwap action form
        */}
       <AppletMixSwapActionFormComponent
         visible={editingAppletAction === 'AppletMixSwapAction'}

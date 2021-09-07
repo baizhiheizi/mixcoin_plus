@@ -2,10 +2,8 @@
 
 module Types
   class AppletDatetimeTriggerType < Types::AppletTriggerType
-    field :minute, String, null: false
-    field :hour, String, null: false
-    field :day, String, null: false
-    field :month, String, null: false
-    field :wday, String, null: false
+    field :cron_value, String, null: false
+    field :frequency, Int, null: false
+    field :params, Types::AppletDatetimeTriggerParamsType, null: false
   end
 end

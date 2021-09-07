@@ -144,9 +144,25 @@ export type Applet4swapAction = {
   applet: Applet;
   createdAt: Scalars['ISO8601DateTime'];
   description?: Maybe<Scalars['String']>;
+  fillAsset: MixinAsset;
   fillAssetId: Scalars['String'];
   id: Scalars['ID'];
-  params: Scalars['JSON'];
+  params: Applet4swapActionParams;
+  payAmount: Scalars['Float'];
+  payAsset: MixinAsset;
+  payAssetId: Scalars['String'];
+  slippage: Scalars['Float'];
+  type: Scalars['String'];
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
+export type Applet4swapActionParams = {
+  __typename?: 'Applet4swapActionParams';
+  applet: Applet;
+  createdAt: Scalars['ISO8601DateTime'];
+  description?: Maybe<Scalars['String']>;
+  fillAssetId: Scalars['String'];
+  id: Scalars['ID'];
   payAmount: Scalars['Float'];
   payAssetId: Scalars['String'];
   slippage: Scalars['Float'];
@@ -157,12 +173,23 @@ export type Applet4swapAction = {
 export type Applet4swapTrigger = {
   __typename?: 'Applet4swapTrigger';
   applet: Applet;
+  createdAt: Scalars['ISO8601DateTime'];
+  fillAsset: MixinAsset;
+  id: Scalars['ID'];
+  params: Applet4swapTriggerParams;
+  payAsset: MixinAsset;
+  type: Scalars['String'];
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
+export type Applet4swapTriggerParams = {
+  __typename?: 'Applet4swapTriggerParams';
+  applet: Applet;
   baseAssetId: Scalars['String'];
   compareAction: Scalars['String'];
   createdAt: Scalars['ISO8601DateTime'];
-  description?: Maybe<Scalars['String']>;
+  description: Scalars['String'];
   id: Scalars['ID'];
-  params: Scalars['JSON'];
   quoteAssetId: Scalars['String'];
   targetIndex: Scalars['String'];
   targetValue: Scalars['Float'];
@@ -176,7 +203,6 @@ export type AppletAction = {
   createdAt: Scalars['ISO8601DateTime'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  params: Scalars['JSON'];
   type: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
 };
@@ -184,7 +210,6 @@ export type AppletAction = {
 export type AppletActionInput = {
   id?: Maybe<Scalars['ID']>;
   type: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
   params: Scalars['JSON'];
   _destroy?: Maybe<Scalars['Boolean']>;
 };
@@ -236,13 +261,24 @@ export type AppletDatetimeTrigger = {
   __typename?: 'AppletDatetimeTrigger';
   applet: Applet;
   createdAt: Scalars['ISO8601DateTime'];
+  cronValue: Scalars['String'];
+  frequency: Scalars['Int'];
+  id: Scalars['ID'];
+  params: AppletDatetimeTriggerParams;
+  type: Scalars['String'];
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
+export type AppletDatetimeTriggerParams = {
+  __typename?: 'AppletDatetimeTriggerParams';
+  applet: Applet;
+  createdAt: Scalars['ISO8601DateTime'];
   day: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
+  description: Scalars['String'];
   hour: Scalars['String'];
   id: Scalars['ID'];
   minute: Scalars['String'];
   month: Scalars['String'];
-  params: Scalars['JSON'];
   type: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
   wday: Scalars['String'];
@@ -262,12 +298,10 @@ export type AppletMixSwapAction = {
   applet: Applet;
   createdAt: Scalars['ISO8601DateTime'];
   description?: Maybe<Scalars['String']>;
-  fillAssetId: Scalars['String'];
+  fillAsset: MixinAsset;
   id: Scalars['ID'];
-  params: Scalars['JSON'];
-  payAmount: Scalars['Float'];
-  payAssetId: Scalars['String'];
-  slippage: Scalars['Float'];
+  params: Applet4swapActionParams;
+  payAsset: MixinAsset;
   type: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
 };
@@ -275,7 +309,6 @@ export type AppletMixSwapAction = {
 export type AppletTriggerInput = {
   id?: Maybe<Scalars['ID']>;
   type: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
   params: Scalars['JSON'];
   _destroy?: Maybe<Scalars['Boolean']>;
 };
@@ -2207,14 +2240,14 @@ export type AppletConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger' } | { __typename?: 'AppletDatetimeTrigger', type: string, description?: Maybe<string>, minute: string, hour: string, day: string, month: string, wday: string }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } | { __typename?: 'AppletMixSwapAction', type: string, description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }>> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } }, currentUser?: Maybe<{ __typename?: 'User', ifttbBrokerId?: Maybe<string>, ifttbRole: string, mayCreateApplet: boolean }> };
+export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue: number, targetIndex: string, compareAction: string } } | { __typename?: 'AppletDatetimeTrigger', type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, params: { __typename?: 'Applet4swapActionParams', description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } } | { __typename?: 'AppletMixSwapAction', type: string, params: { __typename?: 'Applet4swapActionParams', description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } }>> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } }, currentUser?: Maybe<{ __typename?: 'User', ifttbBrokerId?: Maybe<string>, ifttbRole: string, mayCreateApplet: boolean }> };
 
 export type AppletQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', id: string, type: string, params: any } | { __typename?: 'AppletDatetimeTrigger', id: string, type: string, params: any }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', id: string, type: string, params: any } | { __typename?: 'AppletMixSwapAction', id: string, type: string, params: any }>> } };
+export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', id: string, type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue: number, targetIndex: string, compareAction: string } } | { __typename?: 'AppletDatetimeTrigger', id: string, type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', id: string, type: string, params: { __typename?: 'Applet4swapActionParams', description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } } | { __typename?: 'AppletMixSwapAction', id: string, type: string, params: { __typename?: 'Applet4swapActionParams', description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } }>> } };
 
 export type IfttbBrokerBalanceQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5708,30 +5741,47 @@ export const AppletConnectionDocument = gql`
       appletTriggers {
         ... on AppletDatetimeTrigger {
           type
-          description
-          minute
-          hour
-          day
-          month
-          wday
+          params {
+            description
+            minute
+            hour
+            day
+            month
+            wday
+          }
+        }
+        ... on Applet4swapTrigger {
+          type
+          params {
+            description
+            baseAssetId
+            quoteAssetId
+            targetValue
+            targetIndex
+            compareAction
+          }
         }
       }
       appletActions {
         ... on Applet4swapAction {
           type
-          description
-          payAssetId
-          fillAssetId
-          payAmount
-          slippage
+          params {
+            description
+            payAssetId
+            fillAssetId
+            payAmount
+            slippage
+          }
         }
         ... on AppletMixSwapAction {
           type
-          description
-          payAssetId
-          fillAssetId
-          payAmount
-          slippage
+          params {
+            description
+            payAssetId
+            fillAssetId
+            payAmount
+            slippage
+          }
         }
       }
     }
@@ -5802,24 +5852,90 @@ export const AppletDocument = gql`
       ... on AppletDatetimeTrigger {
         id
         type
-        params
+        params {
+          description
+          minute
+          hour
+          day
+          month
+          wday
+        }
       }
       ... on Applet4swapTrigger {
         id
         type
-        params
+        params {
+          description
+          baseAssetId
+          quoteAssetId
+          targetValue
+          targetIndex
+          compareAction
+        }
       }
     }
     appletActions {
       ... on Applet4swapAction {
         id
         type
-        params
+        params {
+          description
+          payAssetId
+          fillAssetId
+          payAmount
+          slippage
+        }
+        payAsset {
+          assetId
+          iconUrl
+          symbol
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
+        fillAsset {
+          assetId
+          iconUrl
+          symbol
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
       }
       ... on AppletMixSwapAction {
         id
         type
-        params
+        params {
+          description
+          payAssetId
+          fillAssetId
+          payAmount
+          slippage
+        }
+        payAsset {
+          assetId
+          iconUrl
+          symbol
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
+        fillAsset {
+          assetId
+          iconUrl
+          symbol
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
       }
     }
   }

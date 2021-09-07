@@ -4,6 +4,7 @@ import {
   FoxSwapAppId,
   FoxSwapLogoUrl,
 } from 'apps/ifttb/constants';
+import { useAppletForm } from 'apps/ifttb/contexts';
 import { AppletActionInput } from 'graphqlTypes';
 import React from 'react';
 import { Popup } from 'zarm';
@@ -17,6 +18,11 @@ export default function Applet4swapActionFormComponent(props: {
   onOk: (action: AppletActionInput) => any;
 }) {
   const { visible, onCancel, onOk, actionType, onSelected } = props;
+  const { appletForm } = useAppletForm();
+  const applet4swapAction = appletForm?.appletActionsAttributes?.find(
+    (action) => action.type === 'Applet4swapAction',
+  );
+
   const FswapTriggerItem = (props: {
     className?: string;
     children: JSX.Element | string;
@@ -82,7 +88,13 @@ export default function Applet4swapActionFormComponent(props: {
         </div>
         <Popup
           visible={Boolean(actionType)}
-          onMaskClick={() => onSelected(null)}
+          onMaskClick={() => {
+            if (Boolean(applet4swapAction.id)) {
+              onCancel();
+            } else {
+              onSelected(null);
+            }
+          }}
         >
           <div className='relative overflow-scroll bg-white rounded-t-lg max-h-screen-3/4 min-h-screen-1/2'>
             <div className='sticky flex justify-center p-2'>
