@@ -77,8 +77,12 @@ module SwapOrders::MixSwappable
 
   def refresh_state!
     r = order_detail
-    return if r['data'].blank?
+    return if r['data']&.[]('orderStatus') == 'done'
 
-    trade! if r['data']['orderStatus'] == 'done' && may_trade?
+    if r['data']['refundAmount'].to_f < pay_amount
+      trade! if may_trade?
+    elsif may_refund?
+      refund!
+    end
   end
 end

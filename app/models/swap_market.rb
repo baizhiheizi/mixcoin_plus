@@ -31,11 +31,15 @@ class SwapMarket
   end
 
   def _set_ask_price
-    _ask_price ||= Foxswap.api.pre_order(
+    funds = base_asset.price_usd.positive? ? (50 / base_asset.price_usd).floor(8) : 1
+
+    amount = Foxswap.api.pre_order(
       pay_asset_id: base_asset_id,
       fill_asset_id: quote_asset_id,
-      funds: 1
+      funds: funds
     )&.[]('data')&.[]('fill_amount')&.to_f
+
+    _ask_price = (amount / funds).round(8) if amount.positive?
 
     Global.redis.set _ask_price_cache_id, _ask_price, ex: 1.minute
 
@@ -43,7 +47,7 @@ class SwapMarket
   end
 
   def _ask_price_cache_id
-    "ask_price_#{base_asset_id}_#{quote_asset_id}"
+    "price_#{base_asset_id}_#{quote_asset_id}"
   end
 
   def _get_bid_price
@@ -51,11 +55,15 @@ class SwapMarket
   end
 
   def _set_bid_price
-    _bid_price ||= (1 / Foxswap.api.pre_order(
+    funds = quote_asset.price_usd.positive? ? (50 / quote_asset.price_usd).floor(8) : 1
+
+    amount = Foxswap.api.pre_order(
       pay_asset_id: quote_asset_id,
       fill_asset_id: base_asset_id,
-      funds: 1
-    )&.[]('data')&.[]('fill_amount')&.to_f)&.round(8)
+      funds: funds
+    )&.[]('data')&.[]('fill_amount')&.to_f
+
+    _bid_price = (funds / amount).round(8) if amount.positive?
 
     Global.redis.set _bid_price_cache_id, _bid_price, ex: 1.minute
 
@@ -63,6 +71,6 @@ class SwapMarket
   end
 
   def _bid_price_cache_id
-    "bid_price_#{base_asset_id}_#{quote_asset_id}"
+    "price_#{quote_asset_id}_#{base_asset_id}"
   end
 end
