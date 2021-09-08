@@ -8,8 +8,6 @@
 #  applet_activities_count :integer          default(0)
 #  archived_at             :datetime
 #  connected               :boolean          default(FALSE)
-#  cron                    :string
-#  frequency               :integer          default(300)
 #  last_active_at          :datetime
 #  title                   :string
 #  created_at              :datetime         not null
@@ -29,8 +27,6 @@ class Applet < ApplicationRecord
 
   accepts_nested_attributes_for :applet_actions, update_only: true
   accepts_nested_attributes_for :applet_triggers, allow_destroy: true
-
-  before_validation :set_defaults
 
   validate :must_has_triggers, on: :create
   validate :must_has_actions, on: :create
@@ -98,8 +94,6 @@ class Applet < ApplicationRecord
   end
 
   def create_cron_job
-    refresh_cron
-
     Sidekiq::Cron::Job.create(
       name: cron_job_name,
       class: 'AppletActiveWorker',
@@ -166,12 +160,12 @@ class Applet < ApplicationRecord
     @profit ||= (fill_total_usd / pay_total_usd - 1).to_f
   end
 
-  def refresh_cron
-    return if applet_datetime_trigger&.cron_value == cron
+  def cron
+    applet_datetime_trigger&.cron_value || default_cron
+  end
 
-    _cron = applet_datetime_trigger&.cron_value || default_cron
-    _frequency = Fugit.parse_cron _cron
-    update cron: _cron, frequency: _frequency&.rough_frequency
+  def frequency
+    Fugit.parse_cron(cron).rough_frequency
   end
 
   private
@@ -182,11 +176,6 @@ class Applet < ApplicationRecord
 
   def default_cron
     '*/5 * * * *'
-  end
-
-  def set_defaults
-    self.cron = applet_datetime_trigger&.cron_value || default_cron if cron.blank?
-    self.frequency = cron_instance.rough_frequency
   end
 
   def must_has_triggers

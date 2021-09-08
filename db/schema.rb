@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_05_144742) do
+ActiveRecord::Schema.define(version: 2021_09_08_014446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -71,11 +71,9 @@ ActiveRecord::Schema.define(version: 2021_09_05_144742) do
     t.string "title"
     t.boolean "connected", default: false
     t.datetime "last_active_at"
-    t.integer "frequency", default: 300
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "archived_at"
-    t.string "cron"
     t.integer "applet_activities_count", default: 0
   end
 
