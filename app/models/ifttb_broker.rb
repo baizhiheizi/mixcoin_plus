@@ -30,8 +30,6 @@ class IfttbBroker < MixinNetworkUser
 
   include AASM
 
-  has_many :swap_orders, primary_key: :mixin_uuid, dependent: :restrict_with_exception
-
   after_initialize :set_default_name, if: :new_record?
   after_commit :initialize_broker_account_async, on: :create
 
