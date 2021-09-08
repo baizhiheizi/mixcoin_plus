@@ -1,30 +1,39 @@
 import MixinAssetsComponent from 'apps/ifttb/components/MixinAssetsComponent/MixinAssetsComponent';
 import { FoxSwapActionThemeColor } from 'apps/ifttb/constants';
-import {
-  Applet4swapTrigger,
-  AppletTriggerInput,
-  MixinAsset,
-} from 'graphqlTypes';
+import { useAppletForm } from 'apps/ifttb/contexts';
+import { AppletTriggerInput, MixinAsset } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { Picker, Popup } from 'zarm';
 
 export default function Applet4swapTriggerPriceFormComponent(props: {
   onFinish: (trigger: AppletTriggerInput) => any;
 }) {
-  const [baseAsset, setBaseAsset] = useState<null | MixinAsset>(null);
-  const [quoteAsset, setQuoteAsset] = useState<null | MixinAsset>(null);
+  const { appletForm } = useAppletForm();
+  const applet4swapTrigger = appletForm?.appletTriggersAttributes?.find(
+    (trigger) =>
+      trigger.type === 'Applet4swapTrigger' &&
+      ['ask_price', 'bid_price'].includes(trigger.params?.targetIndex),
+  );
+  const [baseAsset, setBaseAsset] = useState<null | MixinAsset>(
+    applet4swapTrigger?.baseAsset || null,
+  );
+  const [quoteAsset, setQuoteAsset] = useState<null | MixinAsset>(
+    applet4swapTrigger?.quoteAsset || null,
+  );
   const [selectingAsset, setSelectingAsset] = useState<
     null | 'baseAsset' | 'quoteAsset'
   >(null);
   const [targetIndex, setTargetIndex] = useState<'ask_price' | 'bid_price'>(
-    'ask_price',
+    applet4swapTrigger?.params?.targetIndex || 'ask_price',
   );
   const [choosingTargetIndex, setChoosingTargetIndex] = useState(false);
   const [compareAction, setCompareAction] = useState<
     'larger_than' | 'less_than'
-  >('larger_than');
+  >(applet4swapTrigger?.params?.compareAction || 'larger_than');
   const [choosingCompareAction, setChoosingCompareAction] = useState(false);
-  const [targetValue, setTargetValue] = useState('');
+  const [targetValue, setTargetValue] = useState(
+    applet4swapTrigger?.params?.targetValue || '',
+  );
 
   const validateParams = () => {
     if (
@@ -190,7 +199,7 @@ export default function Applet4swapTriggerPriceFormComponent(props: {
         style={{ background: FoxSwapActionThemeColor }}
         onClick={() => createTrigger()}
       >
-        Create Trigger
+        Save Trigger
       </div>
       <Popup
         visible={Boolean(selectingAsset)}

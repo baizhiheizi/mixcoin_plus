@@ -19,8 +19,10 @@
 class Applet < ApplicationRecord
   belongs_to :user
 
-  has_many :applet_triggers, dependent: :restrict_with_exception
+  has_one :applet_datetime_trigger, dependent: :restrict_with_exception
   has_one :applet_action, dependent: :restrict_with_exception
+
+  has_many :applet_triggers, dependent: :restrict_with_exception
   has_many :applet_actions, dependent: :restrict_with_exception
   has_many :applet_activities, dependent: :restrict_with_exception
   has_many :swap_orders, through: :applet_activities, dependent: :restrict_with_exception
@@ -28,7 +30,7 @@ class Applet < ApplicationRecord
   accepts_nested_attributes_for :applet_actions, update_only: true
   accepts_nested_attributes_for :applet_triggers, allow_destroy: true
 
-  before_validation :set_defaults, on: :create
+  before_validation :set_defaults
 
   validate :must_has_triggers, on: :create
   validate :must_has_actions, on: :create
@@ -96,6 +98,8 @@ class Applet < ApplicationRecord
   end
 
   def create_cron_job
+    refresh_cron
+
     Sidekiq::Cron::Job.create(
       name: cron_job_name,
       class: 'AppletActiveWorker',
@@ -163,7 +167,9 @@ class Applet < ApplicationRecord
   end
 
   def refresh_cron
-    _cron = applet_triggers.where(type: 'AppletDatetimeTrigger').first&.cron_value || default_cron
+    return if applet_datetime_trigger&.cron_value == cron
+
+    _cron = applet_datetime_trigger&.cron_value || default_cron
     _frequency = Fugit.parse_cron _cron
     update cron: _cron, frequency: _frequency&.rough_frequency
   end
@@ -179,7 +185,7 @@ class Applet < ApplicationRecord
   end
 
   def set_defaults
-    self.cron = applet_triggers.where(type: 'AppletDatetimeTrigger').first&.cron_value || default_cron if cron.blank?
+    self.cron = applet_datetime_trigger&.cron_value || default_cron if cron.blank?
     self.frequency = cron_instance.rough_frequency
   end
 

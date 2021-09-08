@@ -11,7 +11,7 @@ import {
 import moment from 'moment';
 import React, { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Loading, Modal, Switch } from 'zarm';
+import { Loading, Modal, Switch, Toast } from 'zarm';
 
 export default function AppletPage() {
   const history = useHistory();
@@ -88,7 +88,13 @@ export default function AppletPage() {
           </div>
           <div
             className='px-6 py-2 text-lg text-center text-white bg-gray-600 rounded-full cursor-pointer'
-            onClick={() => history.push(`/applets/${applet.id}/edit`)}
+            onClick={() => {
+              if (applet.connected) {
+                Toast.show('Disconnect applet before editing');
+              } else {
+                history.push(`/applets/${applet.id}/edit`);
+              }
+            }}
           >
             Edit
           </div>

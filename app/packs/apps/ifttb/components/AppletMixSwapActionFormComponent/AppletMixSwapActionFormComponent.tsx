@@ -4,6 +4,7 @@ import {
   MixSwapAppId,
   MixSwapLogoUrl,
 } from 'apps/ifttb/constants';
+import { useAppletForm } from 'apps/ifttb/contexts';
 import { AppletActionInput } from 'graphqlTypes';
 import React from 'react';
 import { Popup } from 'zarm';
@@ -17,6 +18,11 @@ export default function AppletMixSwapActionFormComponent(props: {
   onOk: (action: AppletActionInput) => any;
 }) {
   const { onCancel, onOk, visible, onSelected, actionType } = props;
+  const { appletForm } = useAppletForm();
+  const appletMixSwapAction = appletForm?.appletActionsAttributes?.find(
+    (action) => action.type === 'AppletMixSwapAction',
+  );
+
   const MixSwapTriggerItem = (props: {
     className?: string;
     children: JSX.Element | string;
@@ -43,7 +49,7 @@ export default function AppletMixSwapActionFormComponent(props: {
             className='absolute pt-1 left-8'
             size='1.25rem'
           />
-          <div className='text-center'>Create MixSwap Action</div>
+          <div className='text-center'>MixSwap Action</div>
         </div>
         <div
           className='px-4 pt-4 pb-8 mb-4'
@@ -69,7 +75,13 @@ export default function AppletMixSwapActionFormComponent(props: {
         </div>
         <Popup
           visible={Boolean(actionType)}
-          onMaskClick={() => onSelected(null)}
+          onMaskClick={() => {
+            if (Boolean(appletMixSwapAction?.id)) {
+              onCancel();
+            } else {
+              onSelected(null);
+            }
+          }}
         >
           <div className='relative overflow-scroll bg-white rounded-t-lg max-h-screen-3/4 min-h-screen-1/2'>
             <div className='sticky flex justify-center p-2'>

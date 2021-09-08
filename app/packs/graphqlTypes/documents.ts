@@ -173,11 +173,11 @@ export type Applet4swapActionParams = {
 export type Applet4swapTrigger = {
   __typename?: 'Applet4swapTrigger';
   applet: Applet;
+  baseAsset: MixinAsset;
   createdAt: Scalars['ISO8601DateTime'];
-  fillAsset: MixinAsset;
   id: Scalars['ID'];
   params: Applet4swapTriggerParams;
-  payAsset: MixinAsset;
+  quoteAsset: MixinAsset;
   type: Scalars['String'];
   updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
 };
@@ -2247,7 +2247,7 @@ export type AppletQueryVariables = Exact<{
 }>;
 
 
-export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', id: string, type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue: number, targetIndex: string, compareAction: string } } | { __typename?: 'AppletDatetimeTrigger', id: string, type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', id: string, type: string, params: { __typename?: 'Applet4swapActionParams', description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } } | { __typename?: 'AppletMixSwapAction', id: string, type: string, params: { __typename?: 'Applet4swapActionParams', description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } }>> } };
+export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, fillTotal?: Maybe<number>, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', id: string, type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue: number, targetIndex: string, compareAction: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, baseAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } } | { __typename?: 'AppletDatetimeTrigger', id: string, type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', id: string, type: string, params: { __typename?: 'Applet4swapActionParams', description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } } | { __typename?: 'AppletMixSwapAction', id: string, type: string, params: { __typename?: 'Applet4swapActionParams', description?: Maybe<string>, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } }>> } };
 
 export type IfttbBrokerBalanceQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5872,6 +5872,28 @@ export const AppletDocument = gql`
           targetIndex
           compareAction
         }
+        quoteAsset {
+          assetId
+          iconUrl
+          symbol
+          priceUsd
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
+        baseAsset {
+          assetId
+          iconUrl
+          symbol
+          priceUsd
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
       }
     }
     appletActions {
@@ -5889,6 +5911,7 @@ export const AppletDocument = gql`
           assetId
           iconUrl
           symbol
+          priceUsd
           chainAsset {
             assetId
             iconUrl
@@ -5899,6 +5922,7 @@ export const AppletDocument = gql`
           assetId
           iconUrl
           symbol
+          priceUsd
           chainAsset {
             assetId
             iconUrl
@@ -5920,6 +5944,7 @@ export const AppletDocument = gql`
           assetId
           iconUrl
           symbol
+          priceUsd
           chainAsset {
             assetId
             iconUrl
@@ -5930,6 +5955,7 @@ export const AppletDocument = gql`
           assetId
           iconUrl
           symbol
+          priceUsd
           chainAsset {
             assetId
             iconUrl
