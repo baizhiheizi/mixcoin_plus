@@ -2,6 +2,7 @@
 
 module Types
   class Applet4swapActionParamsType < Types::AppletActionType
+    field :description, String, null: false
     field :pay_asset_id, String, null: false
     field :fill_asset_id, String, null: false
     field :pay_amount, Float, null: false
