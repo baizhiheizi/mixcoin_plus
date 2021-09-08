@@ -89,7 +89,7 @@ export default function Applet4swapActionFormComponent(props: {
         <Popup
           visible={Boolean(actionType)}
           onMaskClick={() => {
-            if (Boolean(applet4swapAction.id)) {
+            if (Boolean(applet4swapAction?.id)) {
               onCancel();
             } else {
               onSelected(null);

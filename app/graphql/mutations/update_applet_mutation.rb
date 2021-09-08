@@ -25,6 +25,7 @@ module Mutations
 
       applet.update!(
         title: params[:title],
+        cron: params[:cron],
         applet_triggers_attributes: applet_triggers_attributes,
         applet_actions_attributes: applet_actions_attributes
       )

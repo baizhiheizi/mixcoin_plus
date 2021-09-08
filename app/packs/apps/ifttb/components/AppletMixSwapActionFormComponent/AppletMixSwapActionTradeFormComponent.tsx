@@ -1,4 +1,5 @@
 import { MixSwapActionThemeColor } from 'apps/ifttb/constants';
+import { useAppletForm } from 'apps/ifttb/contexts';
 import { AppletActionInput, MixinAsset } from 'graphqlTypes';
 import React, { useState } from 'react';
 import { Popup } from 'zarm';
@@ -7,13 +8,26 @@ import MixinAssetsComponent from '../MixinAssetsComponent/MixinAssetsComponent';
 export default function AppletMixSwapActionTradeFormComponent(props: {
   onFinish: (action: AppletActionInput) => any;
 }) {
-  const [payAsset, setPayAsset] = useState<null | MixinAsset>(null);
-  const [payAmount, setPayAmount] = useState<null | string>('');
-  const [fillAsset, setFillAsset] = useState<null | MixinAsset>(null);
+  const { appletForm } = useAppletForm();
+  const appletMixSwapAction = appletForm?.appletActionsAttributes?.find(
+    (action) => action.type === 'AppletMixSwapAction',
+  );
+
+  const [payAsset, setPayAsset] = useState<null | MixinAsset>(
+    appletMixSwapAction?.payAsset || null,
+  );
+  const [payAmount, setPayAmount] = useState<null | string>(
+    appletMixSwapAction?.params?.payAmount || '',
+  );
+  const [fillAsset, setFillAsset] = useState<null | MixinAsset>(
+    appletMixSwapAction?.fillAsset || null,
+  );
   const [selectingAsset, setSelectingAsset] = useState<
     null | 'payAsset' | 'fillAsset'
   >(null);
-  const [slippage, setSlippage] = useState<0.002 | 0.005 | 0.01>(0.002);
+  const [slippage, setSlippage] = useState<0.002 | 0.005 | 0.01>(
+    appletMixSwapAction?.params?.slippage || 0.002,
+  );
   const payValue = payAsset?.priceUsd * parseFloat(payAmount);
 
   const validateParams = () => {
@@ -52,7 +66,12 @@ export default function AppletMixSwapActionTradeFormComponent(props: {
         <div className='flex items-center w-full bg-gray-100 rounded-full'>
           <div
             className='flex items-center space-x-2'
-            onClick={() => setSelectingAsset('payAsset')}
+            onClick={() => {
+              if (Boolean(appletMixSwapAction?.id)) {
+                return;
+              }
+              setSelectingAsset('payAsset');
+            }}
           >
             {payAsset ? (
               <>
@@ -90,7 +109,12 @@ export default function AppletMixSwapActionTradeFormComponent(props: {
       <div className='flex items-center w-full mb-4 bg-gray-100 rounded-full'>
         <div
           className='flex items-center space-x-2'
-          onClick={() => setSelectingAsset('fillAsset')}
+          onClick={() => {
+            if (Boolean(appletMixSwapAction?.id)) {
+              return;
+            }
+            setSelectingAsset('fillAsset');
+          }}
         >
           {fillAsset ? (
             <>
@@ -127,7 +151,7 @@ export default function AppletMixSwapActionTradeFormComponent(props: {
             }`}
             onClick={() => setSlippage(0.002)}
           >
-            0.1%
+            0.2%
           </div>
           <div
             className={`py-1 px-4 border cursor-pointer rounded ${
@@ -154,7 +178,7 @@ export default function AppletMixSwapActionTradeFormComponent(props: {
         style={{ background: MixSwapActionThemeColor }}
         onClick={() => createAction()}
       >
-        Create Action
+        Save Action
       </div>
       <Popup
         visible={Boolean(selectingAsset)}

@@ -24,7 +24,7 @@ import {
 } from 'graphqlTypes';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Popup } from 'zarm';
+import { Popup, Toast } from 'zarm';
 
 export default function EditAppletPage() {
   const history = useHistory();
@@ -68,7 +68,7 @@ export default function EditAppletPage() {
     null | 'Applet4swapTradeAction'
   >(null);
   const [editingAppletMixSwapAction, setEditingAppletMixSwapAction] = useState<
-    null | 'AppletMixSwapTradeAction'
+    null | 'AppletMixSwapTradeAction' | 'AppletMixSwapTradeAction'
   >(null);
 
   const [selectedAction, setSelectedAction] =
@@ -246,7 +246,7 @@ export default function EditAppletPage() {
               updateApplet({
                 variables: {
                   input: {
-                    ...appletForm,
+                    id: appletForm.id,
                     title: [
                       'If',
                       appletForm.appletTriggersAttributes
@@ -261,6 +261,24 @@ export default function EditAppletPage() {
                     ]
                       .filter((item) => !!item)
                       .join(', '),
+                    appletActionsAttributes:
+                      appletForm.appletActionsAttributes.map((action) => {
+                        return {
+                          id: action.id,
+                          type: action.type,
+                          params: action.params,
+                          _destroy: action._destroy,
+                        };
+                      }),
+                    appletTriggersAttributes:
+                      appletForm.appletTriggersAttributes.map((trigger) => {
+                        return {
+                          id: trigger.id,
+                          type: trigger.type,
+                          params: trigger.params,
+                          _destroy: trigger._destroy,
+                        };
+                      }),
                   },
                 },
               });
@@ -321,6 +339,8 @@ export default function EditAppletPage() {
                 setSelectedAction(null);
                 if (selectedAction.type === 'Applet4swapAction') {
                   setEditingApplet4swapAction('Applet4swapTradeAction');
+                } else if (selectedAction.type === 'AppletMixSwapAction') {
+                  setEditingAppletMixSwapAction('AppletMixSwapTradeAction');
                 }
               }}
             >

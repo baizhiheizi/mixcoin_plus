@@ -79,7 +79,7 @@ export default function AppletDatetimeTriggerDayFormComponent(props: {
         className='w-full p-4 text-xl text-center text-white rounded-full cursor-pointer bg-dark'
         onClick={() => createTrigger()}
       >
-        Create Trigger
+        Save Trigger
       </div>
     </div>
   );

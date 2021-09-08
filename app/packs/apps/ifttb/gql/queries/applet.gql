@@ -44,6 +44,28 @@ query Applet($id: ID!) {
           targetIndex
           compareAction
         }
+        quoteAsset {
+          assetId
+          iconUrl
+          symbol
+          priceUsd
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
+        baseAsset {
+          assetId
+          iconUrl
+          symbol
+          priceUsd
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
       }
     }
     appletActions {
@@ -61,6 +83,7 @@ query Applet($id: ID!) {
           assetId
           iconUrl
           symbol
+          priceUsd
           chainAsset {
             assetId
             iconUrl
@@ -71,6 +94,7 @@ query Applet($id: ID!) {
           assetId
           iconUrl
           symbol
+          priceUsd
           chainAsset {
             assetId
             iconUrl
@@ -92,6 +116,7 @@ query Applet($id: ID!) {
           assetId
           iconUrl
           symbol
+          priceUsd
           chainAsset {
             assetId
             iconUrl
@@ -102,6 +127,7 @@ query Applet($id: ID!) {
           assetId
           iconUrl
           symbol
+          priceUsd
           chainAsset {
             assetId
             iconUrl
