@@ -127,13 +127,13 @@ class Applet < ApplicationRecord
   def pay_total
     return if traded_swap_orders.blank?
 
-    @pay_total ||= traded_swap_orders.sum(:pay_amount)
+    @pay_total ||= traded_swap_orders.sum('pay_amount - refund_amount')
   end
 
   def pay_total_usd
     return if traded_swap_orders.blank?
 
-    @pay_total_usd ||= traded_swap_orders.sum(:pay_amount_usd)
+    @pay_total_usd ||= traded_swap_orders.sum('(1 - refund_amount / pay_amount) * pay_amount_usd')
   end
 
   def fill_asset
