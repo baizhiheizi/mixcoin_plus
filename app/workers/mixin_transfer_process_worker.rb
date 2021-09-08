@@ -5,7 +5,10 @@ class MixinTransferProcessWorker
   sidekiq_options retry: true
 
   def perform(id)
-    MixinTransfer.find_by(id: id)&.process!
+    transfer = MixinTransfer.find_by(id: id)
+    return if transfer.blank?
+
+    transfer.process!
   rescue MixinBot::InsufficientBalanceError
     if transfer.withdraw_to_user?
       TransferFailedNotification.with(errmsg: :insufficient_balance, bot: 'IfttbBot').deliver(transfer.recipient)
