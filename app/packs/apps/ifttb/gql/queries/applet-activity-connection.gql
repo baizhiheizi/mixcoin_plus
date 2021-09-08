@@ -4,6 +4,7 @@ query AppletActivityConnection($appletId: ID!, $after: String) {
       id
       state
       createdAt
+      updatedAt
     }
     pageInfo {
       hasNextPage

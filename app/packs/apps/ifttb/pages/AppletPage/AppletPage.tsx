@@ -179,7 +179,7 @@ function AppletActivitiesComponent(props: { appletId: string }) {
             }`}
           >
             Applet {appletActivity.state} at{' '}
-            {moment(appletActivity.createdAt).format('YYYY-MM-DD HH:mm')}
+            {moment(appletActivity.updatedAt).format('YYYY-MM-DD HH:mm')}
           </div>
         ))}
       </PullComponent>

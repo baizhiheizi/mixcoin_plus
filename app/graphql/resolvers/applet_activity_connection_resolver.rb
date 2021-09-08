@@ -8,7 +8,7 @@ module Resolvers
     type Types::AppletActivityType.connection_type, null: false
 
     def resolve(**params)
-      current_user.applets.find(params[:applet_id]).applet_activities.order(created_at: :desc)
+      current_user.applets.find(params[:applet_id]).applet_activities.without_drafted.order(created_at: :desc)
     end
   end
 end
