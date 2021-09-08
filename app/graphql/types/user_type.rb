@@ -17,6 +17,7 @@ module Types
     field :ifttb_broker_id, String, null: true
     field :ifttb_role, String, null: false
     field :may_create_applet, Boolean, null: false
+    field :ifttb_pro_expired_at, GraphQL::Types::ISO8601DateTime, null: true
 
     field :invitor, Types::UserType, null: true
     field :broker, MixinNetworkUserType, null: true

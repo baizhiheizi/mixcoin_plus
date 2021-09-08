@@ -9,7 +9,7 @@ import {
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Loading, Modal, Switch, Toast } from 'zarm';
+import { Button, Loading, Modal, Switch } from 'zarm';
 
 export default function AppletsPage() {
   const history = useHistory();
@@ -38,7 +38,7 @@ export default function AppletsPage() {
                 ) : (
                   <div
                     className='px-6 py-2 text-lg text-center bg-gray-600 rounded-full cursor-pointer'
-                    onClick={() => Toast.show('Not ready yet')}
+                    onClick={() => history.push('/upgrade')}
                   >
                     Upgrade Pro
                   </div>

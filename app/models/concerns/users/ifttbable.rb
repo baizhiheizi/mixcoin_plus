@@ -33,4 +33,8 @@ module Users::Ifttbable
   def may_create_applet?
     ifttb_pro? || applets.without_archived.count < 3
   end
+
+  def ifttb_pro_expired_at
+    ifttb_profile.pro_expired_at
+  end
 end

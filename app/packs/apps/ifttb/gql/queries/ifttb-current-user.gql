@@ -1,0 +1,8 @@
+query IfttbCurrentUser {
+  currentUser {
+    ifttbBrokerId
+    ifttbRole
+    ifttbProExpiredAt
+    mayCreateApplet
+  }
+}

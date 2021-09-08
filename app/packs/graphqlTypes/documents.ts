@@ -1640,6 +1640,7 @@ export type User = {
   fennec?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   ifttbBrokerId?: Maybe<Scalars['String']>;
+  ifttbProExpiredAt?: Maybe<Scalars['ISO8601DateTime']>;
   ifttbRole: Scalars['String'];
   invitationsCount: Scalars['Int'];
   inviteCode: Scalars['String'];
@@ -2267,6 +2268,11 @@ export type IfttbBrokerSnapshotsQueryVariables = Exact<{
 
 
 export type IfttbBrokerSnapshotsQuery = { __typename?: 'Query', ifttbBrokerSnapshots: Array<{ __typename?: 'MixinNetworkSnapshot', amount: number, snapshotId: string, traceId?: Maybe<string>, opponentId?: Maybe<string>, data?: Maybe<string>, createdAt: any, asset: { __typename?: 'MixinAsset', name: string, symbol: string, iconUrl?: Maybe<string>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', iconUrl?: Maybe<string> }> } }> };
+
+export type IfttbCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IfttbCurrentUserQuery = { __typename?: 'Query', currentUser?: Maybe<{ __typename?: 'User', ifttbBrokerId?: Maybe<string>, ifttbRole: string, ifttbProExpiredAt?: Maybe<any>, mayCreateApplet: boolean }> };
 
 export type MixinAssetsQueryVariables = Exact<{
   source?: Maybe<Scalars['String']>;
@@ -6091,6 +6097,43 @@ export function useIfttbBrokerSnapshotsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type IfttbBrokerSnapshotsQueryHookResult = ReturnType<typeof useIfttbBrokerSnapshotsQuery>;
 export type IfttbBrokerSnapshotsLazyQueryHookResult = ReturnType<typeof useIfttbBrokerSnapshotsLazyQuery>;
 export type IfttbBrokerSnapshotsQueryResult = Apollo.QueryResult<IfttbBrokerSnapshotsQuery, IfttbBrokerSnapshotsQueryVariables>;
+export const IfttbCurrentUserDocument = gql`
+    query IfttbCurrentUser {
+  currentUser {
+    ifttbBrokerId
+    ifttbRole
+    ifttbProExpiredAt
+    mayCreateApplet
+  }
+}
+    `;
+
+/**
+ * __useIfttbCurrentUserQuery__
+ *
+ * To run a query within a React component, call `useIfttbCurrentUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIfttbCurrentUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIfttbCurrentUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIfttbCurrentUserQuery(baseOptions?: Apollo.QueryHookOptions<IfttbCurrentUserQuery, IfttbCurrentUserQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IfttbCurrentUserQuery, IfttbCurrentUserQueryVariables>(IfttbCurrentUserDocument, options);
+      }
+export function useIfttbCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IfttbCurrentUserQuery, IfttbCurrentUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IfttbCurrentUserQuery, IfttbCurrentUserQueryVariables>(IfttbCurrentUserDocument, options);
+        }
+export type IfttbCurrentUserQueryHookResult = ReturnType<typeof useIfttbCurrentUserQuery>;
+export type IfttbCurrentUserLazyQueryHookResult = ReturnType<typeof useIfttbCurrentUserLazyQuery>;
+export type IfttbCurrentUserQueryResult = Apollo.QueryResult<IfttbCurrentUserQuery, IfttbCurrentUserQueryVariables>;
 export const MixinAssetsDocument = gql`
     query MixinAssets($source: String) {
   mixinAssets(source: $source) {

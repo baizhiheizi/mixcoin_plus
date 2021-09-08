@@ -17,6 +17,7 @@ const EditAppletPage = React.lazy(
 const NewAppletPage = React.lazy(
   () => import('./pages/NewAppletPage/NewAppletPage'),
 );
+const UpgradePage = React.lazy(() => import('./pages/UpgradePage/UpgradePage'));
 const WalletPage = React.lazy(() => import('./pages/WalletPage/WalletPage'));
 const WithdrawPage = React.lazy(
   () => import('./pages/WithdrawPage/WithdrawPage'),
@@ -59,6 +60,9 @@ export default function Routes() {
           <Switch>
             <Route path='/' exact>
               <AppletsPage />
+            </Route>
+            <Route path='/upgrade' exact>
+              <UpgradePage />
             </Route>
             <Route path='/applets/:id' exact>
               <AppletPage />

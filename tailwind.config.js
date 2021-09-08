@@ -38,9 +38,14 @@ module.exports = {
       80: '20rem',
       96: '24rem',
     },
+    textColor: (theme) => ({
+      ...theme('colors'),
+      btc: '#e5912b',
+    }),
     backgroundColor: (theme) => ({
       ...theme('colors'),
       dark: '#1b1c1e',
+      btc: '#e5912b',
     }),
     extend: {},
   },
