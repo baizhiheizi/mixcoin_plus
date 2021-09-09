@@ -3,6 +3,7 @@ import { useCurrentUser } from 'apps/ifttb/contexts';
 import LoaderComponent from 'apps/shared/components/LoaderComponent/LoaderComponent';
 import PullComponent from 'apps/shared/components/PullComponent/PullComponent';
 import {
+  Applet,
   useAppletActivityConnectionQuery,
   useAppletQuery,
   useArchiveAppletMutation,
@@ -23,6 +24,7 @@ export default function AppletPage() {
   const [confirming, setConfirming] = useState<null | 'connected' | 'archive'>(
     null,
   );
+  const [tab, setTab] = useState<'stats' | 'activities'>('stats');
   const [archiveApplet] = useArchiveAppletMutation({
     update: () => {
       Loading.hide();
@@ -75,7 +77,26 @@ export default function AppletPage() {
           </div>
         </div>
         <div className='px-4'>
-          <AppletActivitiesComponent appletId={id} />
+          <div className='flex items-center p-2 mb-6 bg-gray-100'>
+            <div
+              className={`flex-1 text-center rounded p-2 ${
+                tab === 'stats' ? 'bg-dark text-white' : ''
+              }`}
+              onClick={() => setTab('stats')}
+            >
+              Stats
+            </div>
+            <div
+              className={`flex-1 text-center rounded p-2 ${
+                tab === 'activities' ? 'bg-dark text-white' : ''
+              }`}
+              onClick={() => setTab('activities')}
+            >
+              Activities
+            </div>
+          </div>
+          {tab === 'stats' && <AppletStatsComponent applet={applet} />}
+          {tab === 'activities' && <AppletActivitiesComponent appletId={id} />}
         </div>
       </div>
       <div className='fixed bottom-0 z-10 w-full p-4 mx-auto text-center text-white max-w-screen-md bg-dark'>
@@ -143,6 +164,81 @@ export default function AppletPage() {
   );
 }
 
+function AppletStatsComponent(props: { applet: Partial<Applet> | any }) {
+  const { applet } = props;
+
+  return (
+    <div className='p-4 border rounded shadow'>
+      <div className='mb-4'>
+        <div className='font-bold'>Completed</div>
+        <div className='flex items-center justify-end space-x-2'>
+          <span>{applet.appletActivitiesCompletedCount}</span>
+          <span>times</span>
+        </div>
+      </div>
+      {applet.fillAsset && applet.payAsset && (
+        <>
+          <div className='mb-2'>
+            <div className='font-bold'>Received</div>
+            <div className='flex items-center justify-end space-x-2'>
+              <img
+                className='w-6 h-6 rounded-full'
+                src={applet.fillAsset.iconUrl}
+              />
+              <span>{applet.fillTotal}</span>
+              <span>{applet.fillAsset.symbol}</span>
+            </div>
+            <div className='flex items-center justify-end space-x-2'>
+              <span>≈</span>
+              <span>${applet.fillTotalUsd.toFixed(2)}</span>
+            </div>
+          </div>
+          <div className='mb-2'>
+            <div className='font-bold'>Paid</div>
+            <div className='flex items-center justify-end space-x-2'>
+              <img
+                className='w-6 h-6 rounded-full'
+                src={applet.payAsset.iconUrl}
+              />
+              <span>{applet.payTotal}</span>
+              <span>{applet.payAsset.symbol}</span>
+            </div>
+            <div className='flex items-center justify-end space-x-2'>
+              <span>≈</span>
+              <span>${applet.payTotalUsd.toFixed(2)}</span>
+            </div>
+          </div>
+          <div className='mb-2'>
+            <div className='font-bold'>Profit</div>
+            <div className='flex items-center justify-end space-x-2'>
+              {applet.profit >= 0 ? (
+                <span className='text-green-500'>
+                  +${(applet.fillTotalUsd - applet.payTotalUsd).toFixed(2)}
+                </span>
+              ) : (
+                <span className='text-red-500'>
+                  -${(applet.payTotalUsd - applet.fillTotalUsd).toFixed(2)}
+                </span>
+              )}
+            </div>
+            <div className='flex items-center justify-end space-x-2'>
+              {applet.profit >= 0 ? (
+                <span className='text-green-500'>
+                  +{(applet.profit * 100).toFixed(2)}%
+                </span>
+              ) : (
+                <span className='text-red-500'>
+                  -{(-applet.profit * 100).toFixed(2)}%
+                </span>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function AppletActivitiesComponent(props: { appletId: string }) {
   const { appletId } = props;
 
@@ -163,7 +259,6 @@ function AppletActivitiesComponent(props: { appletId: string }) {
 
   return (
     <>
-      <div className='mb-2 text-base'>Activities:</div>
       <PullComponent
         hasNextPage={hasNextPage}
         refetch={refetch}

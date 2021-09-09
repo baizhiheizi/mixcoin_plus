@@ -7,6 +7,7 @@ module Types
     field :title, String, null: false
     field :connected, Boolean, null: false
     field :applet_activities_count, Int, null: false
+    field :applet_activities_completed_count, Int, null: false
     field :last_active_at, GraphQL::Types::ISO8601DateTime, null: true
     field :archived_at, GraphQL::Types::ISO8601DateTime, null: true
     field :cron, String, null: false
@@ -28,6 +29,10 @@ module Types
       BatchLoader::GraphQL.for(object.user_id).batch do |user_ids, loader|
         User.where(id: user_ids).each { |user| loader.call(user.id, user) }
       end
+    end
+
+    def applet_activities_completed_count
+      object.applet_activities.completed.count
     end
   end
 end
