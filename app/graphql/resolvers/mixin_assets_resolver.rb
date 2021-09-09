@@ -12,6 +12,8 @@ module Resolvers
         MixinAsset.where(asset_id: Foxswap.api.tradable_asset_ids)
       when :MixSwap
         MixinAsset.where(asset_id: MixSwap.api.tradable_asset_ids)
+      when :ifttb_order
+        MixinAsset.where(asset_id: IfttbOrder::ACCEPTABLE_ASSETS_IDS)
       end
     end
   end

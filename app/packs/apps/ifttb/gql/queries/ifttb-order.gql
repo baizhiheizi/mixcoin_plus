@@ -1,0 +1,6 @@
+query IfttbOrder($id: ID!) {
+  ifttbOrder(id: $id) {
+    id
+    state
+  }
+}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_08_014446) do
+ActiveRecord::Schema.define(version: 2021_09_08_114013) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -152,6 +152,18 @@ ActiveRecord::Schema.define(version: 2021_09_08_014446) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["market_id"], name: "index_group_markets_on_market_id"
     t.index ["mixin_conversation_id"], name: "index_group_markets_on_mixin_conversation_id"
+  end
+
+  create_table "ifttb_orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "state"
+    t.string "order_type"
+    t.uuid "asset_id"
+    t.decimal "amount"
+    t.decimal "amount_usd"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_ifttb_orders_on_user_id"
   end
 
   create_table "invitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

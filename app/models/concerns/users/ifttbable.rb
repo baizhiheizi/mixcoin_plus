@@ -6,6 +6,7 @@ module Users::Ifttbable
   included do
     has_one :ifttb_broker, as: :owner, dependent: :restrict_with_exception
     has_one :ifttb_profile, class_name: 'UserIfttbProfile', dependent: :restrict_with_exception
+    has_many :ifttb_orders, dependent: :restrict_with_exception
 
     after_create :create_ifttb_profile
   end

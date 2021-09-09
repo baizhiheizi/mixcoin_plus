@@ -19,7 +19,7 @@ export default function AppletsPage() {
     <>
       <div className='pb-16'>
         <div className='p-4 mb-4 text-xl font-bold text-white bg-dark'>
-          IFTT<span className='text-2xl'>₿</span>
+          IFTT<span className='text-2xl text-btc'>₿</span>
         </div>
         {currentUser ? (
           <>
@@ -99,9 +99,20 @@ function AppletsComponent() {
 
   return (
     <>
-      {currentUser.ifttbRole === 'free' && (
+      {currentUser.ifttbRole === 'free' ? (
         <div className='mb-4'>
           You have created {applets.length} / 3 applets.
+        </div>
+      ) : (
+        <div className='mb-4'>
+          You are using IFTTB{' '}
+          <span
+            className='px-1 text-white rounded cursor-pointer bg-btc'
+            onClick={() => history.push('/upgrade')}
+          >
+            Pro
+          </span>{' '}
+          plan
         </div>
       )}
       <PullComponent

@@ -60,6 +60,7 @@ module Types
     field :applet, resolver: Resolvers::AppletResolver
     field :applet_activity_connection, resolver: Resolvers::AppletActivityConnectionResolver
     field :ifttb_broker_balance, resolver: Resolvers::IfttbBrokerBalanceResolver
+    field :ifttb_order, resolver: Resolvers::IfttbOrderResolver
     field :ifttb_broker_snapshots, resolver: Resolvers::IfttbBrokerSnapshotsResolver
     field :mixin_assets, resolver: Resolvers::MixinAssetsResolver
   end
