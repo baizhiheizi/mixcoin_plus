@@ -164,6 +164,10 @@ export default function UpgradePage() {
           (ifttbOrderData?.ifttbOrder &&
             ifttbOrderData.ifttbOrder.state !== 'completed')
         }
+        onCancel={() => {
+          stopPolling();
+          history.replace('/');
+        }}
         afterClose={() => history.replace('/')}
         title='Checking payment'
       >
