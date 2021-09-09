@@ -20,7 +20,7 @@ class UserIfttbProfile < ApplicationRecord
   belongs_to :user, inverse_of: :ifttb_profile
 
   def role
-    pro_expired_at.presence > Time.current ? :pro : :free
+    pro_expired_at.present? && pro_expired_at > Time.current ? :pro : :free
   end
 
   def free?
