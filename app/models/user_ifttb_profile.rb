@@ -33,7 +33,6 @@ class UserIfttbProfile < ApplicationRecord
 
   def upgrade_pro(period = 1.year)
     update(
-      role: :pro,
       pro_expired_at: (pro_expired_at.blank? || pro_expired_at < Time.current ? Time.current : pro_expired_at) + period
     )
   end
