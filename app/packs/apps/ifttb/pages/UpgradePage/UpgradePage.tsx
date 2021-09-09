@@ -122,7 +122,7 @@ export default function UpgradePage() {
               <div className='flex items-center h-6'>
                 <CheckIcon size='1rem' theme='filled' fill='#1b1c1e' />
               </div>
-              <span>More exciting functions under development</span>
+              <span>More exciting features under development</span>
             </div>
           </div>
 
