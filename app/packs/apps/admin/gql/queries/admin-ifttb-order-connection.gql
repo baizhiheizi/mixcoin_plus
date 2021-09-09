@@ -1,0 +1,27 @@
+query AdminIfttbOrderConnection($state: String, $userId: ID, $after: String) {
+  adminIfttbOrderConnection(state: $state, userId: $userId, after: $after) {
+    nodes {
+      id
+      amount
+      state
+      orderType
+      user {
+        id
+        mixinUuid
+        mixinId
+        name
+        avatar
+      }
+      asset {
+        assetId
+        iconUrl
+        symbol
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

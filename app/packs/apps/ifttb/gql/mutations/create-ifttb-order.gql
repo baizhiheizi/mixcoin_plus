@@ -1,6 +1,4 @@
-mutation CreateIfttbOrder(
-  $input: CreateIfttbOrderMutationInput!
-) {
+mutation CreateIfttbOrder($input: CreateIfttbOrderMutationInput!) {
   createIfttbOrder(input: $input) {
     id
     payUrl

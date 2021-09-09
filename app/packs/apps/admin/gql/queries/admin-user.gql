@@ -9,6 +9,9 @@ query AdminUser($id: ID!) {
     broker {
       mixinUuid
     }
+    ifttbBroker {
+      mixinUuid
+    }
     invitor {
       name
       avatar

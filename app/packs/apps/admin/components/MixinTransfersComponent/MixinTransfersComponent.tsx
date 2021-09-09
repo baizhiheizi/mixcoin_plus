@@ -129,6 +129,9 @@ export default function MixinTransfersComponent(props: {
           <Select.Option value='withdraw_to_admin'>
             Withdraw to Admin
           </Select.Option>
+          <Select.Option value='withdraw_to_user'>
+            Withdraw to User
+          </Select.Option>
         </Select>
         <Button type='primary' onClick={() => refetch()}>
           Refresh

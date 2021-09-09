@@ -10,6 +10,7 @@ import BalancePage from './pages/BalancePage/BalancePage';
 import BookingOrderActivitiesPage from './pages/BookingOrderActivitiesPage/BookingOrderActivitiesPage';
 import BookingOrderActivityPage from './pages/BookingOrderActivityPage/BookingOrderActivityPage';
 import BookingOrderSnapshotsPage from './pages/BookingOrderSnapshotsPage/BookingOrderSnapshotsPage';
+import IfttbOrdersPage from './pages/IfttbOrdersPage/IfttbOrdersPage';
 import InvitationsPage from './pages/InvitationsPage/InvitationsPage';
 import MarketPage from './pages/MarketPage/MarketPage';
 import MarketsPage from './pages/MarketsPage/MarketsPage';
@@ -42,6 +43,9 @@ export default function Routes() {
       </Route>
       <Route path='/applet_activities' exact>
         <AppletActivitiesPage />
+      </Route>
+      <Route path='/ifttb_orders' exact>
+        <IfttbOrdersPage />
       </Route>
       <Route path='/markets' exact>
         <MarketsPage />

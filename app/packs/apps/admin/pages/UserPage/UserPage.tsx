@@ -1,5 +1,6 @@
 import { Avatar, Button, Descriptions, PageHeader, Space, Tabs } from 'antd';
 import AppletActivitiesComponent from 'apps/admin/components/AppletActivitiesComponent/AppletActivitiesComponent';
+import IfttbOrdersComponent from 'apps/admin/components/IfttbOrdersComponent/IfttbOrdersComponent';
 import AppletsComponent from 'apps/admin/components/AppletsComponent/AppletsComponent';
 import InvitationsComponent from 'apps/admin/components/InvitationsComponent/InvitationsComponent';
 import LoadingComponent from 'apps/admin/components/LoadingComponent/LoadingComponent';
@@ -70,6 +71,9 @@ export default function UserPage() {
         <Tabs.TabPane tab='Applet Activities' key='applet_activities'>
           <AppletActivitiesComponent userId={user.id} />
         </Tabs.TabPane>
+        <Tabs.TabPane tab='Ifttb Orders' key='ifttb_orders'>
+          <IfttbOrdersComponent userId={user.id} />
+        </Tabs.TabPane>
         <Tabs.TabPane tab='Swap Orders' key='swap_orders'>
           <SwapOrdersComponent userId={user.id} />
         </Tabs.TabPane>
@@ -81,6 +85,9 @@ export default function UserPage() {
         </Tabs.TabPane>
         <Tabs.TabPane tab='Broker Wallet' key='wallet'>
           <WalletBalanceComponent userId={user.broker.mixinUuid} />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab='Ifttb Broker Transfers' key='ifttb_transfers'>
+          <MixinTransfersComponent userId={user.ifttbBroker.mixinUuid} />
         </Tabs.TabPane>
         <Tabs.TabPane tab='Broker Transfers' key='transfers'>
           <MixinTransfersComponent userId={user.broker.mixinUuid} />

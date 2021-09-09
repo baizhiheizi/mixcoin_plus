@@ -577,6 +577,26 @@ export type IfttbOrder = {
   user: User;
 };
 
+/** The connection type for IfttbOrder. */
+export type IfttbOrderConnection = {
+  __typename?: 'IfttbOrderConnection';
+  /** A list of edges. */
+  edges?: Maybe<Array<Maybe<IfttbOrderEdge>>>;
+  /** A list of nodes. */
+  nodes?: Maybe<Array<Maybe<IfttbOrder>>>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+};
+
+/** An edge in a connection. */
+export type IfttbOrderEdge = {
+  __typename?: 'IfttbOrderEdge';
+  /** A cursor for use in pagination. */
+  cursor: Scalars['String'];
+  /** The item at the end of the edge. */
+  node?: Maybe<IfttbOrder>;
+};
+
 export type Invitation = {
   __typename?: 'Invitation';
   createdAt: Scalars['ISO8601DateTime'];
@@ -1112,6 +1132,7 @@ export type Query = {
   adminBookingOrderActivityConnection: BookingOrderActivityConnection;
   adminBookingOrderActivityParticipantConnection: BookingOrderActivityParticipantConnection;
   adminBookingOrderSnapshotConnection: BookingOrderSnapshotConnection;
+  adminIfttbOrderConnection: IfttbOrderConnection;
   adminInvitationConnection: InvitationConnection;
   adminMarket: Market;
   adminMarketConnection: MarketConnection;
@@ -1242,6 +1263,16 @@ export type QueryAdminBookingOrderSnapshotConnectionArgs = {
   marketId?: Maybe<Scalars['ID']>;
   oceanOrderId?: Maybe<Scalars['ID']>;
   startedAt?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryAdminIfttbOrderConnectionArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  state?: Maybe<Scalars['String']>;
   userId?: Maybe<Scalars['ID']>;
 };
 
@@ -1673,6 +1704,7 @@ export type User = {
   createdAt: Scalars['ISO8601DateTime'];
   fennec?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
+  ifttbBroker?: Maybe<MixinNetworkUser>;
   ifttbBrokerId?: Maybe<Scalars['String']>;
   ifttbProExpiredAt?: Maybe<Scalars['ISO8601DateTime']>;
   ifttbRole: Scalars['String'];
@@ -1878,6 +1910,15 @@ export type AdminBookingOrderSnapshotConnectionQueryVariables = Exact<{
 
 export type AdminBookingOrderSnapshotConnectionQuery = { __typename?: 'Query', adminBookingOrderSnapshotConnection: { __typename?: 'BookingOrderSnapshotConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'BookingOrderSnapshot', id: string, funds: number, orderWeight: number, price: number, ticker: number, scores: number, timestamp: number, createdAt: any, user: { __typename?: 'User', id: string, avatar: string, name: string, mixinId: string }, market: { __typename?: 'Market', baseAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, symbol: string } } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
+export type AdminIfttbOrderConnectionQueryVariables = Exact<{
+  state?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['String']>;
+}>;
+
+
+export type AdminIfttbOrderConnectionQuery = { __typename?: 'Query', adminIfttbOrderConnection: { __typename?: 'IfttbOrderConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'IfttbOrder', id: string, amount: number, state: string, orderType: string, createdAt: any, user: { __typename?: 'User', id: string, mixinUuid: string, mixinId: string, name: string, avatar: string }, asset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string } }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
+
 export type AdminInvitationConnectionQueryVariables = Exact<{
   after?: Maybe<Scalars['String']>;
   invitorId?: Maybe<Scalars['String']>;
@@ -2039,7 +2080,7 @@ export type AdminUserQueryVariables = Exact<{
 }>;
 
 
-export type AdminUserQuery = { __typename?: 'Query', adminUser: { __typename?: 'User', id: string, name: string, avatar: string, mixinId: string, mixinUuid: string, invitationsCount: number, createdAt: any, broker?: Maybe<{ __typename?: 'MixinNetworkUser', mixinUuid: string }>, invitor?: Maybe<{ __typename?: 'User', name: string, avatar: string, mixinId: string }> } };
+export type AdminUserQuery = { __typename?: 'Query', adminUser: { __typename?: 'User', id: string, name: string, avatar: string, mixinId: string, mixinUuid: string, invitationsCount: number, createdAt: any, broker?: Maybe<{ __typename?: 'MixinNetworkUser', mixinUuid: string }>, ifttbBroker?: Maybe<{ __typename?: 'MixinNetworkUser', mixinUuid: string }>, invitor?: Maybe<{ __typename?: 'User', name: string, avatar: string, mixinId: string }> } };
 
 export type CurrentAdminQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3246,6 +3287,65 @@ export function useAdminBookingOrderSnapshotConnectionLazyQuery(baseOptions?: Ap
 export type AdminBookingOrderSnapshotConnectionQueryHookResult = ReturnType<typeof useAdminBookingOrderSnapshotConnectionQuery>;
 export type AdminBookingOrderSnapshotConnectionLazyQueryHookResult = ReturnType<typeof useAdminBookingOrderSnapshotConnectionLazyQuery>;
 export type AdminBookingOrderSnapshotConnectionQueryResult = Apollo.QueryResult<AdminBookingOrderSnapshotConnectionQuery, AdminBookingOrderSnapshotConnectionQueryVariables>;
+export const AdminIfttbOrderConnectionDocument = gql`
+    query AdminIfttbOrderConnection($state: String, $userId: ID, $after: String) {
+  adminIfttbOrderConnection(state: $state, userId: $userId, after: $after) {
+    nodes {
+      id
+      amount
+      state
+      orderType
+      user {
+        id
+        mixinUuid
+        mixinId
+        name
+        avatar
+      }
+      asset {
+        assetId
+        iconUrl
+        symbol
+      }
+      createdAt
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    `;
+
+/**
+ * __useAdminIfttbOrderConnectionQuery__
+ *
+ * To run a query within a React component, call `useAdminIfttbOrderConnectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminIfttbOrderConnectionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminIfttbOrderConnectionQuery({
+ *   variables: {
+ *      state: // value for 'state'
+ *      userId: // value for 'userId'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useAdminIfttbOrderConnectionQuery(baseOptions?: Apollo.QueryHookOptions<AdminIfttbOrderConnectionQuery, AdminIfttbOrderConnectionQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AdminIfttbOrderConnectionQuery, AdminIfttbOrderConnectionQueryVariables>(AdminIfttbOrderConnectionDocument, options);
+      }
+export function useAdminIfttbOrderConnectionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AdminIfttbOrderConnectionQuery, AdminIfttbOrderConnectionQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AdminIfttbOrderConnectionQuery, AdminIfttbOrderConnectionQueryVariables>(AdminIfttbOrderConnectionDocument, options);
+        }
+export type AdminIfttbOrderConnectionQueryHookResult = ReturnType<typeof useAdminIfttbOrderConnectionQuery>;
+export type AdminIfttbOrderConnectionLazyQueryHookResult = ReturnType<typeof useAdminIfttbOrderConnectionLazyQuery>;
+export type AdminIfttbOrderConnectionQueryResult = Apollo.QueryResult<AdminIfttbOrderConnectionQuery, AdminIfttbOrderConnectionQueryVariables>;
 export const AdminInvitationConnectionDocument = gql`
     query AdminInvitationConnection($after: String, $invitorId: String) {
   adminInvitationConnection(after: $after, invitorId: $invitorId) {
@@ -4338,6 +4438,9 @@ export const AdminUserDocument = gql`
     mixinUuid
     invitationsCount
     broker {
+      mixinUuid
+    }
+    ifttbBroker {
       mixinUuid
     }
     invitor {

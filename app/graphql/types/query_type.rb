@@ -37,6 +37,7 @@ module Types
     field :admin_applet_connection, resolver: Resolvers::AdminAppletConnectionResolver
     field :admin_applet, resolver: Resolvers::AdminAppletResolver
     field :admin_applet_activity_connection, resolver: Resolvers::AdminAppletActivityConnectionResolver
+    field :admin_ifttb_order_connection, resolver: Resolvers::AdminIfttbOrderConnectionResolver
 
     field :current_user, resolver: Resolvers::CurrentUserResolver
     field :current_conversation, resolver: Resolvers::CurrentConversationResolver

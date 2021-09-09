@@ -40,6 +40,11 @@ export default function Menus() {
             <span>Applet Activities</span>
           </Link>
         </Menu.Item>
+        <Menu.Item key='ifttb_orders'>
+          <Link to='/ifttb_orders'>
+            <span>Orders</span>
+          </Link>
+        </Menu.Item>
       </Menu.SubMenu>
       <Menu.Item key='users'>
         <Link to='/users'>
