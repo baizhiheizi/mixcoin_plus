@@ -6,7 +6,6 @@
 #
 #  id             :uuid             not null, primary key
 #  pro_expired_at :datetime
-#  role           :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  user_id        :string           not null
@@ -18,21 +17,24 @@
 class UserIfttbProfile < ApplicationRecord
   extend Enumerize
 
-  enumerize :role, in: %i[free pro], default: :free, predicates: true
-
   belongs_to :user, inverse_of: :ifttb_profile
+
+  def role
+    pro_expired_at.presence > Time.current ? :pro : :free
+  end
+
+  def free?
+    role == :free
+  end
+
+  def pro?
+    role == :pro
+  end
 
   def upgrade_pro(period = 1.year)
     update(
       role: :pro,
       pro_expired_at: (pro_expired_at.blank? || pro_expired_at < Time.current ? Time.current : pro_expired_at) + period
     )
-  end
-
-  def expire_pro
-    return if free?
-    return if pro_expired_at && pro_expired_at > Time.current
-
-    update role: :free
   end
 end

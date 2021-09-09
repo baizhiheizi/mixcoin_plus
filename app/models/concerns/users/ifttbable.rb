@@ -19,10 +19,6 @@ module Users::Ifttbable
     ifttb_profile.upgrade_pro(period)
   end
 
-  def ifttb_expire_pro
-    ifttb_profile.expire_pro
-  end
-
   def ifttb_free?
     ifttb_profile.free?
   end

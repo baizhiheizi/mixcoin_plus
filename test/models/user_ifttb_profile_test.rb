@@ -6,7 +6,6 @@
 #
 #  id             :uuid             not null, primary key
 #  pro_expired_at :datetime
-#  role           :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  user_id        :string           not null
