@@ -2989,14 +2989,7 @@ autoprefixer@^9.6.1:
     postcss "^7.0.32"
     postcss-value-parser "^4.1.0"
 
-axios@^0.21.1:
-  version "0.21.1"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
-  integrity sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
-  dependencies:
-    follow-redirects "^1.10.0"
-
-axios@^0.21.4:
+axios@^0.21.1, axios@^0.21.4:
   version "0.21.4"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
@@ -4690,7 +4683,7 @@ flatten@^1.0.2:
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.3.tgz#c1283ac9f27b368abc1e36d1ff7b04501a30356b"
   integrity sha512-dVsPA/UwQ8+2uoFe5GHtiBMu48dWLTdsuEd7CKGlZlD78r1TTWBvDuFaFGKCo/ZfEr95Uk56vZoX86OsHkUeIg==
 
-follow-redirects@^1.0.0, follow-redirects@^1.10.0:
+follow-redirects@^1.0.0:
   version "1.13.3"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.3.tgz#e5598ad50174c1bc4e872301e82ac2cd97f90267"
   integrity sha512-DUgl6+HDzB0iEptNQEXLx/KhTmDb8tZUHSeLqpnjpknR70H0nC2t9N73BK6fN4hOvJ84pKlIQVQ4k5FFlBedKA==
@@ -6618,10 +6611,10 @@ pako@^2.0.4:
   resolved "https://registry.yarnpkg.com/pako/-/pako-2.0.4.tgz#6cebc4bbb0b6c73b0d5b8d7e8476e2b2fbea576d"
   integrity sha512-v8tweI900AUkZN6heMU/4Uy4cXRc2AYNRggVmTR+dEncawDJgCdLMximOVA2p4qO57WMynangsfGRb5WD6L1Bg==
 
-pando-sdk-js@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/pando-sdk-js/-/pando-sdk-js-0.1.2.tgz#f5eadeb51a9d6eb1851c351d81bed0aef64969f3"
-  integrity sha512-4g/ATw7VYNVBD244zVPrUCkNkpJGhMvqQYar5QVZE9xrGb+B4eOxowXpLwXLGSVRoozZawNgbiOJVGjt4efcog==
+pando-sdk-js@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/pando-sdk-js/-/pando-sdk-js-0.2.2.tgz#ba0eddc5badb19f0836f5e692de7e9375cd12d53"
+  integrity sha512-pbyURTPccdRsF6VpcprIwBW9+SZXei8DdHEIG27Ix1TzFcO9Tos+q+Q2u7R94dx+7kJKqhMqWUlQY+WzFgUY2w==
   dependencies:
     axios "^0.21.1"
     uuid "^8.3.2"
