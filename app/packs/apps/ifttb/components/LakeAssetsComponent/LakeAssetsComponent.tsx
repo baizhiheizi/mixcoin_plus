@@ -61,7 +61,7 @@ export default function LakeAssetsComponent(props: {
             <span>{asset.symbol}</span>
           </div>
           <div className='text-sm opacity-50'>
-            $ {(asset.price / 1)?.toFixed(2)}
+            $ {(parseFloat(asset.price) / 1)?.toFixed(2)}
           </div>
         </div>
       ))}
