@@ -38,7 +38,7 @@ class AppletActivity < ApplicationRecord
       transitions from: :drafted, to: :failed
     end
 
-    event :complete, after: :notify_state do
+    event :complete, after: %i[notify_state disconnect_applet_if_no_datetime_trigger] do
       transitions from: :drafted, to: :completed
     end
   end
@@ -47,6 +47,10 @@ class AppletActivity < ApplicationRecord
     return if applet&.user.blank?
 
     AppletActivityStateNotification.with(applet_activity: self).deliver(applet.user)
+  end
+
+  def disconnect_applet_if_no_datetime_trigger
+    applet.disconnect! if applet.applet_datetime_trigger.blank?
   end
 
   def log_applet_active
