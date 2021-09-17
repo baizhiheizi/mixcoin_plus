@@ -45,9 +45,11 @@ export default function AppletsComponent(props: { filter?: string }) {
     <>
       {currentUser.ifttbRole === 'free' ? (
         <div className='mb-4'>
-          <div className='mb-2'>
-            You have created {applets.length} / 3 applets.
-          </div>
+          {filter !== 'archived' && (
+            <div className='mb-2'>
+              You have created {applets.length} / 3 applets.
+            </div>
+          )}
           <div className='flex justify-center'>
             <span
               className='px-2 py-1 text-sm text-white rounded bg-dark'
