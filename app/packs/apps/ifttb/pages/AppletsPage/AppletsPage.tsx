@@ -1,19 +1,17 @@
-import { useCurrentUser } from 'apps/ifttb/contexts';
-import LoaderComponent from 'apps/shared/components/LoaderComponent/LoaderComponent';
-import PullComponent from 'apps/shared/components/PullComponent/PullComponent';
+import AppletsComponent from 'apps/ifttb/components/AppletsComponent/AppletsComponent';
 import {
-  Applet,
-  useAppletConnectionQuery,
-  useToggleAppletConnectedMutation,
-} from 'graphqlTypes';
-import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+  ApplicationMenu as ApplicationMenuIcon,
+  Down as DownIcon,
+} from '@icon-park/react';
+import { useCurrentUser } from 'apps/ifttb/contexts';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Loading, Modal, Switch } from 'zarm';
+import { Button, Popup } from 'zarm';
 
 export default function AppletsPage() {
   const history = useHistory();
   const { currentUser } = useCurrentUser();
+  const [menuVisible, setMenuVisible] = useState(false);
 
   return (
     <>
@@ -45,9 +43,9 @@ export default function AppletsPage() {
                 )}
                 <div
                   className='px-6 py-2 text-lg text-center bg-gray-600 rounded-full cursor-pointer'
-                  onClick={() => history.push('/wallet')}
+                  onClick={() => setMenuVisible(true)}
                 >
-                  Wallet
+                  <ApplicationMenuIcon size='1.75rem' />
                 </div>
               </div>
               <div style={{ height: 'env(safe-area-inset-bottom)' }} />
@@ -65,126 +63,33 @@ export default function AppletsPage() {
           </div>
         )}
       </div>
-    </>
-  );
-}
-
-function AppletsComponent() {
-  const { loading, data, refetch, fetchMore } = useAppletConnectionQuery({
-    fetchPolicy: 'cache-and-network',
-  });
-  const history = useHistory();
-  const { currentUser, setCurrentUser } = useCurrentUser();
-  const [selectedApplet, setSelectedApplet] = useState(null);
-  const [toggleAppletConnected] = useToggleAppletConnectedMutation({
-    update: () => Loading.hide(),
-  });
-
-  useEffect(() => {
-    if (data?.currentUser) {
-      setCurrentUser(Object.assign({}, currentUser, data.currentUser));
-    }
-  }, [data?.currentUser]);
-
-  if (loading) {
-    return <LoaderComponent />;
-  }
-
-  const {
-    appletConnection: {
-      nodes: applets,
-      pageInfo: { hasNextPage, endCursor },
-    },
-  } = data;
-
-  return (
-    <>
-      {currentUser.ifttbRole === 'free' ? (
-        <div className='mb-4'>
-          <div className='mb-2'>
-            You have created {applets.length} / 3 applets.
+      <Popup visible={menuVisible} onMaskClick={() => setMenuVisible(false)}>
+        <div className='bg-white rounded-t-lg min-h-screen-1/3'>
+          <div className='sticky flex justify-center p-2'>
+            <DownIcon size='2rem' />
           </div>
-          <div className='flex justify-center'>
-            <span
-              className='px-2 py-1 text-sm text-white rounded bg-dark'
-              onClick={() => history.push('/upgrade')}
-            >
-              Upgrade Pro
-            </span>
-          </div>
-        </div>
-      ) : (
-        <div className='mb-4'>
-          You are using IFTTB{' '}
-          <span
-            className='px-1 text-white rounded cursor-pointer bg-btc'
-            onClick={() => history.push('/upgrade')}
-          >
-            Pro
-          </span>{' '}
-          plan
-        </div>
-      )}
-      <PullComponent
-        hasNextPage={hasNextPage}
-        refetch={refetch}
-        fetchMore={() => fetchMore({ variables: { after: endCursor } })}
-      >
-        {applets.map((applet: Partial<Applet | any>) => (
-          <div key={applet.id} className='p-4 mb-4 border rounded shadow-lg'>
-            <div className='mb-2 text-gray-500'>#{applet.number}</div>
+          <div className='p-4'>
             <div
-              className='mb-2 text-base'
-              onClick={() => history.push(`/applets/${applet.id}`)}
+              className='p-2 mb-4 text-xl text-center border rounded-full shadow cursor-pointer'
+              onClick={() => history.push('/wallet')}
             >
-              {applet.title}
+              Wallet
             </div>
-            <div className='flex items-center justify-between mb-2'>
-              <span>Connected:</span>
-              <Switch
-                checked={applet.connected}
-                onChange={() => setSelectedApplet(applet)}
-              />
+            <div
+              className='p-2 mb-4 text-xl text-center border rounded-full shadow cursor-pointer'
+              onClick={() => history.push('/stats')}
+            >
+              Stats
             </div>
-            {applet.lastActiveAt && (
-              <div className='flex items-center justify-between'>
-                <span>Last active:</span>
-                <span>{moment(applet.lastActiveAt).fromNow()}</span>
-              </div>
-            )}
+            <div
+              className='p-2 mb-4 text-xl text-center border rounded-full shadow cursor-pointer'
+              onClick={() => history.push('/archived')}
+            >
+              Archived Applets
+            </div>
           </div>
-        ))}
-      </PullComponent>
-      <Modal
-        visible={Boolean(selectedApplet)}
-        onCancel={() => setSelectedApplet(null)}
-        maskClosable
-        closable
-        title='Confirm'
-      >
-        <div className='mb-6 text-lg'>
-          {selectedApplet?.connected ? (
-            'Are you sure to disconnect this applet?'
-          ) : (
-            <span>
-              Please make sure you have <b>enough balance</b> in your IFTTB
-              wallet to active before connect an applet.
-            </span>
-          )}
         </div>
-        <div
-          className='px-4 py-2 text-xl text-center text-white rounded-full bg-dark'
-          onClick={() => {
-            Loading.show();
-            toggleAppletConnected({
-              variables: { input: { appletId: selectedApplet?.id } },
-            });
-            setSelectedApplet(null);
-          }}
-        >
-          Confirm
-        </div>
-      </Modal>
+      </Popup>
     </>
   );
 }

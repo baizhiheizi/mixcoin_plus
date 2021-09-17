@@ -157,7 +157,7 @@ class Applet < ApplicationRecord
   def profit
     return if traded_swap_orders.blank?
 
-    @profit ||= (fill_total_usd / pay_total_usd - 1).to_f
+    @profit ||= ((fill_total_usd / pay_total_usd) - 1).to_f
   end
 
   def cron

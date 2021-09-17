@@ -11,6 +11,9 @@ import { ActivityIndicator } from 'zarm';
 import { CurrentConversationContext, useCurrentUser } from './contexts';
 import AppletsPage from './pages/AppletsPage/AppletsPage';
 const AppletPage = React.lazy(() => import('./pages/AppletPage/AppletPage'));
+const ArchivedAppletsPage = React.lazy(
+  () => import('./pages/ArchivedAppletsPage/ArchivedAppletsPage'),
+);
 const EditAppletPage = React.lazy(
   () => import('./pages/EditAppletPage/EditAppletPage'),
 );
@@ -22,6 +25,7 @@ const WalletPage = React.lazy(() => import('./pages/WalletPage/WalletPage'));
 const WithdrawPage = React.lazy(
   () => import('./pages/WithdrawPage/WithdrawPage'),
 );
+const StatsPage = React.lazy(() => import('./pages/StatsPage/StatsPage'));
 
 export default function Routes() {
   const { currentUser } = useCurrentUser();
@@ -83,6 +87,16 @@ export default function Routes() {
             <Route path='/withdraw' exact>
               <LazyLoad>
                 <WithdrawPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/stats' exact>
+              <LazyLoad>
+                <StatsPage />
+              </LazyLoad>
+            </Route>
+            <Route path='/archived' exact>
+              <LazyLoad>
+                <ArchivedAppletsPage />
               </LazyLoad>
             </Route>
           </Switch>

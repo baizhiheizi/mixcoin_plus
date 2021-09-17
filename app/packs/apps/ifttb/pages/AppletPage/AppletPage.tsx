@@ -68,13 +68,22 @@ export default function AppletPage() {
               ))}
           </div>
           <div className='mb-2 text-base'>{applet.title}</div>
-          <div className='flex items-center justify-between mb-2'>
-            <span>Connected:</span>
-            <Switch
-              checked={applet.connected}
-              onChange={() => setConfirming('connected')}
-            />
-          </div>
+          {applet.archivedAt ? (
+            <div className='flex items-center justify-between mb-2'>
+              <span>Archived at:</span>
+              <span>
+                {moment(applet.archivedAt).format('YYYY/MM/DD HH:mm')}
+              </span>
+            </div>
+          ) : (
+            <div className='flex items-center justify-between mb-2'>
+              <span>Connected:</span>
+              <Switch
+                checked={applet.connected}
+                onChange={() => setConfirming('connected')}
+              />
+            </div>
+          )}
         </div>
         <div className='px-4'>
           <div className='flex items-center p-2 mb-6 bg-gray-100'>
@@ -99,29 +108,31 @@ export default function AppletPage() {
           {tab === 'activities' && <AppletActivitiesComponent appletId={id} />}
         </div>
       </div>
-      <div className='fixed bottom-0 z-10 w-full p-4 mx-auto text-center text-white max-w-screen-md bg-dark'>
-        <div className='flex items-center justify-around'>
-          <div
-            className='px-6 py-2 text-lg text-center text-red-500 bg-gray-600 rounded-full cursor-pointer'
-            onClick={() => setConfirming('archive')}
-          >
-            Archive
+      {!applet.archivedAt && (
+        <div className='fixed bottom-0 z-10 w-full p-4 mx-auto text-center text-white max-w-screen-md bg-dark'>
+          <div className='flex items-center justify-around'>
+            <div
+              className='px-6 py-2 text-lg text-center text-red-500 bg-gray-600 rounded-full cursor-pointer'
+              onClick={() => setConfirming('archive')}
+            >
+              Archive
+            </div>
+            <div
+              className='px-6 py-2 text-lg text-center text-white bg-gray-600 rounded-full cursor-pointer'
+              onClick={() => {
+                if (applet.connected) {
+                  Toast.show('Disconnect applet before editing');
+                } else {
+                  history.push(`/applets/${applet.id}/edit`);
+                }
+              }}
+            >
+              Edit
+            </div>
           </div>
-          <div
-            className='px-6 py-2 text-lg text-center text-white bg-gray-600 rounded-full cursor-pointer'
-            onClick={() => {
-              if (applet.connected) {
-                Toast.show('Disconnect applet before editing');
-              } else {
-                history.push(`/applets/${applet.id}/edit`);
-              }
-            }}
-          >
-            Edit
-          </div>
+          <div style={{ height: 'env(safe-area-inset-bottom)' }} />
         </div>
-        <div style={{ height: 'env(safe-area-inset-bottom)' }} />
-      </div>
+      )}
       <Modal
         visible={Boolean(confirming)}
         onCancel={() => setConfirming(null)}

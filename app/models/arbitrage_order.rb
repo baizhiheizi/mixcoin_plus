@@ -82,11 +82,11 @@ class ArbitrageOrder < ApplicationRecord
     when :bid
       update(
         quote_asset_profit: swap_orders.traded.sum(:fill_amount) - ocean_orders.sum(:filled_funds),
-        base_asset_profit: ocean_orders.sum(:filled_amount) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO) - swap_orders.traded.sum(:pay_amount)
+        base_asset_profit: (ocean_orders.sum(:filled_amount) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO)) - swap_orders.traded.sum(:pay_amount)
       )
     when :ask
       update(
-        quote_asset_profit: ocean_orders.sum(:filled_funds) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO) - swap_orders.traded.sum(:pay_amount),
+        quote_asset_profit: (ocean_orders.sum(:filled_funds) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO)) - swap_orders.traded.sum(:pay_amount),
         base_asset_profit: swap_orders.traded.sum(:fill_amount) - ocean_orders.sum(:filled_amount)
       )
     end
@@ -104,7 +104,7 @@ class ArbitrageOrder < ApplicationRecord
   end
 
   def swap_price_reasonable?
-    (raw[:swap][:price] * market.quote_asset.price_usd / market.base_asset.price_usd - 1).abs < MAX_EXPECTED_PROFIT_RATIO
+    ((raw[:swap][:price] * market.quote_asset.price_usd / market.base_asset.price_usd) - 1).abs < MAX_EXPECTED_PROFIT_RATIO
   end
 
   def arbitrager_quote_balance
@@ -158,7 +158,7 @@ class ArbitrageOrder < ApplicationRecord
   def net_profit_usd
     return if drafted? || arbitraging?
 
-    (quote_asset_profit * quote_asset.price_usd + base_asset_profit * base_asset.price_usd).floor(8)
+    ((quote_asset_profit * quote_asset.price_usd) + (base_asset_profit * base_asset.price_usd)).floor(8)
   end
 
   def expected_profit_usd

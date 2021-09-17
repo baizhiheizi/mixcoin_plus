@@ -41,7 +41,7 @@ class BookingOrderSnapshot < ApplicationRecord
   validate :ensure_price_valid
 
   def calculate_order_weight
-    (1 - ((price / ticker - 1).abs / (ALPHA_CONST / 100.0)))**N_CONST
+    (1 - (((price / ticker) - 1).abs / (ALPHA_CONST / 100.0)))**N_CONST
   end
 
   def calculate_scores
@@ -62,6 +62,6 @@ class BookingOrderSnapshot < ApplicationRecord
   end
 
   def ensure_price_valid
-    errors.add(:price, ' not valid') if (1 - price / ticker).abs > ALPHA_CONST / 100.0
+    errors.add(:price, ' not valid') if (1 - (price / ticker)).abs > ALPHA_CONST / 100.0
   end
 end

@@ -19,6 +19,7 @@ module Types
     field :ifttb_role, String, null: false
     field :may_create_applet, Boolean, null: false
     field :ifttb_pro_expired_at, GraphQL::Types::ISO8601DateTime, null: true
+    field :ifttb_stats, GraphQL::Types::JSON, null: false
 
     field :invitor, Types::UserType, null: true
     field :broker, MixinNetworkUserType, null: true
@@ -37,6 +38,10 @@ module Types
 
     def may_create_applet
       object&.may_create_applet?
+    end
+
+    def ifttb_stats
+      object.ifttb_stats.deep_transform_keys! { |key| key.to_s.camelize(:lower) }
     end
   end
 end

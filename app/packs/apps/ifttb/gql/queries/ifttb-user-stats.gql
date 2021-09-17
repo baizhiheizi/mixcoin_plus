@@ -1,0 +1,6 @@
+query IfttbUserStats {
+  currentUser {
+    id
+    ifttbStats
+  }
+}

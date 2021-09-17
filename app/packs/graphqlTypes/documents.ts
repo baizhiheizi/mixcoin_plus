@@ -1459,6 +1459,7 @@ export type QueryAppletActivityConnectionArgs = {
 export type QueryAppletConnectionArgs = {
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
+  filter?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
 };
@@ -1709,6 +1710,7 @@ export type User = {
   ifttbBrokerId?: Maybe<Scalars['String']>;
   ifttbProExpiredAt?: Maybe<Scalars['ISO8601DateTime']>;
   ifttbRole: Scalars['String'];
+  ifttbStats: Scalars['JSON'];
   invitationsCount: Scalars['Int'];
   inviteCode: Scalars['String'];
   invitor?: Maybe<User>;
@@ -2325,18 +2327,19 @@ export type AppletActivityConnectionQueryVariables = Exact<{
 export type AppletActivityConnectionQuery = { __typename?: 'Query', appletActivityConnection: { __typename?: 'AppletActivityConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'AppletActivity', id: string, state: string, createdAt: any, updatedAt?: Maybe<any> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } } };
 
 export type AppletConnectionQueryVariables = Exact<{
+  filter?: Maybe<Scalars['String']>;
   after?: Maybe<Scalars['String']>;
 }>;
 
 
-export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue: number, targetIndex: string, compareAction: string } } | { __typename?: 'AppletDatetimeTrigger', type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, params: { __typename?: 'Applet4swapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } } | { __typename?: 'AppletMixSwapAction', type: string, params: { __typename?: 'AppletMixSwapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } }>> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } }, currentUser?: Maybe<{ __typename?: 'User', ifttbBrokerId?: Maybe<string>, ifttbRole: string, mayCreateApplet: boolean }> };
+export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Maybe<Array<Maybe<{ __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: Maybe<any>, archivedAt?: Maybe<any>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue: number, targetIndex: string, compareAction: string } } | { __typename?: 'AppletDatetimeTrigger', type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', type: string, params: { __typename?: 'Applet4swapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } } | { __typename?: 'AppletMixSwapAction', type: string, params: { __typename?: 'AppletMixSwapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } }>> }>>>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: Maybe<string> } }, currentUser?: Maybe<{ __typename?: 'User', ifttbBrokerId?: Maybe<string>, ifttbRole: string, mayCreateApplet: boolean }> };
 
 export type AppletQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, payTotalUsd?: Maybe<number>, fillTotal?: Maybe<number>, fillTotalUsd?: Maybe<number>, appletActivitiesCompletedCount: number, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', id: string, type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue: number, targetIndex: string, compareAction: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, baseAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } } | { __typename?: 'AppletDatetimeTrigger', id: string, type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', id: string, type: string, params: { __typename?: 'Applet4swapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } } | { __typename?: 'AppletMixSwapAction', id: string, type: string, params: { __typename?: 'AppletMixSwapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } }>> } };
+export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: Maybe<string>, title: string, connected: boolean, lastActiveAt?: Maybe<any>, profit?: Maybe<number>, payTotal?: Maybe<number>, payTotalUsd?: Maybe<number>, fillTotal?: Maybe<number>, fillTotalUsd?: Maybe<number>, appletActivitiesCompletedCount: number, archivedAt?: Maybe<any>, payAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, fillAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: Maybe<string>, priceUsd?: Maybe<number> }>, appletTriggers?: Maybe<Array<{ __typename?: 'Applet4swapTrigger', id: string, type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue: number, targetIndex: string, compareAction: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, baseAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } } | { __typename?: 'AppletDatetimeTrigger', id: string, type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } }>>, appletActions?: Maybe<Array<{ __typename?: 'Applet4swapAction', id: string, type: string, params: { __typename?: 'Applet4swapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } } | { __typename?: 'AppletMixSwapAction', id: string, type: string, params: { __typename?: 'AppletMixSwapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string, priceUsd?: Maybe<number>, chainAsset?: Maybe<{ __typename?: 'MixinAsset', assetId: string, iconUrl?: Maybe<string>, symbol: string }> } }>> } };
 
 export type IfttbBrokerBalanceQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2363,6 +2366,11 @@ export type IfttbOrderQueryVariables = Exact<{
 
 
 export type IfttbOrderQuery = { __typename?: 'Query', ifttbOrder: { __typename?: 'IfttbOrder', id: string, state: string } };
+
+export type IfttbUserStatsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IfttbUserStatsQuery = { __typename?: 'Query', currentUser?: Maybe<{ __typename?: 'User', id: string, ifttbStats: any }> };
 
 export type MixinAssetsQueryVariables = Exact<{
   source?: Maybe<Scalars['String']>;
@@ -5927,8 +5935,8 @@ export type AppletActivityConnectionQueryHookResult = ReturnType<typeof useApple
 export type AppletActivityConnectionLazyQueryHookResult = ReturnType<typeof useAppletActivityConnectionLazyQuery>;
 export type AppletActivityConnectionQueryResult = Apollo.QueryResult<AppletActivityConnectionQuery, AppletActivityConnectionQueryVariables>;
 export const AppletConnectionDocument = gql`
-    query AppletConnection($after: String) {
-  appletConnection(after: $after) {
+    query AppletConnection($filter: String, $after: String) {
+  appletConnection(filter: $filter, after: $after) {
     nodes {
       id
       number
@@ -5936,6 +5944,7 @@ export const AppletConnectionDocument = gql`
       connected
       appletActivitiesCount
       lastActiveAt
+      archivedAt
       appletTriggers {
         ... on AppletDatetimeTrigger {
           type
@@ -6008,6 +6017,7 @@ export const AppletConnectionDocument = gql`
  * @example
  * const { data, loading, error } = useAppletConnectionQuery({
  *   variables: {
+ *      filter: // value for 'filter'
  *      after: // value for 'after'
  *   },
  * });
@@ -6037,6 +6047,7 @@ export const AppletDocument = gql`
     fillTotal
     fillTotalUsd
     appletActivitiesCompletedCount
+    archivedAt
     payAsset {
       assetId
       symbol
@@ -6359,6 +6370,41 @@ export function useIfttbOrderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type IfttbOrderQueryHookResult = ReturnType<typeof useIfttbOrderQuery>;
 export type IfttbOrderLazyQueryHookResult = ReturnType<typeof useIfttbOrderLazyQuery>;
 export type IfttbOrderQueryResult = Apollo.QueryResult<IfttbOrderQuery, IfttbOrderQueryVariables>;
+export const IfttbUserStatsDocument = gql`
+    query IfttbUserStats {
+  currentUser {
+    id
+    ifttbStats
+  }
+}
+    `;
+
+/**
+ * __useIfttbUserStatsQuery__
+ *
+ * To run a query within a React component, call `useIfttbUserStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIfttbUserStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIfttbUserStatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIfttbUserStatsQuery(baseOptions?: Apollo.QueryHookOptions<IfttbUserStatsQuery, IfttbUserStatsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IfttbUserStatsQuery, IfttbUserStatsQueryVariables>(IfttbUserStatsDocument, options);
+      }
+export function useIfttbUserStatsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IfttbUserStatsQuery, IfttbUserStatsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IfttbUserStatsQuery, IfttbUserStatsQueryVariables>(IfttbUserStatsDocument, options);
+        }
+export type IfttbUserStatsQueryHookResult = ReturnType<typeof useIfttbUserStatsQuery>;
+export type IfttbUserStatsLazyQueryHookResult = ReturnType<typeof useIfttbUserStatsLazyQuery>;
+export type IfttbUserStatsQueryResult = Apollo.QueryResult<IfttbUserStatsQuery, IfttbUserStatsQueryVariables>;
 export const MixinAssetsDocument = gql`
     query MixinAssets($source: String) {
   mixinAssets(source: $source) {

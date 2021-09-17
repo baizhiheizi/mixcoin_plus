@@ -11,6 +11,7 @@ query Applet($id: ID!) {
     fillTotal
     fillTotalUsd
     appletActivitiesCompletedCount
+    archivedAt
     payAsset {
       assetId
       symbol
