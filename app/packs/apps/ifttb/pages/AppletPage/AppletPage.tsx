@@ -7,6 +7,7 @@ import {
   useAppletActivityConnectionQuery,
   useAppletQuery,
   useArchiveAppletMutation,
+  useDownloadAppletSwapOrdersMutation,
   useToggleAppletConnectedMutation,
 } from 'graphqlTypes';
 import moment from 'moment';
@@ -252,6 +253,15 @@ function AppletStatsComponent(props: { applet: Partial<Applet> | any }) {
 
 function AppletActivitiesComponent(props: { appletId: string }) {
   const { appletId } = props;
+  const { currentUser } = useCurrentUser();
+  const [downloadAppletSwapOrders] = useDownloadAppletSwapOrdersMutation({
+    update: (_, { data: { downloadAppletSwapOrders: success } }) => {
+      Loading.hide();
+      if (success) {
+        Toast.show('A .CSV file will be sent to you via Mixin Messegner');
+      }
+    },
+  });
 
   const { loading, data, refetch, fetchMore } =
     useAppletActivityConnectionQuery({
@@ -270,6 +280,22 @@ function AppletActivitiesComponent(props: { appletId: string }) {
 
   return (
     <>
+      {currentUser.ifttbRole === 'pro' && (
+        <div className='flex justify-center mb-4'>
+          <div
+            className='p-2 px-4 border-2 rounded cursor-pointer'
+            onClick={() => {
+              Loading.show();
+              downloadAppletSwapOrders({
+                variables: { input: { appletId } },
+              });
+            }}
+          >
+            Download Records
+          </div>
+        </div>
+      )}
+
       <PullComponent
         hasNextPage={hasNextPage}
         refetch={refetch}

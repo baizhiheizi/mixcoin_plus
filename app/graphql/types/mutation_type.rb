@@ -30,6 +30,7 @@ module Types
     field :update_applet, mutation: Mutations::UpdateAppletMutation
     field :toggle_applet_connected, mutation: Mutations::ToggleAppletConnectedMutation
     field :archive_applet, mutation: Mutations::ArchiveAppletMutation
+    field :download_applet_swap_orders, mutation: Mutations::DownloadAppletSwapOrdersMutation
     field :create_ifttb_broker_withdraw_transfer, mutation: Mutations::CreateIfttbBrokerWithdrawTransferMutation
     field :create_ifttb_order, mutation: Mutations::CreateIfttbOrderMutation
   end

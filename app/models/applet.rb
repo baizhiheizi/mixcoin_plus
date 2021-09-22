@@ -114,8 +114,62 @@ class Applet < ApplicationRecord
     id.split('-').second.upcase
   end
 
+  def download_traded_swap_orders_async
+    AppletDownloadTradedSwapOrdersWorker.perform_async id
+  end
+
+  def download_traded_swap_orders
+    return if traded_swap_orders.blank?
+    return if Global.redis.get("applet_download_traded_swap_orders_lock_#{id}")
+
+    send_traded_orders_csv_file_via_mixin
+  end
+
+  def send_traded_orders_csv_file_via_mixin
+    return if traded_swap_orders.blank?
+
+    Global.redis.set "applet_download_traded_swap_orders_lock_#{id}", true, ex: 30.minutes
+
+    file_name = "Applet-#{id}.csv"
+    file = Tempfile.new file_name
+    file_path = file.path
+    file.close
+
+    CSV.open(file_path, 'wb') do |csv|
+      csv << %w[trace source state pay_asset pay_amount pay_amount_usd fill_asset fill_amount refund_amount created_at]
+      traded_swap_orders.order(created_at: :asc).each do |order|
+        csv << [
+          order.trace_id,
+          (order.is_a?(AppletActivityMixSwapOrder) ? 'MixSwap' : '4swap'),
+          order.state,
+          order.pay_asset.symbol,
+          order.pay_amount.to_f,
+          order.pay_amount_usd.to_f,
+          order.fill_asset.symbol,
+          order.fill_amount.to_f,
+          order.refund_amount,
+          created_at
+        ]
+      end
+    end
+
+    attachment = IfttbBot.api.upload_attachment(File.open(file_path))
+    IfttbBot.api.send_file_message(
+      conversation_id: IfttbBot.api.unique_uuid(user.mixin_uuid),
+      data: {
+        attachment_id: attachment['attachment_id'],
+        mime_type: 'text/csv',
+        size: file.size,
+        name: file_name
+      }
+    )
+  ensure
+    file&.unlink
+    Global.redis.del "applet_download_traded_swap_orders_lock_#{id}"
+  end
+
   def traded_swap_orders
-    @traded_swap_orders ||= swap_orders.where(state: :traded)
+    @traded_swap_orders ||= swap_orders.where(state: %i[traded rejected])
   end
 
   def pay_asset
