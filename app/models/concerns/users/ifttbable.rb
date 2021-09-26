@@ -36,7 +36,7 @@ module Users::Ifttbable
   end
 
   def ifttb_traded_swap_orders
-    @ifttb_traded_swap_orders ||= swap_orders.where(type: %w[AppletActivitySwapOrder AppletActivityMixSwapOrder]).where(state: :traded)
+    @ifttb_traded_swap_orders ||= swap_orders.where(type: %w[AppletActivitySwapOrder AppletActivityMixSwapOrder]).where(state: %i[traded rejected])
   end
 
   def ifttb_pay_assets
