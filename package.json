@@ -34,7 +34,7 @@
     "graphql": "^15.6.0",
     "highcharts": "^9.2.2",
     "highcharts-react-official": "^3.0.0",
-    "i18next": "^20.6.1",
+    "i18next": "^21.1.1",
     "i18next-browser-languagedetector": "^6.1.2",
     "less": "^4.1.1",
     "less-loader": "^10.0.1",
