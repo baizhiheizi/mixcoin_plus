@@ -359,7 +359,7 @@ export default function NewAppletPage() {
       />
 
       {/**
-       * 4swap action form
+       * MixSwap action form
        */}
       <AppletMixSwapActionFormComponent
         visible={editingAppletAction === 'AppletMixSwapAction'}

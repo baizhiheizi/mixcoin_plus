@@ -14,7 +14,8 @@ import { Loading, Modal, Switch } from 'zarm';
 export default function AppletsComponent(props: { filter?: string }) {
   const { filter } = props;
   const { loading, data, refetch, fetchMore } = useAppletConnectionQuery({
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
+    nextFetchPolicy: 'cache-first',
     variables: { filter },
   });
   const history = useHistory();
@@ -25,10 +26,13 @@ export default function AppletsComponent(props: { filter?: string }) {
   });
 
   useEffect(() => {
-    if (data?.currentUser) {
-      setCurrentUser(Object.assign({}, currentUser, data.currentUser));
+    if (
+      data?.currentUser?.ifttbRole &&
+      currentUser?.ifttbRole !== data.currentUser.ifttbRole
+    ) {
+      setCurrentUser(Object.assign({}, currentUser, data?.currentUser));
     }
-  }, [data?.currentUser]);
+  }, [data?.currentUser?.ifttbRole]);
 
   if (loading) {
     return <LoaderComponent />;
