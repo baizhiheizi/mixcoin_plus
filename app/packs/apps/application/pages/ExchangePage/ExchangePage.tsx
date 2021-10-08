@@ -34,7 +34,7 @@ export default function ExchangePage() {
 
   async function refreshTicker() {
     if (data?.market?.oceanMarketId) {
-      const res = await fetchTiker(data?.market?.oceanMarketId);
+      const res: any = await fetchTiker(data?.market?.oceanMarketId);
       if (res.data && res.data.data) {
         setTicker(res.data.data);
         if (!data.market.referencePrice) {

@@ -16,7 +16,7 @@ gem 'aasm'
 # Allows to use ActiveRecord transactional callbacks outside of ActiveRecord models, literally everywhere in your application.
 gem 'after_commit_everywhere'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', git: 'https://github.com/rails/webpacker.git'
+gem 'webpacker', '~> 6.0.0.rc.5'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
