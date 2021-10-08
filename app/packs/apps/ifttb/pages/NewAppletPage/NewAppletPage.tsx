@@ -8,6 +8,8 @@ import Applet4swapActionItemComponent from 'apps/ifttb/components/Applet4swapAct
 import Applet4swapTriggerFormComponent from 'apps/ifttb/components/Applet4swapTriggerFormComponent/Applet4swapTriggerFormComponent';
 import Applet4swapTriggerItemComponent from 'apps/ifttb/components/Applet4swapTriggerItemComponent/Applet4swapTriggerItemComponent';
 import AppletActionServicesComponent from 'apps/ifttb/components/AppletActionServicesComponent/AppletActionServicesComponent';
+import AppletAlertActionFormComponent from 'apps/ifttb/components/AppletAlertActionFormComponent/AppletAlertActionFormComponent';
+import AppletAlertActionItemComponent from 'apps/ifttb/components/AppletAlertActionItemComponent/AppletAlertActionItemComponent';
 import AppletDatetimeTriggerFormComponent from 'apps/ifttb/components/AppletDatetimeTriggerFormComponent/AppletDatetimeTriggerFormComponent';
 import AppletDatetimeTriggerItemComponent from 'apps/ifttb/components/AppletDatetimeTriggerItemComponent/AppletDatetimeTriggerItemComponent';
 import AppletMixSwapActionFormComponent from 'apps/ifttb/components/AppletMixSwapActionFormComponent/AppletMixSwapActionFormComponent';
@@ -71,13 +73,16 @@ export default function NewAppletPage() {
     setAppletActionServicesPopupVisible,
   ] = useState(false);
   const [editingAppletAction, setEditingAppletAction] = useState<
-    null | 'Applet4swapAction' | 'AppletMixSwapAction'
+    null | 'Applet4swapAction' | 'AppletMixSwapAction' | 'AppletAlertAction'
   >(null);
   const [editingApplet4swapAction, setEditingApplet4swapAction] = useState<
     null | 'Applet4swapTradeAction'
   >(null);
   const [editingAppletMixSwapAction, setEditingAppletMixSwapAction] = useState<
     null | 'AppletMixSwapTradeAction'
+  >(null);
+  const [editingAppletAlertAction, setEditingAppletAlertAction] = useState<
+    null | 'AppletAlertMessengerAction'
   >(null);
 
   const [selectedActionIndex, setSelectedActionIndex] = useState<null | number>(
@@ -192,6 +197,12 @@ export default function NewAppletPage() {
                     onClick={() => {}}
                   />
                 ),
+                AppletAlertAction: (
+                  <AppletAlertActionItemComponent
+                    action={action}
+                    onClick={() => {}}
+                  />
+                ),
               }[action.type]
             }
           </div>
@@ -249,6 +260,7 @@ export default function NewAppletPage() {
             <div style={{ paddingBottom: 'env(safe-area-inset-bottom)' }} />
           </div>
         )}
+
       <Popup
         visible={typeof selectedTriggerIndex === 'number'}
         onMaskClick={() => setSelectedTriggerIndex(null)}
@@ -270,6 +282,7 @@ export default function NewAppletPage() {
           </div>
         </div>
       </Popup>
+
       <Popup
         visible={typeof selectedActionIndex === 'number'}
         onMaskClick={() => setSelectedActionIndex(null)}
@@ -369,6 +382,22 @@ export default function NewAppletPage() {
         onOk={(action) => {
           saveAction(action);
           setEditingAppletMixSwapAction(null);
+          setEditingAppletAction(null);
+          setAppletActionServicesPopupVisible(false);
+        }}
+      />
+
+      {/**
+       * Alert action form
+       */}
+      <AppletAlertActionFormComponent
+        visible={editingAppletAction === 'AppletAlertAction'}
+        actionType={editingAppletAlertAction}
+        onSelected={(selected) => setEditingAppletAlertAction(selected)}
+        onCancel={() => setEditingAppletAction(null)}
+        onOk={(action) => {
+          saveAction(action);
+          setEditingAppletAlertAction(null);
           setEditingAppletAction(null);
           setAppletActionServicesPopupVisible(false);
         }}

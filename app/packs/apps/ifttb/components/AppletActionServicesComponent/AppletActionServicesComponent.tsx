@@ -1,21 +1,21 @@
-import { Down as DownIcon } from '@icon-park/react';
+import { Alarm as AlarmIcon, Down as DownIcon } from '@icon-park/react';
 import {
   FoxSwapActionThemeColor,
   FoxSwapLogoUrl,
   MixSwapActionThemeColor,
   MixSwapLogoUrl,
 } from 'apps/ifttb/constants';
-import { useAppletForm } from 'apps/ifttb/contexts';
 import React from 'react';
 import { Popup } from 'zarm';
 
 export default function AppletActionServicesComponent(props: {
   visible: boolean;
   onCancel: () => any;
-  onSelected: (selected: 'Applet4swapAction' | 'AppletMixSwapAction') => any;
+  onSelected: (
+    selected: 'Applet4swapAction' | 'AppletMixSwapAction' | 'AppletAlertAction',
+  ) => any;
 }) {
   const { visible, onCancel, onSelected } = props;
-  const { appletForm, setAppletForm } = useAppletForm();
   return (
     <Popup visible={visible} direction='bottom' onMaskClick={onCancel}>
       <div className='relative overflow-scroll bg-white rounded-t-lg max-h-screen-3/4 min-h-screen-1/2'>
@@ -42,6 +42,15 @@ export default function AppletActionServicesComponent(props: {
               <img className='w-7 h-7' src={MixSwapLogoUrl} />
             </div>
             <div className='text-lg text-center'>MixSwap</div>
+          </div>
+          <div
+            className='p-4 text-white bg-blue-600 rounded-lg'
+            onClick={() => onSelected('AppletAlertAction')}
+          >
+            <div className='flex justify-center mb-2 text-lg'>
+              <AlarmIcon size='1.75rem' />
+            </div>
+            <div className='text-lg text-center'>Alert</div>
           </div>
         </div>
       </div>

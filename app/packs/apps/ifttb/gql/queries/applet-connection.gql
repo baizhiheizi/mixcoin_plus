@@ -53,6 +53,14 @@ query AppletConnection($filter: String, $after: String) {
             slippage
           }
         }
+        ... on AppletAlertAction {
+          type
+          params {
+            description
+            via
+            data
+          }
+        }
       }
     }
     pageInfo {

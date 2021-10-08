@@ -139,6 +139,15 @@ query Applet($id: ID!) {
           }
         }
       }
+      ... on AppletAlertAction {
+        id
+        type
+        params {
+          description
+          via
+          data
+        }
+      }
     }
   }
 }

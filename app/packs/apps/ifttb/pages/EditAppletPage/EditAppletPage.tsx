@@ -8,6 +8,8 @@ import Applet4swapActionItemComponent from 'apps/ifttb/components/Applet4swapAct
 import Applet4swapTriggerFormComponent from 'apps/ifttb/components/Applet4swapTriggerFormComponent/Applet4swapTriggerFormComponent';
 import Applet4swapTriggerItemComponent from 'apps/ifttb/components/Applet4swapTriggerItemComponent/Applet4swapTriggerItemComponent';
 import AppletActionServicesComponent from 'apps/ifttb/components/AppletActionServicesComponent/AppletActionServicesComponent';
+import AppletAlertActionFormComponent from 'apps/ifttb/components/AppletAlertActionFormComponent/AppletAlertActionFormComponent';
+import AppletAlertActionItemComponent from 'apps/ifttb/components/AppletAlertActionItemComponent/AppletAlertActionItemComponent';
 import AppletDatetimeTriggerFormComponent from 'apps/ifttb/components/AppletDatetimeTriggerFormComponent/AppletDatetimeTriggerFormComponent';
 import AppletDatetimeTriggerItemComponent from 'apps/ifttb/components/AppletDatetimeTriggerItemComponent/AppletDatetimeTriggerItemComponent';
 import AppletMixSwapActionFormComponent from 'apps/ifttb/components/AppletMixSwapActionFormComponent/AppletMixSwapActionFormComponent';
@@ -24,7 +26,7 @@ import {
 } from 'graphqlTypes';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { Popup, Toast } from 'zarm';
+import { Popup } from 'zarm';
 
 export default function EditAppletPage() {
   const history = useHistory();
@@ -69,6 +71,9 @@ export default function EditAppletPage() {
   >(null);
   const [editingAppletMixSwapAction, setEditingAppletMixSwapAction] = useState<
     null | 'AppletMixSwapTradeAction' | 'AppletMixSwapTradeAction'
+  >(null);
+  const [editingAppletAlertAction, setEditingAppletAlertAction] = useState<
+    null | 'AppletAlertMessengerAction'
   >(null);
 
   const [selectedAction, setSelectedAction] =
@@ -231,6 +236,12 @@ export default function EditAppletPage() {
                       onClick={() => setSelectedAction(action)}
                     />
                   ),
+                  AppletAlertAction: (
+                    <AppletAlertActionItemComponent
+                      action={action}
+                      onClick={() => setSelectedAction(action)}
+                    />
+                  ),
                 }[action.type]
               }
             </div>
@@ -341,6 +352,8 @@ export default function EditAppletPage() {
                   setEditingApplet4swapAction('Applet4swapTradeAction');
                 } else if (selectedAction.type === 'AppletMixSwapAction') {
                   setEditingAppletMixSwapAction('AppletMixSwapTradeAction');
+                } else if (selectedAction.type === 'AppletAlertAction') {
+                  setEditingAppletAlertAction('AppletAlertMessengerAction');
                 }
               }}
             >
@@ -427,6 +440,22 @@ export default function EditAppletPage() {
         onOk={(action) => {
           saveAction(action);
           setEditingAppletMixSwapAction(null);
+          setEditingAppletAction(null);
+          setAppletActionServicesPopupVisible(false);
+        }}
+      />
+
+      {/**
+       * Alert action form
+       */}
+      <AppletAlertActionFormComponent
+        visible={editingAppletAction === 'AppletAlertAction'}
+        actionType={editingAppletAlertAction}
+        onSelected={(selected) => setEditingAppletAlertAction(selected)}
+        onCancel={() => setEditingAppletAction(null)}
+        onOk={(action) => {
+          saveAction(action);
+          setEditingAppletAlertAction(null);
           setEditingAppletAction(null);
           setAppletActionServicesPopupVisible(false);
         }}

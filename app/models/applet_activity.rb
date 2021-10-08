@@ -45,6 +45,7 @@ class AppletActivity < ApplicationRecord
 
   def notify_state
     return if applet&.user.blank?
+    return if swap_orders.blank?
 
     AppletActivityStateNotification.with(applet_activity: self).deliver(applet.user)
   end

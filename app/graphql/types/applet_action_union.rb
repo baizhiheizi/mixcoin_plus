@@ -2,7 +2,7 @@
 
 module Types
   class AppletActionUnion < BaseUnion
-    possible_types Types::Applet4swapActionType, Types::AppletMixSwapActionType
+    possible_types Types::Applet4swapActionType, Types::AppletMixSwapActionType, Types::AppletAlertActionType
 
     def self.resolve_type(object, _context)
       case object
@@ -10,6 +10,8 @@ module Types
         Types::Applet4swapActionType
       when AppletMixSwapAction
         Types::AppletMixSwapActionType
+      when AppletAlertAction
+        Types::AppletAlertActionType
       end
     end
   end

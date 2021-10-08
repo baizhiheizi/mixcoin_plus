@@ -60,6 +60,7 @@ class Applet < ApplicationRecord
 
     update connected: true
     create_cron_job
+    notify_connected
   end
 
   def disconnect!
@@ -108,6 +109,10 @@ class Applet < ApplicationRecord
 
   def notify_disconnected
     AppletDisconnectedNotification.with(applet: self).deliver(user)
+  end
+
+  def notify_connected
+    AppletConnectedNotification.with(applet: self).deliver(user)
   end
 
   def number

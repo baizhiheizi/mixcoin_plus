@@ -81,12 +81,14 @@ export default function AppletsPage() {
             >
               Stats
             </div>
-            <div
-              className='p-2 mb-4 text-xl text-center border rounded-full shadow cursor-pointer'
-              onClick={() => history.push('/archived')}
-            >
-              Archived Applets
-            </div>
+            {currentUser.ifttbRole === 'pro' && (
+              <div
+                className='p-2 mb-4 text-xl text-center border rounded-full shadow cursor-pointer'
+                onClick={() => history.push('/archived')}
+              >
+                Archived Applets
+              </div>
+            )}
           </div>
         </div>
       </Popup>
