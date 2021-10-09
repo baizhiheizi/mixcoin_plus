@@ -27,7 +27,7 @@ export default function AppletPandoLeafTriggerBidingFlipFormComponent(props: {
     const trigger = {
       type: 'AppletPandoLeafTrigger',
       params: {
-        description: `there are ongoing auctions for collateral of ${
+        description: `Pando Leaf has ongoing auctions for collateral of ${
           asset ? asset.symbol : 'any asset'
         }`,
         assetId: asset?.assetId,
