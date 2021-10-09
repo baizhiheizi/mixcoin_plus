@@ -17,7 +17,6 @@ import { Loading, Modal, Switch, Toast } from 'zarm';
 
 export default function AppletPage() {
   const history = useHistory();
-  const { currentUser } = useCurrentUser();
   const { id } = useParams<{ id: string }>();
   const [toggleAppletConnected] = useToggleAppletConnectedMutation({
     update: () => Loading.hide(),

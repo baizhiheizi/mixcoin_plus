@@ -81,7 +81,7 @@ export default function AppletsPage() {
             >
               Stats
             </div>
-            {currentUser.ifttbRole === 'pro' && (
+            {currentUser?.ifttbRole === 'pro' && (
               <div
                 className='p-2 mb-4 text-xl text-center border rounded-full shadow cursor-pointer'
                 onClick={() => history.push('/archived')}
