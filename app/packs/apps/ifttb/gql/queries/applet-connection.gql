@@ -41,6 +41,16 @@ query AppletConnection($filter: String, $after: String) {
             compareAction
           }
         }
+        ... on AppletPandoRingsTrigger {
+          type
+          params {
+            description
+            assetId
+            targetValue
+            targetIndex
+            compareAction
+          }
+        }
       }
       appletActions {
         ... on Applet4swapAction {

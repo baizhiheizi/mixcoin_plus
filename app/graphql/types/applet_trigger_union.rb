@@ -2,7 +2,7 @@
 
 module Types
   class AppletTriggerUnion < BaseUnion
-    possible_types Types::AppletDatetimeTriggerType, Types::Applet4swapTriggerType, Types::AppletPandoLeafTriggerType
+    possible_types Types::AppletDatetimeTriggerType, Types::Applet4swapTriggerType, Types::AppletPandoLeafTriggerType, Types::AppletPandoRingsTriggerType
 
     def self.resolve_type(object, _context)
       case object
@@ -12,6 +12,8 @@ module Types
         Types::Applet4swapTriggerType
       when AppletPandoLeafTrigger
         Types::AppletPandoLeafTriggerType
+      when AppletPandoRingsTrigger
+        Types::AppletPandoRingsTriggerType
       end
     end
   end

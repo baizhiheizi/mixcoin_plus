@@ -6,6 +6,7 @@ import {
   FoxSwapActionThemeColor,
   FoxSwapLogoUrl,
   PandoLeafLogoUrl,
+  PandoRingsLogoUrl,
 } from 'apps/ifttb/constants';
 import { useAppletForm } from 'apps/ifttb/contexts';
 import { AppletTriggerInput } from 'graphqlTypes';
@@ -19,7 +20,8 @@ export default function AppletTriggerServicesComponent(props: {
     selected:
       | 'AppletDatetimeTrigger'
       | 'Applet4swapTrigger'
-      | 'AppletPandoLeafTrigger',
+      | 'AppletPandoLeafTrigger'
+      | 'AppletPandoRingsTrigger',
   ) => any;
 }) {
   const { visible, onCancel, onSelected } = props;
@@ -38,6 +40,11 @@ export default function AppletTriggerServicesComponent(props: {
     (appletForm?.appletTriggersAttributes || []).find(
       (trigger: AppletTriggerInput) =>
         trigger.type === 'AppletPandoLeafTrigger' && !trigger._destroy,
+    );
+  const appletPandoRingsTriggerCreated = () =>
+    (appletForm?.appletTriggersAttributes || []).find(
+      (trigger: AppletTriggerInput) =>
+        trigger.type === 'AppletPandoRingsTrigger' && !trigger._destroy,
     );
   return (
     <Popup visible={visible} direction='bottom' onMaskClick={onCancel}>
@@ -97,6 +104,23 @@ export default function AppletTriggerServicesComponent(props: {
               <img className='w-7 h-7' src={PandoLeafLogoUrl} />
             </div>
             <div className='text-lg text-center'>Pando Leaf</div>
+          </div>
+          <div
+            className={`p-4 rounded-lg bg-yellow-100 shadow ${
+              appletPandoRingsTriggerCreated()
+                ? 'cursor-not-allowed opacity-50'
+                : 'cursor-pointer'
+            }`}
+            onClick={() => {
+              if (!appletPandoLeafTriggerCreated()) {
+                onSelected('AppletPandoRingsTrigger');
+              }
+            }}
+          >
+            <div className='flex justify-center mb-2'>
+              <img className='w-7 h-7' src={PandoRingsLogoUrl} />
+            </div>
+            <div className='text-lg text-center'>Pando Rings</div>
           </div>
         </div>
       </div>

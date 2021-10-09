@@ -5,7 +5,7 @@ import { MixinAsset, useMixinAssetsQuery } from 'graphqlTypes';
 import React, { useState } from 'react';
 
 export default function MixinAssetsComponent(props: {
-  source: '4swap' | 'MixSwap' | 'PandoLeaf';
+  source: '4swap' | 'MixSwap' | 'PandoLeaf' | 'PandoRings';
   onClick: (asset: Partial<MixinAsset> | any) => any;
 }) {
   const { source, onClick } = props;
