@@ -51,7 +51,7 @@ class AppletActivity < ApplicationRecord
 
   def notification_completed_text
     if swap_orders.present?
-      [notification_text, swap_order_detail_text].join("\n")
+      swap_order_detail_text
     elsif applet_action.is_a?(AppletAlertAction)
       <<~TEXT
         ---
