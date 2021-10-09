@@ -23,3 +23,6 @@ export const XIN_ASESST = {
   iconUrl:
     'https://mixin-images.zeromesh.net/UasWtBZO0TZyLTLCFQjvE_UYekjC7eHCuT_9_52ZpzmCC-X-NPioVegng7Hfx0XmIUavZgz5UL-HIgPCBECc-Ws=s128',
 };
+export const PandoLeafActionThemeColor = '#85eb0e';
+export const PandoLeafLogoUrl = 'https://mixin-images.zeromesh.net/v3dbbcxylnVlMR1Y1asCeTG1L0RFE2CnZ5BeiByRBn308cxefOPjeAWjhDuDrR9DDJ8mMb8QSUWpHPWnXiMaWsQ7084V0naUZ4dm=s256';
+export const PandoLeafAppId = '75f18fe8-b056-46d6-9c48-0214425e58ce';

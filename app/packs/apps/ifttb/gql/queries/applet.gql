@@ -71,6 +71,28 @@ query Applet($id: ID!) {
           }
         }
       }
+      ... on AppletPandoLeafTrigger {
+        id
+        type
+        params {
+          description
+          assetId
+          targetValue
+          targetIndex
+          compareAction
+        }
+        asset {
+          assetId
+          iconUrl
+          symbol
+          priceUsd
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
+      }
     }
     appletActions {
       ... on Applet4swapAction {

@@ -22,10 +22,6 @@ class AppletAlertAction < AppletAction
     via
   ]
 
-  def default_text
-    applet.applet_triggers.map(&:description).join(';')
-  end
-
   def may_active?
     true
   end
@@ -33,7 +29,6 @@ class AppletAlertAction < AppletAction
   def active!
     ActiveRecord::Base.transaction do
       activity = applet_activities.create!(applet_id: applet_id)
-      AppletAlertActionNotification.with(applet_alert_action: self).deliver(applet.user)
       activity.complete!
     end
   end

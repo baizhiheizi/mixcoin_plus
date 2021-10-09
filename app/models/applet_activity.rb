@@ -45,9 +45,57 @@ class AppletActivity < ApplicationRecord
 
   def notify_state
     return if applet&.user.blank?
-    return if swap_orders.blank?
 
     AppletActivityStateNotification.with(applet_activity: self).deliver(applet.user)
+  end
+
+  def notification_completed_text
+    if swap_orders.present?
+      [notification_text, swap_order_detail_text].join("\n")
+    elsif applet_action.is_a?(AppletAlertAction)
+      <<~TEXT
+        ---
+        #{applet_action.data}
+      TEXT
+    end
+  end
+
+  def swap_order_detail_text
+    return if swap_orders.blank?
+
+    swap_orders.map do |swap_order|
+      _service =
+        case swap_order
+        when AppletActivitySwapOrder
+          '4swap'
+        when AppletActivityMixSwapOrder
+          'MixSwap'
+        end
+
+      _pay_amount = swap_order.pay_amount - swap_order.refund_amount
+      <<~DATA
+        - 🤖: #{_service}
+        - 🔁: #{_pay_amount} #{swap_order.pay_asset.symbol} -> #{swap_order.fill_amount} #{swap_order.fill_asset.symbol}
+        - 🏷️: 1 #{swap_order.fill_asset.symbol} ≈ #{(_pay_amount / swap_order.fill_amount).round(8)} #{swap_order.pay_asset.symbol}
+        - 🏷️: 1 #{swap_order.pay_asset.symbol} ≈ #{(swap_order.fill_amount / _pay_amount).round(8)} #{swap_order.fill_asset.symbol}
+      DATA
+    end.join("\n")
+  end
+
+  def notification_text
+    case state.to_sym
+    when :failed
+      notification_state_text
+    when :completed
+      [notification_state_text, notification_completed_text].join("\n")
+    end
+  end
+
+  def notification_state_text
+    <<~MSG
+      Applet ##{applet.number} activity #{state}.
+      (#{applet.applet_triggers.map(&:description).join(';')})
+    MSG
   end
 
   def disconnect_applet_if_no_datetime_trigger

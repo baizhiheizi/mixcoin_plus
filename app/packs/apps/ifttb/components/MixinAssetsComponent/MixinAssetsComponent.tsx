@@ -5,7 +5,7 @@ import { MixinAsset, useMixinAssetsQuery } from 'graphqlTypes';
 import React, { useState } from 'react';
 
 export default function MixinAssetsComponent(props: {
-  source: '4swap' | 'MixSwap';
+  source: '4swap' | 'MixSwap' | 'PandoLeaf';
   onClick: (asset: Partial<MixinAsset> | any) => any;
 }) {
   const { source, onClick } = props;
@@ -40,6 +40,12 @@ export default function MixinAssetsComponent(props: {
             onChange={(e) => setQuery(e.currentTarget.value)}
           />
         </div>
+      </div>
+      <div
+        className='flex items-center justify-center p-4 font-bold text-gray-500'
+        onClick={() => onClick(null)}
+      >
+        Unselect
       </div>
       {(assetOptions || []).map((asset) => (
         <div

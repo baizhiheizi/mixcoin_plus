@@ -14,6 +14,8 @@ import AppletDatetimeTriggerFormComponent from 'apps/ifttb/components/AppletDate
 import AppletDatetimeTriggerItemComponent from 'apps/ifttb/components/AppletDatetimeTriggerItemComponent/AppletDatetimeTriggerItemComponent';
 import AppletMixSwapActionFormComponent from 'apps/ifttb/components/AppletMixSwapActionFormComponent/AppletMixSwapActionFormComponent';
 import AppletMixSwapActionItemComponent from 'apps/ifttb/components/AppletMixSwapActionItemComponent/AppletMixSwapActionItemComponent';
+import AppletPandoLeafTriggerFormComponent from 'apps/ifttb/components/AppletPandoLeafTriggerFormComponent/AppletPandoLeafTriggerFormComponent';
+import AppletPandoLeafTriggerItemComponent from 'apps/ifttb/components/AppletPandoLeafTriggerItemComponent/AppletPandoLeafTriggerItemComponent';
 import AppletTriggerServicesComponent from 'apps/ifttb/components/AppletTriggerServicesComponent/AppletTriggerServicesComponent';
 import { AppletFormContext } from 'apps/ifttb/contexts';
 import {
@@ -49,7 +51,7 @@ export default function NewAppletPage() {
     setAppletTriggerServicesPopupVisible,
   ] = useState(false);
   const [editingAppletTrigger, setEditingAppletTriiger] = useState<
-    null | 'AppletDatetimeTrigger' | 'Applet4swapTrigger'
+    null | 'AppletDatetimeTrigger' | 'Applet4swapTrigger' | 'AppletPandoLeafTrigger'
   >(null);
   const [editingAppletDatetimeTrigger, setEditingAppletDatetimeTrigger] =
     useState<
@@ -62,6 +64,9 @@ export default function NewAppletPage() {
     >(null);
   const [editingApplet4swapTrigger, setEditingApplet4swapTrigger] = useState<
     null | 'Applet4swapPriceTrigger'
+  >(null);
+  const [editingAppletPandoLeafTrigger, setEditingAppletPandoLeafTrigger] = useState<
+    null | 'AppletPandoLeafBidingFlipTrigger'
   >(null);
   const [selectedTriggerIndex, setSelectedTriggerIndex] = useState<
     null | number
@@ -156,6 +161,12 @@ export default function NewAppletPage() {
                 ),
                 Applet4swapTrigger: (
                   <Applet4swapTriggerItemComponent
+                    trigger={trigger}
+                    onClick={() => setSelectedTriggerIndex(index)}
+                  />
+                ),
+                AppletPandoLeafTrigger: (
+                  <AppletPandoLeafTriggerItemComponent
                     trigger={trigger}
                     onClick={() => setSelectedTriggerIndex(index)}
                   />
@@ -341,6 +352,22 @@ export default function NewAppletPage() {
         onOk={(trigger) => {
           saveTrigger(trigger);
           setEditingApplet4swapTrigger(null);
+          setEditingAppletTriiger(null);
+          setAppletTriggerServicesPopupVisible(false);
+        }}
+      />
+
+      {/**
+       * pando leaf trigger form
+       */}
+      <AppletPandoLeafTriggerFormComponent
+        visible={editingAppletTrigger === 'AppletPandoLeafTrigger'}
+        triggerType={editingAppletPandoLeafTrigger}
+        onSelected={(selected) => setEditingAppletPandoLeafTrigger(selected)}
+        onCancel={() => setEditingAppletTriiger(null)}
+        onOk={(trigger) => {
+          saveTrigger(trigger);
+          setEditingAppletPandoLeafTrigger(null);
           setEditingAppletTriiger(null);
           setAppletTriggerServicesPopupVisible(false);
         }}

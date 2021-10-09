@@ -2,7 +2,11 @@ import {
   AlarmClock as AlarmClockIcon,
   Down as DownIcon,
 } from '@icon-park/react';
-import { FoxSwapActionThemeColor, FoxSwapLogoUrl } from 'apps/ifttb/constants';
+import {
+  FoxSwapActionThemeColor,
+  FoxSwapLogoUrl,
+  PandoLeafLogoUrl,
+} from 'apps/ifttb/constants';
 import { useAppletForm } from 'apps/ifttb/contexts';
 import { AppletTriggerInput } from 'graphqlTypes';
 import React from 'react';
@@ -11,7 +15,12 @@ import { Popup } from 'zarm';
 export default function AppletTriggerServicesComponent(props: {
   visible: boolean;
   onCancel: () => any;
-  onSelected: (selected: 'AppletDatetimeTrigger' | 'Applet4swapTrigger') => any;
+  onSelected: (
+    selected:
+      | 'AppletDatetimeTrigger'
+      | 'Applet4swapTrigger'
+      | 'AppletPandoLeafTrigger',
+  ) => any;
 }) {
   const { visible, onCancel, onSelected } = props;
   const { appletForm } = useAppletForm();
@@ -24,6 +33,11 @@ export default function AppletTriggerServicesComponent(props: {
     (appletForm?.appletTriggersAttributes || []).find(
       (trigger: AppletTriggerInput) =>
         trigger.type === 'Applet4swapTrigger' && !trigger._destroy,
+    );
+  const appletPandoLeafTriggerCreated = () =>
+    (appletForm?.appletTriggersAttributes || []).find(
+      (trigger: AppletTriggerInput) =>
+        trigger.type === 'AppletPandoLeafTrigger' && !trigger._destroy,
     );
   return (
     <Popup visible={visible} direction='bottom' onMaskClick={onCancel}>
@@ -66,6 +80,23 @@ export default function AppletTriggerServicesComponent(props: {
               <img className='w-7 h-7' src={FoxSwapLogoUrl} />
             </div>
             <div className='text-lg text-center'>4swap</div>
+          </div>
+          <div
+            className={`p-4 rounded-lg bg-gray-50 shadow ${
+              appletPandoLeafTriggerCreated()
+                ? 'cursor-not-allowed opacity-50'
+                : 'cursor-pointer'
+            }`}
+            onClick={() => {
+              if (!appletPandoLeafTriggerCreated()) {
+                onSelected('AppletPandoLeafTrigger');
+              }
+            }}
+          >
+            <div className='flex justify-center mb-2'>
+              <img className='w-7 h-7' src={PandoLeafLogoUrl} />
+            </div>
+            <div className='text-lg text-center'>Pando Leaf</div>
           </div>
         </div>
       </div>
