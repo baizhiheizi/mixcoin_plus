@@ -47,7 +47,7 @@ export default function AppletTriggerServicesComponent(props: {
         </div>
         <div className='p-4 grid grid-cols-2 gap-2'>
           <div
-            className={`p-4 text-white bg-gray-800 rounded-lg ${
+            className={`p-4 text-white bg-gray-800 shadow rounded-lg ${
               appletDatetimeTriggerCreated()
                 ? 'cursor-not-allowed opacity-50'
                 : 'cursor-pointer'
@@ -64,7 +64,7 @@ export default function AppletTriggerServicesComponent(props: {
             <div className='text-lg text-center'>Datetime</div>
           </div>
           <div
-            className={`p-4 rounded-lg ${
+            className={`p-4 rounded-lg shadow ${
               applet4swapTriggerCreated()
                 ? 'cursor-not-allowed opacity-50'
                 : 'cursor-pointer'
@@ -82,7 +82,7 @@ export default function AppletTriggerServicesComponent(props: {
             <div className='text-lg text-center'>4swap</div>
           </div>
           <div
-            className={`p-4 rounded-lg bg-gray-50 shadow ${
+            className={`p-4 rounded-lg bg-green-100 shadow ${
               appletPandoLeafTriggerCreated()
                 ? 'cursor-not-allowed opacity-50'
                 : 'cursor-pointer'

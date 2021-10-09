@@ -9,7 +9,7 @@ export default function AppletPandoLeafTriggerItemComponent(props: {
   const { trigger, onClick } = props;
   return (
     <div
-      className='flex items-start p-4 mb-8 text-lg font-bold rounded-lg cursor-pointer bg-gray-50 space-x-2'
+      className='flex items-start p-4 mb-8 text-lg font-bold bg-green-100 rounded-lg cursor-pointer space-x-2'
       onClick={onClick}
     >
       <span className='text-xl'>If</span>

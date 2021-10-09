@@ -35,7 +35,7 @@ export default function AppletPandoLeafTriggerFormComponent(props: {
     <Popup visible={visible} onMaskClick={onCancel}>
       <div className='h-screen overflow-y-scroll bg-white'>
         <div
-          className='relative p-4 text-xl font-bold bg-gray-50'
+          className='relative p-4 text-xl font-bold bg-green-100'
         >
           <CloseIcon
             onClick={onCancel}
@@ -45,7 +45,7 @@ export default function AppletPandoLeafTriggerFormComponent(props: {
           <div className='text-center'>Pando Leaf Trigger</div>
         </div>
         <div
-          className='px-4 pt-4 pb-8 mb-4 bg-gray-50'
+          className='px-4 pt-4 pb-8 mb-4 bg-green-100'
         >
           <div className='flex justify-center mb-4'>
             <img className='w-12 h-12' src={PandoLeafLogoUrl} />

@@ -49,7 +49,7 @@ export default function Applet4swapActionFormComponent(props: {
             className='absolute pt-1 left-8'
             size='1.25rem'
           />
-          <div className='text-center'>Create 4swap Action</div>
+          <div className='text-center'>4swap Action</div>
         </div>
         <div
           className='px-4 pt-4 pb-8 mb-4'

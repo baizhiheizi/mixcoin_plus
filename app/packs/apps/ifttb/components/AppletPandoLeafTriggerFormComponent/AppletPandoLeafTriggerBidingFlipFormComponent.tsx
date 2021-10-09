@@ -43,7 +43,7 @@ export default function AppletPandoLeafTriggerBidingFlipFormComponent(props: {
     <div className='p-4'>
       <div className='mb-8 text-lg'>
         <div className='mb-4'>
-          Run your applet when there are ongoing auction for
+          Run your applet when there are ongoing auctions for
         </div>
         <div
           className='flex items-center justify-center space-x-2'
