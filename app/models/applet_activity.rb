@@ -99,6 +99,8 @@ class AppletActivity < ApplicationRecord
   end
 
   def disconnect_applet_if_no_datetime_trigger
+    return if applet_action.is_a?(AppletAlertAction)
+
     applet.disconnect! if applet.applet_datetime_trigger.blank?
   end
 
