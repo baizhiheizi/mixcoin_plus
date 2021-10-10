@@ -65,7 +65,9 @@ export default function EditAppletPage() {
     null | 'Applet4swapPriceTrigger'
   >(null);
   const [editingAppletPandoLeafTrigger, setEditingAppletPandoLeafTrigger] =
-    useState<null | 'AppletPandoLeafBidingFlipTrigger'>(null);
+    useState<
+      null | 'AppletPandoLeafBidingFlipTrigger' | 'AppletPandoLeafOracleTrigger'
+    >(null);
   const [editingAppletPandoRingsTrigger, setEditingAppletPandoRingsTrigger] =
     useState<
       | null

@@ -33,6 +33,16 @@ module PandoLeaf
       client.get path
     end
 
+    def oracles
+      path = '/api/oracles'
+      client.get path
+    end
+
+    def oracle(asset_id)
+      path = "/api/oracles/#{asset_id}"
+      client.get path
+    end
+
     def supportable_asset_ids
       _cache = Global.redis.get('pando_leaf_supportable_asset_ids')
       _cache = refresh_supportable_asset_ids if _cache.blank?

@@ -8,11 +8,18 @@ import { AppletTriggerInput } from 'graphqlTypes';
 import React from 'react';
 import { Popup } from 'zarm';
 import AppletPandoLeafTriggerBidingFlipFormComponent from './AppletPandoLeafTriggerBidingFlipFormComponent';
+import AppletPandoLeafTriggerOracleFormComponent from './AppletPandoLeafTriggerOracleFormComponent';
 
 export default function AppletPandoLeafTriggerFormComponent(props: {
   visible: boolean;
-  triggerType: 'AppletPandoLeafBidingFlipTrigger';
-  onSelected?: (selected: 'AppletPandoLeafBidingFlipTrigger') => any;
+  triggerType:
+    | 'AppletPandoLeafBidingFlipTrigger'
+    | 'AppletPandoLeafOracleTrigger';
+  onSelected?: (
+    selected:
+      | 'AppletPandoLeafBidingFlipTrigger'
+      | 'AppletPandoLeafOracleTrigger',
+  ) => any;
   onCancel: () => any;
   onOk: (trigger: AppletTriggerInput) => any;
 }) {
@@ -68,6 +75,11 @@ export default function AppletPandoLeafTriggerFormComponent(props: {
           >
             Ongoing auction
           </PandoLeafTriggerItem>
+          <PandoLeafTriggerItem
+            onClick={() => onSelected('AppletPandoLeafOracleTrigger')}
+          >
+            Oracle
+          </PandoLeafTriggerItem>
         </div>
         <Popup
           visible={Boolean(triggerType)}
@@ -81,6 +93,13 @@ export default function AppletPandoLeafTriggerFormComponent(props: {
               {
                 AppletPandoLeafBidingFlipTrigger: (
                   <AppletPandoLeafTriggerBidingFlipFormComponent
+                    onFinish={(trigger) => {
+                      onOk(trigger);
+                    }}
+                  />
+                ),
+                AppletPandoLeafOracleTrigger: (
+                  <AppletPandoLeafTriggerOracleFormComponent
                     onFinish={(trigger) => {
                       onOk(trigger);
                     }}

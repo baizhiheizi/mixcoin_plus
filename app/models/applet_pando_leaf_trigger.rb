@@ -24,12 +24,16 @@ class AppletPandoLeafTrigger < AppletTrigger
     compare_action
   ]
 
-  validates :target_index, inclusion: { in: %w[biding_flips] }
+  validates :target_index, inclusion: { in: %w[biding_flips oracle_next_price] }
   validates :compare_action, inclusion: { in: %w[larger_than less_than present] }
   validates :target_value, numericality: true, unless: proc { |trigger| trigger.target_index == 'biding_flips' }
 
   def asset
     @asset = MixinAsset.find_by asset_id: asset_id
+  end
+
+  def oracle
+    @oracle = PandoLeaf.api.oracle(asset_id)['data']
   end
 
   def biding_flips
@@ -65,6 +69,8 @@ class AppletPandoLeafTrigger < AppletTrigger
       case target_index
       when 'biding_flips'
         biding_flips
+      when 'oracle_next_price'
+        oracle['next'].to_f
       end
   end
 end
