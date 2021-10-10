@@ -67,7 +67,13 @@ export default function EditAppletPage() {
   const [editingAppletPandoLeafTrigger, setEditingAppletPandoLeafTrigger] =
     useState<null | 'AppletPandoLeafBidingFlipTrigger'>(null);
   const [editingAppletPandoRingsTrigger, setEditingAppletPandoRingsTrigger] =
-    useState<null | 'AppletPandoRingsSupplyApyTrigger'>(null);
+    useState<
+      | null
+      | 'AppletPandoRingsSupplyApyTrigger'
+      | 'AppletPandoRingsSupplyVolumeTrigger'
+      | 'AppletPandoRingsBorrowApyTrigger'
+      | 'AppletPandoRingsBorrowVolumeTrigger'
+    >(null);
   const [selectedTrigger, setSelectedTrigger] =
     useState<null | AppletTriggerInput>(null);
 

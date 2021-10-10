@@ -74,7 +74,13 @@ export default function NewAppletPage() {
   const [editingAppletPandoLeafTrigger, setEditingAppletPandoLeafTrigger] =
     useState<null | 'AppletPandoLeafBidingFlipTrigger'>(null);
   const [editingAppletPandoRingsTrigger, setEditingAppletPandoRingsTrigger] =
-    useState<null | 'AppletPandoRingsSupplyApyTrigger'>(null);
+    useState<
+      | null
+      | 'AppletPandoRingsSupplyApyTrigger'
+      | 'AppletPandoRingsSupplyVolumeTrigger'
+      | 'AppletPandoRingsBorrowApyTrigger'
+      | 'AppletPandoRingsBorrowVolumeTrigger'
+    >(null);
   const [selectedTriggerIndex, setSelectedTriggerIndex] = useState<
     null | number
   >(null);

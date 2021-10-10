@@ -53,10 +53,7 @@ class AppletActivity < ApplicationRecord
     if swap_orders.present?
       swap_order_detail_text
     elsif applet_action.is_a?(AppletAlertAction)
-      <<~TEXT
-        ---
-        #{applet_action.data}
-      TEXT
+      applet_action.data
     end
   end
 
@@ -87,15 +84,24 @@ class AppletActivity < ApplicationRecord
     when :failed
       notification_state_text
     when :completed
-      [notification_state_text, notification_completed_text].join("\n")
+      <<~TEXT
+        #{notification_completed_text}
+
+        ---
+
+        #{notification_state_text}
+
+        #{notification_triggers_text}
+      TEXT
     end
   end
 
   def notification_state_text
-    <<~MSG
-      Applet ##{applet.number} activity #{state}.
-      (#{applet.applet_triggers.map(&:description).join(';')})
-    MSG
+    "Applet ##{applet.number} activity #{state}."
+  end
+
+  def notification_triggers_text
+    applet.applet_triggers.map(&->(trigger) { "- #{trigger.description}" }).join("\n")
   end
 
   def disconnect_applet_if_no_datetime_trigger

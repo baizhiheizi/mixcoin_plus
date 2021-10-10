@@ -7,12 +7,25 @@ import {
 import { AppletTriggerInput } from 'graphqlTypes';
 import React from 'react';
 import { Popup } from 'zarm';
+import AppletPandoRingsTriggerBorrowApyFormComponent from './AppletPandoRingsTriggerBorrowApyFormComponent';
+import AppletPandoRingsTriggerBorrowVolumeFormComponent from './AppletPandoRingsTriggerBorrowVolumeFormComponent';
 import AppletPandoRingsTriggerSupplyApyFormComponent from './AppletPandoRingsTriggerSupplyApyFormComponent';
+import AppletPandoRingsTriggerSupplyVolumeFormComponent from './AppletPandoRingsTriggerSupplyVolumeFormComponent';
 
 export default function AppletPandoRingsTriggerFormComponent(props: {
   visible: boolean;
-  triggerType: 'AppletPandoRingsSupplyApyTrigger';
-  onSelected?: (selected: 'AppletPandoRingsSupplyApyTrigger') => any;
+  triggerType:
+    | 'AppletPandoRingsSupplyApyTrigger'
+    | 'AppletPandoRingsSupplyVolumeTrigger'
+    | 'AppletPandoRingsBorrowApyTrigger'
+    | 'AppletPandoRingsBorrowVolumeTrigger';
+  onSelected?: (
+    selected:
+      | 'AppletPandoRingsSupplyApyTrigger'
+      | 'AppletPandoRingsSupplyVolumeTrigger'
+      | 'AppletPandoRingsBorrowApyTrigger'
+      | 'AppletPandoRingsBorrowVolumeTrigger',
+  ) => any;
   onCancel: () => any;
   onOk: (trigger: AppletTriggerInput) => any;
 }) {
@@ -67,6 +80,21 @@ export default function AppletPandoRingsTriggerFormComponent(props: {
           >
             Supply APY
           </PandoRingsTriggerItem>
+          <PandoRingsTriggerItem
+            onClick={() => onSelected('AppletPandoRingsSupplyVolumeTrigger')}
+          >
+            Supply Volume
+          </PandoRingsTriggerItem>
+          <PandoRingsTriggerItem
+            onClick={() => onSelected('AppletPandoRingsBorrowApyTrigger')}
+          >
+            Borrow APY
+          </PandoRingsTriggerItem>
+          <PandoRingsTriggerItem
+            onClick={() => onSelected('AppletPandoRingsBorrowVolumeTrigger')}
+          >
+            Borrow Volume
+          </PandoRingsTriggerItem>
         </div>
         <Popup
           visible={Boolean(triggerType)}
@@ -80,6 +108,27 @@ export default function AppletPandoRingsTriggerFormComponent(props: {
               {
                 AppletPandoRingsSupplyApyTrigger: (
                   <AppletPandoRingsTriggerSupplyApyFormComponent
+                    onFinish={(trigger) => {
+                      onOk(trigger);
+                    }}
+                  />
+                ),
+                AppletPandoRingsSupplyVolumeTrigger: (
+                  <AppletPandoRingsTriggerSupplyVolumeFormComponent
+                    onFinish={(trigger) => {
+                      onOk(trigger);
+                    }}
+                  />
+                ),
+                AppletPandoRingsBorrowApyTrigger: (
+                  <AppletPandoRingsTriggerBorrowApyFormComponent
+                    onFinish={(trigger) => {
+                      onOk(trigger);
+                    }}
+                  />
+                ),
+                AppletPandoRingsBorrowVolumeTrigger: (
+                  <AppletPandoRingsTriggerBorrowVolumeFormComponent
                     onFinish={(trigger) => {
                       onOk(trigger);
                     }}
