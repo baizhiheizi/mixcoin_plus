@@ -86,11 +86,8 @@ class AppletActivity < ApplicationRecord
     when :completed
       <<~TEXT
         #{notification_completed_text}
-
         ---
-
         #{notification_state_text}
-
         #{notification_triggers_text}
       TEXT
     end
