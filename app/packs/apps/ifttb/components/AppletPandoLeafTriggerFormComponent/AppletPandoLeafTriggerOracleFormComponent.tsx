@@ -61,7 +61,7 @@ export default function AppletPandoLeafTriggerOracleFormComponent(props: {
       <div className='mb-8 text-lg'>
         <div className='mb-4'>Run your applet when next price of</div>
         <div
-          className='flex items-center justify-center space-x-2'
+          className='flex items-center justify-center mb-2 space-x-2'
           onClick={() => setSelectingAsset(true)}
         >
           {asset ? (

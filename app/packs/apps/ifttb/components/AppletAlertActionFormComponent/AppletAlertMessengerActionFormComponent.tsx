@@ -38,7 +38,7 @@ export default function AppletAlertMessengerActionFormComponent(props: {
 
   return (
     <div className='p-4'>
-      <div className='mb-4'>
+      <div className='mb-8'>
         <textarea
           className='w-full p-2 border rounded'
           placeholder={appletForm.appletTriggersAttributes
