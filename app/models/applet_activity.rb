@@ -53,30 +53,41 @@ class AppletActivity < ApplicationRecord
     if swap_orders.present?
       swap_order_detail_text
     elsif applet_action.is_a?(AppletAlertAction)
-      applet_action.data
+      <<~TEXT
+        == Alert ==
+
+        #{applet_action.data}
+      TEXT
     end
   end
 
   def swap_order_detail_text
     return if swap_orders.blank?
 
-    swap_orders.map do |swap_order|
-      _service =
-        case swap_order
-        when AppletActivitySwapOrder
-          '4swap'
-        when AppletActivityMixSwapOrder
-          'MixSwap'
-        end
+    details =
+      swap_orders.map do |swap_order|
+        _service =
+          case swap_order
+          when AppletActivitySwapOrder
+            '4swap'
+          when AppletActivityMixSwapOrder
+            'MixSwap'
+          end
 
-      _pay_amount = swap_order.pay_amount - swap_order.refund_amount
-      <<~DATA
-        - 🤖: #{_service}
-        - 🔁: #{_pay_amount} #{swap_order.pay_asset.symbol} -> #{swap_order.fill_amount} #{swap_order.fill_asset.symbol}
-        - 🏷️: 1 #{swap_order.fill_asset.symbol} ≈ #{(_pay_amount / swap_order.fill_amount).round(8)} #{swap_order.pay_asset.symbol}
-        - 🏷️: 1 #{swap_order.pay_asset.symbol} ≈ #{(swap_order.fill_amount / _pay_amount).round(8)} #{swap_order.fill_asset.symbol}
-      DATA
-    end.join("\n")
+        _pay_amount = swap_order.pay_amount - swap_order.refund_amount
+        <<~DATA
+          - 🤖: #{_service}
+          - 🔁: #{_pay_amount} #{swap_order.pay_asset.symbol} -> #{swap_order.fill_amount} #{swap_order.fill_asset.symbol}
+          - 🏷️: 1 #{swap_order.fill_asset.symbol} ≈ #{(_pay_amount / swap_order.fill_amount).round(8)} #{swap_order.pay_asset.symbol}
+          - 🏷️: 1 #{swap_order.pay_asset.symbol} ≈ #{(swap_order.fill_amount / _pay_amount).round(8)} #{swap_order.fill_asset.symbol}
+        DATA
+      end.join("\n")
+
+    <<~TEXT
+      == Swap Orders ==
+
+      #{details}
+    TEXT
   end
 
   def notification_text
