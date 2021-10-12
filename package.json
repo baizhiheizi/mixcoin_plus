@@ -37,7 +37,7 @@
     "i18next": "^21.2.4",
     "i18next-browser-languagedetector": "^6.1.2",
     "less": "^4.1.2",
-    "less-loader": "^10.0.1",
+    "less-loader": "^10.1.0",
     "mini-css-extract-plugin": "^2.4.2",
     "mixin-messenger-utils": "^0.1.5",
     "moment": "^2.29.1",
