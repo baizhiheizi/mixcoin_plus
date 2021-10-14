@@ -16,6 +16,8 @@
 #  index_applet_actions_on_applet_id  (applet_id)
 #
 class Applet4swapAction < AppletAction
+  FOX_SWAP_ENABLE = Settings.foxswap.enable
+
   store :params, accessors: %i[
     description
     pay_asset_id
@@ -56,7 +58,7 @@ class Applet4swapAction < AppletAction
   end
 
   def may_active?
-    if balance_sufficient?
+    if FOX_SWAP_ENABLE && balance_sufficient?
       true
     else
       applet.disconnect! if applet.connected?

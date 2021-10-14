@@ -16,6 +16,8 @@
 #  index_applet_actions_on_applet_id  (applet_id)
 #
 class AppletMixSwapAction < AppletAction
+  MIX_SWAP_ENABLE = Settings.mix_swap.enable
+
   store :params, accessors: %i[
     description
     pay_asset_id
@@ -64,7 +66,7 @@ class AppletMixSwapAction < AppletAction
   end
 
   def may_active?
-    if balance_sufficient?
+    if MIX_SWAP_ENABLE && balance_sufficient?
       true
     else
       applet.disconnect! if applet.connected?
