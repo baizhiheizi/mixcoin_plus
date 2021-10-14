@@ -66,7 +66,7 @@ class AppletMixSwapAction < AppletAction
   end
 
   def may_active?
-    if MIX_SWAP_ENABLE && balance_sufficient?
+    if balance_sufficient?
       true
     else
       applet.disconnect! if applet.connected?
@@ -82,6 +82,8 @@ class AppletMixSwapAction < AppletAction
   end
 
   def active!
+    return unless MIX_SWAP_ENABLE
+
     ActiveRecord::Base.transaction do
       activity = applet_activities.create!(applet_id: applet_id)
 

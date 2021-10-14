@@ -58,7 +58,7 @@ class Applet4swapAction < AppletAction
   end
 
   def may_active?
-    if FOX_SWAP_ENABLE && balance_sufficient?
+    if balance_sufficient?
       true
     else
       applet.disconnect! if applet.connected?
@@ -74,6 +74,8 @@ class Applet4swapAction < AppletAction
   end
 
   def active!
+    return unless FOX_SWAP_ENABLE
+
     ActiveRecord::Base.transaction do
       activity = applet_activities.create!(applet_id: applet_id)
 
