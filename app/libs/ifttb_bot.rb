@@ -11,5 +11,7 @@ module IfttbBot
       pin_token: Settings.ifttb_bot.pin_token,
       private_key: Settings.ifttb_bot.private_key
     )
+  rescue StandardError
+    nil
   end
 end

@@ -11,6 +11,8 @@ module MixcoinPlusBot
       pin_token: Settings.mixin.pin_token,
       private_key: Settings.mixin.private_key
     )
+  rescue StandardError
+    nil
   end
 
   def self.app_statistic
