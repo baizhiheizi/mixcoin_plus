@@ -63,6 +63,8 @@ gem 'exception_notification'
 gem 'exception-track'
 # time tools (cron, parsing, durations, ...)
 gem 'fugit'
+# Config helps you easily manage environment specific settings in an easy and usable manner.
+gem 'config'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

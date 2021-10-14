@@ -5,11 +5,11 @@ module MixcoinPlusBot
 
   def self.api
     @api ||= MixinBot::API.new(
-      client_id: Rails.application.credentials.dig(:mixin, :client_id),
-      client_secret: Rails.application.credentials.dig(:mixin, :client_secret),
-      session_id: Rails.application.credentials.dig(:mixin, :session_id),
-      pin_token: Rails.application.credentials.dig(:mixin, :pin_token),
-      private_key: Rails.application.credentials.dig(:mixin, :private_key)
+      client_id: Settings.mixin.client_id,
+      client_secret: Settings.mixin.client_secret,
+      session_id: Settings.mixin.session_id,
+      pin_token: Settings.mixin.pin_token,
+      private_key: Settings.mixin.private_key
     )
   end
 

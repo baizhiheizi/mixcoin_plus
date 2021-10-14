@@ -5,7 +5,7 @@ module Global
     attr_accessor :redis
   end
 end
-redis = Redis::Namespace.new(Rails.application.credentials.dig(:redis, :namespace), redis: Redis.new)
+redis = Redis::Namespace.new(Settings.redis.namespace, redis: Redis.new)
 
 Global.redis = redis
 Redis::Objects.redis = redis

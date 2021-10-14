@@ -86,7 +86,7 @@ class IfttbOrder < ApplicationRecord
   end
 
   def recipient_id
-    admin = User.find_by mixin_uuid: Rails.application.credentials[:admin_mixin_uuid]
+    admin = User.find_by mixin_uuid: Settings.admin_mixin_uuid
     raise 'Admin not ready' if admin.blank?
 
     admin.ifttb_broker.mixin_uuid

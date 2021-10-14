@@ -4,9 +4,9 @@ module SwapOrders::FoxSwappable
   extend ActiveSupport::Concern
 
   MINIMUM_AMOUNT = 0.000_000_01
-  FSWAP_MTG_MEMBERS = Rails.application.credentials.dig(:foxswap, :mtg_members)
-  FSWAP_MTG_THRESHOLD = Rails.application.credentials.dig(:foxswap, :mtg_threshold)
-  FSWAP_MTG_PUBLIC_KEY = Rails.application.credentials.dig(:foxswap, :mtg_public_key)
+  FSWAP_MTG_MEMBERS = Settings.foxswap.mtg_members
+  FSWAP_MTG_THRESHOLD = Settings.foxswap.mtg_threshold
+  FSWAP_MTG_PUBLIC_KEY = Settings.foxswap.mtg_public_Key
 
   included do
     belongs_to :user, optional: true

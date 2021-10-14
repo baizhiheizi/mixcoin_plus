@@ -18,7 +18,7 @@ module Foxswap
         amount: params[:amount]&.round(8)&.to_s
       }
 
-      client.post path, json: payload, headers: { Authorization: Rails.application.credentials.dig(:foxswap, :authorization) }
+      client.post path, json: payload, headers: { Authorization: Settings.foxswap.authorization }
     end
 
     def order(order_id, authorization:)
@@ -57,7 +57,7 @@ module Foxswap
       payload = {
         action: [3, options[:user_id], options[:follow_id], options[:asset_id], options[:route_id], options[:minimum_fill]].join(',')
       }
-      client.post path, json: payload, headers: { Authorization: Rails.application.credentials.dig(:foxswap, :authorization) }
+      client.post path, json: payload, headers: { Authorization: Settings.foxswap.authorization }
     end
   end
 end

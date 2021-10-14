@@ -100,7 +100,7 @@ class MixinMessage < ApplicationRecord
             icon_url: MixcoinPlusBot::ICON_URL,
             title: "#{market.base_asset.symbol}/#{market.quote_asset.symbol}",
             description: 'Mixcoin',
-            action: format('%<host>s/markets/%<market_id>s', host: Rails.application.credentials[:host], market_id: market.id)
+            action: format('%<host>s/markets/%<market_id>s', host: Settings.host, market_id: market.id)
           }
         )
       SendMixinMessageWorker.perform_async msg
@@ -120,7 +120,7 @@ class MixinMessage < ApplicationRecord
   end
 
   def admin_mixin_uuid
-    Rails.application.credentials.fetch(:admin_mixin_uuid)
+    Settings.admin_mixin_uuid
   end
 
   def forward_to_admin

@@ -15,7 +15,7 @@ module Mutations
       MixinTransfer.create!(
         user_id: arbitrager.mixin_uuid,
         transfer_type: :withdraw_to_admin,
-        opponent_id: Rails.application.credentials[:admin_mixin_uuid],
+        opponent_id: Settings.admin_mixin_uuid,
         asset_id: asset_id,
         amount: balance,
         memo: 'WITHDRAW TO OWNER',

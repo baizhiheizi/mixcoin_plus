@@ -1,0 +1,6 @@
+# database
+postgres:
+  database: mixcoin_plus_development
+  host: localhost
+  username: postgres
+  password: postgres

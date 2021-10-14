@@ -167,7 +167,7 @@ class ArbitrageOrder < ApplicationRecord
 
   def notify_admin_async
     SendMixinMessageWorker.perform_async MixcoinPlusBot.api.plain_text(
-      conversation_id: MixcoinPlusBot.api.unique_uuid(Rails.application.credentials.fetch(:admin_mixin_uuid)),
+      conversation_id: MixcoinPlusBot.api.unique_uuid(Settings.admin_mixin_uuid),
       data: "#{base_asset.symbol}/#{quote_asset.symbol} order #{state}, price: #{raw[:ocean][:price]}/#{raw[:swap][:price]}, profit:#{net_profit_usd || '-'}/#{expected_profit_usd} USD"
     )
   end

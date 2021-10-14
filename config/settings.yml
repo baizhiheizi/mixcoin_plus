@@ -1,0 +1,14 @@
+# admin
+admin_mixin_uuid: 7ed9292d-7c95-4333-aa48-a8c640064186
+
+# redis
+redis:
+  namespace: mixcoin_plus
+
+# action cable
+action_cable:
+  namespace: mixcoin_plus_cable
+
+# sidekiq
+sidekiq:
+  namespace: mixcoin_plus_sidekiq

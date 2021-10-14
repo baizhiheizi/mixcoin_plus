@@ -18,17 +18,6 @@ test:
   password: postgres
   template: template0
 
-# production:
-#   adapter:  postgresql
-#   host:     <%= Rails.application.credentials.dig :postgres, :host %>
-#   encoding: unicode
-#   database: <%= Rails.application.credentials.dig :postgres, :database %>
-#   pool:     <%= ENV.fetch("RAILS_MAX_THREADS") { 16 } %>
-#   username: <%= Rails.application.credentials.dig :postgres, :username %>
-#   password: <%= Rails.application.credentials.dig :postgres, :password %>
-#   template: template0
-
-# config for render.com
 production:
   adapter:  postgresql
   encoding: unicode
