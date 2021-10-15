@@ -28,7 +28,7 @@ gem 'graphql'
 # Powerful tool for avoiding N+1 DB or HTTP queries
 gem 'batch-loader'
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 4.0'
+gem 'redis', '~> 4.5'
 # Map Redis types directly to Ruby objects
 gem 'redis-objects'
 # This gem adds a Redis::Namespace class which can be used to namespace Redis keys. http://redis.io
