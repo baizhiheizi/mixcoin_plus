@@ -5,6 +5,7 @@
 # Table name: applet_activities
 #
 #  id               :uuid             not null, primary key
+#  snapshot         :json
 #  state            :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -18,6 +19,8 @@
 #
 class AppletActivity < ApplicationRecord
   include AASM
+
+  before_validation :setup_snapshot, on: :create
 
   belongs_to :applet, counter_cache: true
   belongs_to :applet_action
@@ -120,5 +123,11 @@ class AppletActivity < ApplicationRecord
 
   def log_applet_active
     applet.log_active
+  end
+
+  private
+
+  def setup_snapshot
+    self.snapshot = applet.as_json(include: %i[applet_triggers applet_actions])
   end
 end

@@ -5,6 +5,7 @@
 # Table name: applet_activities
 #
 #  id               :uuid             not null, primary key
+#  snapshot         :json
 #  state            :string
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null

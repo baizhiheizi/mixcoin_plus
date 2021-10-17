@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_09_030008) do
+ActiveRecord::Schema.define(version: 2021_10_17_151400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2021_09_09_030008) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "applet_id"
+    t.json "snapshot"
     t.index ["applet_action_id"], name: "index_applet_activities_on_applet_action_id"
     t.index ["applet_id"], name: "index_applet_activities_on_applet_id"
   end
