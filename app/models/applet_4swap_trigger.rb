@@ -57,4 +57,8 @@ class Applet4swapTrigger < AppletTrigger
         swap_market.bid_price
       end
   end
+
+  def alert_text
+    "price(from 4swap) of #{target_index == 'ask_price' ? 'selling' : 'buying'} #{base_asset.symbol}(= #{current_value}) #{compare_action == 'larger_than' ? '>=' : '<='} #{target_value} #{quote_asset.symbol}}"
+  end
 end

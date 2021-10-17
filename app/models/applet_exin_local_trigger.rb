@@ -56,4 +56,15 @@ class AppletExinLocalTrigger < AppletTrigger
   def current_value
     @current_value ||= first_advertisement['price'].to_f
   end
+
+  def compare_action_symbol
+    {
+      larger_than: '>=',
+      less_than: '<='
+    }[compare_action.to_sym]
+  end
+
+  def alert_text
+    "OTC price(from ExinLocal) of #{target_index == 'ask_price_cny' ? 'selling' : 'buying'} #{asset.symbol}(= #{current_value} CNY) #{compare_action_symbol} #{target_value} CNY"
+  end
 end

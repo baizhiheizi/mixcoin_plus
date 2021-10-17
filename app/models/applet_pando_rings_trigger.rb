@@ -64,4 +64,20 @@ class AppletPandoRingsTrigger < AppletTrigger
         market['total_borrows'].to_f
       end
   end
+
+  def compare_action_symbol
+    {
+      larger_than: '>=',
+      less_than: '<='
+    }[compare_action.to_sym]
+  end
+
+  def alert_text
+    case target_index
+    when 'supply_apy', 'borrow_apy'
+      "#{target_index.split('_').first.capitalize} APY of #{asset.symbol} in Pando Rings(= #{format('%.2f', current_value * 100)}%) #{compare_action_symbol} #{format('%.2f', target_value * 100)}%"
+    when 'supply_volume', 'borrow_volume'
+      "#{target_index.humanize} of #{asset.symbol} in Pando Rings(= #{current_value}) #{compare_action_symbol} #{target_value}"
+    end
+  end
 end

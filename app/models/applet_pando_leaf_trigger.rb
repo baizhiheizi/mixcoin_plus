@@ -73,4 +73,20 @@ class AppletPandoLeafTrigger < AppletTrigger
         oracle['next'].to_f
       end
   end
+
+  def compare_action_symbol
+    {
+      larger_than: '>=',
+      less_than: '<='
+    }[compare_action.to_sym]
+  end
+
+  def alert_text
+    case target_index
+    when 'biding_flips'
+      "Pando Leaf has #{biding_flips.size} ongoing auctions for collateral of #{asset&.symbol.presence || 'any asset'}"
+    when 'oracle_next_price'
+      "Next price of #{asset.symbol} from Pando Leaf oracle(#{current_value}) #{compare_action_symbol} #{target_value}"
+    end
+  end
 end

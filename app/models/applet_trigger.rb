@@ -17,4 +17,8 @@
 #
 class AppletTrigger < ApplicationRecord
   belongs_to :applet
+
+  def alert_text
+    description if respond_to?(:description)
+  end
 end

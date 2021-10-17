@@ -109,7 +109,7 @@ class AppletActivity < ApplicationRecord
   end
 
   def notification_triggers_text
-    applet.applet_triggers.map(&->(trigger) { "- #{trigger.description}" }).join("\n")
+    applet.applet_triggers.map(&->(trigger) { "- #{trigger.alert_text}" }).join("\n")
   end
 
   def disconnect_applet_if_no_datetime_trigger
