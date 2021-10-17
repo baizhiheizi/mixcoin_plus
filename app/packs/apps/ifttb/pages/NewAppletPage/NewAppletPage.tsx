@@ -12,6 +12,8 @@ import AppletAlertActionFormComponent from 'apps/ifttb/components/AppletAlertAct
 import AppletAlertActionItemComponent from 'apps/ifttb/components/AppletAlertActionItemComponent/AppletAlertActionItemComponent';
 import AppletDatetimeTriggerFormComponent from 'apps/ifttb/components/AppletDatetimeTriggerFormComponent/AppletDatetimeTriggerFormComponent';
 import AppletDatetimeTriggerItemComponent from 'apps/ifttb/components/AppletDatetimeTriggerItemComponent/AppletDatetimeTriggerItemComponent';
+import AppletExinLocalTriggerFormComponent from 'apps/ifttb/components/AppletExinLocalTriggerFormComponent/AppletExinLocalTriggerFormComponent';
+import AppletExinLocalTriggerItemComponent from 'apps/ifttb/components/AppletExinLocalTriggerItemComponent/AppletExinLocalTriggerItemComponent';
 import AppletMixSwapActionFormComponent from 'apps/ifttb/components/AppletMixSwapActionFormComponent/AppletMixSwapActionFormComponent';
 import AppletMixSwapActionItemComponent from 'apps/ifttb/components/AppletMixSwapActionItemComponent/AppletMixSwapActionItemComponent';
 import AppletPandoLeafTriggerFormComponent from 'apps/ifttb/components/AppletPandoLeafTriggerFormComponent/AppletPandoLeafTriggerFormComponent';
@@ -58,6 +60,7 @@ export default function NewAppletPage() {
     | 'Applet4swapTrigger'
     | 'AppletPandoLeafTrigger'
     | 'AppletPandoRingsTrigger'
+    | 'AppletExinLocalTrigger'
   >(null);
   const [editingAppletDatetimeTrigger, setEditingAppletDatetimeTrigger] =
     useState<
@@ -86,6 +89,8 @@ export default function NewAppletPage() {
   const [selectedTriggerIndex, setSelectedTriggerIndex] = useState<
     null | number
   >(null);
+  const [editingAppletExinLocalTrigger, setEditingAppletExinLocalTrigger] =
+    useState<null | 'AppletExinLocalPriceTrigger'>(null);
 
   // Action
   const [
@@ -188,6 +193,12 @@ export default function NewAppletPage() {
                 ),
                 AppletPandoRingsTrigger: (
                   <AppletPandoRingsTriggerItemComponent
+                    trigger={trigger}
+                    onClick={() => setSelectedTriggerIndex(index)}
+                  />
+                ),
+                AppletExinLocalTrigger: (
+                  <AppletExinLocalTriggerItemComponent
                     trigger={trigger}
                     onClick={() => setSelectedTriggerIndex(index)}
                   />
@@ -405,6 +416,22 @@ export default function NewAppletPage() {
         onOk={(trigger) => {
           saveTrigger(trigger);
           setEditingAppletPandoRingsTrigger(null);
+          setEditingAppletTriiger(null);
+          setAppletTriggerServicesPopupVisible(false);
+        }}
+      />
+
+      {/**
+       * ExinLocal trigger form
+       */}
+      <AppletExinLocalTriggerFormComponent
+        visible={editingAppletTrigger === 'AppletExinLocalTrigger'}
+        triggerType={editingAppletExinLocalTrigger}
+        onSelected={(selected) => setEditingAppletExinLocalTrigger(selected)}
+        onCancel={() => setEditingAppletTriiger(null)}
+        onOk={(trigger) => {
+          saveTrigger(trigger);
+          setEditingAppletExinLocalTrigger(null);
           setEditingAppletTriiger(null);
           setAppletTriggerServicesPopupVisible(false);
         }}

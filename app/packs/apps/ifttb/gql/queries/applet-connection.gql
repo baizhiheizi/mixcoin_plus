@@ -51,6 +51,16 @@ query AppletConnection($filter: String, $after: String) {
             compareAction
           }
         }
+        ... on AppletExinLocalTrigger {
+          type
+          params {
+            description
+            assetId
+            targetValue
+            targetIndex
+            compareAction
+          }
+        }
       }
       appletActions {
         ... on Applet4swapAction {

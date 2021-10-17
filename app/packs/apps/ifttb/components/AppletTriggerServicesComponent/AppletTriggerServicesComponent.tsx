@@ -3,6 +3,7 @@ import {
   Down as DownIcon,
 } from '@icon-park/react';
 import {
+  ExinLocalLogoUrl,
   FoxSwapActionThemeColor,
   FoxSwapLogoUrl,
   PandoLeafLogoUrl,
@@ -21,7 +22,8 @@ export default function AppletTriggerServicesComponent(props: {
       | 'AppletDatetimeTrigger'
       | 'Applet4swapTrigger'
       | 'AppletPandoLeafTrigger'
-      | 'AppletPandoRingsTrigger',
+      | 'AppletPandoRingsTrigger'
+      | 'AppletExinLocalTrigger',
   ) => any;
 }) {
   const { visible, onCancel, onSelected } = props;
@@ -45,6 +47,11 @@ export default function AppletTriggerServicesComponent(props: {
     (appletForm?.appletTriggersAttributes || []).find(
       (trigger: AppletTriggerInput) =>
         trigger.type === 'AppletPandoRingsTrigger' && !trigger._destroy,
+    );
+  const appletExinLocalTriggerCreated = () =>
+    (appletForm?.appletTriggersAttributes || []).find(
+      (trigger: AppletTriggerInput) =>
+        trigger.type === 'AppletExinLocalTrigger' && !trigger._destroy,
     );
   return (
     <Popup visible={visible} direction='bottom' onMaskClick={onCancel}>
@@ -121,6 +128,23 @@ export default function AppletTriggerServicesComponent(props: {
               <img className='w-7 h-7' src={PandoRingsLogoUrl} />
             </div>
             <div className='text-lg text-center'>Pando Rings</div>
+          </div>
+          <div
+            className={`p-4 rounded-lg bg-gray-100 shadow ${
+              appletExinLocalTriggerCreated()
+                ? 'cursor-not-allowed opacity-50'
+                : 'cursor-pointer'
+            }`}
+            onClick={() => {
+              if (!appletExinLocalTriggerCreated()) {
+                onSelected('AppletExinLocalTrigger');
+              }
+            }}
+          >
+            <div className='flex justify-center mb-2'>
+              <img className='w-7 h-7' src={ExinLocalLogoUrl} />
+            </div>
+            <div className='text-lg text-center'>ExinLocal</div>
           </div>
         </div>
       </div>

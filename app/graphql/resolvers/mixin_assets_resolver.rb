@@ -16,6 +16,8 @@ module Resolvers
         MixinAsset.where(asset_id: PandoLeaf.api.supportable_asset_ids)
       when :PandoRings
         MixinAsset.where(asset_id: PandoRings.api.supportable_asset_ids)
+      when :ExinLocal
+        MixinAsset.where(asset_id: ExinLocal.api.tradable_asset_ids)
       when :ifttb_order
         MixinAsset.where(asset_id: IfttbOrder::ACCEPTABLE_ASSETS_IDS)
       end

@@ -312,6 +312,31 @@ export type AppletEdge = {
   node?: Maybe<Applet>;
 };
 
+export type AppletExinLocalTrigger = {
+  __typename?: 'AppletExinLocalTrigger';
+  applet: Applet;
+  asset?: Maybe<MixinAsset>;
+  createdAt: Scalars['ISO8601DateTime'];
+  id: Scalars['ID'];
+  params: AppletExinLocalTriggerParams;
+  type: Scalars['String'];
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
+export type AppletExinLocalTriggerParams = {
+  __typename?: 'AppletExinLocalTriggerParams';
+  applet: Applet;
+  assetId?: Maybe<Scalars['String']>;
+  compareAction: Scalars['String'];
+  createdAt: Scalars['ISO8601DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  targetIndex: Scalars['String'];
+  targetValue?: Maybe<Scalars['Float']>;
+  type: Scalars['String'];
+  updatedAt?: Maybe<Scalars['ISO8601DateTime']>;
+};
+
 export type AppletMixSwapAction = {
   __typename?: 'AppletMixSwapAction';
   applet: Applet;
@@ -395,7 +420,7 @@ export type AppletTriggerInput = {
   type: Scalars['String'];
 };
 
-export type AppletTriggerUnion = Applet4swapTrigger | AppletDatetimeTrigger | AppletPandoLeafTrigger | AppletPandoRingsTrigger;
+export type AppletTriggerUnion = Applet4swapTrigger | AppletDatetimeTrigger | AppletExinLocalTrigger | AppletPandoLeafTrigger | AppletPandoRingsTrigger;
 
 export type ArbitrageOrder = {
   __typename?: 'ArbitrageOrder';
@@ -2426,14 +2451,14 @@ export type AppletConnectionQueryVariables = Exact<{
 }>;
 
 
-export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Array<{ __typename?: 'Applet', id: string, number?: string | null | undefined, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: any | null | undefined, archivedAt?: any | null | undefined, appletTriggers?: Array<{ __typename?: 'Applet4swapTrigger', type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue?: number | null | undefined, targetIndex: string, compareAction: string } } | { __typename?: 'AppletDatetimeTrigger', type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } } | { __typename?: 'AppletPandoLeafTrigger', type: string, params: { __typename?: 'AppletPandoLeafTriggerParams', description: string, assetId?: string | null | undefined, targetValue?: number | null | undefined, targetIndex: string, compareAction: string } } | { __typename?: 'AppletPandoRingsTrigger', type: string, params: { __typename?: 'AppletPandoRingsTriggerParams', description: string, assetId?: string | null | undefined, targetValue?: number | null | undefined, targetIndex: string, compareAction: string } }> | null | undefined, appletActions?: Array<{ __typename?: 'Applet4swapAction', type: string, params: { __typename?: 'Applet4swapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } } | { __typename?: 'AppletAlertAction', type: string, params: { __typename?: 'AppletAlertActionParams', description: string, via: string, data?: string | null | undefined } } | { __typename?: 'AppletMixSwapAction', type: string, params: { __typename?: 'AppletMixSwapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } }> | null | undefined } | null | undefined> | null | undefined, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null | undefined } }, currentUser?: { __typename?: 'User', ifttbBrokerId?: string | null | undefined, ifttbRole: string, mayCreateApplet: boolean } | null | undefined };
+export type AppletConnectionQuery = { __typename?: 'Query', appletConnection: { __typename?: 'AppletConnection', nodes?: Array<{ __typename?: 'Applet', id: string, number?: string | null | undefined, title: string, connected: boolean, appletActivitiesCount: number, lastActiveAt?: any | null | undefined, archivedAt?: any | null | undefined, appletTriggers?: Array<{ __typename?: 'Applet4swapTrigger', type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue?: number | null | undefined, targetIndex: string, compareAction: string } } | { __typename?: 'AppletDatetimeTrigger', type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } } | { __typename?: 'AppletExinLocalTrigger', type: string, params: { __typename?: 'AppletExinLocalTriggerParams', description: string, assetId?: string | null | undefined, targetValue?: number | null | undefined, targetIndex: string, compareAction: string } } | { __typename?: 'AppletPandoLeafTrigger', type: string, params: { __typename?: 'AppletPandoLeafTriggerParams', description: string, assetId?: string | null | undefined, targetValue?: number | null | undefined, targetIndex: string, compareAction: string } } | { __typename?: 'AppletPandoRingsTrigger', type: string, params: { __typename?: 'AppletPandoRingsTriggerParams', description: string, assetId?: string | null | undefined, targetValue?: number | null | undefined, targetIndex: string, compareAction: string } }> | null | undefined, appletActions?: Array<{ __typename?: 'Applet4swapAction', type: string, params: { __typename?: 'Applet4swapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } } | { __typename?: 'AppletAlertAction', type: string, params: { __typename?: 'AppletAlertActionParams', description: string, via: string, data?: string | null | undefined } } | { __typename?: 'AppletMixSwapAction', type: string, params: { __typename?: 'AppletMixSwapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number } }> | null | undefined } | null | undefined> | null | undefined, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null | undefined } }, currentUser?: { __typename?: 'User', ifttbBrokerId?: string | null | undefined, ifttbRole: string, mayCreateApplet: boolean } | null | undefined };
 
 export type AppletQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: string | null | undefined, title: string, connected: boolean, lastActiveAt?: any | null | undefined, profit?: number | null | undefined, payTotal?: number | null | undefined, payTotalUsd?: number | null | undefined, fillTotal?: number | null | undefined, fillTotalUsd?: number | null | undefined, appletActivitiesCompletedCount: number, archivedAt?: any | null | undefined, payAsset?: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: string | null | undefined, priceUsd?: number | null | undefined } | null | undefined, fillAsset?: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: string | null | undefined, priceUsd?: number | null | undefined } | null | undefined, appletTriggers?: Array<{ __typename?: 'Applet4swapTrigger', id: string, type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue?: number | null | undefined, targetIndex: string, compareAction: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined }, baseAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } } | { __typename?: 'AppletDatetimeTrigger', id: string, type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } } | { __typename?: 'AppletPandoLeafTrigger', id: string, type: string, params: { __typename?: 'AppletPandoLeafTriggerParams', description: string, assetId?: string | null | undefined, targetValue?: number | null | undefined, targetIndex: string, compareAction: string }, asset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } | null | undefined } | { __typename?: 'AppletPandoRingsTrigger', id: string, type: string, params: { __typename?: 'AppletPandoRingsTriggerParams', description: string, assetId?: string | null | undefined, targetValue?: number | null | undefined, targetIndex: string, compareAction: string }, asset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } | null | undefined }> | null | undefined, appletActions?: Array<{ __typename?: 'Applet4swapAction', id: string, type: string, params: { __typename?: 'Applet4swapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } } | { __typename?: 'AppletAlertAction', id: string, type: string, params: { __typename?: 'AppletAlertActionParams', description: string, via: string, data?: string | null | undefined } } | { __typename?: 'AppletMixSwapAction', id: string, type: string, params: { __typename?: 'AppletMixSwapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } }> | null | undefined } };
+export type AppletQuery = { __typename?: 'Query', applet: { __typename?: 'Applet', id: string, number?: string | null | undefined, title: string, connected: boolean, lastActiveAt?: any | null | undefined, profit?: number | null | undefined, payTotal?: number | null | undefined, payTotalUsd?: number | null | undefined, fillTotal?: number | null | undefined, fillTotalUsd?: number | null | undefined, appletActivitiesCompletedCount: number, archivedAt?: any | null | undefined, payAsset?: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: string | null | undefined, priceUsd?: number | null | undefined } | null | undefined, fillAsset?: { __typename?: 'MixinAsset', assetId: string, symbol: string, iconUrl?: string | null | undefined, priceUsd?: number | null | undefined } | null | undefined, appletTriggers?: Array<{ __typename?: 'Applet4swapTrigger', id: string, type: string, params: { __typename?: 'Applet4swapTriggerParams', description: string, baseAssetId: string, quoteAssetId: string, targetValue?: number | null | undefined, targetIndex: string, compareAction: string }, quoteAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined }, baseAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } } | { __typename?: 'AppletDatetimeTrigger', id: string, type: string, params: { __typename?: 'AppletDatetimeTriggerParams', description: string, minute: string, hour: string, day: string, month: string, wday: string } } | { __typename?: 'AppletExinLocalTrigger', id: string, type: string, params: { __typename?: 'AppletExinLocalTriggerParams', description: string, assetId?: string | null | undefined, targetValue?: number | null | undefined, targetIndex: string, compareAction: string }, asset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } | null | undefined } | { __typename?: 'AppletPandoLeafTrigger', id: string, type: string, params: { __typename?: 'AppletPandoLeafTriggerParams', description: string, assetId?: string | null | undefined, targetValue?: number | null | undefined, targetIndex: string, compareAction: string }, asset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } | null | undefined } | { __typename?: 'AppletPandoRingsTrigger', id: string, type: string, params: { __typename?: 'AppletPandoRingsTriggerParams', description: string, assetId?: string | null | undefined, targetValue?: number | null | undefined, targetIndex: string, compareAction: string }, asset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } | null | undefined }> | null | undefined, appletActions?: Array<{ __typename?: 'Applet4swapAction', id: string, type: string, params: { __typename?: 'Applet4swapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } } | { __typename?: 'AppletAlertAction', id: string, type: string, params: { __typename?: 'AppletAlertActionParams', description: string, via: string, data?: string | null | undefined } } | { __typename?: 'AppletMixSwapAction', id: string, type: string, params: { __typename?: 'AppletMixSwapActionParams', description: string, payAssetId: string, fillAssetId: string, payAmount: number, slippage: number }, payAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined }, fillAsset: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string, priceUsd?: number | null | undefined, chainAsset?: { __typename?: 'MixinAsset', assetId: string, iconUrl?: string | null | undefined, symbol: string } | null | undefined } }> | null | undefined } };
 
 export type IfttbBrokerBalanceQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -6113,6 +6138,16 @@ export const AppletConnectionDocument = gql`
             compareAction
           }
         }
+        ... on AppletExinLocalTrigger {
+          type
+          params {
+            description
+            assetId
+            targetValue
+            targetIndex
+            compareAction
+          }
+        }
       }
       appletActions {
         ... on Applet4swapAction {
@@ -6283,6 +6318,28 @@ export const AppletDocument = gql`
         }
       }
       ... on AppletPandoRingsTrigger {
+        id
+        type
+        params {
+          description
+          assetId
+          targetValue
+          targetIndex
+          compareAction
+        }
+        asset {
+          assetId
+          iconUrl
+          symbol
+          priceUsd
+          chainAsset {
+            assetId
+            iconUrl
+            symbol
+          }
+        }
+      }
+      ... on AppletExinLocalTrigger {
         id
         type
         params {

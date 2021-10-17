@@ -29,3 +29,6 @@ export const PandoLeafAppId = '75f18fe8-b056-46d6-9c48-0214425e58ce';
 export const PandoRingsActionThemeColor = '#ffe500';
 export const PandoRingsLogoUrl = 'https://mixin-images.zeromesh.net/H58RZwH1D8SUaoe9DprOsp3N8YU_t5ra4GdDdUScH2vaFsZzdNAUG6WhOyWq_kIriODHTBA8BZDuSl68vjqeiOY4xa2MjqUBbju1=s256';
 export const PandoRingsAppId = '5278fff7-a084-4019-b963-a7a88559d5c4';
+export const ExinLocalActionThemeColor = '#00b9a6';
+export const ExinLocalLogoUrl = 'https://mixin-images.zeromesh.net/TPVSyWaAVSJ4j2CqHSHRmzrRBeRg3fDMEqUUl8GITBQeNpGu4dvES7E8ZU9MBrR4RADbLfGbfI3PKULJODkGmik=s256';
+export const ExinLocalAppId = 'f2397b7a-ddfc-4bd9-925a-e14a9a553ba5';
