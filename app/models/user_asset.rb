@@ -43,6 +43,8 @@ class UserAsset < ApplicationRecord
     update raw: r, balance: r['balance']
 
     _mark_cache
+  rescue MixinBot::UnauthorizedError
+    nil
   end
 
   private
