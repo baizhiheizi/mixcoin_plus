@@ -47,7 +47,7 @@ class SwapMarket
   end
 
   def _ask_price_cache_id
-    "price_#{base_asset_id}_#{quote_asset_id}"
+    "ask_price_#{base_asset_id}_#{quote_asset_id}"
   end
 
   def _get_bid_price
@@ -71,6 +71,6 @@ class SwapMarket
   end
 
   def _bid_price_cache_id
-    "price_#{quote_asset_id}_#{base_asset_id}"
+    "bid_price_#{quote_asset_id}_#{base_asset_id}"
   end
 end
