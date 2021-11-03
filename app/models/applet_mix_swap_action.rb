@@ -88,7 +88,7 @@ class AppletMixSwapAction < AppletAction
   def minimum_fill
     raise 'cannot fetch pre order' if fill_amount.blank?
 
-    ([fill_amount.to_f, (pay_amount / trigger_price).floor(8)].max * (1 - slippage)).floor(8)
+    ([fill_amount.to_f, (pay_amount / trigger_price.to_f).floor(8)].max * (1 - slippage)).floor(8)
   end
 
   def may_active?
