@@ -59,10 +59,36 @@ class AppletMixSwapAction < AppletAction
     @swap_market ||= SwapMarket.new base_asset_id: fill_asset_id, quote_asset_id: pay_asset_id
   end
 
+  def trigger_price
+    trigger = applet.applet_triggers.find_by(type: 'Applet4swapTrigger')
+    return swap_market.bid_price if trigger.blank?
+
+    case trigger.target_index
+    when 'bid_price'
+      if trigger.base_asset_id == fill_asset_id && trigger.quote_asset_id == pay_asset_id
+        trigger.target_value
+      elsif trigger.base_asset_id == pay_asset_id && trigger.quote_asset_id == fill_asset_id
+        1.0 / trigger.target_value
+      else
+        swap_market.bid_price
+      end
+    when 'ask_price'
+      if trigger.base_asset_id == pay_asset_id && trigger.quote_asset_id == fill_asset_id
+        1.0 / trigger.target_value
+      elsif trigger.base_asset_id == fill_asset_id && trigger.quote_asset_id == pay_asset_id
+        trigger.target_value
+      else
+        swap_market.bid_price
+      end
+    else
+      swap_market.bid_price
+    end
+  end
+
   def minimum_fill
     raise 'cannot fetch pre order' if fill_amount.blank?
 
-    ([fill_amount.to_f, (pay_amount / swap_market.bid_price).floor(8)].max * (1 - slippage)).floor(8)
+    ([fill_amount.to_f, (pay_amount / trigger_price).floor(8)].max * (1 - slippage)).floor(8)
   end
 
   def may_active?
