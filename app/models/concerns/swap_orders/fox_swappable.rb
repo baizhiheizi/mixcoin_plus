@@ -66,9 +66,8 @@ module SwapOrders::FoxSwappable
 
   def sync_order
     r = foxswap_order_detail
-    return if r['data'].blank?
 
-    update(
+    update!(
       fill_amount: r['data']['fill_amount'],
       raw: r['data']
     )
