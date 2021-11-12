@@ -39,9 +39,7 @@ class ArbitrageSwapOrder < SwapOrder
 
   belongs_to :arbitrage_order
 
-  after_commit on: :create do
-    pay!
-  end
+  after_create :pay!
 
   def arbitrage?
     arbitrage_order.present?

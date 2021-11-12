@@ -54,9 +54,8 @@ module SwapOrders::MixSwappable
 
   def sync_order
     r = order_detail
-    return if r['data'].blank?
 
-    update(
+    update!(
       fill_amount: r['data']['receiveAmount'],
       refund_amount: r['data']['refundAmount'],
       raw: r['data']

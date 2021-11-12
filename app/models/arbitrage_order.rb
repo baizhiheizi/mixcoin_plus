@@ -40,7 +40,7 @@ class ArbitrageOrder < ApplicationRecord
   validates :raw, presence: true
 
   after_commit on: :create do
-    if arbitrager_balance_sufficient? && swap_price_reasonable?
+    if arbitrager_balance_sufficient?
       start_arbitrage!
     else
       notify_admin_async
@@ -72,7 +72,7 @@ class ArbitrageOrder < ApplicationRecord
   def start_arbitrage!
     ActiveRecord::Base.transaction do
       generate_ocean_order!
-      # generate_swap_order!
+      generate_swap_order!
       arbitrage!
     end
   end
@@ -95,11 +95,9 @@ class ArbitrageOrder < ApplicationRecord
   def arbitrager_balance_sufficient?
     case raw[:ocean][:side]
     when :bid
-      arbitrager_quote_balance >= raw[:ocean][:funds]
-      # arbitrager_base_balance >= raw[:swap][:amount]
+      arbitrager_quote_balance >= raw[:ocean][:funds] && arbitrager_base_balance >= raw[:swap][:amount]
     when :ask
-      arbitrager_base_balance >= raw[:ocean][:amount]
-      # arbitrager_quote_balance >= raw[:swap][:funds]
+      arbitrager_base_balance >= raw[:ocean][:amount] && arbitrager_quote_balance >= raw[:swap][:funds]
     end
   end
 
