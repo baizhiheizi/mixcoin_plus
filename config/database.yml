@@ -3,7 +3,7 @@ development:
   host:     localhost
   encoding: unicode
   database: mixcoin_plus_development
-  pool:     5
+  pool:     10
   username: postgres
   password: postgres
   template: template0

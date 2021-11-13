@@ -71,7 +71,7 @@ class ArbitrageOrder < ApplicationRecord
 
   def start_arbitrage!
     ActiveRecord::Base.transaction do
-      generate_ocean_order!
+      # generate_ocean_order!
       generate_swap_order!
       arbitrage!
     end
@@ -95,9 +95,11 @@ class ArbitrageOrder < ApplicationRecord
   def arbitrager_balance_sufficient?
     case raw[:ocean][:side]
     when :bid
-      arbitrager_quote_balance >= raw[:ocean][:funds] && arbitrager_base_balance >= raw[:swap][:amount]
+      # arbitrager_quote_balance >= raw[:ocean][:funds]
+      arbitrager_base_balance >= raw[:swap][:amount]
     when :ask
-      arbitrager_base_balance >= raw[:ocean][:amount] && arbitrager_quote_balance >= raw[:swap][:funds]
+      # arbitrager_base_balance >= raw[:ocean][:amount]
+      arbitrager_quote_balance >= raw[:swap][:funds]
     end
   end
 
@@ -136,7 +138,8 @@ class ArbitrageOrder < ApplicationRecord
       broker: arbitrager,
       pay_asset_id: raw[:swap][:side] == :bid ? market.quote_asset_id : market.base_asset_id,
       pay_amount: raw[:swap][:side] == :bid ? raw[:swap][:funds] : raw[:swap][:amount],
-      fill_asset_id: raw[:swap][:side] == :bid ? market.base_asset_id : market.quote_asset_id
+      fill_asset_id: raw[:swap][:side] == :bid ? market.base_asset_id : market.quote_asset_id,
+      min_amount: raw[:swap][:side] == :bid ? raw[:swap][:amount] : raw[:swap][:funds]
     )
   end
 
