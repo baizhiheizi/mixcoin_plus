@@ -3,7 +3,7 @@
 module Markets::Arbitragable
   MINIMUM_TO_EXCHNAGE = 1 # USD
   MAXIMUM_TO_EXCHNAGE = 20 # USD
-  SLIPPAGE_TO_EXCHANGE = 0.003
+  SLIPPAGE_TO_EXCHANGE = 0.001
   OCEAN_TAKER_FEE_RATIO = 0.001
 
   def ocean_ask
@@ -30,6 +30,7 @@ module Markets::Arbitragable
 
   def buy_from_ocean
     return @buy_from_ocean if @buy_from_ocean.present?
+    return if ocean_ask.blank?
     return if ocean_ask['funds'].to_f * quote_asset.price_usd < MINIMUM_TO_EXCHNAGE
 
     buying_price = ocean_ask['price'].to_f
@@ -49,6 +50,7 @@ module Markets::Arbitragable
 
   def sell_to_swap
     return @sell_to_swap if @sell_to_swap.present?
+    return if buy_from_ocean.blank?
 
     selling_amount = (buy_from_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO)).floor(8)
     selling_funds = Foxswap.api.pre_order(
@@ -67,6 +69,7 @@ module Markets::Arbitragable
 
   def sell_to_ocean
     return @sell_to_ocean if @sell_to_ocean.present?
+    return if ocean_bid.blank?
     return if ocean_bid['funds'].to_f * quote_asset.price_usd < MINIMUM_TO_EXCHNAGE
 
     selling_price = ocean_bid['price'].to_f
@@ -86,6 +89,7 @@ module Markets::Arbitragable
 
   def buy_from_swap
     return @buy_from_swap if @buy_from_swap.present?
+    return if sell_to_ocean.blank?
 
     buying_funds = sell_to_ocean[:funds] * (1 - OCEAN_TAKER_FEE_RATIO).floor(8)
     buying_amount = Foxswap.api.pre_order(
@@ -105,7 +109,7 @@ module Markets::Arbitragable
   def patrol
     return if arbitraging?
 
-    if ocean_ask.present? && ((sell_to_swap[:funds] * (1 - SLIPPAGE_TO_EXCHANGE)) - buy_from_ocean[:funds]).positive?
+    if buy_from_ocean.present? && sell_to_swap.present? && ((sell_to_swap[:funds] * (1 - SLIPPAGE_TO_EXCHANGE)) - buy_from_ocean[:funds]).positive?
       arbitrage_orders.create!(
         arbitrager: Arbitrager.ready.take,
         arbitrager_id: Arbitrager.ready.sample&.mixin_uuid,
@@ -120,7 +124,7 @@ module Markets::Arbitragable
           profit_asset_id: quote_asset_id
         }
       )
-    elsif ocean_bid.present? && ((buy_from_swap[:amount] * (1 - SLIPPAGE_TO_EXCHANGE)) - (sell_to_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO))).positive?
+    elsif buy_from_swap.present? && sell_to_ocean.present? && ((buy_from_swap[:amount] * (1 - SLIPPAGE_TO_EXCHANGE)) - (sell_to_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO))).positive?
       arbitrage_orders.create!(
         arbitrager: Arbitrager.ready.take,
         arbitrager_id: Arbitrager.ready.sample&.mixin_uuid,
