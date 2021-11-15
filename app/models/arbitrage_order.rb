@@ -81,13 +81,13 @@ class ArbitrageOrder < ApplicationRecord
     case raw[:ocean][:side]
     when :bid
       update(
-        quote_asset_profit: swap_orders.traded.sum(:fill_amount) - ocean_orders.sum(:filled_funds),
-        base_asset_profit: (ocean_orders.sum(:filled_amount) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO)) - swap_orders.traded.sum(:pay_amount)
+        quote_asset_profit: swap_orders.traded.where(fill_asset: quote_asset).sum(:fill_amount) - ocean_orders.sum(:filled_funds),
+        base_asset_profit: (ocean_orders.sum(:filled_amount) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO)) - swap_orders.traded.where(pay_asset: base_asset).sum(:pay_amount)
       )
     when :ask
       update(
-        quote_asset_profit: (ocean_orders.sum(:filled_funds) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO)) - swap_orders.traded.sum(:pay_amount),
-        base_asset_profit: swap_orders.traded.sum(:fill_amount) - ocean_orders.sum(:filled_amount)
+        quote_asset_profit: (ocean_orders.sum(:filled_funds) * (1 - OceanOrder::BASE_TAKER_FEE_RATIO)) + swap_orders.traded.where(fill_asset: quote_asset).sum(:fill_amount) - swap_orders.traded.where(pay_asset: quote_asset).sum(:pay_amount),
+        base_asset_profit: swap_orders.traded.where(fill_asset: base_asset).sum(:fill_amount) - swap_orders.traded.where(pay_asset: base_asset).sum(:pay_amount) - ocean_orders.sum(:filled_amount)
       )
     end
   end
@@ -139,7 +139,7 @@ class ArbitrageOrder < ApplicationRecord
       pay_asset_id: raw[:swap][:side] == :bid ? market.quote_asset_id : market.base_asset_id,
       pay_amount: raw[:swap][:side] == :bid ? raw[:swap][:funds] : raw[:swap][:amount],
       fill_asset_id: raw[:swap][:side] == :bid ? market.base_asset_id : market.quote_asset_id,
-      min_amount: raw[:swap][:side] == :bid ? raw[:swap][:amount] : raw[:swap][:funds]
+      min_amount: raw[:swap][:side] == :bid ? (raw[:swap][:amount] - raw[:expected_profit]) : (raw[:swap][:funds] - (raw[:swap][:expected_profit] / raw[:swap][:price]).floor(8))
     )
   end
 
