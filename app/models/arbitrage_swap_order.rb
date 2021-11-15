@@ -57,7 +57,7 @@ class ArbitrageSwapOrder < SwapOrder
 
   def after_trade
     sync_order
-    arbitrage_order.generate_ocean_order
+    arbitrage_order.generate_ocean_order!
     check_arbitrage_order
   end
 

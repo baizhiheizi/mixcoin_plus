@@ -171,7 +171,7 @@ class OceanSnapshot < MixinNetworkSnapshot
       _ocean_order.cancel! if _ocean_order.may_cancel?
     when :refund_from_engine
       if _ocean_order.arbitrage?
-        _ocean_order.refund!
+        _ocean_order.refund! if _ocean_order.may_refund?
 
         # swap the refund amount back to minimize lose
         _ocean_order.arbitrage_order.swap_orders.create_with(
@@ -179,7 +179,7 @@ class OceanSnapshot < MixinNetworkSnapshot
           broker: _ocean_order.broker,
           pay_asset_id: asset_id,
           pay_amount: amount,
-          fill_asset_id: _ocean_order.side.ask? ? _ocean_order.base_asset_id : _ocean_order.quote_asset_id
+          fill_asset_id: _ocean_order.side.ask? ? _ocean_order.quote_asset_id : _ocean_order.base_asset_id
         ).find_or_create_by!(
           trace_id: MixcoinPlusBot.api.unique_uuid(trace_id, _ocean_order.id)
         )
