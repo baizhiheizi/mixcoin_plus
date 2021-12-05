@@ -139,7 +139,7 @@ class ArbitrageOrder < ApplicationRecord
       pay_asset_id: raw[:swap][:side] == :bid ? market.quote_asset_id : market.base_asset_id,
       pay_amount: raw[:swap][:side] == :bid ? raw[:swap][:funds] : raw[:swap][:amount],
       fill_asset_id: raw[:swap][:side] == :bid ? market.base_asset_id : market.quote_asset_id,
-      min_amount: raw[:swap][:side] == :bid ? (raw[:swap][:amount] - raw[:expected_profit]) : (raw[:swap][:funds] - (raw[:swap][:expected_profit] / raw[:swap][:price]).floor(8))
+      min_amount: raw[:swap][:side] == :bid ? (raw[:swap][:amount] - raw[:expected_profit]) : (raw[:swap][:funds] - (raw[:expected_profit] / raw[:swap][:price]).floor(8))
     )
   end
 
