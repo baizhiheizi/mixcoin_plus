@@ -69,7 +69,8 @@ module SwapOrders::FoxSwappable
 
     update!(
       fill_amount: r['data']['fill_amount'],
-      raw: r['data']
+      raw: r['data'],
+      refund_amount: pay_amount - r['data']['fill_amount'].to_d
     )
   end
 
