@@ -54,7 +54,7 @@ class AppletExinLocalTrigger < AppletTrigger
   end
 
   def current_value
-    @current_value ||= first_advertisement['price'].to_f
+    @current_value ||= first_advertisement&.[]('price')&.to_f
   end
 
   def compare_action_symbol
