@@ -69,7 +69,7 @@ module SwapOrders::FoxSwappable
 
     self.raw = r['data']
     self.fill_amount = r['data']['fill_amount']
-    self.refund_amount = pay_amount if fill_amount.blank?
+    self.refund_amount = fill_amount.blank? ? pay_amount : 0
 
     save
   end
