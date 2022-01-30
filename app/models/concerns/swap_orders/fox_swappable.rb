@@ -67,11 +67,11 @@ module SwapOrders::FoxSwappable
   def sync_order
     r = foxswap_order_detail
 
-    update!(
-      fill_amount: r['data']['fill_amount'],
-      raw: r['data'],
-      refund_amount: pay_amount - r['data']['fill_amount'].to_d
-    )
+    self.raw = r['data']
+    self.fill_amount = r['data']['fill_amount']
+    self.refund_amount = pay_amount if fill_amount.blank?
+
+    save
   end
 
   def after_trade
