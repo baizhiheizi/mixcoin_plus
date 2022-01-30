@@ -6,7 +6,7 @@ module ExinLocal
 
     attr_reader :host
 
-    def initialize(host = 'hk.exinlocal.com')
+    def initialize(host = 'exinlocal.com')
       @host = host
     end
 
