@@ -14,7 +14,7 @@
     "@rails/actioncable": "^6.1.4",
     "@rails/activestorage": "^6.1.4",
     "@rails/ujs": "^6.1.4",
-    "@rails/webpacker": "6.0.0-rc.5",
+    "@rails/webpacker": "6.0.0-rc.6",
     "@tailwindcss/line-clamp": "^0.2.2",
     "@types/qrcode.react": "^1.0.2",
     "@types/react": "^17.0.35",
