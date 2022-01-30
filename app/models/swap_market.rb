@@ -39,7 +39,7 @@ class SwapMarket
       funds: funds
     )&.[]('data')&.[]('fill_amount')&.to_f
 
-    _ask_price = (amount / funds).round(8) if amount.positive?
+    _ask_price = (amount / funds).round(8) if amount&.positive?
 
     Global.redis.set _ask_price_cache_id, _ask_price, ex: 1.minute
 
@@ -63,7 +63,7 @@ class SwapMarket
       funds: funds
     )&.[]('data')&.[]('fill_amount')&.to_f
 
-    _bid_price = (funds / amount).round(8) if amount.positive?
+    _bid_price = (funds / amount).round(8) if amount&.positive?
 
     Global.redis.set _bid_price_cache_id, _bid_price, ex: 1.minute
 
