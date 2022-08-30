@@ -40,7 +40,7 @@ gem 'bcrypt', '~> 3.1.7'
 # A simple API wrapper for Mixin Network in Ruby
 gem 'mixin_bot'
 # Simple, efficient background processing for Ruby http://sidekiq.org
-gem 'sidekiq', '~> 6.0'
+gem 'sidekiq', '~> 6.5'
 # Scheduler / Cron for Sidekiq jobs
 gem 'sidekiq-cron'
 # Notifications for Ruby on Rails applications
