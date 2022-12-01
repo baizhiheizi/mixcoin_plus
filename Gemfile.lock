@@ -98,7 +98,7 @@ GEM
     config (3.1.0)
       deep_merge (~> 1.2, >= 1.2.1)
       dry-validation (~> 1.0, >= 1.0.0)
-    connection_pool (2.2.5)
+    connection_pool (2.3.0)
     crass (1.0.6)
     deep_merge (1.2.1)
     domain_name (0.5.20190701)
@@ -250,7 +250,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.6.0)
-    rack (2.2.3)
+    rack (2.2.4)
     rack-mini-profiler (2.3.3)
       rack (>= 1.2.0)
     rack-proxy (0.7.0)
@@ -302,6 +302,8 @@ GEM
       rainbow (~> 3.0)
       webpacker (>= 4.0)
     redis (4.5.1)
+    redis-client (0.11.2)
+      connection_pool
     redis-namespace (1.8.1)
       redis (>= 3.0.4)
     redis-objects (1.5.1)
@@ -331,10 +333,11 @@ GEM
       rubyzip (>= 1.2.2)
     semantic_range (3.0.0)
     sha3 (1.0.3)
-    sidekiq (6.3.1)
-      connection_pool (>= 2.2.2)
-      rack (~> 2.0)
-      redis (>= 4.2.0)
+    sidekiq (7.0.2)
+      concurrent-ruby (< 2)
+      connection_pool (>= 2.3.0)
+      rack (>= 2.2.4)
+      redis-client (>= 0.11.0)
     sidekiq-cron (1.2.0)
       fugit (~> 1.1)
       sidekiq (>= 4.2.1)
@@ -421,7 +424,7 @@ DEPENDENCIES
   rubocop
   rubocop-rails
   selenium-webdriver
-  sidekiq (~> 6.0)
+  sidekiq (~> 7.0)
   sidekiq-cron
   spring
   turbolinks (~> 5)
