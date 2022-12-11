@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
       client_id: MixcoinPlusBot.api.client_id,
       scope: 'PROFILE:READ+MESSAGES:REPRESENT+ASSETS:READ+SNAPSHOTS:READ',
       return_to: params[:return_to] || root_url
-    )
+    ), allow_other_host: true
   end
 
   def create
