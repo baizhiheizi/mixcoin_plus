@@ -4,6 +4,7 @@ require 'rubygems'
 require 'bundler/setup'
 require File.expand_path('../config/environment', __dir__)
 
+Applet.connected.map(&:create_cron_job)
 EM.run {
   MixcoinPlusBot.api.start_blaze_connect do
     def on_open(ws, _event)

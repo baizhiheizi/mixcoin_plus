@@ -58,7 +58,7 @@ class MixinTransfer < ApplicationRecord
 
   scope :unprocessed, -> { where(processed_at: nil) }
   scope :processed, -> { where.not(processed_at: nil) }
-  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
+  scope :within_24h, -> { where(created_at: (24.hours.ago)...) }
 
   def snapshot_id
     snapshot&.[]('snapshot_id')

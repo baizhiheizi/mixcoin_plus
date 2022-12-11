@@ -64,12 +64,10 @@ class OceanOrder < ApplicationRecord
   validates :remaining_funds, presence: true, numericality: { greater_than_or_equal_to: 0.0 }
   validates :filled_amount, presence: true, numericality: { greater_than_or_equal_to: 0.0 }
   validates :filled_funds, presence: true, numericality: { greater_than_or_equal_to: 0.0 }
-  validates :base_asset_id, presence: true
-  validates :quote_asset_id, presence: true
   validates :trace_id, presence: true
   validate :ensure_broker_ready
 
-  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
+  scope :within_24h, -> { where(created_at: (24.hours.ago)...) }
 
   aasm column: :state do
     state :drafted, initial: true

@@ -51,7 +51,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   scope :unprocessed, -> { where(processed_at: nil) }
   scope :only_input, -> { where(amount: 0...) }
   scope :only_output, -> { where(amount: ...0) }
-  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
+  scope :within_24h, -> { where(created_at: (24.hours.ago)...) }
 
   # polling Mixin Network
   # should be called in a event machine

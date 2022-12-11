@@ -34,8 +34,6 @@ class Trade < ApplicationRecord
   before_validation :set_defaults, on: :create
 
   validates :trade_id, presence: true, uniqueness: true
-  validates :base_asset_id, presence: true
-  validates :quote_asset_id, presence: true
   validates :amount, presence: true
   validates :price, presence: true
   validates :side, presence: true

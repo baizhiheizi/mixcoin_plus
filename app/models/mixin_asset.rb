@@ -37,8 +37,8 @@ class MixinAsset < ApplicationRecord
   end
 
   def sync_price_as_schedule
-    return if price_usd.to_f.positive? && updated_at > Time.current - 5.minutes
-    return if price_usd.to_f.zero? && updated_at > Time.current - 1.hour
+    return if price_usd.to_f.positive? && updated_at > 5.minutes.ago
+    return if price_usd.to_f.zero? && updated_at > 1.hour.ago
 
     sync
   end

@@ -5,6 +5,6 @@ class BatchMixinTransferProcessWorker
   sidekiq_options queue: :high, retry: false
 
   def perform
-    MixinTransfer.unprocessed.where(created_at: ...(Time.current - 2.minutes)).map(&:process_async)
+    MixinTransfer.unprocessed.where(created_at: ...(2.minutes.ago)).map(&:process_async)
   end
 end

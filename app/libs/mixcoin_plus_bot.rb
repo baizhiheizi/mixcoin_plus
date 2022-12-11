@@ -5,11 +5,11 @@ module MixcoinPlusBot
 
   def self.api
     @api ||= MixinBot::API.new(
-      client_id: Settings.mixin.client_id,
-      client_secret: Settings.mixin.client_secret,
-      session_id: Settings.mixin.session_id,
-      pin_token: Settings.mixin.pin_token,
-      private_key: Settings.mixin.private_key
+      client_id: Rails.application.credentials.dig(:mixin, :client_id),
+      client_secret: Rails.application.credentials.dig(:mixin, :client_secret),
+      session_id: Rails.application.credentials.dig(:mixin, :session_id),
+      pin_token: Rails.application.credentials.dig(:mixin, :pin_token),
+      private_key: Rails.application.credentials.dig(:mixin, :private_key)
     )
   rescue StandardError
     nil
@@ -18,9 +18,9 @@ module MixcoinPlusBot
   def self.app_statistic
     {
       users_count: User.count,
-      daily_active_users_count: User.where(last_active_at: (Time.current - 1.day)...Time.current).count,
-      weekly_active_users_count: User.where(last_active_at: (Time.current - 1.week)...Time.current).count,
-      monthly_active_users_count: User.where(last_active_at: (Time.current - 1.month)...Time.current).count,
+      daily_active_users_count: User.where(last_active_at: (1.day.ago)...Time.current).count,
+      weekly_active_users_count: User.where(last_active_at: (1.week.ago)...Time.current).count,
+      monthly_active_users_count: User.where(last_active_at: (1.month.ago)...Time.current).count,
       connected_applets_count: Applet.connected.count,
       applet_activities_count: AppletActivity.without_drafted.count,
       applet_activity_swap_orders_count: SwapOrder.where(type: %w[AppletActivitySwapOrder AppletActivityMixSwapOrder]).without_drafted.count,

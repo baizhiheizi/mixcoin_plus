@@ -23,6 +23,6 @@ class MarketPrice < ApplicationRecord
   validates :time, presence: true
 
   default_scope -> { order(time: :asc) }
-  scope :only_7_days, -> { where(time: (Time.current - 7.days)...) }
+  scope :only_7_days, -> { where(time: (7.days.ago)...) }
   scope :chart_data, -> { map(&->(item) { [item.time.to_i * 1000, item.price] }) }
 end

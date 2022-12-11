@@ -61,7 +61,7 @@ class User < ApplicationRecord
 
   after_commit :sync_assets_async, :create_brokers_async, :create_contact_conversations, on: :create
 
-  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
+  scope :within_24h, -> { where(created_at: (24.hours.ago)...) }
 
   action_store :favorite, :market
 
