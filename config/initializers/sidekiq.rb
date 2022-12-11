@@ -5,3 +5,7 @@ Sidekiq.configure_server do |config|
   Sidekiq::Cron::Job.load_from_hash YAML.load_file(cron_file) if File.exist?(cron_file) && Sidekiq.server?
   config[:poll_interval] = 10
 end
+
+Rails.application.config.after_initialize do
+  Applet.connected.map(&:create_cron_job) if Sidekiq.server?
+end
