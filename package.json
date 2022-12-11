@@ -99,5 +99,8 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "engines": {
+    "node": ">=14"
+  }
 }
