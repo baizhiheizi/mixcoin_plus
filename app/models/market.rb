@@ -40,8 +40,7 @@ class Market < ApplicationRecord
   # Omni USDT (815b0b1a-2764-3736-8faa-42d694fa620a),
   # pUSD (31d2ea9c-95eb-3355-b65b-ba096853bc18) and
   # Erc20 USDT (4d8c508b-91c5-375b-92b0-ee702ed2dac5).
-  validates :quote_asset_id, presence: true, inclusion: { in: AVAILABLE_QUOTES }
-  validates :base_asset_id, presence: true
+  validates :quote_asset_id, inclusion: { in: AVAILABLE_QUOTES }
   validate :ensure_quote_and_base_not_the_same
 
   belongs_to :base_asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false
@@ -66,17 +65,17 @@ class Market < ApplicationRecord
     without_hidden
       .joins(:trades)
       .group(:id)
-      .where(trades: { created_at: (Time.current - 7.days)... })
+      .where(trades: { created_at: (7.days.ago)... })
       .where.not(quote_asset_id: Market::OMNI_USDT_ASSET_ID)
       .order('trades.count desc, markets.trades_count desc')
       .first(10)
   }
   scope :recommended, -> { without_hidden.where.not(recommended_at: nil).order(recommended_at: :desc) }
-  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
+  scope :within_24h, -> { where(created_at: (24.hours.ago)...) }
   scope :order_by_trades_24h, lambda {
     joins(:trades)
       .group(:id)
-      .where(trades: { traded_at: (Time.current - 24.hours) })
+      .where(trades: { traded_at: 24.hours.ago })
       .select(
         <<~SQL.squish
           markets.*,
@@ -113,7 +112,7 @@ class Market < ApplicationRecord
   end
 
   def price_24h_ago
-    @price_24h_ago = trades.order(traded_at: :desc).find_by(traded_at: ...(Time.current - 24.hours))&.price
+    @price_24h_ago = trades.order(traded_at: :desc).find_by(traded_at: ...(24.hours.ago))&.price
   end
 
   def change_24h
@@ -133,7 +132,7 @@ class Market < ApplicationRecord
     @vol_24h ||= Global.redis.get "vol_24h_#{id}"
 
     if @vol_24h.blank?
-      @vol_24h = format('%.6f', trades.where(traded_at: (Time.current - 24.hours)...).sum(:amount))
+      @vol_24h = format('%.6f', trades.where(traded_at: (24.hours.ago)...).sum(:amount))
       Global.redis.set "vol_24h_#{id}", @vol_24h, ex: 1.minute
     end
 
@@ -147,11 +146,11 @@ class Market < ApplicationRecord
   end
 
   def high_price_24h
-    trades.where(traded_at: (Time.current - 24.hours)...).maximum(:price)
+    trades.where(traded_at: (24.hours.ago)...).maximum(:price)
   end
 
   def low_price_24h
-    trades.where(traded_at: (Time.current - 24.hours)...).minimum(:price)
+    trades.where(traded_at: (24.hours.ago)...).minimum(:price)
   end
 
   def sync_trades_from_engine
@@ -242,7 +241,7 @@ class Market < ApplicationRecord
   end
 
   def generate_price_records_in_last_week
-    _time = Time.current - 7.days
+    _time = 7.days.ago
     loop do
       break if _time > Time.current
 

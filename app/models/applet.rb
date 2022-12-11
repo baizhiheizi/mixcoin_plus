@@ -32,7 +32,7 @@ class Applet < ApplicationRecord
   validate :must_has_actions, on: :create
   validate :must_be_cron_format
 
-  scope :within_24h, -> { where(created_at: (Time.current - 24.hours)...) }
+  scope :within_24h, -> { where(created_at: (24.hours.ago)...) }
   scope :connected, -> { where(connected: true) }
   scope :only_archived, -> { where.not(archived_at: nil) }
   scope :without_archived, -> { where(archived_at: nil) }

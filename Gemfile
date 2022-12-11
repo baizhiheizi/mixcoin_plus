@@ -3,14 +3,15 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.0'
+ruby '~> 3.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem 'rails', '~> 6.1.3'
+gem 'rails', '~> 7'
+gem 'sprockets-rails'
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 1.1'
+gem 'pg'
 # Use Puma as the app server
-gem 'puma', '~> 5.0'
+gem 'puma'
 # AASM - State machines for Ruby classes (plain Ruby, ActiveRecord, Mongoid)
 gem 'aasm'
 # Allows to use ActiveRecord transactional callbacks outside of ActiveRecord models, literally everywhere in your application.
@@ -40,7 +41,7 @@ gem 'bcrypt', '~> 3.1.7'
 # A simple API wrapper for Mixin Network in Ruby
 gem 'mixin_bot'
 # Simple, efficient background processing for Ruby http://sidekiq.org
-gem 'sidekiq', '~> 6.0'
+gem 'sidekiq', '~> 7.0'
 # Scheduler / Cron for Sidekiq jobs
 gem 'sidekiq-cron'
 # Notifications for Ruby on Rails applications
@@ -57,8 +58,6 @@ gem 'action-store'
 gem 'acts_as_list'
 # The simplest way to group temporal data
 gem 'groupdate'
-# Exception Notifier Plugin for Rails
-gem 'exception_notification'
 # Tracking ⚠️ exceptions for Rails application and store them in database.
 gem 'exception-track'
 # time tools (cron, parsing, durations, ...)
