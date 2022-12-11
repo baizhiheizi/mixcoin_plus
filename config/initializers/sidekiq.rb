@@ -6,6 +6,8 @@ Sidekiq.configure_server do |config|
   config[:poll_interval] = 10
 end
 
+Sidekiq.strict_args!(false)
+
 Rails.application.config.after_initialize do
   Applet.connected.map(&:create_cron_job) if Sidekiq.server?
 end

@@ -10,7 +10,7 @@ module Ifttb
         client_id: IfttbBot.api.client_id,
         scope: 'PROFILE:READ',
         return_to: params[:return_to] || ifttb_root_url
-      )
+      ), allow_other_host: true
     end
 
     def create
