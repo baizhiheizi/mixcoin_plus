@@ -1,5 +1,11 @@
 module.exports = {
-  purge: ['./app/packs/apps/**/*.tsx', './app/views/**/*.html.erb'],
+  purge: [
+    './app/packs/apps/**/*.tsx',
+    './app/views/**/*.html.erb',
+    './app/helpers/**/*.rb',
+    './app/assets/stylesheets/**/*.css',
+    './app/javascript/**/*.js',
+  ],
   darkMode: 'class',
   theme: {
     minHeight: {

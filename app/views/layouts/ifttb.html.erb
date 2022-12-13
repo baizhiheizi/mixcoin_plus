@@ -3,16 +3,30 @@
   <head>
     <title>IFTTB</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
-    <meta name='theme-color' content='#ffffff'>
+    <meta name='theme-color' content='#1b1c1e'>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= javascript_pack_tag 'ifttb' %>
-    <%= stylesheet_pack_tag 'ifttb'%>
     <%= favicon_pack_tag 'ifttb_favicon.png' %>
+    <%= javascript_include_tag "ifttb", "data-turbo-track": "reload", defer: true %>
+    <%= stylesheet_link_tag "ifttb", "data-turbo-track": "reload" %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="min-h-screen mx-auto max-w-screen-md bg-white font-mono">
+      <% if content_for? :navbar %>
+        <%= yield :navbar %>
+      <% end %>
+
+      <% if content_for? :tabbar %>
+        <div class="fixed bottom-0 z-10 w-full mx-auto max-w-screen-md bg-dark">
+          <%= yield :tabbar %>
+          <div style="height:'env(safe-area-inset-bottom)'"></div>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </div>
+    <%= turbo_frame_tag 'modal' %>
   </body>
 </html>

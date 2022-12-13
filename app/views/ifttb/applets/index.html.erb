@@ -1,0 +1,34 @@
+<div class="">
+  <div class="text-center mb-4">
+    You have created <%= current_user.applets.count %>/3 applets.
+  </div>
+  <div class="text-center mb-8">
+    <% if current_user.may_create_applet? %>
+      <%= link_to t('create'), new_ifttb_applet_path, class: 'px-6 py-2 text-lg text-center bg-dark text-white rounded-full' %>
+    <% else %>
+    <% end %>
+  </div>
+</div>
+
+<% content_for :navbar do %>
+  <div class="mb-6 h-12 px-4 py-2 mb-4 text-xl font-bold text-white bg-dark">
+    IFTT<span class='text-2xl text-btc'>₿</span>
+  </div>
+<% end %>
+
+<% if current_user.present? %>
+  <% content_for :tabbar do %>
+    <div class="bg-dark text-white flex items-center justify-around p-4">
+      <% if current_user.may_create_applet? %>
+        <%= link_to t('create'), new_ifttb_applet_path, class: 'px-6 py-2 text-lg text-center bg-gray-600 text-white rounded-full' %>
+      <% else %>
+        <%= link_to t('upgrade_pro'), new_ifttb_order_path, class: 'px-6 py-2 text-lg text-center bg-gray-600 text-white rounded-full' %>
+      <% end %>
+
+      <div class="relative px-6 py-2 text-lg text-center bg-gray-600 rounded-full cursor-pointer">
+        <%= inline_svg_tag "icons/bars.svg", class: "w-7 h-7 rounded-full" %>
+        <%= link_to '', ifttb_menu_path, data: { turbo_frame: :modal }, class: 'absolute inset-0' %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

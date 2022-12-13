@@ -1,0 +1,7 @@
+<%= turbo_frame_tag 'modal' do %>
+  <%= render ModalComponent.new title: 'Menu' do %>
+    <%= link_to t('wallet'), ifttb_wallet_path, class: 'block rounded-full border py-2 text-center mb-4' %>
+    <%= link_to t('stats'), ifttb_stats_path, class: 'block rounded-full border py-2 text-center mb-4' %>
+    <%= link_to t('archived_applets'), ifttb_stats_path, class: 'block rounded-full border py-2 text-center mb-4' %>
+  <% end %>
+<% end %>

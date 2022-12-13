@@ -8,7 +8,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "sourceMap": true,
-    "target": "es5",
+    "target": "ESNext",
     "jsx": "react",
     "noEmit": true,
     "baseUrl": ".",

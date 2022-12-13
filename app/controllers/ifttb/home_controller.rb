@@ -2,6 +2,7 @@
 
 module Ifttb
   class HomeController < Ifttb::BaseController
-    def index; end
+    def menu
+    end
   end
 end
