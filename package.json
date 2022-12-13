@@ -55,7 +55,7 @@
     "postcss-loader": "^6.2.0",
     "postcss-preset-env": "^7.8.3",
     "prop-types": "^15.7.2",
-    "qrcode.react": "^1.0.1",
+    "qrcode.react": "^3.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-feather": "^2.0.9",
@@ -78,7 +78,7 @@
     "webpack-sources": "^3.2.3",
     "ws": "^8.2.3",
     "yaml-loader": "^0.6.0",
-    "zarm": "^2.9.9"
+    "zarm": "^2.9.17"
   },
   "version": "0.1.0",
   "devDependencies": {

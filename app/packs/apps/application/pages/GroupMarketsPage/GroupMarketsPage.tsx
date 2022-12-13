@@ -160,42 +160,21 @@ export default function GroupMarketsPage() {
       </div>
       <PullComponent refetch={refetch} hasNextPage={hasNextPage}>
         {markets.map((market) => (
-          <SwipeAction
-            right={[
-              <Button
-                size='lg'
-                shape='rect'
-                theme='danger'
-                onClick={() =>
-                  deleteGroupMarket({
-                    variables: {
-                      input: {
-                        marketId: market.id,
-                      },
-                    },
-                  })
-                }
-              >
-                {t('remove')}
-              </Button>,
-            ]}
-          >
-            <Cell
-              key={market.id}
-              title={
-                <div className='flex-1'>
-                  <div className='flex items-baseline'>
-                    <div className='text-base font-semibold'>
-                      {market.baseAsset.symbol}
-                    </div>
-                    <div className='text-xs text-gray-500'>
-                      /{market.quoteAsset.symbol}
-                    </div>
+          <Cell
+            key={market.id}
+            title={
+              <div className='flex-1'>
+                <div className='flex items-baseline'>
+                  <div className='text-base font-semibold'>
+                    {market.baseAsset.symbol}
+                  </div>
+                  <div className='text-xs text-gray-500'>
+                    /{market.quoteAsset.symbol}
                   </div>
                 </div>
-              }
-            />
-          </SwipeAction>
+              </div>
+            }
+          />
         ))}
       </PullComponent>
       <Popup visible={popupVisible} onMaskClick={() => setPopupVisible(false)}>
