@@ -1,0 +1,74 @@
+<div class='p-4 bg-[#22306d] text-[#fd8cc2] mb-8'>
+  <div class="mb-4">
+    <%= image_tag '4swap.png', class: 'w-12 h-12 block mb-2 mx-auto rounded-full border border-[#fd8cc2]' %>
+  </div>
+
+  <div class="mb-4">
+    Run your applet when 4swap index(like price) match a target value.
+  </div>
+  <div class="mb-4">
+    <%= link_to '4swap', 'https://app.4swap.org', target: '_blank', class: 'underline' %>
+    is a decentralized protocal implement for automated liquidity provision on Mixin Network.
+  </div>
+
+  <% if trigger.persisted? %>
+    <div class="flex items-center space-x-2 justify-center">
+      <span class="italic"><%= trigger.description %></span>
+    </div>
+  <% end %>
+</div>
+
+<div id="applet_4swap_trigger_errors"></div>
+
+<div class='px-4'>
+  <%= render "components/modal" do |p| %>
+    <% p.content_for :title, '4swap Price' %>
+    <% p.content_for :trigger do %>
+      <div class="btn btn-block btn-wide bg-[#22306d] hover:bg-[#22306d]/90 text-[#fd8cc2] text-xl mb-4">
+        Price
+      </div>
+    <% end %>
+    <% p.content_for :body do %>
+      <div class="mb-4">
+        Run applet when
+      </div>
+      <%= form_for [:ifttb, trigger.applet, trigger] do |form| %>
+        <%= form.hidden_field :type %>
+        <%= form.hidden_field :applet_id %>
+        <div class="flex items-center justify-center space-x-2 mb-2">
+          <%= form.select :target_index, 
+            [['Price of selling', 'ask_price'], ['Price of buying', 'bid_price']], 
+            {},
+            class: 'select select-sm font-bold w-full text-center' %>
+        </div>
+        <div class="flex items-center justify-center space-x-2 mb-2">
+          <%= form.select :base_asset_id, @mixin_assets.map(&->(asset) { ["#{asset.symbol}(#{asset.chain_asset.symbol} chain)", asset.asset_id] }),
+            {},
+            class: 'select select-sm font-bold w-full text-center' %>
+        </div>
+        <div class="flex items-center justify-center space-x-2 mb-2">
+          <%= form.select :compare_action, 
+            [['≥', 'larger_than'], ['≤', 'less_than']], 
+            {},
+            class: 'select select-sm font-bold w-full text-center' %>
+        </div>
+        <div class="flex items-center justify-center space-x-2 mb-2">
+          <%= form.number_field :target_value, 
+            step: '0.00000001',
+            class: "input input-sm w-full text-center", 
+            placeholder: 'Target value' %>
+        </div>
+        <div class="flex items-center justify-center space-x-2 mb-6">
+          <%= form.select :quote_asset_id, 
+            @mixin_assets.map(&->(asset) { 
+              ["#{asset.symbol}(#{asset.chain_asset.symbol} chain)", asset.asset_id] 
+                }
+              ),
+            {},
+            class: 'select select-sm font-bold text-center w-full text-center' %>
+        </div>
+        <%= form.submit 'Save', class: "btn btn-block bg-[#22306d] hover:bg-[#22306d]/90 text-[#fd8cc2]" %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

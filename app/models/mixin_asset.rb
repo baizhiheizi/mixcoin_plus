@@ -24,7 +24,7 @@ class MixinAsset < ApplicationRecord
   before_validation :set_defaults, on: :create
   after_commit :generate_markets_async, on: :create
 
-  belongs_to :chain_asset, class_name: 'MixinAsset', primary_key: :assets_id, foreign_key: :chain_id, inverse_of: false, optional: true
+  belongs_to :chain_asset, class_name: 'MixinAsset', primary_key: :asset_id, foreign_key: :chain_id, inverse_of: false, optional: true
 
   scope :with_price, -> { where('price_usd > ?', 0) }
 

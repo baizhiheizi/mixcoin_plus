@@ -8,6 +8,8 @@
       <% case trigger.type %>
       <% when 'AppletDatetimeTrigger' %>
         <%= render "ifttb/applet_datetime_triggers/applet_datetime_trigger", trigger: trigger %>
+      <% when 'Applet4swapTrigger' %>
+        <%= render "ifttb/applet_4swap_triggers/applet_4swap_trigger", trigger: trigger %>
       <% end %>
     <% end %>
 

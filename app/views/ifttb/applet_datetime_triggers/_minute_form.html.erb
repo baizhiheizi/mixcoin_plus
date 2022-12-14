@@ -8,6 +8,7 @@
   <% p.content_for :body do %>
     <%= form_for [:ifttb, trigger.applet, trigger] do |form| %>
       <%= form.hidden_field :type %>
+      <%= form.hidden_field :applet_id %>
       <%= form.hidden_field :hour, value: '*' %>
       <%= form.hidden_field :day, value: '*' %>
       <%= form.hidden_field :month, value: '*' %>

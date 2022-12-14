@@ -2,6 +2,7 @@
 
 class Ifttb::AppletDatetimeTriggersController < Ifttb::BaseController
   before_action :load_applet
+  before_action :load_trigger, only: %i[edit update destroy]
 
   def new
     @trigger = @applet.applet_datetime_trigger || @applet.applet_triggers.new(type: 'AppletDatetimeTrigger')
@@ -32,10 +33,20 @@ class Ifttb::AppletDatetimeTriggersController < Ifttb::BaseController
     end
   end
 
+  def destroy
+    @trigger.destroy
+    redirect_to edit_ifttb_applet_path(@applet)
+  end
+
   private
 
   def load_applet
     @applet = current_user.applets.find params[:applet_id]
+    redirect_to edit_ifttb_applet_path(@applet) if @applet.connected?
+  end
+
+  def load_trigger
+    @trigger = @applet.applet_triggers.find params[:id]
   end
 
   def trigger_params
