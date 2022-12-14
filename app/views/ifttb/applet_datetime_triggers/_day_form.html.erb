@@ -1,0 +1,31 @@
+<%= render "components/modal" do |p| %>
+  <% p.content_for :title, 'Every Day At' %>
+  <% p.content_for :trigger do %>
+    <div class="btn btn-block btn-wide text-xl mb-4">
+      Every Day At
+    </div>
+  <% end %>
+  <% p.content_for :body do %>
+    <div class="mb-4">
+      Run applet every day at UTC(+0)
+    </div>
+    <%= form_for [:ifttb, trigger.applet, trigger] do |form| %>
+      <%= form.hidden_field :type %>
+      <%= form.hidden_field :day, value: '*' %>
+      <%= form.hidden_field :month, value: '*' %>
+      <%= form.hidden_field :wday, value: '*' %>
+      <div class="flex items-center justify-center space-x-2 mb-6">
+        <%= form.select :hour, 
+          (0..23).map(&->(index) { [index.to_s.rjust(2, '0'), index]}),
+          {}, 
+          class: 'select select-sm text-lg' %>
+        <span>:</span>
+        <%= form.select :minute, 
+          (0..59).map(&->(index) { [index.to_s.rjust(2, '0'), index]}),
+          {}, 
+          class: 'select select-sm text-lg' %>
+      </div>
+      <%= form.submit 'Save', class: "btn btn-block btn-primary" %>
+    <% end %>
+  <% end %>
+<% end %>

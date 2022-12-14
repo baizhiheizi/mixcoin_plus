@@ -1,0 +1,22 @@
+<% id = SecureRandom.uuid %>
+
+<label for="<%= id %>">
+  <%= partial.content_for :trigger %>
+</label>
+
+<input type="checkbox" id="<%= id %>" class="modal-toggle" />
+<label for="<%= id %>" class="modal modal-bottom sm:modal-middle cursor-pointer">
+  <label class="modal-box relative" for="">
+    <div class="flex justify-between mb-4">
+      <div class="font-bold text-lg">
+        <%= partial.content_for :title %>
+      </div>
+      <label for="<%= id %>" class="btn btn-ghost btn-sm rounded-full">
+        <%= inline_svg_tag "icons/close-solid.svg", class: "" %>
+      </label>
+    </div>
+
+    <%= partial.content_for :body %>
+    <div style="height:env(safe-area-inset-bottom)"></div>
+  </label>
+</label>

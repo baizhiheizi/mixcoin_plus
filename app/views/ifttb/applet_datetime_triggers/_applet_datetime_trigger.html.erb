@@ -1,0 +1,9 @@
+<div class="relative p-4 text-white bg-accent/90 text-lg font-bold mb-8 rounded-lg">
+  <div class="flex items-start space-x-4 w-full">
+    <%= inline_svg_tag 'icons/clock.svg', class: 'w-6 h-6 block mx-auto' %>
+    <div class="flex-1 text-left">
+      <%= trigger.description %>
+    </div>
+  </div>
+  <%= link_to '', edit_ifttb_applet_applet_datetime_trigger_path(trigger.applet, trigger), class: 'absolute inset-0 w-full' %>
+</div>

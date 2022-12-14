@@ -50,7 +50,6 @@ module.exports = {
     }),
     backgroundColor: (theme) => ({
       ...theme('colors'),
-      dark: '#1b1c1e',
       btc: '#e5912b',
     }),
     extend: {},
@@ -58,5 +57,9 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require('@tailwindcss/line-clamp')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('@tailwindcss/line-clamp'),
+    require('daisyui'),
+  ],
 };

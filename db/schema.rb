@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_11_023533) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_13_061058) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -75,6 +75,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_11_023533) do
     t.datetime "updated_at", null: false
     t.datetime "archived_at", precision: nil
     t.integer "applet_activities_count", default: 0
+    t.string "state"
+    t.string "type"
   end
 
   create_table "arbitrage_orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

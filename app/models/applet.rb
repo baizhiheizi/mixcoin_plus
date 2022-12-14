@@ -9,12 +9,16 @@
 #  archived_at             :datetime
 #  connected               :boolean          default(FALSE)
 #  last_active_at          :datetime
+#  state                   :string
 #  title                   :string
+#  type                    :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  user_id                 :uuid             not null
 #
 class Applet < ApplicationRecord
+  include AASM
+
   belongs_to :user
 
   has_one :applet_datetime_trigger, dependent: :restrict_with_exception
@@ -28,14 +32,24 @@ class Applet < ApplicationRecord
   accepts_nested_attributes_for :applet_actions, update_only: true
   accepts_nested_attributes_for :applet_triggers, allow_destroy: true
 
-  validate :must_has_triggers, on: :create
-  validate :must_has_actions, on: :create
-  validate :must_be_cron_format
+  validate :must_has_triggers, unless: :drafted?
+  validate :must_has_actions, unless: :drafted?
+  validate :must_be_cron_format, unless: :drafted?
 
+  # default_scope -> where.not(state: :drafted)
   scope :within_24h, -> { where(created_at: (24.hours.ago)...) }
   scope :connected, -> { where(connected: true) }
   scope :only_archived, -> { where.not(archived_at: nil) }
   scope :without_archived, -> { where(archived_at: nil) }
+
+  aasm column: :state do
+    state :drafted, initial: true
+    state :pending
+
+    event :pend do
+      transitions from: :drafted, to: :pending
+    end
+  end
 
   def may_active?
     applet_triggers.map(&:match?).all?(true)
@@ -225,6 +239,21 @@ class Applet < ApplicationRecord
 
   def frequency
     Fugit.parse_cron(cron).rough_frequency
+  end
+
+  def may_add_trigger?(type_name)
+    return if applet_triggers.count >= 2
+
+    case type_name
+    when 'AppletDatetimeTrigger'
+      applet_datetime_trigger.blank?
+    else
+      if applet_triggers.count == 1
+        applet_datetime_trigger.present?
+      else
+        applet_triggers.where(type: type_name).blank?
+      end
+    end
   end
 
   private

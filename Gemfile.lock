@@ -105,6 +105,9 @@ GEM
       dry-validation (~> 1.0, >= 1.0.0)
     connection_pool (2.3.0)
     crass (1.0.6)
+    cronex (0.11.1)
+      tzinfo
+      unicode
     cssbundling-rails (1.1.2)
       railties (>= 6.0.0)
     date (3.3.3)
@@ -259,6 +262,8 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
+    nice_partials (0.9.3)
+      actionview (>= 4.2.6)
     nio4r (2.5.8)
     nokogiri (1.14.2-x86_64-linux)
       racc (~> 1.4)
@@ -407,11 +412,8 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.8.2)
+    unicode (0.4.4.4)
     unicode-display_width (2.4.2)
-    view_component (2.82.0)
-      activesupport (>= 5.2.0, < 8.0)
-      concurrent-ruby (~> 1.0)
-      method_source (~> 1.0)
     web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -449,6 +451,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   config
+  cronex
   cssbundling-rails
   dockerfile-rails (>= 1.2)
   enumerize
@@ -463,6 +466,7 @@ DEPENDENCIES
   listen (~> 3.3)
   mini_racer
   mixin_bot
+  nice_partials
   noticed
   pg
   propshaft
@@ -487,7 +491,6 @@ DEPENDENCIES
   turbo-rails
   turbolinks (~> 5)
   tzinfo-data
-  view_component
   web-console (>= 4.1.0)
   webdrivers
 

@@ -28,8 +28,7 @@ gem 'requestjs-rails'
 
 gem 'inline_svg'
 
-# A framework for building reusable, testable & encapsulated view components in Ruby on Rails.
-gem 'view_component'
+gem 'nice_partials'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -110,6 +109,7 @@ gem 'groupdate'
 gem 'exception-track'
 
 # time tools (cron, parsing, durations, ...)
+gem 'cronex'
 gem 'fugit'
 
 # Config helps you easily manage environment specific settings in an easy and usable manner.

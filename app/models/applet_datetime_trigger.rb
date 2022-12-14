@@ -17,7 +17,6 @@
 #
 class AppletDatetimeTrigger < AppletTrigger
   store :params, accessors: %i[
-    description
     minute
     hour
     day
@@ -50,5 +49,9 @@ class AppletDatetimeTrigger < AppletTrigger
     return true if applet.last_active_at.blank? && (Time.current.to_i - previous_time.to_i) < 60
 
     Time.current.to_i - applet.last_active_at.to_i > frequency / 2
+  end
+
+  def description
+    Cronex::ExpressionDescriptor.new(cron_value).description
   end
 end

@@ -1,0 +1,70 @@
+<div class="px-4">
+  <div class="mb-8">
+    <div class="mb-4 text-lg font-bold">
+      Triggers:
+    </div>
+
+    <% @applet.applet_triggers.each do |trigger| %>
+      <% case trigger.type %>
+      <% when 'AppletDatetimeTrigger' %>
+        <%= render "ifttb/applet_datetime_triggers/applet_datetime_trigger", trigger: trigger %>
+      <% end %>
+    <% end %>
+
+    <% if @applet.applet_triggers.count < 2 %>
+      <div class="flex justify-center">
+        <%= render "components/modal" do |p| %>
+          <% p.content_for :title, 'Select Trigger' %>
+          <% p.content_for :trigger do %>
+            <% if @applet.applet_triggers.count == 0 %>
+              <div class="btn btn-wide btn-primary btn-md rounded-full text-xl">
+                <%= t('add_trigger') %>
+              </div>
+            <% else %>
+              <div class="btn btn-outline btn-sm rounded-full text-3xl">
+                +
+              </div>
+            <% end %>
+          <% end %>
+
+          <% p.content_for :body do %>
+            <%= render "ifttb/applet_triggers/options", applet: @applet %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="mb-8">
+    <div class="mb-4 text-lg font-bold">
+      Actions:
+    </div>
+
+    <div class="mb-4">
+    </div>
+
+    <div class="flex justify-center">
+      <%= render "components/modal" do |p| %>
+        <% p.content_for :title, 'Select Action' %>
+        <% p.content_for :trigger do %>
+          <div class="btn btn-wide btn-primary btn-md rounded-full text-xl">
+            <%= t('add_action') %>
+          </div>
+        <% end %>
+
+        <% p.content_for :body do %>
+          <%= render "ifttb/applet_actions/options", applet: @applet %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% content_for :navbar do %>
+  <div class="relative mb-6 h-12 px-4 py-2 mb-4 text-xl font-bold text-center max-w-screen-lg mx-auto">
+    Create Applet
+    <%= link_to ifttb_root_path, class: 'absolute left-4' do %>
+      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'inline-block' %>
+    <% end %>
+  </div>
+<% end %>

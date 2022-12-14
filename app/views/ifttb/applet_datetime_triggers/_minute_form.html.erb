@@ -1,0 +1,34 @@
+<%= render "components/modal" do |p| %>
+  <% p.content_for :title, 'Every minute' %>
+  <% p.content_for :trigger do %>
+    <div class="btn btn-block btn-wide text-xl mb-4">
+      Every Minute
+    </div>
+  <% end %>
+  <% p.content_for :body do %>
+    <%= form_for [:ifttb, trigger.applet, trigger] do |form| %>
+      <%= form.hidden_field :type %>
+      <%= form.hidden_field :hour, value: '*' %>
+      <%= form.hidden_field :day, value: '*' %>
+      <%= form.hidden_field :month, value: '*' %>
+      <%= form.hidden_field :wday, value: '*' %>
+      <div class="mb-4">
+        Run applet every
+      </div>
+      <div class="flex items-center justify-center space-x-2 mb-6">
+        <%= form.select :minute, 
+          [
+            [1, '*'],
+            [5, '*/5'],
+            [10, '*/10'],
+            [15, '*/15'],
+            [30, '*/30'],
+          ], 
+          {}, 
+          class: 'select select-sm text-lg' %>
+        <span>Minute(s)</span>
+      </div>
+      <%= form.submit 'Save', class: "btn btn-block btn-primary" %>
+    <% end %>
+  <% end %>
+<% end %>
