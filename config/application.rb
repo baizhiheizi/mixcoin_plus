@@ -33,6 +33,6 @@ module MixcoinPlus
     # https://github.com/exAspArk/batch-loader#caching
     config.middleware.use BatchLoader::Middleware
 
-    config.active_record.yaml_column_permitted_classes = [ActiveSupport::HashWithIndifferentAccess]
+    config.active_record.yaml_column_permitted_classes = [ActiveSupport::HashWithIndifferentAccess, Symbol]
   end
 end
