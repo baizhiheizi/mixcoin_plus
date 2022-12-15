@@ -19,7 +19,6 @@ class Applet4swapAction < AppletAction
   FOX_SWAP_ENABLE = Settings.foxswap.enable
 
   store :params, accessors: %i[
-    description
     pay_asset_id
     fill_asset_id
     pay_amount
@@ -118,5 +117,9 @@ class Applet4swapAction < AppletAction
         trace_id: activity.id
       )
     end
+  end
+
+  def description
+    "Swap #{pay_amount} #{pay_asset.symbol} to #{fill_asset.symbol}"
   end
 end

@@ -5,17 +5,17 @@
       <div class="flex items-start space-x-4 w-full">
         <%= image_tag '4swap.png', class: 'w-6 h-6 mx-auto rounded-full border border-[#fd8cc2]' %>
         <div class="flex-1 text-left">
-          <%= trigger.description %>
+          <%= action.description %>
         </div>
       </div>
     </div>
   <% end %>
   <% p.content_for :body do %>
-    <%= link_to 'Edit Trigger', 
-      edit_ifttb_applet_applet_4swap_trigger_path(trigger.applet, trigger), 
+    <%= link_to 'Edit Action', 
+      edit_ifttb_applet_applet_4swap_action_path(action.applet, action), 
       class: "btn btn-block btn-primary mb-4" %>
 
-    <% if trigger.applet.drafted? || trigger.applet.applet_triggers.count > 1 %>
+    <% if action.applet.drafted? %>
       <%= render "components/modal" do |p| %>
         <% p.content_for :title, 'Confirm' %>
         <% p.content_for :trigger do %>
@@ -25,11 +25,11 @@
         <% end %>
         <% p.content_for :body do %>
           <div class="">
-            Are you sure to remove this trigger?
+            Are you sure to remove this action?
           </div>
           <div class="modal-action">
             <%= link_to 'Remove', 
-              ifttb_applet_applet_4swap_trigger_path(trigger.applet, trigger), 
+              ifttb_applet_applet_4swap_action_path(action.applet, action), 
               data: {
                 turbo_method: :delete
               },

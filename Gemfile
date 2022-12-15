@@ -115,6 +115,8 @@ gem 'fugit'
 # Config helps you easily manage environment specific settings in an easy and usable manner.
 gem 'config'
 
+gem 'pagy'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

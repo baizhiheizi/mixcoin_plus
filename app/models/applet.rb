@@ -41,12 +41,13 @@ class Applet < ApplicationRecord
   scope :connected, -> { where(connected: true) }
   scope :only_archived, -> { where.not(archived_at: nil) }
   scope :without_archived, -> { where(archived_at: nil) }
+  scope :without_drafted, -> { where.not(state: :drafted) }
 
   aasm column: :state do
     state :drafted, initial: true
     state :pending
 
-    event :pend do
+    event :pend, guards: :ensure_has_triggers_and_action do
       transitions from: :drafted, to: :pending
     end
   end
@@ -257,6 +258,10 @@ class Applet < ApplicationRecord
   end
 
   private
+
+  def ensure_has_triggers_and_action
+    applet_triggers.present? && applet_actions.present?
+  end
 
   def cron_job_name
     "applet_active_worker_#{id}"

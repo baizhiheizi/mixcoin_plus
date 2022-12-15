@@ -43,29 +43,48 @@
     <% end %>
   </div>
 
-  <div class="mb-8">
+  <div class="mb-16">
     <div class="mb-4 text-lg font-bold">
       Actions:
     </div>
 
     <div class="mb-4">
-    </div>
-
-    <div class="flex justify-center">
-      <%= render "components/modal" do |p| %>
-        <% p.content_for :title, 'Select Action' %>
-        <% p.content_for :trigger do %>
-          <div class="btn btn-wide btn-primary btn-md rounded-full text-xl">
-            <%= t('add_action') %>
-          </div>
-        <% end %>
-
-        <% p.content_for :body do %>
-          <%= render "ifttb/applet_actions/options", applet: @applet %>
-        <% end %>
+      <% case @applet.applet_action&.type %>
+      <% when 'Applet4swapAction' %>
+        <%= render "ifttb/applet_4swap_actions/applet_4swap_action", action: @applet.applet_action %>
+      <% when 'AppletMixSwapAction' %>
+        <%= render "ifttb/applet_mix_swap_actions/applet_mix_swap_action", action: @applet.applet_action %>
+      <% when 'AppletAlertAction' %>
+        <%= render "ifttb/applet_alert_actions/applet_alert_action", action: @applet.applet_action %>
       <% end %>
     </div>
+
+    <% if @applet.applet_action.blank? %>
+      <div class="flex justify-center">
+        <%= render "components/modal" do |p| %>
+          <% p.content_for :title, 'Select Action' %>
+          <% p.content_for :trigger do %>
+            <div class="btn btn-wide btn-primary btn-md rounded-full text-xl">
+              <%= t('add_action') %>
+            </div>
+          <% end %>
+
+          <% p.content_for :body do %>
+            <%= render "ifttb/applet_actions/options", applet: @applet %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
+
+  <% if @applet.may_pend? %>
+    <%= link_to 'Continue', 
+      ifttb_applet_pend_path(@applet), 
+      data: {
+        turbo_method: :post
+      },
+      class: "btn btn-block btn-lg btn-primary rounded-full" %>
+  <% end %>
 </div>
 
 <% content_for :navbar do %>

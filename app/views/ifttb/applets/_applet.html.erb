@@ -1,0 +1,44 @@
+<div id="<%= dom_id applet %>" class="card w-full bg-base-100 shadow-xl">
+  <div class="card-body">
+    <div class="flex justify-between">
+      <span class="opacity-50">#<%= applet.number %></span>
+      <%= link_to 'Edit', edit_ifttb_applet_path(applet), class: "btn btn-link btn-sm" unless applet.connected? %>
+    </div>
+
+    <div class="text-sm flex space-x-2">
+      <span class="font-bold">If</span>
+      <div>
+        <% applet.applet_triggers.each do |trigger| %>
+          <div class="inline">
+            <%= applet_trigger_icon trigger, class: 'w-4 h-4 inline' %>
+            <%= trigger.description %>;
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="text-sm flex space-x-2 mb-4">
+      <span class="font-bold">Then</span>
+      <div>
+        <% applet.applet_actions.each do |action| %>
+          <div>
+            <%= applet_action_icon action, class: 'w-4 h-4 inline' %>
+            <%= action.description %>;
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="flex justify-between text-sm">
+      <span class="opacity-75">Connected:</span>
+      <input type="checkbox" class="toggle" <%= applet.connected && "checked" %> />
+    </div>
+
+    <div class="flex justify-between text-sm">
+      <span class="opacity-75">Last active:</span>
+      <span>
+        <%= applet.last_active_at.presence || 'Never' %>
+      </span>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,16 @@
 <div class="pt-4">
   <div class="text-center mb-4">
-    You have created <%= current_user.applets.count %>/3 applets.
+    You have created <%= current_user.applets.without_drafted.count %>/3 applets.
   </div>
+
+  <%= turbo_frame_tag "applets" do %>
+    <div id="applets-list" class="px-4 grid sm:grid-cols-2 gap-4">
+      <%= render partial: "ifttb/applets/applet", collection: @applets, as: :applet %>
+    </div>
+    <div id="applets-pagination">
+      <%= link_to 'Load More', pagy_url_for(@pagy, @pagy.next), class: 'btn btn-outline btn-wide block mx-auto' if @pagy.next.present? %>
+    </div>
+  <% end %>
 </div>
 
 <% content_for :navbar do %>
@@ -21,18 +30,19 @@
         <%= link_to t('upgrade_pro'), new_ifttb_order_path, class: 'btn btn-primary btn-sm rounded-full' %>
       <% end %>
 
-      <label for="menu" class="btn btn-primary btn-sm rounded-full">
-        <%= inline_svg_tag "icons/bars.svg", class: "w-7 h-7 rounded-full" %>
-      </label>
+      <%= render "components/modal" do |p| %>
+        <% p.content_for :title, 'More' %>
+        <% p.content_for :trigger do %>
+          <div class="btn btn-primary btn-sm rounded-full">
+            <%= inline_svg_tag "icons/bars.svg", class: "w-7 h-7 rounded-full" %>
+          </div>
+        <% end %>
+        <% p.content_for :body do %>
+          <%= link_to t('wallet'), ifttb_wallet_path, class: 'btn btn-block btn-primary mb-4' %>
+          <%= link_to t('stats'), ifttb_stats_path, class: 'btn btn-block btn-primary mb-4' %>
+          <%= link_to t('archived_applets'), ifttb_stats_path, class: 'btn btn-block btn-primary' %>
+        <% end %>
+      <% end %>
     </div>
-
-    <input type="checkbox" id="menu" class="modal-toggle" />
-    <label for='menu' class="modal modal-bottom sm:modal-middle cursor-pointer">
-      <label class="modal-box relative" for="">
-        <%= link_to t('wallet'), ifttb_wallet_path, class: 'btn btn-block btn-outline rounded-full mb-4' %>
-        <%= link_to t('stats'), ifttb_stats_path, class: 'btn btn-block btn-outline rounded-full mb-4' %>
-        <%= link_to t('archived_applets'), ifttb_stats_path, class: 'btn btn-block btn-outline rounded-full mb-4' %>
-      </label>
-    </label>
   <% end %>
 <% end %>

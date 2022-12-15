@@ -40,7 +40,7 @@ class Ifttb::Applet4swapTriggersController < Ifttb::BaseController
   end
 
   def destroy
-    @trigger.destroy
+    @trigger.destroy if @applet.drafted? || @applet.applet_triggers.count > 1
     redirect_to edit_ifttb_applet_path(@applet)
   end
 

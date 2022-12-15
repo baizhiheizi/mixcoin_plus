@@ -32,6 +32,11 @@ Rails.application.routes.draw do
     get :menu, to: 'home#menu'
 
     resources :applets do
+      post :pend
+      post :connect
+      post :disconnect
+      post :archive
+
       resources :applet_datetime_triggers, except: %i[index show]
       resources :applet_4swap_triggers, except: %i[index show]
       resources :applet_pando_leaf_triggers, except: %i[index show]
@@ -40,6 +45,7 @@ Rails.application.routes.draw do
 
       resources :applet_4swap_actions, except: %i[index show]
       resources :applet_mix_swap_actions, except: %i[index show]
+      resources :applet_alert_actions, except: %i[index show]
     end
 
     resource :stats, only: :show

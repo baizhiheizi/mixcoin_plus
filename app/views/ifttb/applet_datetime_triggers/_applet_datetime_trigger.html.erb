@@ -15,25 +15,27 @@
       edit_ifttb_applet_applet_datetime_trigger_path(trigger.applet, trigger), 
       class: "btn btn-block btn-primary mb-4" %>
 
-    <%= render "components/modal" do |p| %>
-      <% p.content_for :title, 'Confirm' %>
-      <% p.content_for :trigger do %>
-        <div class="btn btn-block btn-warning mb-4">
-          Remove Trigger
-        </div>
-      <% end %>
-      <% p.content_for :body do %>
-        <div class="">
-          Are you sure to remove this trigger?
-        </div>
-        <div class="modal-action">
-          <%= link_to 'Remove', 
-            ifttb_applet_applet_datetime_trigger_path(trigger.applet, trigger), 
-            data: {
-              turbo_method: :delete
-            },
-            class: "btn btn-warning" %>
-        </div>
+    <% if trigger.applet.drafted? || trigger.applet.applet_triggers.count > 1 %>
+      <%= render "components/modal" do |p| %>
+        <% p.content_for :title, 'Confirm' %>
+        <% p.content_for :trigger do %>
+          <div class="btn btn-block btn-warning mb-4">
+            Remove Trigger
+          </div>
+        <% end %>
+        <% p.content_for :body do %>
+          <div class="">
+            Are you sure to remove this trigger?
+          </div>
+          <div class="modal-action">
+            <%= link_to 'Remove', 
+              ifttb_applet_applet_datetime_trigger_path(trigger.applet, trigger), 
+              data: {
+                turbo_method: :delete
+              },
+              class: "btn btn-warning" %>
+          </div>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
