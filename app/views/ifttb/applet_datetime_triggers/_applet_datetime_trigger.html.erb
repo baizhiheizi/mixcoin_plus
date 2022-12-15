@@ -1,7 +1,7 @@
 <%= render "components/modal" do |p| %>
   <% p.content_for :title, 'Options' %>
   <% p.content_for :trigger do %>
-    <div class="relative p-4 text-white bg-accent/90 text-lg font-bold mb-8 rounded-lg cursor-pointer">
+    <div class="relative p-4 text-white bg-accent/90 text-lg font-bold mb-4 cursor-pointer">
       <div class="flex items-start space-x-4 w-full">
         <%= inline_svg_tag 'icons/clock.svg', class: 'w-6 h-6 block mx-auto' %>
         <div class="flex-1 text-left">
@@ -29,7 +29,9 @@
         <div class="modal-action">
           <%= link_to 'Remove', 
             ifttb_applet_applet_datetime_trigger_path(trigger.applet, trigger), 
-            method: :delete, 
+            data: {
+              turbo_method: :delete
+            },
             class: "btn btn-warning" %>
         </div>
       <% end %>

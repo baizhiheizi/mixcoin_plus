@@ -17,7 +17,6 @@
 #
 class AppletPandoRingsTrigger < AppletTrigger
   store :params, accessors: %i[
-    description
     asset_id
     target_index
     target_value
@@ -75,9 +74,18 @@ class AppletPandoRingsTrigger < AppletTrigger
   def alert_text
     case target_index
     when 'supply_apy', 'borrow_apy'
-      "#{target_index.split('_').first.capitalize} APY of #{asset.symbol} in Pando Rings(= #{format('%.2f', current_value * 100)}%) #{compare_action_symbol} #{format('%.2f', target_value * 100)}%"
+      "#{target_index.split('_').first.capitalize} APY of #{asset.symbol} in Pando Rings(= #{format('%.2f', current_value * 100)}%) #{compare_action_symbol} #{format('%.2f', target_value.to_f * 100)}%"
     when 'supply_volume', 'borrow_volume'
       "#{target_index.humanize} of #{asset.symbol} in Pando Rings(= #{current_value}) #{compare_action_symbol} #{target_value}"
+    end
+  end
+
+  def description
+    case target_index
+    when 'supply_apy', 'borrow_apy'
+      "#{target_index.split('_').first.capitalize} APY of #{asset.symbol} in Pando Rings #{compare_action_symbol} #{format('%.2f', target_value.to_f * 100)}%"
+    when 'supply_volume', 'borrow_volume'
+      "#{target_index.humanize} of #{asset.symbol} in Pando Rings #{compare_action_symbol} #{target_value}"
     end
   end
 end

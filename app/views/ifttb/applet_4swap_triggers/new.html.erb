@@ -1,1 +1,10 @@
 <%= render "ifttb/applet_4swap_triggers/form", applet: @applet, trigger: @trigger %>
+
+<% content_for :navbar do %>
+  <div class="h-12 px-4 py-2 text-xl font-bold bg-[#22306d] text-[#fd8cc2] relative mx-auto max-w-screen-lg text-center">
+      Create 4swap Trigger
+      <%= link_to edit_ifttb_applet_path(@applet), class: 'absolute left-4' do %>
+        <%= inline_svg_tag 'icons/chevron-left.svg', class: 'inline-block' %>
+      <% end %>
+  </div>
+<% end %>

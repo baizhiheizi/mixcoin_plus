@@ -1,0 +1,28 @@
+<div class='p-4 bg-[#FEFAF3] text-[#FF9E29] mb-8'>
+  <div class="mb-4">
+    <%= image_tag 'pando-rings.svg', class: 'w-12 h-12 block mb-2 mx-auto rounded-full' %>
+  </div>
+
+  <div class="mb-4 text-center sm:text-left">
+    Run your applet when Pando Rings index(like supply ARY) match a target value.
+  </div>
+  <div class="mb-4 text-center sm:text-left">
+    <%= link_to 'Pando Rings', 'https://rings.pando.im', target: '_blank', class: 'underline' %>
+    is a full decentralized protocal for automated liquidity provision.
+  </div>
+
+  <% if trigger.persisted? %>
+    <div class="flex items-center space-x-2 justify-center">
+      <span class="italic"><%= trigger.description %></span>
+    </div>
+  <% end %>
+</div>
+
+<div id="applet_pando_leaf_trigger_errors"></div>
+
+<div class='px-4'>
+  <%= render "ifttb/applet_pando_rings_triggers/supply_apy_form", applet: @applet, trigger: @trigger %>
+  <%= render "ifttb/applet_pando_rings_triggers/supply_volume_form", applet: @applet, trigger: @trigger %>
+  <%= render "ifttb/applet_pando_rings_triggers/borrow_apy_form", applet: @applet, trigger: @trigger %>
+  <%= render "ifttb/applet_pando_rings_triggers/borrow_volume_form", applet: @applet, trigger: @trigger %>
+</div>

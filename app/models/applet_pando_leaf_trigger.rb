@@ -17,7 +17,6 @@
 #
 class AppletPandoLeafTrigger < AppletTrigger
   store :params, accessors: %i[
-    description
     asset_id
     target_index
     target_value
@@ -76,8 +75,8 @@ class AppletPandoLeafTrigger < AppletTrigger
 
   def compare_action_symbol
     {
-      larger_than: '>=',
-      less_than: '<='
+      larger_than: '≥',
+      less_than: '≤'
     }[compare_action.to_sym]
   end
 
@@ -87,6 +86,15 @@ class AppletPandoLeafTrigger < AppletTrigger
       "Pando Leaf has #{biding_flips.size} ongoing auctions for collateral of #{asset&.symbol.presence || 'any asset'}"
     when 'oracle_next_price'
       "Next price of #{asset.symbol} from Pando Leaf oracle(#{current_value}) #{compare_action_symbol} #{target_value}"
+    end
+  end
+
+  def description
+    case target_index
+    when 'biding_flips'
+      "Pando Leaf has ongoing auctions for collateral of #{asset&.symbol.presence || 'any asset'}"
+    when 'oracle_next_price'
+      "Next price of #{asset.symbol} from Pando Leaf oracle #{compare_action_symbol} #{target_value}"
     end
   end
 end

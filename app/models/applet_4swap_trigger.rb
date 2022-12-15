@@ -17,7 +17,6 @@
 #
 class Applet4swapTrigger < AppletTrigger
   store :params, accessors: %i[
-    description
     base_asset_id
     quote_asset_id
     target_index
@@ -60,5 +59,9 @@ class Applet4swapTrigger < AppletTrigger
 
   def alert_text
     "price(from 4swap) of #{target_index == 'ask_price' ? 'selling' : 'buying'} #{base_asset.symbol}(= #{current_value}) #{compare_action == 'larger_than' ? '>=' : '<='} #{target_value} #{quote_asset.symbol}"
+  end
+
+  def description
+    "price of #{target_index == 'ask_price' ? 'selling' : 'buying'} #{base_asset.symbol} #{compare_action == 'larger_than' ? '≥' : '≤'} #{target_value} #{quote_asset.symbol}"
   end
 end

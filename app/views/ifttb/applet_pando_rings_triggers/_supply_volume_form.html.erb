@@ -1,0 +1,37 @@
+<%= render "components/modal" do |p| %>
+  <% p.content_for :title, 'Supply Volume' %>
+  <% p.content_for :trigger do %>
+    <div class="btn btn-block btn-wide bg-[#FEFAF3] text-[#FF9E29] hover:bg-[#FEFAF3]/90 border-0 text-xl mb-8">
+      Supply Volume
+    </div>
+  <% end %>
+  <% p.content_for :body do %>
+    <div class="mb-4">
+      Run applet when supply volume for
+    </div>
+    <%= form_for [:ifttb, trigger.applet, trigger] do |form| %>
+      <%= form.hidden_field :type %>
+      <%= form.hidden_field :applet_id %>
+      <%= form.hidden_field :target_index, value: 'supply_volume' %>
+      <div class="flex items-center justify-center space-x-2 mb-2">
+        <%= form.select :asset_id, 
+          @mixin_assets.map(&->(asset) { ["#{asset.symbol}(#{asset.chain_asset.symbol} chain)", asset.asset_id] }),
+          {},
+          class: 'select select-sm font-bold w-full text-center' %>
+      </div>
+      <div class="flex items-center justify-center space-x-2 mb-2">
+        <%= form.select :compare_action, 
+          [['≥', 'larger_than'], ['≤', 'less_than']], 
+          {},
+          class: 'select select-sm font-bold w-full text-center' %>
+      </div>
+        <div class="flex items-center justify-center space-x-2 mb-6">
+          <%= form.number_field :target_value, 
+            step: '0.01',
+            class: "input input-sm w-full text-center", 
+            placeholder: 'Target value' %>
+        </div>
+      <%= form.submit 'Save', class: "btn btn-block bg-[#FEFAF3] text-[#FF9E29] hover:bg-[#FEFAF3]/90 border-0" %>
+    <% end %>
+  <% end %>
+<% end %>

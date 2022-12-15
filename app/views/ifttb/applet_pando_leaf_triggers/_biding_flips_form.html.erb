@@ -1,0 +1,28 @@
+<%= render "components/modal" do |p| %>
+  <% p.content_for :title, 'Biding Flips' %>
+  <% p.content_for :trigger do %>
+    <div class="btn btn-block btn-wide bg-[#F1FDF3] text-[#47bd61] hover:bg-[#F1FDF3]/90 border-0 text-xl mb-8">
+      Ongoing auction
+    </div>
+  <% end %>
+  <% p.content_for :body do %>
+    <div class="mb-4">
+      Run applet when there are ongoing auctions for
+    </div>
+    <%= form_for [:ifttb, trigger.applet, trigger] do |form| %>
+      <%= form.hidden_field :type %>
+      <%= form.hidden_field :applet_id %>
+      <%= form.hidden_field :target_index, value: 'biding_flips' %>
+      <%= form.hidden_field :compare_action, value: 'present' %>
+      <div class="flex items-center justify-center space-x-2 mb-2">
+        <%= form.select :asset_id, 
+          @mixin_assets.map(&->(asset) { ["#{asset.symbol}(#{asset.chain_asset.symbol} chain)", asset.asset_id] }),
+          {
+            include_blank: 'Collateral of any asset'
+          },
+          class: 'select select-sm font-bold w-full text-center' %>
+      </div>
+      <%= form.submit 'Save', class: "btn btn-block bg-[#F1FDF3] text-[#47bd61] hover:bg-[#F1FDF3]/90 border-0" %>
+    <% end %>
+  <% end %>
+<% end %>

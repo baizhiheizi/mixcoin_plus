@@ -10,6 +10,12 @@
         <%= render "ifttb/applet_datetime_triggers/applet_datetime_trigger", trigger: trigger %>
       <% when 'Applet4swapTrigger' %>
         <%= render "ifttb/applet_4swap_triggers/applet_4swap_trigger", trigger: trigger %>
+      <% when 'AppletPandoLeafTrigger' %>
+        <%= render "ifttb/applet_pando_leaf_triggers/applet_pando_leaf_trigger", trigger: trigger %>
+      <% when 'AppletPandoRingsTrigger' %>
+        <%= render "ifttb/applet_pando_rings_triggers/applet_pando_rings_trigger", trigger: trigger %>
+      <% when 'AppletExinLocalTrigger' %>
+        <%= render "ifttb/applet_exin_local_triggers/applet_exin_local_trigger", trigger: trigger %>
       <% end %>
     <% end %>
 
