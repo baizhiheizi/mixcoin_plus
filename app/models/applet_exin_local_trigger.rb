@@ -17,7 +17,6 @@
 #
 class AppletExinLocalTrigger < AppletTrigger
   store :params, accessors: %i[
-    description
     asset_id
     target_index
     target_value
@@ -65,6 +64,10 @@ class AppletExinLocalTrigger < AppletTrigger
   end
 
   def alert_text
-    "OTC price(from ExinLocal) of #{target_index == 'ask_price_cny' ? 'selling' : 'buying'} #{asset.symbol}(= #{current_value} CNY) #{compare_action_symbol} #{target_value} CNY"
+    "OTC price(from Tiga) of #{target_index == 'ask_price_cny' ? 'selling' : 'buying'} #{asset.symbol}(= #{current_value} CNY) #{compare_action_symbol} #{target_value} CNY"
+  end
+
+  def description
+    "OTC price(from Tiga) of #{target_index == 'ask_price_cny' ? 'selling' : 'buying'} #{asset.symbol} #{compare_action_symbol} #{target_value} CNY"
   end
 end

@@ -1,0 +1,64 @@
+<div class='p-4 bg-blue-500 text-white mb-8'>
+  <div class="mb-4">
+    <%= image_tag 'tiga.png', class: 'w-12 h-12 block mb-2 mx-auto rounded-full' %>
+  </div>
+
+  <div class="mb-4">
+    Run applet when Tiga index(like price) match a target value.
+  </div>
+
+  <% if trigger.persisted? %>
+    <div class="flex items-center space-x-2 justify-center">
+      <span class="italic"><%= trigger.description %></span>
+    </div>
+  <% end %>
+</div>
+
+<div id="applet_4swap_trigger_errors"></div>
+
+<div class='px-4'>
+  <%= render "components/modal" do |p| %>
+    <% p.content_for :title, 'Tiga Price' %>
+    <% p.content_for :trigger do %>
+      <div class="btn btn-block btn-wide bg-blue-500 hover:bg-blue-500/90 text-white text-xl mb-4 border-0">
+        Price
+      </div>
+    <% end %>
+    <% p.content_for :body do %>
+      <div class="mb-4">
+        Run applet when
+      </div>
+      <%= form_for [:ifttb, trigger.applet, trigger] do |form| %>
+        <%= form.hidden_field :type %>
+        <%= form.hidden_field :applet_id %>
+        <div class="flex items-center justify-center space-x-2 mb-2">
+          <%= form.select :target_index, 
+            [['Price of selling', 'ask_price_cny'], ['Price of buying', 'bid_price_cny']], 
+            {},
+            class: 'select select-sm font-bold w-full text-center' %>
+        </div>
+        <div class="flex items-center justify-center space-x-2 mb-2">
+          <%= form.select :asset_id, @mixin_assets.map(&->(asset) { ["#{asset.symbol}(#{asset.chain_asset.symbol} chain)", asset.asset_id] }),
+            {},
+            class: 'select select-sm font-bold w-full text-center' %>
+        </div>
+        <div class="flex items-center justify-center space-x-2 mb-2">
+          <%= form.select :compare_action, 
+            [['≥', 'larger_than'], ['≤', 'less_than']], 
+            {},
+            class: 'select select-sm font-bold w-full text-center' %>
+        </div>
+        <div class="flex items-center justify-center space-x-2 mb-6">
+          <%= form.number_field :target_value, 
+            step: '0.01',
+            class: "input input-sm w-full text-center", 
+            placeholder: 'Target value' %>
+          <span>
+            CNY
+          </span>
+        </div>
+        <%= form.submit 'Save', class: "btn btn-block bg-blue-500 hover:bg-blue-500/90 text-white border-blue-500" %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

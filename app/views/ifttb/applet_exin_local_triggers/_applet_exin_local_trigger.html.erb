@@ -1,0 +1,40 @@
+<%= render "components/modal" do |p| %>
+  <% p.content_for :title, 'Options' %>
+  <% p.content_for :trigger do %>
+    <div class="relative p-4 text-white bg-blue-500 text-white text-lg font-bold mb-4 cursor-pointer">
+      <div class="flex items-start space-x-4 w-full">
+        <%= image_tag 'tiga.png', class: 'w-6 h-6 mx-auto rounded-full' %>
+        <div class="flex-1 text-left">
+          <%= trigger.description %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <% p.content_for :body do %>
+    <%= link_to 'Edit Trigger', 
+      edit_ifttb_applet_applet_exin_local_trigger_path(trigger.applet, trigger), 
+      class: "btn btn-block btn-primary mb-4" %>
+
+    <%= render "components/modal" do |p| %>
+      <% p.content_for :title, 'Confirm' %>
+      <% p.content_for :trigger do %>
+        <div class="btn btn-block btn-warning mb-4">
+          Remove Trigger
+        </div>
+      <% end %>
+      <% p.content_for :body do %>
+        <div class="">
+          Are you sure to remove this trigger?
+        </div>
+        <div class="modal-action">
+          <%= link_to 'Remove', 
+            ifttb_applet_applet_exin_local_trigger_path(trigger.applet, trigger), 
+            data: {
+              turbo_method: :delete
+            },
+            class: "btn btn-warning" %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
