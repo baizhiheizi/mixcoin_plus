@@ -1,0 +1,20 @@
+zh-TW:
+  notification: Notification
+  notifications:
+    user_authorized_notification:
+      message: '成功授權'
+    transfer_processed_notification:
+      received: '收到'
+    ocean_order_state_notification:
+      market_price: '市場價'
+      tpl: |
+        交易對: %<base_asset_symbol>s/%<quote_asset_symbol>s
+        訂單種類: %<side>s
+        訂單狀態: %<state>s
+        價格: %<price>s %<quote_asset_symbol>s
+        已成交: %<filled>s %<filled_symbol>s
+        待成交: %<remaining>s %<remaining_symbol>s
+      cable_tpl: 訂單 %<base_asset_symbol>s/%<quote_asset_symbol>s %<state>s
+    transfer_failed_notification:
+      insufficient_balance: '餘額不足導致轉賬失敗'
+      transfer_failed: '轉賬失敗'

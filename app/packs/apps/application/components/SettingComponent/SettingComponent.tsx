@@ -89,12 +89,13 @@ export default function SettingComponent() {
               type='button'
               compact
               value={i18n.language}
-              onChange={(value: 'en' | 'zh-CN' | 'ko') =>
+              onChange={(value: 'en' | 'zh-CN' | 'zh-TW' | 'ko') =>
                 i18n.changeLanguage(value)
               }
             >
               <Radio value='en'>EN</Radio>
               <Radio value='zh-CN'>中文</Radio>
+              <Radio value='zh-TW'>繁体</Radio>
               <Radio value='ko'>한국어</Radio>
             </Radio.Group>
           }

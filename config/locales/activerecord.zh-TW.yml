@@ -1,0 +1,15 @@
+zh-TW:
+  activerecord:
+    models:
+      ocean_order: 訂單
+    attributes:
+      ocean_order:
+        sides:
+          ask: 賣出
+          bid: 買入
+        state: 狀態
+        state/paid: '已支付'
+        state/booking: '掛單中'
+        state/completed: '已成交'
+        state/canceling: '取消中'
+        state/refunded: '已退款'

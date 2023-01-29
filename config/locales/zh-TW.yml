@@ -1,0 +1,106 @@
+zh-TW:
+  home: 首頁
+  markets: 交易對
+  exchange: 交易
+  wallet: 錢包
+  mine: 我的
+  favorite: 自選
+  recommend: 推薦
+  group: 羣組
+  hot: 熱門
+  language: 語言
+  logout: 退出登錄
+  success_logged_in: 成功登錄
+  connect_wallet: 連接錢包
+  connect_mixin_messenger_wallet: 連接 Mixin Messenger
+  connect_fennec_wallet: 連接 Fennec 錢包
+  connect_wallet_to_exhange: 交易您 Mixin 錢包裏的任意加密貨幣：
+  fennec_not_found: 檢測不到 Fennec 錢包
+  checking_fennec: 正在檢測 Fennec 錢包
+  scan_with_mixin_messenger: 使用 Mixin Messenger 掃碼支付
+  logout_confirm: 確定要退出登錄嗎？
+  authorize_tips: 即將授權 Mixcoin 登錄
+  empty_markets: 沒有交易對
+  empty_orders: 暫無委託
+  empty_invitees: 暫無邀請
+  empty_commissions: 暫無佣金
+  share: 分享
+  fee: 費率
+  buy: 買入
+  sell: 賣出
+  volume: 數量
+  filled: 已成交
+  price: 價格
+  buy_price: 買入價格
+  sell_price: 賣出價格
+  buy_volume: 買入數量
+  sell_volume: 賣出數量
+  depth_chart: 深度
+  time: 時間
+  limit_order: 限價單
+  market_order: 市價單
+  market_price: 市場價
+  my_open_orders: 當前委託
+  my_order_history: 歷史委託
+  open_orders: 掛單簿
+  history_trades: 歷史成交
+  market_order_warning: 以市場成交價爲準
+  confirm_cancel_ocean_order: 確定要取消當前委託嗎？
+  order_will_be_handled: 訂單在收到轉賬後會立即處理，請留意機器人的消息提醒
+  price_too_low: 價格太低
+  price_too_high: 價格過高
+  order_too_small: 訂單太小了
+  order_too_big: 訂單太大了
+  no_ask_order: 暫時沒有賣單
+  no_bid_order: 暫時沒有買單
+  no_depth_yet: 深度不足
+  no_trades_yet: 暫無成交
+  confirm_place_ask_order: 確定要賣出
+  confirm_place_bid_order: 確定要買入
+  confirm_unfavorite_market: 確定要取消收藏交易對嗎？
+  important_warning: 重要提醒：您的價格偏離市場價過多，確定要下單嗎？
+  already_paid: 已經支付
+  cancel: 取消
+  cancel_order: 撤單
+  orders: 訂單
+  deprecated_orders: 舊版訂單
+  deprecated_version_notice: 舊版的 Mixcoin 已經廢棄，如果你還有進行中的訂單，請在這裏取消。歡迎使用全新的 Mixcoin！
+  invite: 邀請
+  invitations: 成功邀請
+  rules: 規則
+  commission_plan: 佣金計劃
+  grow_along_with_mixcoin: 與 Mixcoin 一起成長
+  you_have_two_ways_to_earn_your_commission: 您可以通過兩種途徑賺取佣金。
+  invitation_commission: 邀請佣金
+  invitation_commission_rule_1: 新用戶點擊您的邀請鏈接登錄 Mixcoin 併成功下單後，即視爲邀請成功；
+  invitation_commission_rule_2: 邀請成功後，每當被邀請人獨立完成一筆 MAKER 訂單，其手續費的 50% 將作爲邀請佣金，即時發放；
+  invitation_commission_rule_3: 邀請鏈接僅在一對一會話中生效，請不要在任何羣中分享邀請鏈接；
+  group_owner_commission: 羣主佣金
+  group_owner_commission_rule_1: 將 Mixcoin 機器人拉進您的加密小羣；
+  group_owner_commission_rule_2: 羣成員在羣內會話打開 Mixcoin 完成的所有 MAKER 訂單，手續費 50% 將作爲羣主佣金，即時發放；
+  commission_plan_notice: 重要說明
+  commission_plan_notice_1: 邀請佣金和羣主佣金不能疊加，羣主佣金優先；
+  commission_plan_notice_2: 活動最終解釋權歸 Mixcoin 團隊所有。
+  exchange_any_asset: 交易任意加密貨幣
+  search_any_asset: 搜索您錢包裏的任意加密貨幣
+  no_record: 沒有記錄
+  order_state:
+    paid: '已支付'
+    booking: '掛單中'
+    completed: '已完成'
+    canceling: '取消中'
+    refunded: '已退款'
+  24h_high: 24小時最高
+  24h_low: 24小時最低 
+  24h_volumne: 24小時成交
+  balance: 餘額
+  edit_group_markets: 編輯羣組交易對
+  group_admin_notice: 您是羣組管理員。您可以編輯羣組交易對，當羣成員從羣組中打開 Mixcoin 時，將顯示羣組交易對。
+  choose: 選擇
+  remove: 移除
+  transfer_type:
+    create_order_from_user: 下單
+    match_to_user: 成交
+    refund_to_user: 退款
+  reference_price: 參考價
+  available: 可用
