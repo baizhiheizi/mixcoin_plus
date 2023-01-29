@@ -56,9 +56,9 @@ ko:
     - 11월
     - 12월
     order:
-    - :year
-    - :month
-    - :day
+    - 'year'
+    - 'month'
+    - 'day'
   datetime:
     distance_in_words:
       about_x_hours: 대략 %{count}시간

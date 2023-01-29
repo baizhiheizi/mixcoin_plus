@@ -94,8 +94,8 @@ export default function SettingComponent() {
               }
             >
               <Radio value='en'>EN</Radio>
-              <Radio value='zh-CN'>中文</Radio>
-              <Radio value='zh-TW'>繁体</Radio>
+              <Radio value='zh-CN'>简</Radio>
+              <Radio value='zh-TW'>繁</Radio>
               <Radio value='ko'>한국어</Radio>
             </Radio.Group>
           }

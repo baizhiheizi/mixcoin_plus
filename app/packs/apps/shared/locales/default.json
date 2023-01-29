@@ -1,4 +1,52 @@
 {
+  "viewsPaginationFirst": {
+    "id": "views.pagination.first",
+    "defaultMessage": "\u0026laquo; First"
+  },
+  "viewsPaginationLast": {
+    "id": "views.pagination.last",
+    "defaultMessage": "Last \u0026raquo;"
+  },
+  "viewsPaginationPrevious": {
+    "id": "views.pagination.previous",
+    "defaultMessage": "\u0026lsaquo; Prev"
+  },
+  "viewsPaginationNext": {
+    "id": "views.pagination.next",
+    "defaultMessage": "Next \u0026rsaquo;"
+  },
+  "viewsPaginationTruncate": {
+    "id": "views.pagination.truncate",
+    "defaultMessage": "\u0026hellip;"
+  },
+  "helpersPageEntriesInfoEntryZero": {
+    "id": "helpers.page_entries_info.entry.zero",
+    "defaultMessage": "entries"
+  },
+  "helpersPageEntriesInfoEntryOne": {
+    "id": "helpers.page_entries_info.entry.one",
+    "defaultMessage": "entry"
+  },
+  "helpersPageEntriesInfoEntryOther": {
+    "id": "helpers.page_entries_info.entry.other",
+    "defaultMessage": "entries"
+  },
+  "helpersPageEntriesInfoOnePageDisplayEntriesZero": {
+    "id": "helpers.page_entries_info.one_page.display_entries.zero",
+    "defaultMessage": "No {entry_name} found"
+  },
+  "helpersPageEntriesInfoOnePageDisplayEntriesOne": {
+    "id": "helpers.page_entries_info.one_page.display_entries.one",
+    "defaultMessage": "Displaying \u003cb\u003e1\u003c/b\u003e {entry_name}"
+  },
+  "helpersPageEntriesInfoOnePageDisplayEntriesOther": {
+    "id": "helpers.page_entries_info.one_page.display_entries.other",
+    "defaultMessage": "Displaying \u003cb\u003eall {count}\u003c/b\u003e {entry_name}"
+  },
+  "helpersPageEntriesInfoMorePagesDisplayEntries": {
+    "id": "helpers.page_entries_info.more_pages.display_entries",
+    "defaultMessage": "Displaying {entry_name} \u003cb\u003e{first}\u0026nbsp;-\u0026nbsp;{last}\u003c/b\u003e of \u003cb\u003e{total}\u003c/b\u003e in total"
+  },
   "activerecordModelsOceanOrder": {
     "id": "activerecord.models.ocean_order",
     "defaultMessage": "Order"
@@ -305,6 +353,14 @@
   "notificationsOceanOrderStateNotificationCableTpl": {
     "id": "notifications.ocean_order_state_notification.cable_tpl",
     "defaultMessage": "Order %\u003cbase_asset_symbol\u003es/%\u003cquote_asset_symbol\u003es %\u003cstate\u003es"
+  },
+  "notificationsTransferFailedNotificationInsufficientBalance": {
+    "id": "notifications.transfer_failed_notification.insufficient_balance",
+    "defaultMessage": "Transfer failed because of insufficient balance"
+  },
+  "notificationsTransferFailedNotificationTransferFailed": {
+    "id": "notifications.transfer_failed_notification.transfer_failed",
+    "defaultMessage": "Transfer failed"
   },
   "errorsUnavailableSession": {
     "id": "errors.unavailable_session",
