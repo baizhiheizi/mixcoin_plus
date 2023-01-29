@@ -1,6 +1,6 @@
 <div class="pt-4">
   <div class="text-center mb-4">
-    You have created <%= current_user.applets.without_drafted.count %>/3 applets.
+    You have created <%= current_user.applets.without_drafted.without_archived.count %>/3 applets.
   </div>
 
   <%= turbo_frame_tag "applets" do %>
@@ -40,7 +40,7 @@
         <% p.content_for :body do %>
           <%= link_to t('wallet'), ifttb_wallet_path, class: 'btn btn-block btn-primary mb-4' %>
           <%= link_to t('stats'), ifttb_stats_path, class: 'btn btn-block btn-primary mb-4' %>
-          <%= link_to t('archived_applets'), ifttb_stats_path, class: 'btn btn-block btn-primary' %>
+          <%= link_to t('archived_applets'), ifttb_archived_applets_path, class: 'btn btn-block btn-primary' %>
         <% end %>
       <% end %>
     </div>

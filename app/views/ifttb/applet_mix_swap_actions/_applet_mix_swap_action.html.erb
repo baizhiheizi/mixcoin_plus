@@ -1,9 +1,9 @@
 <%= render "components/modal" do |p| %>
   <% p.content_for :title, 'Options' %>
   <% p.content_for :trigger do %>
-    <div class="relative p-4 text-white bg-[#22306d] text-[#fd8cc2] text-lg font-bold mb-4 cursor-pointer">
+    <div class="relative p-4 text-white bg-[#8c2de7] text-white text-lg font-bold mb-4 cursor-pointer">
       <div class="flex items-start space-x-4 w-full">
-        <%= image_tag '4swap.png', class: 'w-6 h-6 mx-auto rounded-full border border-[#fd8cc2]' %>
+        <%= image_tag 'mixswap.png', class: 'w-6 h-6 mx-auto rounded-full' %>
         <div class="flex-1 text-left">
           <%= action.description %>
         </div>
@@ -12,7 +12,7 @@
   <% end %>
   <% p.content_for :body do %>
     <%= link_to 'Edit Action', 
-      edit_ifttb_applet_applet_4swap_action_path(action.applet, action), 
+      edit_ifttb_applet_applet_mix_swap_action_path(action.applet, action), 
       class: "btn btn-block btn-primary mb-4" %>
 
     <% if action.applet.drafted? %>
@@ -29,7 +29,7 @@
           </div>
           <div class="modal-action">
             <%= link_to 'Remove', 
-              ifttb_applet_applet_4swap_action_path(action.applet, action), 
+              ifttb_applet_applet_mix_swap_action_path(action.applet, action), 
               data: {
                 turbo_method: :delete
               },

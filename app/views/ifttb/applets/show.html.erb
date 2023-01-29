@@ -1,0 +1,59 @@
+<div class="px-6">
+  <div class="flex justify-between mb-4">
+    <span class="opacity-50">#<%= @applet.number %></span>
+    <% if @applet.profit.present? %>
+      <span>
+        <%= @applet.profit %>
+      </span>
+    <% end %>
+  </div>
+
+  <div class="mb-4">
+    <%= render "ifttb/applets/description", applet: @applet %>
+  </div>
+
+  <% if @applet.archived? %>
+    <div class="flex justify-between text-sm mb-4">
+      <span class="opacity-75">Archived at:</span>
+        <span class="opacity-75"> <%= @applet.archived_at.strftime("%D %H:%M") %></span>
+    </div>
+  <% else %>
+    <div class="flex justify-between text-sm mb-4">
+      <span class="opacity-75">Connected:</span>
+      <input type="checkbox" class="toggle" <%= @applet.connected && "checked" %> />
+    </div>
+  <% end %>
+
+  <div class="tabs tabs-boxed w-full">
+    <div class="tab tab-active tab-md w-1/2">Stats</div>
+    <div class="tab tab-md w-1/2">Activities</div>
+  </div>
+</div>
+
+<% content_for :navbar do %>
+  <div class="relative mb-6 h-12 px-4 py-2 mb-4 text-xl font-bold text-center max-w-screen-lg mx-auto">
+    Applet Detail
+    <%= link_to ifttb_applets_path, class: 'absolute left-4' do %>
+      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'inline-block' %>
+    <% end %>
+  </div>
+<% end %>
+
+<% content_for :tabbar do %>
+  <div class="flex items-center justify-around p-4 mx-auto max-w-screen-lg">
+    <% if @applet.archived? %>
+      <%= button_to t('resume'), 
+        ifttb_archived_applet_path(@applet), 
+        method: :delete,
+        class: 'btn btn-primary btn-sm rounded-full' %>
+    <% else %>
+      <%= button_to t('archive'), 
+        ifttb_archived_applet_path(@applet), 
+        method: :put,
+        class: 'btn btn-warning btn-ghost btn-sm text-warning rounded-full' %>
+    <% end %>
+    <%= link_to t('edit'), 
+      edit_ifttb_applet_path(@applet), 
+      class: 'btn btn-primary btn-sm rounded-full' %>
+  </div>
+<% end %>

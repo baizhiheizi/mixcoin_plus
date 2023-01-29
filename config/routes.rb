@@ -35,7 +35,6 @@ Rails.application.routes.draw do
       post :pend
       post :connect
       post :disconnect
-      post :archive
 
       resources :applet_datetime_triggers, except: %i[index show]
       resources :applet_4swap_triggers, except: %i[index show]
@@ -48,6 +47,7 @@ Rails.application.routes.draw do
       resources :applet_alert_actions, except: %i[index show]
     end
 
+    resources :archived_applets, only: %i[index update destroy]
     resource :stats, only: :show
     resource :wallet, only: :show do
       post :withdraw

@@ -101,6 +101,10 @@ class Applet < ApplicationRecord
     update! archived_at: Time.current
   end
 
+  def archived?
+    archived_at?
+  end
+
   def cron_instance
     @cron_instance ||= Fugit.parse_cron cron
   end

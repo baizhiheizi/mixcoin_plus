@@ -84,13 +84,17 @@
         turbo_method: :post
       },
       class: "btn btn-block btn-lg btn-primary rounded-full" %>
+  <% else %>
+    <%= link_to 'Update', 
+      ifttb_applet_path(@applet), 
+      class: "btn btn-block btn-lg btn-primary rounded-full" %>
   <% end %>
 </div>
 
 <% content_for :navbar do %>
   <div class="relative mb-6 h-12 px-4 py-2 mb-4 text-xl font-bold text-center max-w-screen-lg mx-auto">
     Create Applet
-    <%= link_to ifttb_root_path, class: 'absolute left-4' do %>
+    <%= link_to :back, class: 'absolute left-4' do %>
       <%= inline_svg_tag 'icons/chevron-left.svg', class: 'inline-block' %>
     <% end %>
   </div>

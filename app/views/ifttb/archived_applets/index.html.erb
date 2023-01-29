@@ -1,0 +1,19 @@
+<div class="">
+  <%= turbo_frame_tag "applets" do %>
+    <div id="applets-list" class="px-4 grid sm:grid-cols-2 gap-4">
+      <%= render partial: "ifttb/applets/applet", collection: @applets, as: :applet %>
+    </div>
+    <div id="applets-pagination">
+      <%= link_to 'Load More', pagy_url_for(@pagy, @pagy.next), class: 'btn btn-outline btn-wide block mx-auto' if @pagy.next.present? %>
+    </div>
+  <% end %>
+</div>
+
+<% content_for :navbar do %>
+  <div class="relative mb-6 h-12 px-4 py-2 mb-4 text-xl font-bold text-center max-w-screen-lg mx-auto">
+    <%= link_to 'Archived Applets', ifttb_root_path %>
+    <%= link_to ifttb_root_path, class: 'absolute left-4' do %>
+      <%= inline_svg_tag 'icons/chevron-left.svg', class: 'inline-block' %>
+    <% end %>
+  </div>
+<% end %>

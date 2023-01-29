@@ -1,0 +1,64 @@
+<div class='p-4 bg-[#8c2de7] text-white mb-8'>
+  <div class="mb-4">
+    <%= image_tag 'mixswap.png', class: 'w-12 h-12 block mb-2 mx-auto rounded-full' %>
+  </div>
+
+  <div class="mb-4">
+    Use MixSwap to swap asset.
+  </div>
+
+  <% if action.persisted? %>
+    <div class="flex items-center space-x-2 justify-center">
+      <span class="italic"><%= action.description %></span>
+    </div>
+  <% end %>
+</div>
+
+<div id="applet_mix_swap_action_errors"></div>
+
+<div class='px-4'>
+  <%= render "components/modal" do |p| %>
+    <% p.content_for :title, 'MixSwap Trade' %>
+    <% p.content_for :trigger do %>
+      <div class="btn btn-block btn-wide btn-ghost bg-[#8c2de7] hover:bg-[#8c2de7]/90 text-white text-xl mb-4">
+        Trade
+      </div>
+    <% end %>
+    <% p.content_for :body do %>
+      <div class="mb-4">
+        Swap
+      </div>
+      <%= form_for [:ifttb, action.applet, action] do |form| %>
+        <%= form.hidden_field :type %>
+        <%= form.hidden_field :applet_id %>
+        <div class="flex items-center justify-center space-x-2 mb-2 px-4 rounded-full bg-base-100">
+          <%= form.select :pay_asset_id, 
+            @mixin_assets.map(&->(asset) { ["#{asset.symbol}(#{asset.chain_asset.symbol} chain)", asset.asset_id] }),
+            {},
+            disabled: !action.applet.drafted?,
+            class: 'select select-sm font-bold text-center flex-1' %>
+          <%= form.number_field :pay_amount, 
+            step: '0.0001',
+            class: "input input-xs text-center flex-1", 
+            placeholder: 'From' %>
+        </div>
+        <div class="flex items-center justify-center space-x-2 mb-6">
+          <%= form.select :fill_asset_id, 
+            @mixin_assets.map(&->(asset) { ["#{asset.symbol}(#{asset.chain_asset.symbol} chain)", asset.asset_id] }),
+            {},
+            disabled: !action.applet.drafted?,
+            class: 'select select-sm font-bold text-center flex-1 text-center' %>
+          <span class="flex-1">To</span>
+        </div>
+        <div class="flex items-center justify-center space-x-2 mb-2">
+          <span>Splippage</span>
+          <%= form.select :slippage, 
+            [['0.1%', 0.001], ['0.5%', 0.005], ['1%', 0.01]], 
+            {},
+            class: 'select select-sm font-bold text-center' %>
+        </div>
+        <%= form.submit 'Save', class: "btn btn-block btn-ghost bg-[#8c2de7] hover:bg-[#8c2de7]/90 text-white" %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
