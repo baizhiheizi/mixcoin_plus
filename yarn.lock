@@ -7330,10 +7330,10 @@ react-native-camera-roll-picker@1.2.3:
   resolved "https://registry.yarnpkg.com/react-native-camera-roll-picker/-/react-native-camera-roll-picker-1.2.3.tgz#b117fd3a2b9012dcccee1261a9bc427226b8d6d2"
   integrity sha512-vz9UfBmHhoZu1YEYmT/0CQDApo+mIJ6Z0Nhf24vGjlg42sX7X1Tzt16UZI6tCAWh7oQilStjOXLjyj2lAqgTVg==
 
-react-on-rails@12.4.0:
-  version "12.4.0"
-  resolved "https://registry.yarnpkg.com/react-on-rails/-/react-on-rails-12.4.0.tgz#28df3676a95e223d4083cf605e154eb561c6b88b"
-  integrity sha512-i7z78eyABPyIqicwdUKPhFSe6m7kvXugAMq3PphCaX4jFcGKz3UVpcuNtO6NDnSdC+2deruessOqvNF9KtE+fQ==
+react-on-rails@13.3.0:
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/react-on-rails/-/react-on-rails-13.3.0.tgz#1f3d0eacd11e9a9c1523fb91193c30ce971c4d3d"
+  integrity sha512-kZxSInD4niloF6iO0gCEAjP9jouF6xFWAO0nHmVkHPpDIRxd4Re9RlEw65lQsjmahHTvLlkrAuQZBq6JRe+a5g==
   dependencies:
     "@babel/runtime-corejs3" "^7.12.5"
     concurrently "^5.1.0"
