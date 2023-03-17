@@ -73,6 +73,9 @@ class MixinNetworkSnapshot < ApplicationRecord
 
       sleep 0.5 if r['data'].length < POLLING_LIMIT
       sleep POLLING_INTERVAL
+    rescue ActiveRecord::StatementInvalid => e
+      p e.inspect
+      connection.reconnect!
     rescue StandardError => e
       p e.inspect
     end
