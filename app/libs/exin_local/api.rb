@@ -15,7 +15,7 @@ module ExinLocal
     end
 
     def cached_settings
-      _cache = Global.redis.get('exin_local_settings')
+      _cache = Rails.cache.read('exin_local_settings')
       _cache = refresh_cached_settings if _cache.blank?
       JSON.parse _cache
     rescue JSON::ParserError
@@ -24,7 +24,7 @@ module ExinLocal
 
     def refresh_cached_settings
       _settings = settings
-      Global.redis.set 'exin_local_settings', _settings.to_json, ex: 1.minute
+      Rails.cache.write 'exin_local_settings', _settings.to_json, ex: 1.minute
 
       _settings.to_json
     end

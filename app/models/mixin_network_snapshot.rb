@@ -56,12 +56,14 @@ class MixinNetworkSnapshot < ApplicationRecord
   # polling Mixin Network
   # should be called in a event machine
   def self.poll
+    @__retry = 0
+
     loop do
-      offset = Global.redis.get('last_polled_at')
+      offset = Rails.cache.read('last_polled_at')
       offset = MixinNetworkSnapshot.order(transferred_at: :desc).first&.transferred_at&.utc&.rfc3339 || Time.current.utc.rfc3339 if offset.blank?
 
       r = MixcoinPlusBot.api.read_network_snapshots(offset: offset, limit: POLLING_LIMIT, order: 'ASC')
-      p "polled #{r['data'].length} mixin network snapshots, #{offset}"
+      logger.info "polled #{r['data'].length} mixin network snapshots, #{offset}"
 
       r['data'].each do |snapshot|
         next if snapshot['user_id'].blank?
@@ -69,15 +71,21 @@ class MixinNetworkSnapshot < ApplicationRecord
         create_with(raw: snapshot).find_or_create_by!(trace_id: snapshot['trace_id'])
       end
 
-      Global.redis.set 'last_polled_at', r['data'].last['created_at']
+      Rails.cache.write 'last_polled_at', r['data'].last['created_at']
 
       sleep 0.5 if r['data'].length < POLLING_LIMIT
       sleep POLLING_INTERVAL
+      @__retry = 0
     rescue ActiveRecord::StatementInvalid => e
-      p e.inspect
-      connection.reconnect!
+      logger.error e.inspect
+      ActiveRecord::Base.connection.reconnect!
+      retry
     rescue StandardError => e
-      p e.inspect
+      logger.error e
+      raise e if @__retry > 10
+
+      @__retry += 1
+      sleep POLLING_INTERVAL * 10
     end
   end
 

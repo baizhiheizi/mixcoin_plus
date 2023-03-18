@@ -27,7 +27,7 @@ class SwapMarket
   private
 
   def _get_ask_price
-    Global.redis.get(_ask_price_cache_id)
+    Rails.cache.read(_ask_price_cache_id)
   end
 
   def _set_ask_price
@@ -41,7 +41,7 @@ class SwapMarket
 
     _ask_price = (amount / funds).round(8) if amount&.positive?
 
-    Global.redis.set _ask_price_cache_id, _ask_price, ex: 1.minute
+    Rails.cache.write _ask_price_cache_id, _ask_price, ex: 1.minute
 
     _ask_price
   end
@@ -51,7 +51,7 @@ class SwapMarket
   end
 
   def _get_bid_price
-    Global.redis.get(_bid_price_cache_id)
+    Rails.cache.read(_bid_price_cache_id)
   end
 
   def _set_bid_price
@@ -65,7 +65,7 @@ class SwapMarket
 
     _bid_price = (funds / amount).round(8) if amount&.positive?
 
-    Global.redis.set _bid_price_cache_id, _bid_price, ex: 1.minute
+    Rails.cache.write _bid_price_cache_id, _bid_price, ex: 1.minute
 
     _bid_price
   end

@@ -31,7 +31,7 @@ EM.run {
     Market.recommended.map(&:patrol_async)
   }
 
-  Thread.new {
+  Thread.new { 
     MixinNetworkSnapshot.poll
   }
 }

@@ -32,7 +32,7 @@ module MixSwap
     end
 
     def tradable_asset_ids
-      _cache = Global.redis.get('mix_swap_tradable_asset_ids')
+      _cache = Rails.cache.read('mix_swap_tradable_asset_ids')
       _cache = refresh_traddable_asset_ids if _cache.blank?
 
       JSON.parse _cache
@@ -43,7 +43,7 @@ module MixSwap
     def refresh_traddable_asset_ids
       _ids = assets['data'].map(&->(asset) { asset['uuid'] })
       _ids.uniq!
-      Global.redis.set 'mix_swap_tradable_asset_ids', _ids, ex: 1.day
+      Rails.cache.write 'mix_swap_tradable_asset_ids', _ids, ex: 1.day
       _ids.to_json
     end
   end

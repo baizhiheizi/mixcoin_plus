@@ -14,7 +14,7 @@ module PandoRings
     end
 
     def supportable_asset_ids
-      _cache = Global.redis.get('pando_rings_supportable_asset_ids')
+      _cache = Rails.cache.read('pando_rings_supportable_asset_ids')
       _cache = refresh_supportable_asset_ids if _cache.blank?
 
       JSON.parse _cache
@@ -29,7 +29,7 @@ module PandoRings
         _ids.push market['asset_id']
       end
       _ids.uniq!
-      Global.redis.set 'pando_rings_supportable_asset_ids', _ids, ex: 1.hour
+      Rails.cache.write 'pando_rings_supportable_asset_ids', _ids, ex: 1.hour
       _ids.to_json
     end
   end

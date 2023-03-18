@@ -64,11 +64,11 @@ class UserAsset < ApplicationRecord
   end
 
   def _mark_cache
-    Global.redis.set _cache_key, true, ex: 30.seconds
+    Rails.cache.write _cache_key, true, ex: 30.seconds
   end
 
   def _cache_expired?
-    !Global.redis.get(_cache_key)
+    !Rails.cache.read(_cache_key)
   end
 
   def _cache_key

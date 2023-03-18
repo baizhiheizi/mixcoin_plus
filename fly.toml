@@ -11,7 +11,7 @@ primary_region = "hkg"
   auto_rollback = true
 
 [processes]
-  blaze = "bundle exec ./bin/mixin_blaze"
+  blaze = "./bin/mixin_blaze"
   web = "./bin/rails server"
   worker = "bundle exec sidekiq"
 

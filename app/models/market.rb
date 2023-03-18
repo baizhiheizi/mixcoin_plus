@@ -101,11 +101,11 @@ class Market < ApplicationRecord
   end
 
   def price_current
-    @price_current ||= Global.redis.get "price_current_#{id}"
+    @price_current ||= Rails.cache.read "price_current_#{id}"
 
     if @price_current.blank?
       @price_current = trades.order(traded_at: :desc).first&.price
-      Global.redis.set "price_current_#{id}", @price_current, ex: 1.minute
+      Rails.cache.write "price_current_#{id}", @price_current, ex: 1.minute
     end
 
     @price_current
@@ -116,33 +116,33 @@ class Market < ApplicationRecord
   end
 
   def change_24h
-    @change_24h ||= Global.redis.get "change_24h_#{id}"
+    @change_24h ||= Rails.cache.read "change_24h_#{id}"
 
     if @change_24h.blank?
       return if price_current.blank? || price_24h_ago.blank?
 
       @change_24h = format('%.4f', ((price_current.to_f - price_24h_ago.to_f) / price_24h_ago.to_f))
-      Global.redis.set "change_24h_#{id}", @change_24h, ex: 1.minute
+      Rails.cache.write "change_24h_#{id}", @change_24h, ex: 1.minute
     end
 
     @change_24h
   end
 
   def vol_24h
-    @vol_24h ||= Global.redis.get "vol_24h_#{id}"
+    @vol_24h ||= Rails.cache.read "vol_24h_#{id}"
 
     if @vol_24h.blank?
       @vol_24h = format('%.6f', trades.where(traded_at: (24.hours.ago)...).sum(:amount))
-      Global.redis.set "vol_24h_#{id}", @vol_24h, ex: 1.minute
+      Rails.cache.write "vol_24h_#{id}", @vol_24h, ex: 1.minute
     end
 
     @vol_24h
   end
 
   def del_price_cache
-    Global.redis.del "price_current_#{id}"
-    Global.redis.del "change_24h_#{id}"
-    Global.redis.del "vol_24h_#{id}"
+    Rails.cache.delete "price_current_#{id}"
+    Rails.cache.delete "change_24h_#{id}"
+    Rails.cache.delete "vol_24h_#{id}"
   end
 
   def high_price_24h
@@ -175,15 +175,15 @@ class Market < ApplicationRecord
   end
 
   def sync_trades_frequency_locked?
-    Global.redis.get "sync_trades_frequency_lock_#{id}"
+    Rails.cache.read "sync_trades_frequency_lock_#{id}"
   end
 
   def sync_trades_frequency_lock!
-    Global.redis.set "sync_trades_frequency_lock_#{id}", true, ex: 60
+    Rails.cache.write "sync_trades_frequency_lock_#{id}", true, ex: 60
   end
 
   def sync_trades_frequency_unlock!
-    Global.redis.del "sync_trades_frequency_lock_#{id}"
+    Rails.cache.delete "sync_trades_frequency_lock_#{id}"
   end
 
   def generate_booking_order_snapshots
@@ -257,7 +257,7 @@ class Market < ApplicationRecord
   end
 
   def _get_reference_price
-    Global.redis.get _reference_price_key
+    Rails.cache.read _reference_price_key
   end
 
   def _set_reference_price
@@ -278,7 +278,7 @@ class Market < ApplicationRecord
         (base_asset.price_usd / quote_asset.price_usd).round(8)
       end
 
-    Global.redis.set _reference_price_key, _reference_price, ex: 30.seconds
+    Rails.cache.write _reference_price_key, _reference_price, ex: 30.seconds
 
     _reference_price
   end

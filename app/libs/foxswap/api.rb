@@ -32,7 +32,7 @@ module Foxswap
     end
 
     def tradable_asset_ids
-      _cache = Global.redis.get('4swap_tradable_asset_ids')
+      _cache = Rails.cache.read('4swap_tradable_asset_ids')
       _cache = refresh_traddable_asset_ids if _cache.blank?
 
       JSON.parse _cache
@@ -48,7 +48,7 @@ module Foxswap
         _ids.push(pair['quote_asset_id'])
       end
       _ids.uniq!
-      Global.redis.set '4swap_tradable_asset_ids', _ids, ex: 1.day
+      Rails.cache.write '4swap_tradable_asset_ids', _ids, ex: 1.day
       _ids.to_json
     end
 

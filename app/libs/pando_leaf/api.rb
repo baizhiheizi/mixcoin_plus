@@ -44,7 +44,7 @@ module PandoLeaf
     end
 
     def supportable_asset_ids
-      _cache = Global.redis.get('pando_leaf_supportable_asset_ids')
+      _cache = Rails.cache.read('pando_leaf_supportable_asset_ids')
       _cache = refresh_supportable_asset_ids if _cache.blank?
 
       JSON.parse _cache
@@ -59,7 +59,7 @@ module PandoLeaf
         _ids.push(cat['gem'])
       end
       _ids.uniq!
-      Global.redis.set 'pando_leaf_supportable_asset_ids', _ids, ex: 1.hour
+      Rails.cache.write 'pando_leaf_supportable_asset_ids', _ids, ex: 1.hour
       _ids.to_json
     end
   end

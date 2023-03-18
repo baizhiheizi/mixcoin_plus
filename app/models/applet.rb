@@ -125,7 +125,7 @@ class Applet < ApplicationRecord
 
   def download_traded_swap_orders
     return if traded_swap_orders.blank?
-    return if Global.redis.get("applet_download_traded_swap_orders_lock_#{id}")
+    return if Rails.cache.read("applet_download_traded_swap_orders_lock_#{id}")
 
     send_traded_orders_csv_file_via_mixin
   end
@@ -133,7 +133,7 @@ class Applet < ApplicationRecord
   def send_traded_orders_csv_file_via_mixin
     return if traded_swap_orders.blank?
 
-    Global.redis.set "applet_download_traded_swap_orders_lock_#{id}", true, ex: 30.minutes
+    Rails.cache.write "applet_download_traded_swap_orders_lock_#{id}", true, ex: 30.minutes
 
     file_name = "Applet-#{id}.csv"
     file = Tempfile.new file_name
@@ -170,7 +170,7 @@ class Applet < ApplicationRecord
     )
   ensure
     file&.unlink
-    Global.redis.del "applet_download_traded_swap_orders_lock_#{id}"
+    Rails.cache.delete "applet_download_traded_swap_orders_lock_#{id}"
   end
 
   def traded_swap_orders
