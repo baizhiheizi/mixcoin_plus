@@ -74,7 +74,7 @@ class MixinTransfer < ApplicationRecord
     r =
       if user_id == MixcoinPlusBot.api.client_id
         MixcoinPlusBot.api.create_transfer(
-          Rails.application.credentails.dig(:mixin, :pin_code),
+          Rails.application.credentials.dig(:mixin, :pin_code),
           {
             asset_id: asset_id,
             opponent_id: opponent_id,
