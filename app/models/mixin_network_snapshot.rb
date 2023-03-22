@@ -63,15 +63,19 @@ class MixinNetworkSnapshot < ApplicationRecord
       offset = MixinNetworkSnapshot.order(transferred_at: :desc).first&.transferred_at&.utc&.rfc3339 || Time.current.utc.rfc3339 if offset.blank?
 
       r = MixcoinPlusBot.api.read_network_snapshots(offset: offset, limit: POLLING_LIMIT, order: 'ASC')
-      logger.info "polled #{r['data'].length} mixin network snapshots, #{offset}"
+      p "polled #{r['data'].length} mixin network snapshots, #{offset}"
 
       r['data'].each do |snapshot|
         next if snapshot['user_id'].blank?
 
-        create_with(raw: snapshot).find_or_create_by!(trace_id: snapshot['trace_id'])
+        MixinNetworkSnapshot.create_with(raw: snapshot).find_or_create_by!(trace_id: snapshot['trace_id'])
+      rescue ActiveRecord::StatementInvalid => e
+        ActiveRecord::Base.connection.reconnect!
+        sleep POLLING_INTERVAL * 10
+        retry
       end
 
-      Rails.cache.write 'last_polled_at', r['data'].last['created_at']
+      Rails.cache.write 'last_polled_at', r['data'].last['created_at'] if r['data'].last.present?
 
       sleep 0.5 if r['data'].length < POLLING_LIMIT
       sleep POLLING_INTERVAL

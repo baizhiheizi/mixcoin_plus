@@ -29,7 +29,7 @@ gem 'graphql'
 # Powerful tool for avoiding N+1 DB or HTTP queries
 gem 'batch-loader'
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 4.0'
+gem 'redis'
 # Map Redis types directly to Ruby objects
 gem 'redis-objects'
 # This gem adds a Redis::Namespace class which can be used to namespace Redis keys. http://redis.io
@@ -70,11 +70,6 @@ gem 'config'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
-
-# deploy
-gem 'mina', '~> 1.2.2', require: false
-gem 'mina-logs', '~> 1.1.0', require: false
-gem 'mina-multistage', '~> 1.0.3', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
