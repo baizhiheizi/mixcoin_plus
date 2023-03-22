@@ -79,6 +79,7 @@ class MixinNetworkSnapshot < ApplicationRecord
     rescue ActiveRecord::StatementInvalid => e
       logger.error e.inspect
       ActiveRecord::Base.connection.reconnect!
+      sleep POLLING_INTERVAL * 10
       retry
     rescue StandardError => e
       logger.error e

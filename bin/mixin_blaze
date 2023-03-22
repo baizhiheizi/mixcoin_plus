@@ -4,7 +4,9 @@ require 'rubygems'
 require 'bundler/setup'
 require File.expand_path('../config/environment', __dir__)
 
-EM.run {
+EM.run do
+  Thread.abort_on_exception = true
+
   MixcoinPlusBot.api.start_blaze_connect do
     def on_open(ws, _event)
       p ['MixcoinPlus', Time.current, :open]
@@ -34,4 +36,8 @@ EM.run {
   Thread.new { 
     MixinNetworkSnapshot.poll
   }
-}
+rescue ActiveRecord::StatementInvalid => e
+  logger.error e.inspect
+  ActiveRecord::Base.connection.reconnect!
+  retry
+end
