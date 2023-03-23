@@ -30,7 +30,7 @@
 #  index_mixin_network_snapshots_on_user_id                    (user_id)
 #
 class MixinNetworkSnapshot < ApplicationRecord
-  POLLING_INTERVAL = 0.1
+  POLLING_INTERVAL = 1
   POLLING_LIMIT = 500
 
   belongs_to :source, polymorphic: true, optional: true
@@ -69,28 +69,28 @@ class MixinNetworkSnapshot < ApplicationRecord
         next if snapshot['user_id'].blank?
 
         MixinNetworkSnapshot.create_with(raw: snapshot).find_or_create_by!(trace_id: snapshot['trace_id'])
-      rescue ActiveRecord::StatementInvalid => e
+      rescue ActiveRecord::StatementInvalid
         ActiveRecord::Base.connection.reconnect!
-        sleep POLLING_INTERVAL * 10
+        sleep POLLING_INTERVAL
         retry
       end
 
       Rails.cache.write 'last_polled_at', r['data'].last['created_at'] if r['data'].last.present?
 
-      sleep 0.5 if r['data'].length < POLLING_LIMIT
+      sleep POLLING_INTERVAL * 2 if r['data'].length < POLLING_LIMIT
       sleep POLLING_INTERVAL
       @__retry = 0
     rescue ActiveRecord::StatementInvalid => e
       logger.error e.inspect
       ActiveRecord::Base.connection.reconnect!
-      sleep POLLING_INTERVAL * 10
+      sleep POLLING_INTERVAL * 3
       retry
     rescue StandardError => e
       logger.error e
       raise e if @__retry > 10
 
       @__retry += 1
-      sleep POLLING_INTERVAL * 10
+      sleep POLLING_INTERVAL * 3
     end
   end
 
