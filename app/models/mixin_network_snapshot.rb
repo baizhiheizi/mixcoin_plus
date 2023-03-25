@@ -30,7 +30,7 @@
 #  index_mixin_network_snapshots_on_user_id                    (user_id)
 #
 class MixinNetworkSnapshot < ApplicationRecord
-  POLLING_INTERVAL = 1
+  POLLING_INTERVAL = 0.1
   POLLING_LIMIT = 500
 
   belongs_to :source, polymorphic: true, optional: true
@@ -38,7 +38,7 @@ class MixinNetworkSnapshot < ApplicationRecord
   belongs_to :opponent, class_name: 'User', primary_key: :mixin_uuid, inverse_of: :snapshots, optional: true
   belongs_to :asset, class_name: 'MixinAsset', primary_key: :asset_id, inverse_of: false, optional: true
 
-  after_initialize :setup_attributes, if: :new_record?
+  before_validation :setup_attributes, if: :new_record?
 
   validates :amount, presence: true
   validates :asset_id, presence: true
@@ -69,28 +69,24 @@ class MixinNetworkSnapshot < ApplicationRecord
         next if snapshot['user_id'].blank?
 
         MixinNetworkSnapshot.create_with(raw: snapshot).find_or_create_by!(trace_id: snapshot['trace_id'])
-      rescue ActiveRecord::StatementInvalid
-        ActiveRecord::Base.connection.reconnect!
-        sleep POLLING_INTERVAL
-        retry
       end
 
       Rails.cache.write 'last_polled_at', r['data'].last['created_at'] if r['data'].last.present?
 
-      sleep POLLING_INTERVAL * 2 if r['data'].length < POLLING_LIMIT
+      sleep POLLING_INTERVAL * 10 if r['data'].length < POLLING_LIMIT
       sleep POLLING_INTERVAL
       @__retry = 0
     rescue ActiveRecord::StatementInvalid => e
       logger.error e.inspect
       ActiveRecord::Base.connection.reconnect!
-      sleep POLLING_INTERVAL * 3
+      sleep POLLING_INTERVAL * 10
       retry
     rescue StandardError => e
       logger.error e
       raise e if @__retry > 10
 
       @__retry += 1
-      sleep POLLING_INTERVAL * 3
+      sleep POLLING_INTERVAL * 10
     end
   end
 
@@ -131,25 +127,29 @@ class MixinNetworkSnapshot < ApplicationRecord
   end
 
   def base64_decoded_memo
-    @base64_decoded_memo = Base64.decode64(data.to_s.gsub('-', '+').gsub('_', '/'))
+    @base64_decoded_memo ||= Base64.decode64(data.to_s.gsub('-', '+').gsub('_', '/'))
   end
 
   def decrypted_msgpack_memo
-    decrypted_msgpack_memo = MessagePack.unpack base64_decoded_memo
+    return @decrypted_msgpack_memo if @decrypted_msgpack_memo.present?
 
-    if decrypted_msgpack_memo.present?
-      decrypted_msgpack_memo['A'] = raw_to_uuid(decrypted_msgpack_memo['A'])
-      decrypted_msgpack_memo['B'] = raw_to_uuid(decrypted_msgpack_memo['B'])
-      decrypted_msgpack_memo['O'] = raw_to_uuid(decrypted_msgpack_memo['O'])
+    _decrypted_msgpack_memo = MessagePack.unpack base64_decoded_memo
+
+    if _decrypted_msgpack_memo.present?
+      _decrypted_msgpack_memo['A'] = raw_to_uuid(_decrypted_msgpack_memo['A'])
+      _decrypted_msgpack_memo['B'] = raw_to_uuid(_decrypted_msgpack_memo['B'])
+      _decrypted_msgpack_memo['O'] = raw_to_uuid(_decrypted_msgpack_memo['O'])
     end
 
-    decrypted_msgpack_memo
-  rescue StandardError
+    @decrypted_msgpack_memo = _decrypted_msgpack_memo
+    @decrypted_msgpack_memo
+  rescue StandardError, NoMemoryError => e
+    logger.error e
     {}
   end
 
   def decrypted_json_memo
-    JSON.parse base64_decoded_memo
+    @decrypted_json_memo ||= JSON.parse base64_decoded_memo
   rescue JSON::ParserError
     {}
   end
@@ -235,8 +235,13 @@ class MixinNetworkSnapshot < ApplicationRecord
       trace_id: raw['trace_id']
     )
 
-    self.type = 'OceanSnapshot' if decrypted_msgpack_memo.present? || base64_decoded_memo.match?(/^OCEAN/)
-    self.type = 'IfttbSnapshot' if base64_decoded_memo.match?(/^IFTTB/)
-    self.type = 'SwapSnapshot' if decrypted_json_memo.present? || base64_decoded_memo.split('|')[0].in?(%w[SWAP 0 1]) || (amount.negative? && opponent_id.blank?)
+    self.type =
+      if decrypted_msgpack_memo.present? || base64_decoded_memo.match?(/^OCEAN/)
+        'OceanSnapshot'
+      elsif base64_decoded_memo.match?(/^IFTTB/)
+        'IfttbSnapshot'
+      elsif (amount.negative? && opponent_id.blank?) || decrypted_json_memo.present? || base64_decoded_memo.split('|')[0].in?(%w[SWAP 0 1]) 
+        'SwapSnapshot'
+      end
   end
 end
