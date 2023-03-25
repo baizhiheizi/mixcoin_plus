@@ -33,9 +33,9 @@ EM.run do
     Market.recommended.map(&:patrol_async)
   }
 
-  Thread.new { 
+  Thread.new do
     MixinNetworkSnapshot.poll
-  }
+  end
 rescue ActiveRecord::StatementInvalid => e
   logger.error e.inspect
   ActiveRecord::Base.connection.reconnect!

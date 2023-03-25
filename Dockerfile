@@ -36,7 +36,7 @@ FROM base as build
 
 # Install packages needed to build gems and node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential curl libpq-dev libvips node-gyp pkg-config python-is-python3 redis automake libtool libffi-dev libssl-dev libgmp-dev python3-dev libsodium-dev
+    apt-get install --no-install-recommends -y build-essential git curl libpq-dev libvips node-gyp pkg-config python-is-python3 redis automake libtool libffi-dev libssl-dev libgmp-dev python3-dev libsodium-dev
 
 # Install yarn
 ARG YARN_VERSION=1.22.19
