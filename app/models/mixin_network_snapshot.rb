@@ -236,12 +236,17 @@ class MixinNetworkSnapshot < ApplicationRecord
     )
 
     self.type =
-      if decrypted_msgpack_memo.present? || base64_decoded_memo.match?(/^OCEAN/)
-        'OceanSnapshot'
-      elsif base64_decoded_memo.match?(/^IFTTB/)
-        'IfttbSnapshot'
-      elsif (amount.negative? && opponent_id.blank?) || decrypted_json_memo.present? || base64_decoded_memo.split('|')[0].in?(%w[SWAP 0 1]) 
-        'SwapSnapshot'
+      begin
+        if decrypted_msgpack_memo.present? || base64_decoded_memo.match?(/^OCEAN/)
+          'OceanSnapshot'
+        elsif base64_decoded_memo.match?(/^IFTTB/)
+          'IfttbSnapshot'
+        elsif (amount.negative? && opponent_id.blank?) || decrypted_json_memo.present? || base64_decoded_memo.split('|')[0].in?(%w[SWAP 0 1])
+          'SwapSnapshot'
+        end
+      rescue StandardError => e
+        logger.error e
+        nil
       end
   end
 end

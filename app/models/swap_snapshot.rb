@@ -143,20 +143,32 @@ class SwapSnapshot < MixinNetworkSnapshot
     # from user to broker
     _swap_order ||= SwapOrder.find_by(id: raw['trace_id'])
 
-    # from broker to user
-    _swap_order ||= SwapOrder.find_by(trace_id: base64_decoded_memo.split('|')[2]) if base64_decoded_memo.match?(/^SWAP/)
-
-    # from fox to broker
-    _swap_order ||= SwapOrder.find_by(trace_id: decrypted_json_memo['t']) if decrypted_json_memo.present?
-
-    # from MixSwap to broker
-    _swap_order ||= SwapOrder.find_by(trace_id: base64_decoded_memo.split('|')[1]) if base64_decoded_memo.match?(/^(0|1)/)
+    _swap_order ||=
+      # from broker to user
+      if base64_decoded_memo.match?(/^SWAP/)
+        SwapOrder.find_by(trace_id: base64_decoded_memo.split('|')[2])
+      elsif decrypted_json_memo.present?
+        # from fox to broker
+        SwapOrder.find_by(trace_id: decrypted_json_memo['t'])
+      elsif base64_decoded_memo.match?(/^(0|1)/)
+        # from MixSwap to broker
+        SwapOrder.find_by(trace_id: base64_decoded_memo.split('|')[1])
+      end
 
     _swap_order
   end
 
   def decrypted_snapshot_type
-    if base64_decoded_memo.match?(/^SWAP/)
+    if (opponent_id.blank? && amount.negative?) || decrypted_json_memo['t'] == 'swap'
+      'swap_to_fox'
+    elsif decrypted_json_memo.present?
+      case decrypted_json_memo['s']
+      when '4swapTrade'
+        'trade_from_fox'
+      when '4swapRefund'
+        'reject_from_fox'
+      end
+    elsif base64_decoded_memo.match?(/^SWAP/)
       {
         CREATE: 'swap_from_user',
         TRADE: 'trade_to_user',
@@ -173,15 +185,6 @@ class SwapSnapshot < MixinNetworkSnapshot
         'trade_from_mix_swap'
       else
         'swap_to_mix_swap'
-      end
-    elsif decrypted_json_memo['t'] == 'swap' || (opponent_id.blank? && amount.negative?)
-      'swap_to_fox'
-    elsif decrypted_json_memo.present?
-      case decrypted_json_memo['s']
-      when '4swapTrade'
-        'trade_from_fox'
-      when '4swapRefund'
-        'reject_from_fox'
       end
     end
   end
