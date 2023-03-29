@@ -59,7 +59,7 @@ module PandoLeaf
         _ids.push(cat['gem'])
       end
       _ids.uniq!
-      Rails.cache.write 'pando_leaf_supportable_asset_ids', _ids, ex: 1.hour
+      Rails.cache.write 'pando_leaf_supportable_asset_ids', _ids, expires_in: 1.hour
       _ids.to_json
     end
   end

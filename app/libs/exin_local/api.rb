@@ -17,16 +17,14 @@ module ExinLocal
     def cached_settings
       _cache = Rails.cache.read('exin_local_settings')
       _cache = refresh_cached_settings if _cache.blank?
-      JSON.parse _cache
-    rescue JSON::ParserError
-      []
+      _cache
     end
 
     def refresh_cached_settings
       _settings = settings
-      Rails.cache.write 'exin_local_settings', _settings.to_json, ex: 1.minute
+      Rails.cache.write 'exin_local_settings', _settings, expires_in: 1.minute
 
-      _settings.to_json
+      _settings
     end
 
     def advertisements(asset_id:, legal_currency_symbol: 'CNY', type: 'sell')

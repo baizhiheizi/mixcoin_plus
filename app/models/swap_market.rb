@@ -41,7 +41,7 @@ class SwapMarket
 
     _ask_price = (amount / funds).round(8) if amount&.positive?
 
-    Rails.cache.write _ask_price_cache_id, _ask_price, ex: 1.minute
+    Rails.cache.write _ask_price_cache_id, _ask_price, expires_in: 1.minute
 
     _ask_price
   end
@@ -65,7 +65,7 @@ class SwapMarket
 
     _bid_price = (funds / amount).round(8) if amount&.positive?
 
-    Rails.cache.write _bid_price_cache_id, _bid_price, ex: 1.minute
+    Rails.cache.write _bid_price_cache_id, _bid_price, expires_in: 1.minute
 
     _bid_price
   end

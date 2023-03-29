@@ -64,7 +64,7 @@ class UserAsset < ApplicationRecord
   end
 
   def _mark_cache
-    Rails.cache.write _cache_key, true, ex: 30.seconds
+    Rails.cache.write _cache_key, true, expires_in: 30.seconds
   end
 
   def _cache_expired?

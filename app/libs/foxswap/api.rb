@@ -35,9 +35,7 @@ module Foxswap
       _cache = Rails.cache.read('4swap_tradable_asset_ids')
       _cache = refresh_traddable_asset_ids if _cache.blank?
 
-      JSON.parse _cache
-    rescue JSON::ParserError
-      []
+      _cache
     end
 
     def refresh_traddable_asset_ids
@@ -48,8 +46,8 @@ module Foxswap
         _ids.push(pair['quote_asset_id'])
       end
       _ids.uniq!
-      Rails.cache.write '4swap_tradable_asset_ids', _ids, ex: 1.day
-      _ids.to_json
+      Rails.cache.write '4swap_tradable_asset_ids', _ids, expires_in: 1.day
+      _ids
     end
 
     def actions(**options)

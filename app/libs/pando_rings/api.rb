@@ -29,7 +29,7 @@ module PandoRings
         _ids.push market['asset_id']
       end
       _ids.uniq!
-      Rails.cache.write 'pando_rings_supportable_asset_ids', _ids, ex: 1.hour
+      Rails.cache.write 'pando_rings_supportable_asset_ids', _ids, expires_in: 1.hour
       _ids.to_json
     end
   end

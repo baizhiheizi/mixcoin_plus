@@ -133,7 +133,7 @@ class Applet < ApplicationRecord
   def send_traded_orders_csv_file_via_mixin
     return if traded_swap_orders.blank?
 
-    Rails.cache.write "applet_download_traded_swap_orders_lock_#{id}", true, ex: 30.minutes
+    Rails.cache.write "applet_download_traded_swap_orders_lock_#{id}", true, expires_in: 30.minutes
 
     file_name = "Applet-#{id}.csv"
     file = Tempfile.new file_name

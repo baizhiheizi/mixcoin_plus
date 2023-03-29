@@ -35,16 +35,14 @@ module MixSwap
       _cache = Rails.cache.read('mix_swap_tradable_asset_ids')
       _cache = refresh_traddable_asset_ids if _cache.blank?
 
-      JSON.parse _cache
-    rescue JSON::ParserError
-      []
+      _cache
     end
 
     def refresh_traddable_asset_ids
       _ids = assets['data'].map(&->(asset) { asset['uuid'] })
       _ids.uniq!
-      Rails.cache.write 'mix_swap_tradable_asset_ids', _ids, ex: 1.day
-      _ids.to_json
+      Rails.cache.write 'mix_swap_tradable_asset_ids', _ids, expires_in: 1.day
+      _ids
     end
   end
 end

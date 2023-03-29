@@ -105,7 +105,7 @@ class Market < ApplicationRecord
 
     if @price_current.blank?
       @price_current = trades.order(traded_at: :desc).first&.price
-      Rails.cache.write "price_current_#{id}", @price_current, ex: 1.minute
+      Rails.cache.write "price_current_#{id}", @price_current, expires_in: 1.minute
     end
 
     @price_current
@@ -122,7 +122,7 @@ class Market < ApplicationRecord
       return if price_current.blank? || price_24h_ago.blank?
 
       @change_24h = format('%.4f', ((price_current.to_f - price_24h_ago.to_f) / price_24h_ago.to_f))
-      Rails.cache.write "change_24h_#{id}", @change_24h, ex: 1.minute
+      Rails.cache.write "change_24h_#{id}", @change_24h, expires_in: 1.minute
     end
 
     @change_24h
@@ -133,7 +133,7 @@ class Market < ApplicationRecord
 
     if @vol_24h.blank?
       @vol_24h = format('%.6f', trades.where(traded_at: (24.hours.ago)...).sum(:amount))
-      Rails.cache.write "vol_24h_#{id}", @vol_24h, ex: 1.minute
+      Rails.cache.write "vol_24h_#{id}", @vol_24h, expires_in: 1.minute
     end
 
     @vol_24h
@@ -179,7 +179,7 @@ class Market < ApplicationRecord
   end
 
   def sync_trades_frequency_lock!
-    Rails.cache.write "sync_trades_frequency_lock_#{id}", true, ex: 60
+    Rails.cache.write "sync_trades_frequency_lock_#{id}", true, expires_in: 60
   end
 
   def sync_trades_frequency_unlock!
@@ -278,7 +278,7 @@ class Market < ApplicationRecord
         (base_asset.price_usd / quote_asset.price_usd).round(8)
       end
 
-    Rails.cache.write _reference_price_key, _reference_price, ex: 30.seconds
+    Rails.cache.write _reference_price_key, _reference_price, expires_in: 30.seconds
 
     _reference_price
   end
