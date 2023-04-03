@@ -39,12 +39,21 @@ class Applet4swapAction < AppletAction
     @fill_asset ||= MixinAsset.find_by(asset_id: fill_asset_id)
   end
 
-  def fill_amount
-    @fill_amount ||= Foxswap.api.pre_order(
+  def pre_order
+    @pre_order ||= Foxswap.api.best_route(
       pay_asset_id: pay_asset_id,
       fill_asset_id: fill_asset_id,
       funds: pay_amount
-    )&.[]('data')&.[]('fill_amount')
+    )&.[]('data')
+  end
+
+  def fill_amount
+    @fill_amount ||= pre_order&.[]('fill_amount')
+  end
+  
+
+  def route_id
+    @route_id ||= pre_order&.[]('routes')
   end
 
   def swap_market
@@ -113,7 +122,8 @@ class Applet4swapAction < AppletAction
         pay_asset_id: pay_asset_id,
         pay_amount: pay_amount.to_f,
         fill_asset_id: fill_asset_id,
-        min_amount: minimum_fill
+        min_amount: minimum_fill,
+        route_id: route_id,
       ).find_or_create_by(
         trace_id: activity.id
       )

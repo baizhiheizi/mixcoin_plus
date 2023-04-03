@@ -53,17 +53,20 @@ module Markets::Arbitragable
     return if buy_from_ocean.blank?
 
     selling_amount = (buy_from_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO)).floor(8)
-    selling_funds = Foxswap.api.pre_order(
+    pre_order = Foxswap.api.pre_order(
       pay_asset_id: base_asset_id,
       fill_asset_id: quote_asset_id,
       funds: selling_amount
-    )&.[]('data')&.[]('fill_amount')&.to_f
+    )&.[]('data')
+    route_id = pre_order&.[]('routes')
+    selling_funds = pre_order&.[]('fill_amount')&.to_f
     selling_price = (selling_funds / selling_amount).floor(8)
 
     @sell_to_swap = {
       price: selling_price,
       amount: selling_amount,
-      funds: selling_funds
+      funds: selling_funds,
+      route_id: route_id
     }
   end
 
@@ -92,17 +95,20 @@ module Markets::Arbitragable
     return if sell_to_ocean.blank?
 
     buying_funds = sell_to_ocean[:funds] * (1 - OCEAN_TAKER_FEE_RATIO).floor(8)
-    buying_amount = Foxswap.api.pre_order(
+    pre_order = Foxswap.api.pre_order(
       pay_asset_id: quote_asset_id,
       fill_asset_id: base_asset_id,
       funds: buying_funds
-    )&.[]('data')&.[]('fill_amount')&.to_f
+    )&.[]('data')
+    route_id = pre_order&.[]('routes')
+    buying_amount = pre_order&.[]('fill_amount')&.to_f
     buying_price = (buying_funds / buying_amount).floor(8)
 
     @buy_from_swap = {
       price: buying_price,
       amount: buying_amount,
-      funds: buying_funds
+      funds: buying_funds,
+      route_id: route_id
     }
   end
 
