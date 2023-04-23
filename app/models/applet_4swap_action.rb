@@ -40,7 +40,7 @@ class Applet4swapAction < AppletAction
   end
 
   def pre_order
-    @pre_order ||= Foxswap.api.best_route(
+    @pre_order ||= Foxswap.api.pre_order(
       pay_asset_id: pay_asset_id,
       fill_asset_id: fill_asset_id,
       funds: pay_amount
