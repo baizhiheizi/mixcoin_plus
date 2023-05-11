@@ -50,7 +50,6 @@ class Applet4swapAction < AppletAction
   def fill_amount
     @fill_amount ||= pre_order&.[]('fill_amount')
   end
-  
 
   def route_id
     @route_id ||= pre_order&.[]('routes')
@@ -123,7 +122,7 @@ class Applet4swapAction < AppletAction
         pay_amount: pay_amount.to_f,
         fill_asset_id: fill_asset_id,
         min_amount: minimum_fill,
-        route_id: route_id,
+        route_id: route_id
       ).find_or_create_by(
         trace_id: activity.id
       )

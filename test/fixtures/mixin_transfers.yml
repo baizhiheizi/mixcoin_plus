@@ -11,6 +11,7 @@
 #  processed_at      :datetime
 #  snapshot          :json
 #  source_type       :string
+#  stale             :boolean          default(FALSE)
 #  transfer_type     :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null

@@ -13,6 +13,7 @@
 #  processed_at      :datetime
 #  snapshot          :json
 #  source_type       :string
+#  stale             :boolean          default(FALSE)
 #  transfer_type     :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -56,7 +57,7 @@ class MixinTransfer < ApplicationRecord
             scope: true,
             predicates: true
 
-  scope :unprocessed, -> { where(processed_at: nil) }
+  scope :unprocessed, -> { where(processed_at: nil, stale: false) }
   scope :processed, -> { where.not(processed_at: nil) }
   scope :within_24h, -> { where(created_at: (24.hours.ago)...) }
 

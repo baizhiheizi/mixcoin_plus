@@ -9,7 +9,9 @@
 #  archived_at             :datetime
 #  connected               :boolean          default(FALSE)
 #  last_active_at          :datetime
+#  state                   :string
 #  title                   :string
+#  type                    :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  user_id                 :uuid             not null
@@ -174,7 +176,7 @@ class Applet < ApplicationRecord
   end
 
   def traded_swap_orders
-    @traded_swap_orders ||= swap_orders.where(state: %i[traded rejected])
+    @traded_swap_orders ||= swap_orders.where(state: %i[traded])
   end
 
   def pay_asset
