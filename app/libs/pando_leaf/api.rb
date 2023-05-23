@@ -47,9 +47,7 @@ module PandoLeaf
       _cache = Rails.cache.read('pando_leaf_supportable_asset_ids')
       _cache = refresh_supportable_asset_ids if _cache.blank?
 
-      JSON.parse _cache
-    rescue JSON::ParserError
-      []
+      _cache
     end
 
     def refresh_supportable_asset_ids
@@ -60,7 +58,7 @@ module PandoLeaf
       end
       _ids.uniq!
       Rails.cache.write 'pando_leaf_supportable_asset_ids', _ids, expires_in: 1.hour
-      _ids.to_json
+      _ids
     end
   end
 end
