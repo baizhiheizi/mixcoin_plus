@@ -59,7 +59,7 @@ class Applet4swapAction < AppletAction
           input_amount: pay_amount.to_d
         ).with_indifferent_access
       rescue StandardError => e
-        logger.error e
+        Rails.logger.error e
         nil
       end
   end

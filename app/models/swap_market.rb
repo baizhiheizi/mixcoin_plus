@@ -52,7 +52,7 @@ class SwapMarket
           input_amount: funds.to_d
         ).with_indifferent_access['amount'].to_f
       rescue StandardError => e
-        logger.error e
+        Rails.logger.error e
         nil
       end
 
@@ -93,7 +93,7 @@ class SwapMarket
           input_amount: funds.to_d
         ).with_indifferent_access['amount'].to_f
       rescue StandardError => e
-        logger.error e
+        Rails.logger.error e
         nil
       end
 
