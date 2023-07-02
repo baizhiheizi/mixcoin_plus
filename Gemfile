@@ -64,6 +64,8 @@ gem 'exception-track'
 gem 'fugit'
 # Config helps you easily manage environment specific settings in an easy and usable manner.
 gem 'config'
+# A simple API wrapper for Pando in Ruby
+gem 'pando_bot'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

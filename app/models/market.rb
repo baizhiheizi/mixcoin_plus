@@ -265,12 +265,25 @@ class Market < ApplicationRecord
     return if base_asset.price_usd.zero? || quote_asset.price_usd.zero?
 
     _funds = (1 / quote_asset.price_usd).round(8)
-    r = Foxswap.api.pre_order(
-      pay_asset_id: quote_asset_id,
-      fill_asset_id: base_asset_id,
-      funds: (1 / quote_asset.price_usd).round(8)
-    )
-    _amount = r&.[]('data')&.[]('fill_amount')
+
+    r =
+      begin
+        pairs = Rails.cache.fetch 'pando_lake_routes', expires_in: 5.seconds do
+          PandoBot::Lake.api.pairs['data']['pairs']
+        end
+
+        routes ||= PandoBot::Lake::PairRoutes.new pairs
+        routes.pre_order(
+          input_asset: quote_asset_id,
+          output_asset: base_asset_id,
+          input_amount: (1 / quote_asset.price_usd).round(8)
+        ).with_indifferent_access
+      rescue StandardError => e
+        logger.error e
+        nil
+      end
+
+    _amount = r&.[]('amount')
     _reference_price =
       if _amount.present?
         (_funds / _amount.to_f).round(8)

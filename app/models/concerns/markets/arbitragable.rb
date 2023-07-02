@@ -53,13 +53,32 @@ module Markets::Arbitragable
     return if buy_from_ocean.blank?
 
     selling_amount = (buy_from_ocean[:amount] * (1 - OCEAN_TAKER_FEE_RATIO)).floor(8)
-    pre_order = Foxswap.api.pre_order(
-      pay_asset_id: base_asset_id,
-      fill_asset_id: quote_asset_id,
-      funds: selling_amount
-    )&.[]('data')
+
+    # pre_order = Foxswap.api.pre_order(
+    #   pay_asset_id: base_asset_id,
+    #   fill_asset_id: quote_asset_id,
+    #   funds: selling_amount
+    # )&.[]('data')
+
+    pre_order =
+      begin
+        pairs = Rails.cache.fetch 'pando_lake_routes', expires_in: 5.seconds do
+          PandoBot::Lake.api.pairs['data']['pairs']
+        end
+
+        routes ||= PandoBot::Lake::PairRoutes.new pairs
+        routes.pre_order(
+          input_asset: base_asset_id,
+          output_asset: quote_asset_id,
+          input_amount: selling_amount.to_d
+        ).with_indifferent_access
+      rescue StandardError => e
+        logger.error e
+        nil
+      end
+
     route_id = pre_order&.[]('routes')
-    selling_funds = pre_order&.[]('fill_amount')&.to_f
+    selling_funds = pre_order&.[]('amount')&.to_f
     selling_price = (selling_funds / selling_amount).floor(8)
 
     @sell_to_swap = {
@@ -95,13 +114,32 @@ module Markets::Arbitragable
     return if sell_to_ocean.blank?
 
     buying_funds = sell_to_ocean[:funds] * (1 - OCEAN_TAKER_FEE_RATIO).floor(8)
-    pre_order = Foxswap.api.pre_order(
-      pay_asset_id: quote_asset_id,
-      fill_asset_id: base_asset_id,
-      funds: buying_funds
-    )&.[]('data')
+
+    # pre_order = Foxswap.api.pre_order(
+    #   pay_asset_id: quote_asset_id,
+    #   fill_asset_id: base_asset_id,
+    #   funds: buying_funds
+    # )&.[]('data')
+
+    pre_order =
+      begin
+        pairs = Rails.cache.fetch 'pando_lake_routes', expires_in: 5.seconds do
+          PandoBot::Lake.api.pairs['data']['pairs']
+        end
+
+        routes ||= PandoBot::Lake::PairRoutes.new pairs
+        routes.pre_order(
+          input_asset: quote_asset_id,
+          output_asset: base_asset_id,
+          input_amount: buying_funds.to_d
+        ).with_indifferent_access
+      rescue StandardError => e
+        logger.error e
+        nil
+      end
+
     route_id = pre_order&.[]('routes')
-    buying_amount = pre_order&.[]('fill_amount')&.to_f
+    buying_amount = pre_order&.[]('amount')&.to_f
     buying_price = (buying_funds / buying_amount).floor(8)
 
     @buy_from_swap = {

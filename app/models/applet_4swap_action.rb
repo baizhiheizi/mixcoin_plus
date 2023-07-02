@@ -40,15 +40,32 @@ class Applet4swapAction < AppletAction
   end
 
   def pre_order
-    @pre_order ||= Foxswap.api.pre_order(
-      pay_asset_id: pay_asset_id,
-      fill_asset_id: fill_asset_id,
-      funds: pay_amount
-    )&.[]('data')
+    # @pre_order ||= Foxswap.api.pre_order(
+    #   pay_asset_id: pay_asset_id,
+    #   fill_asset_id: fill_asset_id,
+    #   funds: pay_amount
+    # )&.[]('data')
+
+    @pre_order ||=
+      begin
+        pairs = Rails.cache.fetch 'pando_lake_routes', expires_in: 5.seconds do
+          PandoBot::Lake.api.pairs['data']['pairs']
+        end
+
+        routes ||= PandoBot::Lake::PairRoutes.new pairs
+        routes.pre_order(
+          input_asset: pay_asset_id,
+          output_asset: fill_asset_id,
+          input_amount: pay_amount.to_d
+        ).with_indifferent_access
+      rescue StandardError => e
+        logger.error e
+        nil
+      end
   end
 
   def fill_amount
-    @fill_amount ||= pre_order&.[]('fill_amount')
+    @fill_amount ||= pre_order&.[]('amount')
   end
 
   def route_id
